@@ -1,0 +1,28 @@
+services:
+  serving:
+    image: nvcr.io/nvidia/tritonserver:22.03-py3
+    command: #nvidia-smi
+        tritonserver
+        --model-store=/models
+        --allow-grpc=true
+        --grpc-port=8500
+        --allow-http=true
+        --http-port=8501
+        --log-info=true
+        --log-warning=true
+        --log-error=true
+    ports:
+      - 8500:8500
+      - 8501:8501
+    volumes:
+      - ./models:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      CUDA_VISIBLE_DEVICES: 0
+    shm_size: 1GB

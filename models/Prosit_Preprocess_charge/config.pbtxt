@@ -1,0 +1,17 @@
+name: "Prosit_Preprocess_charge"
+max_batch_size: 7000
+backend: "python"
+input[
+ {
+   name: 'precursor_charge_in_int:0',
+   data_type: TYPE_INT32,
+   dims: [1]
+ }
+]
+output [
+ {
+   name: 'precursor_charge_in:0',
+   data_type: TYPE_FP32,
+   dims: [6]
+ }
+]
