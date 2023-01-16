@@ -25,12 +25,16 @@ class TritonPythonModel:
    def execute(self, requests):
      peptide_in_str = []
      responses = []
+     print("Pre-processing of charge is called")
      for request in requests:
       charge_in_raw = pb_utils.get_input_tensor_by_name(request, "precursor_charge_in_int:0")
       charge_in_flat = sum(charge_in_raw.as_numpy().tolist(), [])
       charge_in = to_on_hot(charge_in_flat)
       t = pb_utils.Tensor("precursor_charge_in:0",charge_in.astype(self.output_dtype))
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
+      print("charge_in: ")
+      print(len(charge_in))
+      print(charge_in)
      return responses
    def finalize(self):
      print('done processing Preprocess charge')

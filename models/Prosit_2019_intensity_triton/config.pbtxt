@@ -20,7 +20,7 @@ input [
 ]
 output [
   {
-   name: 'out/Reshape:0',
+   name: 'out/Reshape:1',
    data_type: TYPE_FP32,
    dims: [174]
   }
@@ -71,7 +71,26 @@ ensemble_scheduling {
         key: "out/Reshape:0"
         value: "out/Reshape:0"
       }
+    },
+    {
+      model_name: "Prosit_2019_intensity_postprocess"
+      model_version: 1
+      input_map {
+        key: "peptides_in:0"
+        value: "peptides_in_str:0"
+      },
+      input_map{
+        key: "precursor_charge_in:0"
+        value: "precursor_charge_in_preprocessed:0"
+      }
+      input_map{
+        key: "peaks_in:0",
+        value: "out/Reshape:0"
+      }
+      output_map {
+        key: "out/Reshape:1"
+        value: "out/Reshape:1"
+      }
     }
   ]
 }
-
