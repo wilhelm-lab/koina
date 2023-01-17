@@ -1,0 +1,17 @@
+name: "Deeplc_Preprocess_unmod"
+max_batch_size: 1
+backend: "python"
+input[
+ {
+   name: 'peptides_in_str:0',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+output [
+ {
+   name: 'stripped_peptide',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]

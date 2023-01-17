@@ -58,7 +58,7 @@ class TritonPythonModel:
 
       fill = one_hot_encoding(peptide_in_list)
       sequences = np.zeros([60,20])
-      sequences[:fill.shape[0],] = fill
+      sequences[:,:fill.shape[0],] = fill
       t = pb_utils.Tensor("peptides_in:0",sequences.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
       print("sequences: ")
