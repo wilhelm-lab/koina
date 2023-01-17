@@ -3,30 +3,37 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == '__main__':
-    server_url = '213.239.214.190:8500'
-    model_name = "Prosit_2019_intensity_triton"
-    out_layer = 'out/Reshape:1'
-    batch_size = 100
+    server_url = '213.239.214.190:8502'
+    model_name = "Deeplc_rt"
+    out_layer = 'dense323'
+    batch_size = 1
     inputs = []
     outputs = []
 
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
-    inputs.append(grpcclient.InferInput('peptides_in_str:0', [batch_size,1], "BYTES"))
-    inputs.append(grpcclient.InferInput('collision_energy_in:0',[batch_size,1],"FP32"))
-    inputs.append(grpcclient.InferInput('precursor_charge_in_int:0',[batch_size,1],"INT32"))
+    inputs.append(grpcclient.InferInput('input_141', [batch_size,60,6], "FP32"))
+    inputs.append(grpcclient.InferInput('input_142', [batch_size,30,6], "FP32"))
+    inputs.append(grpcclient.InferInput('input_143', [batch_size,55], "FP32"))
+    inputs.append(grpcclient.InferInput('input_144', [batch_size,60,20], "FP32"))
 
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.
-    peptide_seq_in = np.array([ ["AAAAAKAK"] for i in range (0,batch_size) ], dtype=np.object_)
-    ce_in = np.array([ [0.25] for i in range(0,batch_size) ], dtype=np.float32)
-    precursor_charge_in = np.array([ [1] for i in range (0,batch_size) ], dtype=np.int32)
+    input_141 = np.ones([1,60,6])
+    input_142 = np.ones([1,30,6])
+    input_143 = np.ones([1,55])
+    input_144 = np.ones([1,60,20])
 
+
+
+    
     # Initialize the data
     print("len: "  + str(len(inputs)))
-    inputs[0].set_data_from_numpy(peptide_seq_in)
-    inputs[1].set_data_from_numpy(ce_in)
-    inputs[2].set_data_from_numpy(precursor_charge_in)
+    inputs[0].set_data_from_numpy(input_141)
+    inputs[1].set_data_from_numpy(input_142)
+    inputs[2].set_data_from_numpy(input_143)
+    inputs[3].set_data_from_numpy(input_144)
+
     
     outputs.append(grpcclient.InferRequestedOutput(out_layer))
 
