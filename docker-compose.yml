@@ -5,9 +5,9 @@ services:
         tritonserver
         --model-store=/models
         --allow-grpc=true
-        --grpc-port=8500
+        --grpc-port=8502
         --allow-http=true
-        --http-port=8501
+        --http-port=8503
         --log-info=true
         --log-warning=true
         --log-error=true
