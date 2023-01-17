@@ -52,7 +52,7 @@ def atom_count_str_list(atom_count, atom_count_list):
     return atom_count_list
 
 def get_ac(seq):
-    seq  = unimod.lookup_sequence_m(ProformaParser.parse_sequence(example2),
+    seq  = unimod.lookup_sequence_m(ProformaParser.parse_sequence(seq),
     keys_to_lookup=["delta_composition"])[1:-1]
     aa_ac_placeholder = np.zeros([60,6])
     aa_ac_list = []

@@ -14246,9 +14246,9 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:737
 name: TMT6plex
-def: "Sixplex Tandem Mass Tag®." [URL:https\://www.piercenet.com/instructions/2162073.pdf, URL:http\://www.piercenet.com/instructions/2162457.pdf, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=737]
-comment: M/z values of the TMT® fragment ions to be quantified for 6plex and 10plex: 126.12773 127.12476 128.13443 129.13147 130.14114 131.13818. Additional m/z values for 10plex: 127.13108 128.12811 129.13779 130.13482.
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc. Also applies to TMT10plex Tandem Mass Tag sixplex labelling kit Proteome Sciences This is a nominal. representative mass" RELATED []
+def: "Sixplex Tandem Mass Tag." [URL:https\://www.piercenet.com/instructions/2162073.pdf, URL:http\://www.piercenet.com/instructions/2162457.pdf, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=737]
+comment: M/z values of the TMT fragment ions to be quantified for 6plex and 10plex: 126.12773 127.12476 128.13443 129.13147 130.14114 131.13818. Additional m/z values for 10plex: 127.13108 128.12811 129.13779 130.13482.
+synonym: "Tandem Mass Tag and TMT are registered Trademarks of Proteome Sciences plc. Also applies to TMT10plex Tandem Mass Tag sixplex labelling kit Proteome Sciences This is a nominal. representative mass" RELATED []
 xref: record_id "737"
 xref: delta_mono_mass "229.162932"
 xref: delta_avge_mass "229.2634"
@@ -14294,9 +14294,9 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:738
 name: TMT2plex
-def: "Duplex Tandem Mass Tag®." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=738]
-comment: Duplex-TMT® reagents 2TMT-126, 2TMT-127. m/z values of the TMT® fragment ions to be quantified: 126.12773 127.13108.
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc. Tandem Mass Tag Duplex labelling kit Proteome Sciences" RELATED []
+def: "Duplex Tandem Mass Tag." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=738]
+comment: Duplex-TMT reagents 2TMT-126, 2TMT-127. m/z values of the TMT fragment ions to be quantified: 126.12773 127.13108.
+synonym: "Tandem Mass Tag and TMT are registered Trademarks of Proteome Sciences plc. Tandem Mass Tag Duplex labelling kit Proteome Sciences" RELATED []
 xref: record_id "738"
 xref: delta_mono_mass "225.155833"
 xref: delta_avge_mass "225.2921"
@@ -14342,9 +14342,9 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:739
 name: TMT
-def: "Native Tandem Mass Tag®." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=739]
+def: "Native Tandem Mass Tag." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=739]
 comment: This modification describes the \"native\" TMT Reagent without isotopic label.
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." RELATED []
+synonym: "Tandem Mass Tag and TMT are registered Trademarks of Proteome Sciences plc." RELATED []
 xref: record_id "739"
 xref: delta_mono_mass "224.152478"
 xref: delta_avge_mass "224.2994"
@@ -17391,9 +17391,9 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:984
 name: cysTMT
-def: "Native cysteine-reactive Tandem Mass Tag®." [URL:http\://bit.ly/1GBnaC8, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=984]
+def: "Native cysteine-reactive Tandem Mass Tag." [URL:http\://bit.ly/1GBnaC8, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=984]
 comment: This modification describes the native cysteine-reactive cysTMT Reagent without isotopic label. Upon CID, this reagent releases a reporter ion of 126.127725 (monoisotopic mass).
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." RELATED []
+synonym: "Tandem Mass Tag and TMT are registered Trademarks of Proteome Sciences plc." RELATED []
 xref: record_id "984"
 xref: delta_mono_mass "299.166748"
 xref: delta_avge_mass "299.4322"
@@ -17414,9 +17414,9 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:985
 name: cysTMT6plex
-def: "Cysteine-reactive Sixplex Tandem Mass Tag®." [URL:http\://bit.ly/1GBnaC8, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=985]
+def: "Cysteine-reactive Sixplex Tandem Mass Tag." [URL:http\://bit.ly/1GBnaC8, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=985]
 comment: This modification describes the isobaric sixplex cysteine-reactive cysTMT6 Reagents with isotopic labels. Upon CID, these reagents release reporter ions of 126.127725, 127.131079, 128.134433, 129.137787, 130.141141, and 131.138176 (monoisotopic mass).
-synonym: "Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." RELATED []
+synonym: "Tandem Mass Tag and TMT are registered Trademarks of Proteome Sciences plc." RELATED []
 xref: record_id "985"
 xref: delta_mono_mass "304.177202"
 xref: delta_avge_mass "304.3962"
@@ -24833,9 +24833,9 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:1341
 name: iodoTMT
-def: "Native iodoacetyl Tandem Mass Tag®." [URL:http\://www.lifetechnologies.com/order/catalog/product/90100, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1341]
+def: "Native iodoacetyl Tandem Mass Tag." [URL:http\://www.lifetechnologies.com/order/catalog/product/90100, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1341]
 comment: This modification describes the native iodoTMT Reagent without isotopic label. Upon CID, this reagent releases a reporter ion of 126.127725(monoisotopic mass).
-synonym: "iodoTMTzero iodoTMT0 Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." RELATED []
+synonym: "iodoTMTzero iodoTMT0 Tandem Mass Tag and TMT are registered Trademarks of Proteome Sciences plc." RELATED []
 xref: record_id "1341"
 xref: delta_mono_mass "324.216141"
 xref: delta_avge_mass "324.4185"
@@ -24876,9 +24876,9 @@ is_a: UNIMOD:0 ! unimod root node
 [Term]
 id: UNIMOD:1342
 name: iodoTMT6plex
-def: "Sixplex iodoacetyl Tandem Mass Tag®." [URL:http\://www.lifetechnologies.com/order/catalog/product/90102, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1342]
+def: "Sixplex iodoacetyl Tandem Mass Tag." [URL:http\://www.lifetechnologies.com/order/catalog/product/90102, UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=1342]
 comment: This modification describes the native iodoTMT Reagent without isotopic label. Upon CID, this reagent releases a reporter ions of 126.127725, 127.124760, 128.134433, 129.131468, 130.141141, and 131.138176 (monoisotopic mass).
-synonym: "iodoTMTsixplex iodoTMT6 Tandem Mass Tag® and TMT® are registered Trademarks of Proteome Sciences plc." RELATED []
+synonym: "iodoTMTsixplex iodoTMT6 Tandem Mass Tag and TMT are registered Trademarks of Proteome Sciences plc." RELATED []
 xref: record_id "1342"
 xref: delta_mono_mass "329.226595"
 xref: delta_avge_mass "329.3825"
