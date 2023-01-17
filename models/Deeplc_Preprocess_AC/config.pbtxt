@@ -1,4 +1,4 @@
-name: "Deeplc_Preprocess_onehot"
+name: "Deeplc_Preprocess_AC"
 max_batch_size: 1
 backend: "python"
 input[
