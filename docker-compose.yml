@@ -12,17 +12,8 @@ services:
         --log-warning=true
         --log-error=true
     ports:
-      - 8500:8500
-      - 8501:8501
+      - 8502:8502
+      - 8503:8503
     volumes:
       - ./models:/models
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-    environment:
-      CUDA_VISIBLE_DEVICES: 0
     shm_size: 1GB
