@@ -4,8 +4,8 @@ import tritonclient.grpc as grpcclient
 
 if __name__ == '__main__':
     server_url = 'localhost:8502'
-    model_name = "Deeplc_Preprocess_onehot"
-    out_layer = 'peptides_in:0'
+    model_name = "Deeplc_Preprocess_AC"
+    out_layer = 'single_ac'
     batch_size = 1
     inputs = []
     outputs = []
@@ -16,7 +16,7 @@ if __name__ == '__main__':
     
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.
-    peptide_seq_in = np.array([ ["AAAAAKAK"] for i in range (0,batch_size) ], dtype=np.object_)    
+    peptide_seq_in = np.array([ ["EM[UNIMOD:35]EVEES[UNIMOD:21]PEK"] for i in range (0,batch_size) ], dtype=np.object_)    
 
 
     
