@@ -15,6 +15,29 @@ def one_hot_encoding(unmod_sequences):
     numeric =[dict_aa[x] for unmod_seq in unmod_sequences for x in unmod_seq]
     array = [indices_to_one_hot(x, 20) for x in numeric]
     return np.array(array,dtype=float)
+    
+dict_aa={
+     "K": 0,
+     "R": 1,
+     "P": 2,
+     "T": 3,
+     "N": 4,
+     "A": 5,
+     "Q": 6,
+     "V": 7,
+     "S": 8,
+     "G": 9,
+     "I": 10,
+     "L": 11,
+     "C": 12,
+     "M": 13,
+     "H": 14,
+     "F": 15,
+     "Y": 16,
+     "W": 17,
+     "E": 18,
+     "D": 19
+}
 
 class TritonPythonModel:
    def initialize(self,args):
