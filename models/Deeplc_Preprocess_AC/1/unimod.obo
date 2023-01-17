@@ -45364,8 +45364,8 @@ is_a: UNIMOD:0 ! unimod root node
 
 [Term]
 id: UNIMOD:2067
-name: Mono_Nγ-propargyl-L-Gln_desthiobiotin
-def: "Monomodification of Nγ-propargyl-L-Gln probe with clicked desthiobiotin-azide." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=2067]
+name: Mono_N-propargyl-L-Gln_desthiobiotin
+def: "Monomodification of N-propargyl-L-Gln probe with clicked desthiobiotin-azide." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=2067]
 comment: - desthiobiotin-azide to enrich L-Gln-propargyl modified peptides.
 synonym: "Enrichment of modified peptides using desthiobiotin-tag on streptavidin beads" RELATED []
 xref: record_id "2067"
@@ -45416,8 +45416,8 @@ is_a: UNIMOD:0 ! unimod root node
 
 [Term]
 id: UNIMOD:2068
-name: Di_L-Glu_Nγ-propargyl-L-Gln_desthiobiotin
-def: "Dimodification of L-Glu and Nγ-propargyl-L-Gln probe with clicked desthiobiotin-azide." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=2068]
+name: Di_L-Glu_N-propargyl-L-Gln_desthiobiotin
+def: "Dimodification of L-Glu and N-propargyl-L-Gln probe with clicked desthiobiotin-azide." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=2068]
 comment: - desthiobiotin-azide to enrich L-Gln-propargyl modified peptides.
 xref: record_id "2068"
 xref: delta_mono_mass "709.375889"
@@ -45467,8 +45467,8 @@ is_a: UNIMOD:0 ! unimod root node
 
 [Term]
 id: UNIMOD:2069
-name: Di_L-Gln_Nγ-propargyl-L-Gln_desthiobiotin
-def: "Dimodification of L-Gln and Nγ-propargyl-L-Gln probe with clicked desthiobiotin-azide." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=2069]
+name: Di_L-Gln_N-propargyl-L-Gln_desthiobiotin
+def: "Dimodification of L-Gln and N-propargyl-L-Gln probe with clicked desthiobiotin-azide." [UNIMODURL:http\://www.unimod.org/modifications_view.php?editid1=2069]
 comment: - desthiobiotin-azide to enrich L-Gln-propargyl modified peptides.
 xref: record_id "2069"
 xref: delta_mono_mass "708.391873"
