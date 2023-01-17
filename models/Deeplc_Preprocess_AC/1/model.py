@@ -86,7 +86,7 @@ class TritonPythonModel:
       peptides_ = peptide_in.as_numpy().tolist()
       peptide_in_list = [x[0].decode('utf-8')  for x in peptides_ ]
 
-      fill = get_ac_all(peptide_in_list)
+      fill = get_ac_all(peptide_in_list).asarray()
       t = pb_utils.Tensor("single_ac",fill.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
       print("sequences: ")
