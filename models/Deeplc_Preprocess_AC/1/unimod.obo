@@ -17528,7 +17528,7 @@ xref: spec_1_hidden "1"
 xref: spec_1_site "N-term"
 xref: spec_1_position "Any N-term"
 xref: spec_1_classification "Artefact"
-xref: spec_1_misc_notes "this is a virtual modification, as it only accounts for the structure of the MS/MS fragment as it occurs in Top-Down MS/MS analyses. This must be accounted for in MS³-analysis of z+2 ions"
+xref: spec_1_misc_notes "this is a virtual modification, as it only accounts for the structure of the MS/MS fragment as it occurs in Top-Down MS/MS analyses. This must be accounted for in MS-analysis of z+2 ions"
 is_a: UNIMOD:0 ! unimod root node
 
 
