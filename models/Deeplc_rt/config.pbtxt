@@ -5,17 +5,17 @@ platform: "tensorflow_savedmodel"
 input [
 	{
 	  name: 'input_141',
-	  data_type: TYPE_INT32,
+	  data_type: TYPE_FP32,
 	  dims: [60,6],
 	},
 	{
 	  name: 'input_142',
-	  data_type: TYPE_INT32,
+	  data_type: TYPE_FP32,
 	  dims: [30,6],
 	},
 	{
 	  name: 'input_143',
-	  data_type: TYPE_INT32,
+	  data_type: TYPE_FP32,
 	  dims: [55],
 	},
 	{
