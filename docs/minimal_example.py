@@ -19,10 +19,10 @@ if __name__ == '__main__':
 
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.
-    input_141 = np.ones([1,60,6])
-    input_142 = np.ones([1,30,6])
-    input_143 = np.ones([1,55])
-    input_144 = np.ones([1,60,20])
+    input_141 = np.ones([1,60,6],dtype=np.float32)
+    input_142 = np.ones([1,30,6],dtype=np.float32)
+    input_143 = np.ones([1,55],dtype=np.float32)
+    input_144 = np.ones([1,60,20],dtype=np.float32)
 
 
 
