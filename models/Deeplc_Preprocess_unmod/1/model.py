@@ -3,7 +3,7 @@ import numpy as np
 import json
 import re
 
-def internal_without_mods(sequences: List[str]) -> List[str]:
+def internal_without_mods(sequences):
     """
     Function to remove any mod identifiers and return the plain AA sequence.
     :param sequences: List[str] of sequences
