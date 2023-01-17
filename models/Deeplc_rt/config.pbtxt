@@ -1,4 +1,4 @@
-name: "Prosit_2019_intensity"
+name: "Deeplc_rt"
 max_batch_size: 7000
 platform: "tensorflow_savedmodel"
 
