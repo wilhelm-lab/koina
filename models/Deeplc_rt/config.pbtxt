@@ -14,6 +14,11 @@ input [
 	  dims: [30,6],
 	},
 	{
+	  name: 'input_143',
+	  data_type: TYPE_INT32,
+	  dims: [55],
+	},
+	{
 	  name: 'input_144',
 	  data_type: TYPE_INT32,
 	  dims: [60,20],
