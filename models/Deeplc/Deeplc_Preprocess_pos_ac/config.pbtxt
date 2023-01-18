@@ -9,7 +9,7 @@ input[
  },
  {
    name: 'peptide_length',
-   data_type: TYPE_INT32,
+   data_type: TYPE_FP32,
    dims: [1]
  }
 ]
