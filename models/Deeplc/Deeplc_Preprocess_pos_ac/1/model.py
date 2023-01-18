@@ -16,7 +16,7 @@ class TritonPythonModel:
      peptide_in_str = []
      responses = []
      for request in requests:
-      peptide_in = pb_utils.get_input_tensor_by_name(request, "single_ac")
+      ac_in = pb_utils.get_input_tensor_by_name(request, "single_ac")
       single_ac = ac_in.as_numpy()
       pep_lengths = pb_utils.get_input_tensor_by_name(request, "peptide_length")
       pep_lengths = pep_lengths.as_numpy()
