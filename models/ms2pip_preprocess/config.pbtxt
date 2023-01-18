@@ -1,0 +1,17 @@
+name: "ms2pip_preprocess"
+max_batch_size: 1
+backend: "python"
+input[
+ {
+   name: 'proforma',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+output [
+ {
+   name: 'out',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]

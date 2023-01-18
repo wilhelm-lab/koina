@@ -1,0 +1,34 @@
+name: "ms2pip_ensemble"
+max_batch_size: 1
+platform: "ensemble"
+input [
+  {
+   name: 'proforma_ensemble',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  }
+]
+output [
+  {
+   name: 'spectrum',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  }
+]
+
+ensemble_scheduling {
+  step [
+     {
+      model_name: "ms2pip_preprocess"
+      model_version: 1
+      input_map {
+        key: "proforma" 
+        value: "proforma_ensemble"
+      },
+      output_map {
+        key: "out"
+        value: "spectrum"
+      }
+    }
+  ]
+}

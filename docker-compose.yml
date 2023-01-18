@@ -1,6 +1,6 @@
 services:
   serving:
-    image: nvcr.io/nvidia/tritonserver:22.03-py3
+    image: dlomix-ms2pip:eubic
     command: #nvidia-smi
         tritonserver
         --model-store=/models
@@ -16,13 +16,4 @@ services:
       - 8501:8501
     volumes:
       - ./models:/models
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: 1
-              capabilities: [gpu]
-    environment:
-      CUDA_VISIBLE_DEVICES: 0
     shm_size: 1GB
