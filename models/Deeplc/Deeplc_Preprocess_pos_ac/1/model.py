@@ -1,16 +1,7 @@
 import triton_python_backend_utils as pb_utils
 import numpy as np
 import json
-import re
 
-def internal_without_mods(sequences):
-    """
-    Function to remove any mod identifiers and return the plain AA sequence.
-    :param sequences: List[str] of sequences
-    :return: List[str] of modified sequences
-    """
-    regex = r"\[.*?\]|\-"
-    return [re.sub(regex, "", seq) for seq in sequences]
 
 class TritonPythonModel:
    def initialize(self,args):
@@ -25,16 +16,20 @@ class TritonPythonModel:
      peptide_in_str = []
      responses = []
      for request in requests:
-      peptide_in = pb_utils.get_input_tensor_by_name(request, "peptides_in_str:0")
-      peptides_ = peptide_in.as_numpy().tolist()
-      peptide_in_list = [x[0].decode('utf-8')  for x in peptides_ ]
-
-      sequences = np.asarray(internal_without_mods(peptide_in_list))
-      t = pb_utils.Tensor("pos_ac",sequences.astype(self.output_dtype) )
+      peptide_in = pb_utils.get_input_tensor_by_name(request, "single_ac")
+      single_ac = ac_in.as_numpy()
+      pep_lengths = pb_utils.get_input_tensor_by_name(request, "peptide_length")
+      pep_lengths = pep_lengths.as_numpy()
+      pos_ac = []
+      for peptide_ac,pep_length in zip(single_ac,pep_lengths):
+        first_four = np.sum(peptide_ac[:,:4],axis=0)
+        last_four = np.sum(peptide_ac[:,pep_length-4:pep_length],axis=0)
+        pos = np.hstack([first_four,last_four])
+        pos_ac.append(pos)
+      pos_ac = np.array(pos_ac)  
+      t = pb_utils.Tensor("pos_ac",pos_ac.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
-      print("sequences: ")
-      print(len(sequences))
-      print(sequences)
+
      return responses
    def finalize(self):
      print('done processing Preprocess')
