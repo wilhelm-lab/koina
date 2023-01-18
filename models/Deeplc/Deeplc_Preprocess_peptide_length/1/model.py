@@ -21,6 +21,7 @@ class TritonPythonModel:
       peptide_in_list = [x[0].decode('utf-8')  for x in peptides_ ]
 
       peptide_lengths = [[len(pep)] for pep in peptide_in_list]
+      print(peptide_lengths)
       t = pb_utils.Tensor("peptide_length",sequences.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
       print("sequences: ")
