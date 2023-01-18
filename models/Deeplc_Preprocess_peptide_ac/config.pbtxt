@@ -1,0 +1,17 @@
+name: "Deeplc_Preprocess_peptide_ac"
+max_batch_size: 1
+backend: "python"
+input[
+ {
+   name: 'single_ac',
+   data_type: TYPE_FP32,
+   dims: [60,6]
+ }
+]
+output [
+ {
+   name: 'peptide_ac',
+   data_type: TYPE_FP32,
+   dims: [6]
+ }
+]
