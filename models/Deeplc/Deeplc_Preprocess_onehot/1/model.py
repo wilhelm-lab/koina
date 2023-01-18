@@ -11,10 +11,13 @@ def indices_to_one_hot(data, nb_classes):
     targets = np.array([data])  # -1 for 0 indexing
     return np.int_((np.eye(nb_classes)[targets])).tolist()[0]
     
-def one_hot_encoding(unmod_sequences):
-    numeric =[dict_aa[x] for unmod_seq in unmod_sequences for x in unmod_seq]
-    array = [indices_to_one_hot(x, 20) for x in numeric]
-    return np.array(array,dtype=float)
+def one_hot_encoding(unmod_sequence):
+    numeric =[dict_aa[x] for unmod_seq in unmod_sequence for x in unmod_seq]
+    one_hot_seq = np.array([indices_to_one_hot(x, 20) for x in numeric],dtype=float)
+    sequences = np.zeros([60,20])
+    print(one_hot_seq)
+    sequences[:one_hot_seq.shape[0],:] = one_hot_seq
+    return np.array(sequences,dtype=float)
     
 dict_aa={
      "K": 0,
@@ -55,10 +58,11 @@ class TritonPythonModel:
       peptide_in = pb_utils.get_input_tensor_by_name(request, "peptides_in_str:0")
       peptides_ = peptide_in.as_numpy().tolist()
       peptide_in_list = [x[0].decode('utf-8')  for x in peptides_ ]
-
-      fill = one_hot_encoding(peptide_in_list)
-      sequences = np.zeros([60,20])
-      sequences[:,:fill.shape[0],] = fill
+      sequences = []
+      for seq in peptide_in_list:
+        fill = one_hot_encoding(peptide_in_list)
+        sequences.append(fill)
+      
       t = pb_utils.Tensor("peptides_in:0",sequences.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
       print("sequences: ")
