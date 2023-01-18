@@ -125,8 +125,8 @@ ensemble_scheduling {
       model_name: "Deeplc_Preprocess_general_features"
       model_version: 1
       input_map {
-        key: "single_ac"
-        value: "single_ac"
+        key: "peptide_length"
+        value: "peptide_length"
       },
 	  input_map {
         key: "pos_ac"
