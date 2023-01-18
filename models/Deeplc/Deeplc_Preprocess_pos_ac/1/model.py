@@ -23,10 +23,10 @@ class TritonPythonModel:
       pos_ac = []
       for peptide_ac,pep_length in zip(single_ac,pep_lengths):
         pep_length = int(pep_length)
-        first_four = np.sum(peptide_ac[:,:4],axis=0)
-        last_four = np.sum(peptide_ac[:,pep_length-4:pep_length],axis=0)
+        first_four =peptide_ac[:4]
+        last_four = peptide_ac[pep_length-4:pep_length]
         pos = np.hstack([first_four,last_four])
-        pos_ac.append(pos)
+        pos_ac.append(pos.flatten())
       pos_ac = np.array(pos_ac)  
       t = pb_utils.Tensor("pos_ac",pos_ac.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
