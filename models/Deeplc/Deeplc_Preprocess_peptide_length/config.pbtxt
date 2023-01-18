@@ -1,5 +1,5 @@
 name: "Deeplc_Preprocess_peptide_length"
-max_batch_size: 3
+max_batch_size: 1
 backend: "python"
 input[
  {
