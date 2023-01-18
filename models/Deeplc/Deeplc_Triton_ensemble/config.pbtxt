@@ -10,26 +10,6 @@ input [
 ]
 output [
   {
-   name: 'single_ac',
-   data_type: TYPE_FP32,
-   dims: [60,6]
-  },
-  {
-   name: 'peptides_in:0',
-   data_type: TYPE_FP32,
-   dims: [60,20]
-  },
-  {
-   name: 'diamino_ac',
-   data_type: TYPE_FP32,
-   dims: [30,6]
-  },
-  {
-   name: 'general_features',
-   data_type: TYPE_FP32,
-   dims: [55]
-  },
-  {
    name: 'dense_323',
    data_type: TYPE_FP32,
    dims: [1]
