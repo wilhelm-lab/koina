@@ -22,6 +22,7 @@ class TritonPythonModel:
       pep_lengths = pep_lengths.as_numpy()
       pos_ac = []
       for peptide_ac,pep_length in zip(single_ac,pep_lengths):
+        pep_length = int(pep_length)
         first_four = np.sum(peptide_ac[:,:4],axis=0)
         last_four = np.sum(peptide_ac[:,pep_length-4:pep_length],axis=0)
         pos = np.hstack([first_four,last_four])
