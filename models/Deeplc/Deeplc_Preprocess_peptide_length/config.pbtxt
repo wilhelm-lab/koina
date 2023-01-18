@@ -5,7 +5,7 @@ input[
  {
    name: 'stripped_peptide',
    data_type: TYPE_STRING,
-   dims: [-1]
+   dims: [1]
  }
 ]
 output [
