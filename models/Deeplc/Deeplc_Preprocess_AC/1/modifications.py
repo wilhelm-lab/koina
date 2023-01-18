@@ -11,7 +11,8 @@ class Unimod:
         self.no_modification_string = no_modification_string
         self.reverse_lookup_key = reverse_lookup_key
         
-        self._download_file()
+        self.local_obo_filepath = '/models/Deeplc/Deeplc_Preprocess_AC/1/unimod.obo'
+        #self._download_file()
         self._parse_file_build_dicts()
         
     def _download_file(self):
