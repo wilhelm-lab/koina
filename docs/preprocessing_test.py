@@ -4,7 +4,7 @@ import tritonclient.grpc as grpcclient
 
 if __name__ == '__main__':
     server_url = 'localhost:8502'
-    model_name = "Deeplc_Preprocess_peptide_length"
+    model_name = "Deeplc_Triton_ensemble"
     out_layers = ['single_ac','peptides_in:0','diamino_ac','general_features']
     batch_size = 1
     inputs = []
