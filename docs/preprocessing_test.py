@@ -16,7 +16,7 @@ if __name__ == '__main__':
 
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.
-    peptide_seq_in = np.array([ ["KK[UNIMOD:37]KKKKK"] for i in range (0,batch_size) ], dtype=np.object_)
+    peptide_seq_in = np.array([ [b"KK[UNIMOD:37]KKKKK"] for i in range (0,batch_size) ], dtype=np.object_)
 
 
 
