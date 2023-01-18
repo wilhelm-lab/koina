@@ -22,6 +22,7 @@ class TritonPythonModel:
       single_ac = ac_in.as_numpy()
 
       fill = np.sum(single_ac, axis=1)
+      fill = np.asarray(fill)
       t = pb_utils.Tensor("peptide_ac",fill.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
       print("sequences: ")
