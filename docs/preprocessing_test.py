@@ -13,10 +13,11 @@ if __name__ == '__main__':
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
     inputs.append(grpcclient.InferInput('peptides_in_str:0', [batch_size,1], "BYTES"))
-    
+
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.
-    peptide_seq_in = np.array([["KK[UNIMOD:37]KKKKK"] for i in range (0,batch_size) ], dtype=np.object_)  
+    peptide_seq_in = np.array([ ["KK[UNIMOD:37]KKKKK"] for i in range (0,batch_size) ], dtype=np.object_)
+
 
 
     
