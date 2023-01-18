@@ -22,11 +22,11 @@ class TritonPythonModel:
 
       peptide_lengths = [[len(pep)] for pep in peptide_in_list]
       print(peptide_lengths)
-      t = pb_utils.Tensor("peptide_length",sequences.astype(self.output_dtype) )
+      t = pb_utils.Tensor("peptide_length",peptide_lengths.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
       print("sequences: ")
-      print(len(sequences))
-      print(sequences)
+      print(len(peptide_lengths))
+      print(peptide_lengths)
      return responses
    def finalize(self):
      print('done processing Preprocess')
