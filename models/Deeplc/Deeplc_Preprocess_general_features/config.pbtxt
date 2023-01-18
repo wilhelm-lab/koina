@@ -1,0 +1,27 @@
+name: "Deeplc_Preprocess_general_features"
+max_batch_size: 1
+backend: "python"
+input[
+ {
+   name: 'peptide_length',
+   data_type: TYPE_FP32,
+   dims: [1]
+ },
+ {
+   name: 'pos_ac',
+   data_type: TYPE_FP32,
+   dims: [48]
+ },
+ {
+   name: 'sum_ac',
+   data_type: TYPE_FP32,
+   dims: [6]
+ }
+]
+output [
+ {
+   name: 'general_features',
+   data_type: TYPE_FP32,
+   dims: [55]
+ }
+]
