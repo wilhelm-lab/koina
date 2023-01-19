@@ -1,0 +1,17 @@
+name: "AlphaPept_Preprocess_peptide"
+max_batch_size: 7000
+backend: "python"
+input[
+ {
+   name: 'peptides_in_str:0',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+output [
+ {
+   name: 'peptides_in:0',
+   data_type: TYPE_INT32,
+   dims: [-1]
+ }
+]

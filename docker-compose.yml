@@ -1,19 +1,18 @@
 services:
-  serving:
-    image: dlomix-ms2pip:eubic
-    command: #nvidia-smi
-        tritonserver
-        --model-store=/models
-        --allow-grpc=true
-        --grpc-port=8500
-        --allow-http=true
-        --http-port=8501
-        --log-info=true
-        --log-warning=true
-        --log-error=true
+  serving1:
+    build:
+      context: .
+    command: bash /models/start_triton_server.sh
     ports:
-      - 8500:8500
-      - 8501:8501
+      - 8502:8500
+      - 8503:8501
     volumes:
       - ./models:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     shm_size: 1GB
