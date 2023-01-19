@@ -19,7 +19,7 @@ class TritonPythonModel:
       peptide_pos_ac = pb_utils.get_input_tensor_by_name(request, "pos_ac").as_numpy()
       peptide_ac = pb_utils.get_input_tensor_by_name(request, "sum_ac").as_numpy()
 
-      general_features = np.hstack([peptide_length,peptide_ac,peptide_pos_ac])
+      general_features = np.hstack([peptide_ac,peptide_length,peptide_pos_ac])
 
       t = pb_utils.Tensor("general_features",general_features.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
