@@ -30,6 +30,7 @@ class TritonPythonModel:
       peptide_in_list = [x[0].decode('utf-8')  for x in peptides_ ]
 
       sequences = np.asarray([internal_without_mods(peptide_in_list)])
+      sequences = sequences.reshape([-1,1])
       t = pb_utils.Tensor("stripped_peptide",sequences.astype(np.object_))
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
       print("sequences: ")
