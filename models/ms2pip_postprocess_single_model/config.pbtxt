@@ -1,5 +1,5 @@
 name: "ms2pip_postprocess_single_model"
-max_batch_size: 10
+max_batch_size: 500
 backend: "python"
 input[
  {
