@@ -4,22 +4,22 @@ platform: "tensorflow_savedmodel"
 
 input [
 	{
-	  name: 'input_137',
+	  name: 'input_141',
 	  data_type: TYPE_FP32,
 	  dims: [60,6],
 	},
 	{
-	  name: 'input_138',
+	  name: 'input_142',
 	  data_type: TYPE_FP32,
 	  dims: [30,6],
 	},
 	{
-	  name: 'input_140',
+	  name: 'input_143',
 	  data_type: TYPE_FP32,
 	  dims: [55],
 	},
 	{
-	  name: 'input_139',
+	  name: 'input_144',
 	  data_type: TYPE_FP32,
 	  dims: [60,20],
 	}
