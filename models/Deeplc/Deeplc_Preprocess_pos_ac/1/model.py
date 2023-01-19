@@ -25,8 +25,9 @@ class TritonPythonModel:
         pep_length = int(pep_length)
         first_four =peptide_ac[:4]
         last_four = peptide_ac[pep_length-4:pep_length]
-        pos = np.hstack([first_four,last_four])
-        pos_ac.append(pos.flatten())
+        first_four = np.asarray(first_four).flatten()
+        last_four = np.asarray(last_four).flatten()
+        pos_ac.append(np.concatenate([first_four,last_four]))
       pos_ac = np.array(pos_ac)  
       t = pb_utils.Tensor("pos_ac",pos_ac.astype(self.output_dtype) )
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
