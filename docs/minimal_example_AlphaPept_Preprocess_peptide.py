@@ -3,7 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == '__main__':
-    server_url = '213.239.214.190:8504'
+    server_url = 'eubic2023.external.msaid.io:8504'
     model_name = "AlphaPept_Preprocess_peptide"
     out_layer = 'peptides_in:0'
     batch_size = 100

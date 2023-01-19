@@ -3,7 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == '__main__':
-	server_url = '213.239.214.190:8502'
+	server_url = 'eubic2023.external.msaid.io:8502'
     model_name = "Prosit_2019_intensity_triton"
     out_layer = 'out/Reshape:1'
     batch_size = 100
