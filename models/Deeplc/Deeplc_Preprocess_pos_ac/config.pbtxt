@@ -1,0 +1,28 @@
+name: "Deeplc_Preprocess_pos_ac"
+max_batch_size: 10
+backend: "python"
+input[
+ {
+   name: 'single_ac',
+   data_type: TYPE_FP32,
+   dims: [60,6]
+ },
+ {
+   name: 'peptide_length',
+   data_type: TYPE_FP32,
+   dims: [1]
+ }
+]
+output [
+ {
+   name: 'pos_ac',
+   data_type: TYPE_FP32,
+   dims: [48]
+ }
+]
+instance_group [
+    {
+      count: 1
+      kind: KIND_CPU
+    }
+]

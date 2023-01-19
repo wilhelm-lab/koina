@@ -1,0 +1,23 @@
+name: "Deeplc_Preprocess_peptide_length"
+max_batch_size: 10
+backend: "python"
+input[
+ {
+   name: 'stripped_peptide',
+   data_type: TYPE_STRING,
+   dims: [1]
+ }
+]
+output [
+ {
+   name: 'peptide_length',
+   data_type: TYPE_FP32,
+   dims: [1]
+ }
+]
+instance_group [
+    {
+      count: 1
+      kind: KIND_CPU
+    }
+]
