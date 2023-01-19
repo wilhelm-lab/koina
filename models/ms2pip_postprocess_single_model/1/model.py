@@ -1,16 +1,11 @@
 import triton_python_backend_utils as pb_utils
 import numpy as np
-from psm_utils import Peptidoform, PSM, PSMList
 import json
-from tobi import MinimalMS2PIP
 
 
 class TritonPythonModel:
     def initialize(self,args):
-        print("Preprocessing of the Peptide_input")
-        peptidoform = Peptidoform("ACDEK/2")
-        print(peptidoform.theoretical_mass)
-        print("Preprocessing of the Peptide_input")
+        """"
         self.model_config = model_config = json.loads(args['model_config'])
         print(self.model_config)
         print("--------------")
@@ -20,6 +15,7 @@ class TritonPythonModel:
         print("preprocess_peptide type: " + str(output0_config))
         self.output_dtype = pb_utils.triton_string_to_numpy(
                                     output0_config['data_type'])
+        """
 
     def execute(self, requests):
         responses = []

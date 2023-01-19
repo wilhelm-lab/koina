@@ -1,18 +1,18 @@
-name: "ms2pip_preprocess"
+name: "ms2pip_postprocess_single_model"
 max_batch_size: 10
 backend: "python"
 input[
  {
-   name: 'proforma',
-   data_type: TYPE_STRING,
-   dims: [-1]
+   name: 'xgboost_output__0',
+   data_type: TYPE_FP32,
+   dims: [1]
  }
 ]
 output [
  {
-   name: 'xgboost_input',
+   name: 'ion_series_prediction',
    data_type: TYPE_FP32,
-   dims: [139]
+   dims: [29]
  }
 ]
 instance_group [

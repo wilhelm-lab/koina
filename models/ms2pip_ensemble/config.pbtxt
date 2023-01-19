@@ -1,5 +1,5 @@
 name: "ms2pip_ensemble"
-max_batch_size: 1
+max_batch_size: 10
 platform: "ensemble"
 input [
   {
@@ -10,9 +10,9 @@ input [
 ]
 output [
   {
-   name: 'spectrum',
-   data_type: TYPE_STRING,
-   dims: [-1]
+   name: 'ms2pip_postprocess_single_model_output',
+   data_type: TYPE_FP32,
+   dims: [ 29]
   }
 ]
 
@@ -26,8 +26,32 @@ ensemble_scheduling {
         value: "proforma_ensemble"
       },
       output_map {
-        key: "out"
-        value: "spectrum"
+        key: "xgboost_input"
+        value: "xgboost_input"
+      }
+    },
+     {
+      model_name: "model_20210416_HCD2021_B"
+      model_version: 1
+      input_map {
+        key: "input__0" 
+        value: "xgboost_input"
+      },
+      output_map {
+        key: "output__0"
+        value: "model_20210416_HCD2021_B_output"
+      }
+    },
+     {
+      model_name: "ms2pip_postprocess_single_model"
+      model_version: 1
+      input_map {
+        key: "xgboost_output__0" 
+        value: "model_20210416_HCD2021_B_output"
+      },
+      output_map {
+        key: "ion_series_prediction"
+        value: "ms2pip_postprocess_single_model_output"
       }
     }
   ]
