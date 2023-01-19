@@ -59,6 +59,9 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
 
 def character_to_array(character, filter=False):
     array = np.zeros((1,SEQ_LEN), dtype=np.uint8)
+    logger = pb_utils.Logger
+
+    logger.log_info(str(character))
     generator_sequence_numeric = parse_modstrings([character], alphabet=ALPHABET, translate=True, filter=filter)
     enum_gen_seq_num = enumerate(generator_sequence_numeric)
     print(enum_gen_seq_num)
