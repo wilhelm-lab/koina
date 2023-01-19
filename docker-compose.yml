@@ -1,9 +1,10 @@
 services:
-  serving:
-    image: nvcr.io/nvidia/tritonserver:22.03-py3
+  ludwig:
+    build:
+        context: .
     command: #nvidia-smi
         tritonserver
-        --model-store=/models
+        --model-store=/models/AlphaPept
         --allow-grpc=true
         --grpc-port=8500
         --allow-http=true
@@ -12,8 +13,8 @@ services:
         --log-warning=true
         --log-error=true
     ports:
-      - 8500:8500
-      - 8501:8501
+      - 8504:8500
+      - 8505:8501
     volumes:
       - ./models:/models
     deploy:
