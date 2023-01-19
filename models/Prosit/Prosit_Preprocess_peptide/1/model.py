@@ -3,6 +3,15 @@ import numpy as np
 from sequence_conversion import character_to_array, ALPHABET_MOD
 import json
 
+def internal_without_mods(sequences):
+    """
+    Function to remove any mod identifiers and return the plain AA sequence.
+    :param sequences: List[str] of sequences
+    :return: List[str] of modified sequences
+    """
+    regex = r"\[.*?\]|\-"
+    return [re.sub(regex, "", seq) for seq in sequences]
+
 class TritonPythonModel:
    def initialize(self,args):
       print("Preprocessing of the Peptide_input")
@@ -19,8 +28,9 @@ class TritonPythonModel:
       peptide_in = pb_utils.get_input_tensor_by_name(request, "peptides_in_str:0")
       peptides_ = peptide_in.as_numpy().tolist()
       peptide_in_list = [x[0].decode('utf-8')  for x in peptides_ ]
-      sequences = character_to_array(peptide_in_list)
+      sequences = [for seq in peptide_in_list character_to_array(seq)]
       t = pb_utils.Tensor("peptides_in:0",sequences.astype(self.output_dtype) )
+      
       responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
       print("sequences: ")
       print(len(sequences))
