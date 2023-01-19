@@ -25,8 +25,8 @@ ALPHABET_UNMOD = {
 }
 MAX_CHARGE = 6
 ALPHABET_MOD = {
-    "M(U:35)": 21,
-    "C(U:4)": 2
+    "M[UNIMOD:35]": 21,
+    "C[UNIMOD:4]": 2
 }
 
 # ALPHABET contains all amino acid and ptm abbreviations and
