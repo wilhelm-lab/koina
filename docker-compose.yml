@@ -8,4 +8,11 @@ services:
       - 8503:8501
     volumes:
       - ./models:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     shm_size: 1GB
