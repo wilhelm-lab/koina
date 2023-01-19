@@ -1,0 +1,9 @@
+tritonserver  \
+	--model-repository=/models/Deeplc \
+        --allow-grpc=true \
+        --grpc-port=8500 \
+        --allow-http=true \
+        --http-port=8501 \
+        --log-info=true \
+        --log-warning=true \
+        --log-error=true \
