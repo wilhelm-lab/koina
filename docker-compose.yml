@@ -1,19 +1,11 @@
 services:
-  serving:
-    image: nvcr.io/nvidia/tritonserver:22.03-py3
-    command: #nvidia-smi
-        tritonserver
-        --model-store=/models
-        --allow-grpc=true
-        --grpc-port=8502
-        --allow-http=true
-        --http-port=8503
-        --log-info=true
-        --log-warning=true
-        --log-error=true
+  serving1:
+    image: nvcr.io/nvidia/tritonserver:22.09-py3
+    container_name: triton_deeplc
+    command: bash /models/start_triton_server.sh
     ports:
-      - 8502:8502
-      - 8503:8503
+      - 8502:8500
+      - 8503:8501
     volumes:
       - ./models:/models
     shm_size: 1GB

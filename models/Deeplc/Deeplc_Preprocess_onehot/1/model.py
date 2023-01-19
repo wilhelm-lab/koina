@@ -54,6 +54,7 @@ class TritonPythonModel:
    def execute(self, requests):
      peptide_in_str = []
      responses = []
+     logger = pb_utils.Logger
      for request in requests:
       peptide_in = pb_utils.get_input_tensor_by_name(request, "peptides_in_str:0")
       peptides_ = peptide_in.as_numpy().tolist()

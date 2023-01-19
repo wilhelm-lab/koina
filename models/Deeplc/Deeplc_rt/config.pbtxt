@@ -1,5 +1,5 @@
 name: "Deeplc_rt"
-max_batch_size: 7000
+max_batch_size: 10
 platform: "tensorflow_savedmodel"
 
 input [
