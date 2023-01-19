@@ -3,7 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == '__main__':
-    server_url = 'localhost:8502'
+    server_url = 'localhost:8500'
     model_name = "Deeplc_Triton_ensemble"
     out_layers = ['single_ac','peptides_in:0','diamino_ac','general_features']
     out_layers = ['dense_323']

@@ -3,7 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == '__main__':
-    server_url = 'localhost:8502'
+    server_url = 'localhost:8500'
     model_name = "Deeplc_Preprocess_unmod"
     out_layers = ['stripped_peptide']
     batch_size = 1
