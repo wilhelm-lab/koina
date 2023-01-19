@@ -60,7 +60,7 @@ class TritonPythonModel:
       peptide_in_list = [x[0].decode('utf-8')  for x in peptides_ ]
       sequences = []
       for seq in peptide_in_list:
-        fill = one_hot_encoding(peptide_in_list)
+        fill = one_hot_encoding(seq)
         sequences.append(fill)
       
       sequences = np.asarray(sequences)
