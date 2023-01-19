@@ -1,5 +1,5 @@
 name: "Deeplc_Preprocess_pos_ac"
-max_batch_size: 1
+max_batch_size: 10
 backend: "python"
 input[
  {
