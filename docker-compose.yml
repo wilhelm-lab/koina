@@ -1,7 +1,7 @@
 services:
   serving1:
-    image: nvcr.io/nvidia/tritonserver:22.09-py3
-    container_name: triton_deeplc
+    build:
+      context: .
     command: bash /models/start_triton_server.sh
     ports:
       - 8502:8500
