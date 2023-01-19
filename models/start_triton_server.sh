@@ -1,5 +1,7 @@
 tritonserver  \
 	--model-repository=/models/Deeplc \
+	--model-repository=/models/AlphaPept \
+	--model-repository=/models/Prosit \
         --allow-grpc=true \
         --grpc-port=8500 \
         --allow-http=true \
