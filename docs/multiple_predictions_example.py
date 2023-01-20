@@ -31,7 +31,6 @@ ce_in = np.array([ [0.25] for i in range(0,batch_size) ], dtype=np.float32)
 precursor_charge_in = np.array([ [1] for i in range (0,batch_size) ], dtype=np.int32)
 
 # Initialize the data
-print("len: "  + str(len(inputs)))
 inputs_ms[0].set_data_from_numpy(peptide_seq_in)
 inputs_ms[1].set_data_from_numpy(ce_in)
 inputs_ms[2].set_data_from_numpy(precursor_charge_in)
