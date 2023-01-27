@@ -25,8 +25,8 @@ ALPHABET_UNMOD = {
 }
 MAX_CHARGE = 6
 ALPHABET_MOD = {
-    "M(U:35)": 21,
-    "C(U:4)": 2
+    "M[UNIMOD:35]": 21,
+    "C[UNIMOD:4]": 2
 }
 
 # ALPHABET contains all amino acid and ptm abbreviations and
@@ -58,8 +58,11 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
     return map(split_modstring, sequences, repeat(regex_pattern))
 
 def character_to_array(character, filter=False):
-    array = np.zeros((len(character),SEQ_LEN), dtype=np.uint8)
-    generator_sequence_numeric = parse_modstrings(character, alphabet=ALPHABET, translate=True, filter=filter)
+    array = np.zeros((1,SEQ_LEN), dtype=np.uint8)
+    logger = pb_utils.Logger
+
+    logger.log_info(str(character))
+    generator_sequence_numeric = parse_modstrings([character], alphabet=ALPHABET, translate=True, filter=filter)
     enum_gen_seq_num = enumerate(generator_sequence_numeric)
     print(enum_gen_seq_num)
     for i, sequence_numeric in enum_gen_seq_num:

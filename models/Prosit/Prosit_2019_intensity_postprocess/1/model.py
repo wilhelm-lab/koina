@@ -3,6 +3,15 @@ import numpy as np
 import json
 from postprocess import create_masking, apply_masking
 
+def internal_without_mods(sequences):
+    """
+    Function to remove any mod identifiers and return the plain AA sequence.
+    :param sequences: List[str] of sequences
+    :return: List[str] of modified sequences
+    """
+    regex = r"\[.*?\]|\-"
+    return [re.sub(regex, "", seq) for seq in sequences]
+
 class TritonPythonModel:
    def initialize(self,args):
       print("Preprocessing of the Peptide_input")
@@ -22,7 +31,7 @@ class TritonPythonModel:
         peptide_lengths = []
         for batch in peptide_in:
           for peptide in batch:
-            peptide_lengths.append(len(peptide))
+            peptide_lengths.append(len(internal_without_mods(peptide)))
         mask = create_masking(precursor_charge_in,peptide_lengths)
         peaks = apply_masking(peaks_in,mask)
         peaks = np.array(peaks,dtype=float)
