@@ -10,3 +10,4 @@ tritonserver  \
         --log-info=true \
         --log-warning=true \
         --log-error=true \
+	--cuda-memory-pool-byte-size 0:1073741824 \
