@@ -1,11 +1,11 @@
 services:
-  serving1:
+  serving:
     build:
       context: .
     command: bash /models/start_triton_server.sh
     ports:
-      - 8502:8500
-      - 8503:8501
+      - 8500:8500
+      - 8501:8501
     volumes:
       - ./models:/models
     deploy:
