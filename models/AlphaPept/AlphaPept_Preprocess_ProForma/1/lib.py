@@ -23,7 +23,7 @@ MOD_ELEMENTS_TO_IDX = {elements: i for i, elements in enumerate(MOD_ELEMENTS)}
 def get_mod_features(proforma_str):
     split_seq = ProformaParser().parse_sequence(proforma_str)
     return [";".join([str(i) for i,x in enumerate(split_seq) if "UNIMOD" in x]), 
-    ";".join([str(x) for i,x in enumerate(split_seq) if "UNIMOD" in x]), len(split_seq)]
+    ";".join([str(x) for i,x in enumerate(split_seq) if "UNIMOD" in x]), len(split_seq)-2]
 
 def parse_mod_formula(formula):
     '''

@@ -23,15 +23,13 @@ class TritonPythonModel:
      for request in requests:
       peptide_in = pb_utils.get_input_tensor_by_name(request, "peptides_in_str:0")
       peptide_in_list = [x[0].decode('utf-8')  for x in peptide_in.as_numpy().tolist()]
+      sequences = character_to_array(strip_mod_profroma(peptide_in_list))
 
       raw_mod_features = [get_mod_features(s) for s in peptide_in_list]
       encoded_mod_features = encode_mod_features(
               mods = [x[1] for x in raw_mod_features], 
               mod_sites=[x[0] for x in raw_mod_features],
               nAA=[x[2] for x in raw_mod_features])
-
-      sequences = character_to_array(peptide_in_list)
-      encoded_mod_features = character_to_array(encoded_mod_features)
 
       seq_out = pb_utils.Tensor("encoded_seq:0",sequences.astype(self.seq_out_config))
       mod_out = pb_utils.Tensor("encoded_mod_feature:0",encoded_mod_features.astype(self.mod_out_config))
