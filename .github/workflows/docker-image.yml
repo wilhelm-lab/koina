@@ -14,6 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Download models 
       run: ./getModels.sh
+    
+    - name: Build the Docker image
       run: docker build --target prod . --tag dlomix-serving:$(date +%s) --tag dlomix-serving:latest
