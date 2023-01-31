@@ -1,0 +1,22 @@
+name: "AlphaPept_Preprocess_ProForma"
+max_batch_size: 7000
+backend: "python"
+input[
+ {
+   name: 'peptides_in_str:0',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+output [
+ {
+   name: 'encoded_seq:0',
+   data_type: TYPE_INT64,
+   dims: [-1]
+ },
+ {
+   name: 'encoded_mod_feature:0',
+   data_type: TYPE_FP32,
+   dims: [-1, 109]
+ }
+]
