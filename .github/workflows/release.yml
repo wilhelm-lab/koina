@@ -29,15 +29,6 @@ jobs:
           release_strategy: tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-     
-      - name: Upload release notes
-        if: steps.tag_and_prepare_release.outputs.tag
-        uses: Roang-zero1/github-create-release-action@v3
-        with:
-          created_tag: ${{ steps.tag_and_prepare_release.outputs.tag }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
-            
       
       - name: Download models 
         run: ./getModels.sh
@@ -61,11 +52,5 @@ jobs:
           context: .
           target: "prod"
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-
-      #- name: Build the Docker image
-      #  run: docker build --target prod . --tag dlomix-serving:$(date +%s) --tag dlomix-serving:latest
-
+          tags: ${{ steps.tag_and_prepare_release.outputs.tag }}
 
