@@ -1,19 +1,18 @@
 name: Create and publish a Docker image
 
 on:
-  push:
-    branches: [ "ci-pipeline" ]
-
+  pull_request:
+    types: closed
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
-
 jobs:
 
   release:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged
     permissions:
       contents: read
       packages: write
