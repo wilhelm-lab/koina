@@ -1,3 +1,5 @@
+#!/usr/bin/bash
+
 tritonserver  \
   --model-repository=/models/AlphaPept \
   --model-repository=/models/Prosit \
