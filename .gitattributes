@@ -1,5 +1,0 @@
-*pb filter=lfs diff=lfs merge=lfs -text
-variables* filter=lfs diff=lfs merge=lfs -text
-models/model_20210416_HCD2021_B/1/xgboost.json filter=lfs diff=lfs merge=lfs -text
-models/model_20210416_HCD2021_Y/1/xgboost.json filter=lfs diff=lfs merge=lfs -text
-*pt filter=lfs diff=lfs merge=lfs -text
