@@ -1,0 +1,19 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "ci-pipeline" ]
+  pull_request:
+    branches: [ "ci-pipeline" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: ./getModels.sh
+      run: docker build --target prod . --tag dlomix-serving:$(date +%s) --tag dlomix-serving:latest
