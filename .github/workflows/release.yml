@@ -1,4 +1,4 @@
-name: Create and publish a Docker image
+name: Create a tag and publish a Docker image
 
 on:
   pull_request:
@@ -53,4 +53,5 @@ jobs:
           target: "prod"
           push: true
           tags: ${{ steps.tag_and_prepare_release.outputs.tag }}
+          labels: ${{ steps.meta.outputs.labels }}
 
