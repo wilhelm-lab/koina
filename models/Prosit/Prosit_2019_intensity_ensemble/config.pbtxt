@@ -1,4 +1,4 @@
-name: "Prosit_2019_intensity_triton"
+name: "Prosit_2019_intensity_ensemble"
 max_batch_size: 7000
 platform: "ensemble"
 input [
