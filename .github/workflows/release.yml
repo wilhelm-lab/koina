@@ -52,6 +52,7 @@ jobs:
           context: .
           target: "prod"
           push: true
-          tags: ${{ steps.tag_and_prepare_release.outputs.tag }}
+          tags: ${{ steps.meta.outputs.tags }}
+          #tags: ${{ steps.tag_and_prepare_release.outputs.tag }}
           labels: ${{ steps.meta.outputs.labels }}
 
