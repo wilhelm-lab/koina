@@ -2,6 +2,8 @@ name: Create a tag and publish a Docker image
 
 on:
   pull_request:
+    branches:
+      - main
     types: closed
 
 env:
@@ -25,7 +27,7 @@ jobs:
         id: tag_and_prepare_release
         uses: K-Phoen/semver-release-action@v1.3.1
         with:
-          release_branch: ci-pipeline
+          release_branch: main
           release_strategy: tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
