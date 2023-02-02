@@ -16,7 +16,7 @@ TODO
 ### Dependencies
 dlomix-serving depends on [docker](https://docs.docker.com/engine/install/) and [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/overview.html). 
 
-You can find an ansible script that installs all dependencies [here](docs/server/README.md).
+You can find an ansible script that installs all dependencies [here](docs/server/).
 
 ### How to run it
 After installing the dependencies you can pull the docker image and run it with. 
@@ -34,7 +34,7 @@ docker run \
 
 ### Set up a development server
 
-1. Install dependencies ([Ansible script](docs/server/README.md))
+1. Install dependencies ([Ansible script](docs/server/))
 2. (Suggested) Install [docker-compose](https://docs.docker.com/desktop/install/linux-install/)
 3. Clone the repo
 4. Download existing models with `./getModels.sh`
