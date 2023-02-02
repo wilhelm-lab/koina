@@ -1,3 +1,4 @@
+import re
 import triton_python_backend_utils as pb_utils
 import numpy as np
 import json
@@ -26,13 +27,11 @@ class TritonPythonModel:
       responses = []
       for request in requests:
         peptide_in = pb_utils.get_input_tensor_by_name(request, "peptides_in:0").as_numpy().tolist()
+        peptide_in = [x[0].decode('utf-8')  for x in peptide_in ]
         precursor_charge_in = pb_utils.get_input_tensor_by_name(request, "precursor_charge_in:0").as_numpy().tolist()
         peaks_in = pb_utils.get_input_tensor_by_name(request, "peaks_in:0").as_numpy().tolist()
-        peptide_lengths = []
-        for batch in peptide_in:
-          for peptide in batch:
-            peptide_lengths.append(len(internal_without_mods(peptide)))
-        mask = create_masking(precursor_charge_in,peptide_lengths)
+        peptide_lengths = [len(internal_without_mods(pep)) for pep in peptide_in]
+        mask = create_masking(precursor_charge_in, peptide_lengths)
         peaks = apply_masking(peaks_in,mask)
         peaks = np.array(peaks,dtype=float)
         t = pb_utils.Tensor("out/Reshape:1",peaks.astype(self.output_dtype))
