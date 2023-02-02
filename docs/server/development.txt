@@ -1,0 +1,2 @@
+[server]
+eubic ansible_ssh_host=ADDRESS ansible_user=ROOT_USER
