@@ -22,16 +22,14 @@ ALPHABET_UNMOD = {
     "V": 18,
     "W": 19,
     "Y": 20,
-    "C": 24
+    "C": 24,
 }
 MAX_CHARGE = 6
-ALPHABET_MOD = {
-    "M[UNIMOD:35]": 21,
-    "C[UNIMOD:4]": 2
-}
+ALPHABET_MOD = {"M[UNIMOD:35]": 21, "C[UNIMOD:4]": 2}
 
 # ALPHABET contains all amino acid and ptm abbreviations and
 ALPHABET = {**ALPHABET_UNMOD, **ALPHABET_MOD}
+
 
 def parse_modstrings(sequences, alphabet, translate=False, filter=False):
     """
@@ -58,21 +56,26 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
     regex_pattern = re.compile("|".join(pattern))
     return map(split_modstring, sequences, repeat(regex_pattern))
 
+
 def character_to_array(character, filter=False):
-    array = np.zeros((1,SEQ_LEN), dtype=np.uint8)
+    array = np.zeros((1, SEQ_LEN), dtype=np.uint8)
     logger = pb_utils.Logger
 
     logger.log_info(str(character))
-    generator_sequence_numeric = parse_modstrings([character], alphabet=ALPHABET, translate=True, filter=filter)
+    generator_sequence_numeric = parse_modstrings(
+        [character], alphabet=ALPHABET, translate=True, filter=filter
+    )
     enum_gen_seq_num = enumerate(generator_sequence_numeric)
     print(enum_gen_seq_num)
     for i, sequence_numeric in enum_gen_seq_num:
         if len(sequence_numeric) > SEQ_LEN:
             if filter:
-                pass # don't overwrite 0 in the array that is how we can differentiate
+                pass  # don't overwrite 0 in the array that is how we can differentiate
             else:
-                raise Exception(f"The Sequence {sequence_numeric}, has {len(sequence_numeric)} Amino Acids."
-                            f"The maximum number of amino acids allowed is {SEQ_LEN}")
+                raise Exception(
+                    f"The Sequence {sequence_numeric}, has {len(sequence_numeric)} Amino Acids."
+                    f"The maximum number of amino acids allowed is {SEQ_LEN}"
+                )
         else:
-            array[i, 0:len(sequence_numeric)] = sequence_numeric
+            array[i, 0 : len(sequence_numeric)] = sequence_numeric
     return array
