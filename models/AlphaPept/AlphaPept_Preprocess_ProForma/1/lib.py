@@ -1,6 +1,6 @@
+import re
 import numpy as np
 import pandas as pd
-import re
 
 MOD_DF = pd.read_csv("/models/AlphaPept/AlphaPept_Preprocess_ProForma/1/mod_df.csv")
 MOD_DF.loc[MOD_DF["mod_name"] == "Oxidation@M", "mod_name"] = "M[UNIMOD:21]"
@@ -129,12 +129,12 @@ def get_mod_features(proforma_str):
     ]
 
 
-def parse_mod_formula(formula):
+def parse_mod_formula(mod_formula):
     """
     Parse a modification formula to a feature vector
     """
     feature = np.zeros(len(MOD_ELEMENTS_TO_IDX))
-    elems = formula.strip(")").split(")")
+    elems = mod_formula.strip(")").split(")")
     for elem in elems:
         chem, num = elem.split("(")
         num = int(num)
@@ -151,7 +151,7 @@ for modname, formula in MOD_DF[["mod_name", "composition"]].values:
     MOD_TO_FEATURE[modname] = parse_mod_formula(formula)
 
 
-def encode_mod_features(mods, mod_sites, nAA):
+def encode_mod_features(mods, mod_sites, num_aa):
     mod_features_list = (
         pd.Series(mods)
         .str.split(";")
@@ -164,16 +164,11 @@ def encode_mod_features(mods, mod_sites, nAA):
         .str.split(";")
         .apply(lambda mod_sites: [int(site) for site in mod_sites if len(site) > 0])
     )
-    mod_x_batch = np.zeros(
-        # (len(nAA.as_numpy()), int(nAA.as_numpy()[0])+2, len(MOD_ELEMENTS))
-        (len(nAA), int(nAA[0]) + 2, len(MOD_ELEMENTS))
-    )
+    mod_x_batch = np.zeros((len(num_aa), int(num_aa[0]) + 2, len(MOD_ELEMENTS)))
     for i, (mod_feats, mod_sites) in enumerate(zip(mod_features_list, mod_sites_list)):
         if len(mod_sites) > 0:
             for site, feat in zip(mod_sites, mod_feats):
-                # Process multiple mods on one site
                 mod_x_batch[i, site, :] += feat
-            # mod_x_batch[i,mod_sites,:] = mod_feats
     return mod_x_batch
 
 
@@ -218,10 +213,8 @@ class ProformaParser:
 
     @staticmethod
     def extract_amino_acids_and_mods(sequence, ontology=UNIMOD_ONTROLOGY):
-        import re
-
         # regex to capture single amino-acids with optional modifications
-        reg_ex = "[A-Z]{1}(?:\[" + ontology + ":{0,}\d*\]){0,}"
+        reg_ex = r"[A-Z]{1}(?:\[" + ontology + r":{0,}\d*\]){0,}"
         return re.findall(reg_ex, sequence)
 
 

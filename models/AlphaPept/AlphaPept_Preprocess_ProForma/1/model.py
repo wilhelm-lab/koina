@@ -1,5 +1,5 @@
+import json
 import triton_python_backend_utils as pb_utils
-import numpy as np
 from lib import (
     encode_mod_features,
     strip_mod_profroma,
@@ -7,27 +7,29 @@ from lib import (
     get_mod_features,
 )
 
-import json
-
 
 class TritonPythonModel:
+    def __init__(self):
+        super().__init__()
+        self.seq_out_dtype = None
+        self.mod_out_dtype = None
+
     def initialize(self, args):
-        self.model_config = model_config = json.loads(args["model_config"])
+        model_config = model_config = json.loads(args["model_config"])
         seq_out_config = pb_utils.get_output_config_by_name(
-            self.model_config, "encoded_seq:0"
+            model_config, "encoded_seq:0"
         )
         mod_out_config = pb_utils.get_output_config_by_name(
-            self.model_config, "encoded_mod_feature:0"
+            model_config, "encoded_mod_feature:0"
         )
-        self.seq_out_config = pb_utils.triton_string_to_numpy(
+        self.seq_out_dtype = pb_utils.triton_string_to_numpy(
             seq_out_config["data_type"]
         )
-        self.mod_out_config = pb_utils.triton_string_to_numpy(
+        self.mod_out_dtype = pb_utils.triton_string_to_numpy(
             mod_out_config["data_type"]
         )
 
     def execute(self, requests):
-        peptide_in_str = []
         responses = []
         for request in requests:
             peptide_in = pb_utils.get_input_tensor_by_name(request, "peptides_in_str:0")
@@ -44,11 +46,11 @@ class TritonPythonModel:
             )
 
             seq_out = pb_utils.Tensor(
-                "encoded_seq:0", sequences.astype(self.seq_out_config)
+                "encoded_seq:0", sequences.astype(self.seq_out_dtype)
             )
             mod_out = pb_utils.Tensor(
                 "encoded_mod_feature:0",
-                encoded_mod_features.astype(self.mod_out_config),
+                encoded_mod_features.astype(self.mod_out_dtype),
             )
 
             responses.append(
