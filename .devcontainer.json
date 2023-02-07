@@ -1,0 +1,15 @@
+{
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "develop",
+  "remoteUser": "devuser",
+  "containerUser": "devuser",
+  "shutdownAction": "none",
+  "workspaceFolder": "/workspace/dlomix-serving",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.pylint"
+      ]
+    }
+  }
+}

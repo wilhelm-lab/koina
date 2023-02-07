@@ -1,6 +1,9 @@
 import numpy as np
+
 SEQ_LEN = 30  # Sequence length for prosit
 VEC_LENGTH = 174
+
+
 def create_masking(charges_array, sequences_lengths):
     """
     assume reshaped output of prosit, shape sould be (num_seq, 174)
@@ -14,8 +17,7 @@ def create_masking(charges_array, sequences_lengths):
 
     assert len(charges_array) == len(sequences_lengths)
 
-    mask = np.ones(shape=(len(charges_array),
-                            VEC_LENGTH), dtype=np.int32)
+    mask = np.ones(shape=(len(charges_array), VEC_LENGTH), dtype=np.int32)
 
     for i in range(len(charges_array)):
         charge_one_hot = charges_array[i]
@@ -24,13 +26,13 @@ def create_masking(charges_array, sequences_lengths):
 
         # filter according to peptide charge
         if np.array_equal(charge_one_hot, [1, 0, 0, 0, 0, 0]):
-            invalid_indexes = [(x * 3 + 1) for x in range((SEQ_LEN - 1) * 2)] + [(x * 3 + 2) for x in
-                                                                                    range((SEQ_LEN - 1) * 2)]
+            invalid_indexes = [(x * 3 + 1) for x in range((SEQ_LEN - 1) * 2)] + [
+                (x * 3 + 2) for x in range((SEQ_LEN - 1) * 2)
+            ]
             m[invalid_indexes] = -1
 
         elif np.array_equal(charge_one_hot, [0, 1, 0, 0, 0, 0]):
-            invalid_indexes = [
-                x * 3 + 2 for x in range((SEQ_LEN - 1) * 2)]
+            invalid_indexes = [x * 3 + 2 for x in range((SEQ_LEN - 1) * 2)]
             m[invalid_indexes] = -1
 
         if len_seq < SEQ_LEN:
@@ -39,12 +41,12 @@ def create_masking(charges_array, sequences_lengths):
 
     return mask
 
-def apply_masking(peaks,mask):
-  invalid_indexes = mask == -1
-  print(mask)
-  for i in range(len(peaks)):
-    for j in range(len(peaks[i])):
-        if(invalid_indexes[i][j]):
-            peaks[i][j]=-1
-  return peaks
 
+def apply_masking(peaks, mask):
+    invalid_indexes = mask == -1
+    print(mask)
+    for i in range(len(peaks)):
+        for j in range(len(peaks[i])):
+            if invalid_indexes[i][j]:
+                peaks[i][j] = -1
+    return peaks

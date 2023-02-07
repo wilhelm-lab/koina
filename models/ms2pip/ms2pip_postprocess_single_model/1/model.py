@@ -4,8 +4,8 @@ import json
 
 
 class TritonPythonModel:
-    def initialize(self,args):
-        """"
+    def initialize(self, args):
+        """ "
         self.model_config = model_config = json.loads(args['model_config'])
         print(self.model_config)
         print("--------------")
@@ -27,25 +27,27 @@ class TritonPythonModel:
             peptide_in = pb_utils.get_input_tensor_by_name(request, "proforma")
             peptides_ = peptide_in.as_numpy().tolist()
             for peptide in peptides_:
-                peptide_in_list = peptide[0].decode('utf-8')
+                peptide_in_list = peptide[0].decode("utf-8")
                 logger.log_info(peptide_in_list)
-            # peptide_in_list = [x[0].decode('utf-8')  for x in peptides_ ]
-            # peptidoform = Peptidoform("ACDEK/2")
-            # t = pb_utils.Tensor("out",sequences.astype(self.output_dtype) )
-            # inter = np.array([str(peptidoform.theoretical_mass)])
-            # inter = np.zeros((1,139), dtype=np.float32)
+                # peptide_in_list = [x[0].decode('utf-8')  for x in peptides_ ]
+                # peptidoform = Peptidoform("ACDEK/2")
+                # t = pb_utils.Tensor("out",sequences.astype(self.output_dtype) )
+                # inter = np.array([str(peptidoform.theoretical_mass)])
+                # inter = np.zeros((1,139), dtype=np.float32)
                 ms2 = MinimalMS2PIP(peptide_in_list)
                 inter = ms2.ms2pipInput()
                 logger.log_info(str(inter.shape[0]))
                 list_ms2pip_input.append(inter)
                 # logger.log_info(inter.shape)
             # inter = np.array( [str("halloTobi")])
-            
+
             #            logger.log_info("shape of t[0] " +str(t[0].shape))
             more_fun = np.vstack(list_ms2pip_input)
-            t.append(  pb_utils.Tensor("xgboost_input", more_fun.astype(self.output_dtype) ))
+            t.append(
+                pb_utils.Tensor("xgboost_input", more_fun.astype(self.output_dtype))
+            )
             responses.append(pb_utils.InferenceResponse(output_tensors=t))
         return responses
 
     def finalize(self):
-        print('Cleaning up')
+        print("Cleaning up")

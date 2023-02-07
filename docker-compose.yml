@@ -1,12 +1,12 @@
 services:
-  dev:
+  serving:
     build:
       context: .
       target: develop
     command: /models/start_triton_server.sh
     ports:
-      - 8500:8500
-      - 8501:8501
+      - 8504:8500
+      - 8505:8501
     volumes:
       - ./models:/models
     deploy:
@@ -18,12 +18,15 @@ services:
               capabilities: [gpu]
     shm_size: 2GB
 
-  test:
+  develop:
     build:
      context: .
-     target: test
+     target: util
+     args:
+      - UID=${UID}
+      - GID=${GID}
+    user: "devuser"
+    command: ["sleep", "infinity"]
+    working_dir: /workspace/dlomix-serving
     volumes:
-      - ./test:/test
-    depends_on:
-      dev:
-        condition: service_healthy
+     - .:/workspace/dlomix-serving:Z
