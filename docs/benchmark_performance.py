@@ -3,12 +3,10 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    server_url = "localhost:8504"
+    server_url = "localhost:8500"
     model_name = "AlphaPept_ms2_generic_ensemble"
     out_layer = "out/Reshape:0"
-    # model_name = "AlphaPept_Preprocess_ProForma"
-    # out_layer = 'encoded_seq:0'
-    batch_size = 100
+    batch_size = 7000
     inputs = []
     outputs = []
 
@@ -35,7 +33,6 @@ if __name__ == "__main__":
     instrument_in = np.array([[1] for i in range(0, batch_size)], dtype=np.int64)
 
     # Initialize the data
-    print("len: " + str(len(inputs)))
     inputs[0].set_data_from_numpy(peptide_seq_in)
     inputs[1].set_data_from_numpy(ce_in)
     inputs[2].set_data_from_numpy(precursor_charge_in)
@@ -43,11 +40,8 @@ if __name__ == "__main__":
 
     outputs.append(grpcclient.InferRequestedOutput(out_layer))
 
-    start = time.time()
-    # result = triton_client.infer(model_name,inputs=[inputs[0]], outputs=outputs)
-    result = triton_client.infer(model_name, inputs=inputs, outputs=outputs)
-    end = time.time()
-    print("Time: " + str(end - start))
-
-    print("Result")
-    print(result.as_numpy(out_layer))
+    for x in range(100):
+        start = time.time()
+        result = triton_client.infer(model_name, inputs=inputs, outputs=[])
+        end = time.time()
+        print("Batch took: " + str(end - start))
