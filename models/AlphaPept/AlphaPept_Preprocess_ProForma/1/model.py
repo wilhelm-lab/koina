@@ -42,7 +42,7 @@ class TritonPythonModel:
             encoded_mod_features = encode_mod_features(
                 mods=[x[1] for x in raw_mod_features],
                 mod_sites=[x[0] for x in raw_mod_features],
-                nAA=[x[2] for x in raw_mod_features],
+                num_aa=[x[2] for x in raw_mod_features],
             )
 
             seq_out = pb_utils.Tensor(
