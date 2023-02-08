@@ -1,0 +1,26 @@
+name: "fragment_mz"
+backend: "python"
+input[
+ {
+   name: 'ProForma',
+   data_type: TYPE_STRING,
+   dims: [-1,-1]
+ },
+ {
+   name: 'charges',
+   data_type: TYPE_INT32,
+   dims: [-1]
+ },
+ {
+   name: 'ion_series',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+output [
+ {
+   name: 'fragment_mz',
+   data_type: TYPE_FP64,
+   dims: [-1,-1,-1,-1]
+ }
+]
