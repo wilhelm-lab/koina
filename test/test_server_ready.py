@@ -1,6 +1,7 @@
 import requests
+from test_config import SERVER_HTTP
 
 
 def test_http_server_ready():
-    r = requests.get("http://dev:8501/v2/health/ready")
-    assert r.status_code == 200
+    req = requests.get(f"{SERVER_HTTP}/v2/health/ready", timeout=1)
+    assert req.status_code == 200
