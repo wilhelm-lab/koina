@@ -7,7 +7,7 @@ ADD ./models  /models
 CMD [ "/models/start_triton_server.sh" ]
 
 FROM python:3.8.16-slim AS util
-RUN pip install pytest pylint tritonclient[all] requests black
+RUN pip install -U pip pytest pylint tritonclient[all] requests black jupyter ms2pip psm-utils pandas
 RUN apt-get update
 RUN apt-get install git vim -y
 RUN echo '#!/bin/bash\npylint --recursive=y test models $@' > /usr/local/bin/lint
