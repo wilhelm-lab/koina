@@ -43,10 +43,7 @@ def create_masking(charges_array, sequences_lengths):
 
 
 def apply_masking(peaks, mask):
-    invalid_indexes = mask == -1
-    print(mask)
-    for i in range(len(peaks)):
-        for j in range(len(peaks[i])):
-            if invalid_indexes[i][j]:
-                peaks[i][j] = -1
-    return peaks
+    peaks[peaks < 0] = 0
+    out = np.multiply(peaks, mask)
+    out = (out.T / np.max(out, axis=1)).T
+    return out
