@@ -14,6 +14,7 @@ services:
               count: 1
               capabilities: [gpu]
     shm_size: 2GB
+    restart: unless-stopped
 
   develop:
     build:
