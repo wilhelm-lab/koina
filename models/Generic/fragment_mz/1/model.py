@@ -45,7 +45,9 @@ class TritonPythonModel:
 
     def initialize(self, args):
         model_config = model_config = json.loads(args["model_config"])
-        frag_mz_config = pb_utils.get_output_config_by_name(model_config, "fragment_mz")
+        frag_mz_config = pb_utils.get_output_config_by_name(
+            model_config, "output_fragmentmz"
+        )
         self.frag_mz_dtype = pb_utils.triton_string_to_numpy(
             frag_mz_config["data_type"]
         )
@@ -55,7 +57,7 @@ class TritonPythonModel:
         for request in requests:
             peptide_in = pb_utils.get_input_tensor_by_name(request, "ProForma")
             peptide_in_list = [
-                x[0].decode("utf-8") for x in peptide_in.as_numpy().tolist()
+                x.decode("utf-8") for x in peptide_in.as_numpy().tolist()
             ]
 
             charges_in_list = (
@@ -74,7 +76,7 @@ class TritonPythonModel:
             )
 
             fragment_mz_out = pb_utils.Tensor(
-                "fragment_mz", fragment_mz.astype(self.frag_mz_dtype)
+                "output_fragmentmz", fragment_mz.astype(self.frag_mz_dtype)
             )
 
             responses.append(

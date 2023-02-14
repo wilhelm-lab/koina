@@ -5,10 +5,10 @@ import tritonclient.grpc as grpcclient
 if __name__ == "__main__":
     server_url = "serving:8500"
     model_name = "Prosit_2019_intensity_ensemble"
-    out_layer = "out/Reshape:1"
-    batch_size = 100
+    out_layer1 = "out/Reshape:1"
+    out_layer2 = "out/Reshape:2"
+    batch_size = 5
     inputs = []
-    outputs = []
 
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
@@ -34,7 +34,10 @@ if __name__ == "__main__":
     inputs[1].set_data_from_numpy(ce_in)
     inputs[2].set_data_from_numpy(precursor_charge_in)
 
-    outputs.append(grpcclient.InferRequestedOutput(out_layer))
+    outputs = [
+        grpcclient.InferRequestedOutput(out_layer1),
+        grpcclient.InferRequestedOutput(out_layer2),
+    ]
 
     start = time.time()
     # result = triton_client.infer(model_name,inputs=[inputs[0]], outputs=outputs)
@@ -43,4 +46,5 @@ if __name__ == "__main__":
     print("Time: " + str(end - start))
 
     print("Result")
-    print(result.as_numpy(out_layer))
+    print(np.round(result.as_numpy(out_layer1), 1))
+    print(np.round(result.as_numpy(out_layer2), 1))

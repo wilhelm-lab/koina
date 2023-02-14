@@ -4,7 +4,7 @@ input[
  {
    name: 'ProForma',
    data_type: TYPE_STRING,
-   dims: [-1,-1]
+   dims: [-1]
  },
  {
    name: 'charges',
@@ -19,7 +19,7 @@ input[
 ]
 output [
  {
-   name: 'fragment_mz',
+   name: 'output_fragmentmz',
    data_type: TYPE_FP64,
    dims: [-1,-1,-1,-1]
  }

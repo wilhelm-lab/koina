@@ -24,5 +24,10 @@ output [
    name: 'out/Reshape:1',
    data_type: TYPE_FP32,
    dims: [174]
+ },
+ {
+   name: 'out/Reshape:2',
+   data_type: TYPE_FP32,
+   dims: [174]
  }
 ]
