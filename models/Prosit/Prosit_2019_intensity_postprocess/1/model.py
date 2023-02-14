@@ -46,11 +46,12 @@ class TritonPythonModel:
             peaks_in = pb_utils.get_input_tensor_by_name(
                 request, "peaks_in:0"
             ).as_numpy()
-            peptide_lengths = [len(internal_without_mods(pep)) for pep in peptide_in]
+            peptide_lengths = [len(x) for x in internal_without_mods(peptide_in)]
             mask = create_masking(precursor_charge_in, peptide_lengths)
             masked_peaks = apply_masking(peaks_in, mask)
 
             fragmentmz = self.get_fragments(peptide_in)
+            fragmentmz[masked_peaks == -1] = -1  # mask fragmentmz based on masked_peaks
 
             output_tensors = [
                 pb_utils.Tensor(
