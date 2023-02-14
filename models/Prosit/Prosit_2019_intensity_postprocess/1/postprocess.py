@@ -43,7 +43,8 @@ def create_masking(charges_array, sequences_lengths):
 
 
 def apply_masking(peaks, mask):
-    peaks[peaks < 0] = 0
+    peaks[peaks < 0] = np.finfo(np.float32).eps
     out = np.multiply(peaks, mask)
     out = (out.T / np.max(out, axis=1)).T
+    out[out < 0] = -1
     return out
