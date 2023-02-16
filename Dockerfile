@@ -9,7 +9,7 @@ CMD [ "/models/start_triton_server.sh" ]
 FROM python:3.8.16-slim AS util
 RUN pip install -U pip pytest pylint tritonclient[all] requests black jupyter ms2pip psm-utils pandas
 RUN apt-get update
-RUN apt-get install git vim -y
+RUN apt-get install git vim curl -y
 RUN echo '#!/bin/bash\npylint --recursive=y test models $@' > /usr/local/bin/lint
 RUN chmod +x /usr/local/bin/lint
 ARG UID=1001 # 1001 is the default if you build it with docker-compose it automatically sets it to your UID
