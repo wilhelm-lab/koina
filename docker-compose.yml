@@ -21,8 +21,8 @@ services:
      context: .
      target: util
      args:
-      - UID=${UID}
-      - GID=${GID}
+      UID: ${UID_}
+      GID: ${GID}
     user: "devuser"
     command: ["sleep", "infinity"]
     working_dir: /workspace/dlomix-serving
