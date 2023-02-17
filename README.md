@@ -56,7 +56,7 @@ docker run \
 5. Update your bashrc with required environment variables 
 ```
 echo "export GID=$(id -g)" >> ~/.bashrc
-echo "^Cport UID_=$(id -u)" >> ~/.bashrc
+echo "export UID_=$(id -u)" >> ~/.bashrc
 ```
 6. Start the server with `docker-compose up`
 
