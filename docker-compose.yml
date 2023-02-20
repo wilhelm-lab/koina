@@ -21,7 +21,7 @@ services:
      context: .
      target: util
      args:
-      UID: ${UID_}
+      UID: ${UID}
       GID: ${GID}
     user: "devuser"
     command: ["sleep", "infinity"]
@@ -31,3 +31,5 @@ services:
     depends_on:
       serving:
         condition: service_healthy
+    env_file:
+     - .env
