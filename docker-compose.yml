@@ -28,3 +28,6 @@ services:
     working_dir: /workspace/dlomix-serving
     volumes:
      - .:/workspace/dlomix-serving:Z
+    depends_on:
+      serving:
+        condition: service_healthy
