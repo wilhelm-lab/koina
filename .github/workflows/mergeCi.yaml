@@ -1,0 +1,23 @@
+name: Create a tag and publish a Docker image
+
+on:
+  pull_request:
+    branches:
+      - feature/generic_fragment_mz_model
+
+jobs:
+
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+   
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Build the docker-compose stack
+          run: docker-compose up -d
+      
+      - name: Run pytest
+          run: docker exec develop pytest
