@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 for file in $(find . -name '.zenodo')
 do 
 	folder=${file::-8}
