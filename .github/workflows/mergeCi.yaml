@@ -23,4 +23,11 @@ jobs:
         run: docker-compose up -d
 
       - name: Run pytest
-        run: docker exec develop pytest
+        run: docker-compose exec develop pytest
+
+      - name: Run black
+        run: docker-compose exec develop black .
+
+      - name: Run lint
+        run: docker-compose exec develop lint
+
