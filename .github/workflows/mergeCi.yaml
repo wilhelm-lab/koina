@@ -8,7 +8,7 @@ on:
 jobs:
 
   test_style_lint:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted,Linux,X64,gpu]
     permissions:
       contents: read
    
