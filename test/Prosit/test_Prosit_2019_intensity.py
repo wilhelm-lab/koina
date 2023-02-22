@@ -45,5 +45,8 @@ def test_inference():
     assert intensities.shape == (5, 174)
 
     assert np.allclose(
-        intensities, np.load("test/Prosit/arr_Prosit_2019_intensity_int_raw.npy"), rtol=0, atol=1e-5
+        intensities,
+        np.load("test/Prosit/arr_Prosit_2019_intensity_int_raw.npy"),
+        rtol=0,
+        atol=1e-5,
     )

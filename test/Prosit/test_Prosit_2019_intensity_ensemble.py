@@ -59,5 +59,8 @@ def test_inference():
 
     # Assert intensities consistent
     assert np.allclose(
-        intensities, np.load("test/Prosit/arr_Prosit_2019_intensity_int.npy"), rtol=0, atol=1e-5
+        intensities,
+        np.load("test/Prosit/arr_Prosit_2019_intensity_int.npy"),
+        rtol=0,
+        atol=1e-5,
     )
