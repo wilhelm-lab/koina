@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - fix/build_pipeline
     types: closed
 
 env:
