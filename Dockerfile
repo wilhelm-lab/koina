@@ -1,6 +1,6 @@
 FROM nvcr.io/nvidia/tritonserver:22.09-py3 AS develop
 RUN pip install ms2pip psm-utils pandas
-HEALTHCHECK --start-period=1m CMD curl localhost:8501/v2/health/ready 
+HEALTHCHECK --start-period=1m --interval=15s --retries=12 CMD curl localhost:8501/v2/health/ready 
 
 FROM develop AS prod
 ADD ./models  /models

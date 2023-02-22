@@ -1,0 +1,37 @@
+name: Run tests, styling and linting
+
+on:
+  pull_request:
+    types:
+      - ready_for_review
+
+jobs:
+
+  mergeCI:
+    runs-on: [self-hosted,Linux,X64,gpu]
+    permissions:
+      contents: read
+   
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Download models 
+        run: ./getModels.sh
+
+      - name: Start service
+        run: docker compose up -d --build
+
+      - name: Pytest
+        run: docker compose exec develop pytest
+
+      - name: Verify code style
+        run: docker compose exec develop black .
+
+      - name: Run lint
+        run: docker compose exec develop lint --fail-under=6.5
+
+      - name: Shutdown service
+        if: success() || failure()
+        run: docker compose down
+        

@@ -21,10 +21,15 @@ services:
      context: .
      target: util
      args:
-      UID: ${UID_}
+      UID: ${UID}
       GID: ${GID}
     user: "devuser"
     command: ["sleep", "infinity"]
     working_dir: /workspace/dlomix-serving
     volumes:
      - .:/workspace/dlomix-serving:Z
+    depends_on:
+      serving:
+        condition: service_healthy
+    env_file:
+     - .env
