@@ -9,7 +9,11 @@
     "vscode": {
       "extensions": [
         "ms-python.pylint"
-      ]
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "python.formatting.provider": "black"
+      }
     }
   }
 }

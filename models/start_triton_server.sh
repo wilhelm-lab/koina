@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 
 tritonserver  \
+  --model-repository=/models/Generic \
   --model-repository=/models/AlphaPept \
   --model-repository=/models/Prosit \
   --model-repository=/models/ms2pip \
