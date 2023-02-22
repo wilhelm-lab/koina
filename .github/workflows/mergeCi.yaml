@@ -20,14 +20,14 @@ jobs:
         run: ./getModels.sh
 
       - name: Build the docker-compose stack
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Run pytest
-        run: docker-compose exec develop pytest
+        run: docker compose exec develop pytest
 
       - name: Run black
-        run: docker-compose exec develop black .
+        run: docker compose exec develop black .
 
       - name: Run lint
-        run: docker-compose exec develop lint
+        run: docker compose exec develop lint
 
