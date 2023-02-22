@@ -19,15 +19,18 @@ jobs:
       - name: Download models 
         run: ./getModels.sh
 
-      - name: Build the docker-compose stack
+      - name: Start service
         run: docker compose up -d
 
-      - name: Run pytest
+      - name: Pytest
         run: docker compose exec develop pytest
 
-      - name: Run black
+      - name: Verify code style
         run: docker compose exec develop black .
 
       - name: Run lint
         run: docker compose exec develop lint
 
+      - name: Shutdown service
+        run: docker compose down
+        
