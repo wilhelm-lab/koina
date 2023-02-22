@@ -2,8 +2,8 @@ name: Run tests, styling and linting
 
 on:
   pull_request:
-    branches:
-      - feature/generic_fragment_mz_model
+    types:
+      - ready_for_review
 
 jobs:
 
