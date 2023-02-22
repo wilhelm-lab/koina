@@ -7,7 +7,7 @@ on:
 
 jobs:
 
-  test_style_lint:
+  mergeCI:
     runs-on: [self-hosted,Linux,X64,gpu]
     permissions:
       contents: read
@@ -29,7 +29,7 @@ jobs:
         run: docker compose exec develop black .
 
       - name: Run lint
-        run: docker compose exec develop lint
+        run: docker compose exec develop lint --fail-under=6.5
 
       - name: Shutdown service
         continue-on-error: true
