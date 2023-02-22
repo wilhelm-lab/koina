@@ -53,11 +53,7 @@ docker run \
 2. (Suggested) Install [docker-compose](https://docs.docker.com/desktop/install/linux-install/)
 3. Clone the repo
 4. Download existing models with `./getModels.sh`
-5. Update your bashrc with required environment variables 
-```
-echo "export GID=$(id -g)" >> ~/.bashrc
-echo "export UID_=$(id -u)" >> ~/.bashrc
-```
+5. Update `.env` with your user- and group-id to avoid file permission issues 
 6. Start the server with `docker-compose up`
 
 ### Import model files
