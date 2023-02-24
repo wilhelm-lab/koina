@@ -1,0 +1,58 @@
+name: "Prosit_2019_irt_supplement_ensemble"
+max_batch_size: 7000
+platform: "ensemble"
+input [
+  {
+   name: 'in/proforma',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  }
+]
+output [
+  {
+   name: 'out/irt',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+]
+
+ensemble_scheduling {
+  step [
+    {
+      model_name: "Prosit_Preprocess_peptide"
+      model_version: 1
+      input_map {
+        key: "peptides_in_str:0"
+        value: "in/proforma"
+      },
+      output_map {
+        key: "peptides_in:0"
+        value: "out/sequence_int"
+      }
+    },
+    {
+      model_name: "Prosit_2019_irt_supplement"
+      model_version: 1
+      input_map {
+        key: "sequence_integer"
+        value: "out/sequence_int"
+      },
+      output_map {
+        key: "prediction/BiasAdd:0"
+        value: "out/irt_raw"
+      }
+    },
+    {
+      model_name: "Prosit_2019_irt_postprocess"
+      model_version: 1
+      input_map {
+        key: "in/irt_raw"
+        value: "out/irt_raw"
+      },
+      output_map {
+        key: "out/irt_norm"
+        value: "out/irt"
+      }
+    }
+  ]
+}
