@@ -1,0 +1,24 @@
+description: |
+ <b>Prosit intensity 2019 model</b> takes precursor_charge,
+ collision_energy,peptides_in produces intensity of peptides. 
+ The below code allows you to send request via GRPC in python
+summary: "Prosit 2019 model predicts intensity"
+tag: "intensity"
+tag_description: "Prosit intensity 2019"
+tag_url: "proteomics.db"
+examples:
+  input: |
+    [
+      {
+          "name": "precursor_charge_in_int:0",
+          "shape": [1, 1],
+          "datatype": "INT32",
+          "data": [1]
+      },
+      {
+          "name": "peptides_in_str:0",
+          "shape": [1, 1],
+          "datatype": "BYTES",
+          "data": ["AAAAAKAK"]
+      }
+    ]

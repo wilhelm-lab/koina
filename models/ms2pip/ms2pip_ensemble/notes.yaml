@@ -1,0 +1,16 @@
+description: |
+ <b>Ms2Pip model</b> takes peptide string and returns the intensity
+summary: "Ms2Pip model summary"
+tag: "intensity"
+tag_description: "Prosit intensity 2019"
+tag_url: "proteomics.db"
+examples:
+  input: |
+    [
+      {
+          "name": "proforma_ensemble",
+          "shape": [1,1],
+          "datatype": "BYTES",
+          "data": ["AAAAAKAK"]
+      }
+    ]
