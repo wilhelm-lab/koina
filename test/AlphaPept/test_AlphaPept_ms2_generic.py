@@ -52,17 +52,9 @@ def test_inference():
 
     assert intensities.shape == (4, 11, 8)
 
-    try:
-        assert np.allclose(
-            intensities,
-            np.load("test/AlphaPept/arr_AlphaPept_ms2_raw.npy"),
-            rtol=0,
-            atol=1e-5,
-        )
-    except AssertionError:
-        print(
-            np.round(
-                intensities - np.load("test/AlphaPept/arr_AlphaPept_ms2_raw.npy"), 3
-            )
-        )
-        raise AssertionError
+    assert np.allclose(
+        intensities,
+        np.load("test/AlphaPept/arr_AlphaPept_ms2_raw.npy"),
+        rtol=0,
+        atol=1e-5,
+    )
