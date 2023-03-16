@@ -1,8 +1,8 @@
 # Pyton models
-*pyc
+*.pyc
 
 # PyTorch model
-*pt
+*.pt
 
 # Tensorflow model
 **model.savedmodel
