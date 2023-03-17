@@ -25,9 +25,14 @@ input [
 ]
 output [
   {
-   name: 'out/Reshape:0',
+   name: 'out/Reshape:1',
    data_type: TYPE_FP32,
-   dims: [-1,8]
+   dims: [-1]
+  },
+  {
+   name: 'out/Reshape:2',
+   data_type: TYPE_FP32,
+   dims: [-1]
   }
 ]
 
@@ -99,6 +104,26 @@ ensemble_scheduling {
       output_map {
         key: "output__0"
         value: "out/Reshape:0"
+      }
+    },
+    {
+      model_name: "AlphaPept_ms2_generic_postprocess"
+      model_version: 1
+      input_map {
+        key: "peptides_in:0"
+        value: "peptides_in_str:0"
+      },
+      input_map {
+        key: "peaks_in:0"
+        value: "out/Reshape:0"
+      },      
+      output_map {
+        key: "out/Reshape:1"
+        value: "out/Reshape:1"
+      },
+      output_map {
+        key: "out/Reshape:2"
+        value: "out/Reshape:2"
       }
     }
   ]

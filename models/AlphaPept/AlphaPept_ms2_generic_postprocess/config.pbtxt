@@ -1,0 +1,28 @@
+name: "AlphaPept_ms2_generic_postprocess"
+max_batch_size: 7000
+backend: "python"
+
+input[
+  {
+   name: 'peptides_in:0',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+   name: 'peaks_in:0',
+   data_type: TYPE_FP32,
+   dims: [-1,8]
+  }
+]
+output [
+ {
+   name: 'out/Reshape:1',
+   data_type: TYPE_FP32,
+   dims: [-1]
+ },
+ {
+   name: 'out/Reshape:2',
+   data_type: TYPE_FP32,
+   dims: [-1]
+ }
+]
