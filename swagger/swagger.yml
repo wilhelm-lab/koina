@@ -25,7 +25,7 @@ tags:
       url: proteomics.db
 
   - name: intensity
-    description: Prosit intensity 2019
+    description: MS2Pip intensity
     externalDocs:
       description: Find out more
       url: proteomics.db
@@ -38,39 +38,46 @@ paths:
         - intensity
       summary: Prosit 2019 model predicts intensity
       description: '<b>Prosit intensity 2019 model</b> takes precursor_charge,
-collision_energy,peptides_in produces intensity of peptides. 
+collision_energy,peptides_in produces intensity of peptides.
+General applicability of Prosit by predicting spectra for proteases 
+other than trypsin, generating spectral libraries 
+for data-independent acquisition and improving the analysis 
+of metaproteomes
+
 The below code allows you to send request via GRPC in python
 
 
     <pre>
-    import numpy as np <br>
-    import numpy as np <br>
-    import time <br>
-    import tritonclient.grpc as grpcclient <br>
-    if __name__ == "__main__" <br>
-    <blockquote> server_url = "10.152.171.77:8502"<br>
+    import numpy as np<br>
+    import time<br>
+    import tritonclient.grpc as grpcclient<br>
+    outputs=[]<br>
+    server_url = "10.152.171.77:8504"<br>
     model_name = "Prosit_2019_intensity_ensemble"<br>
-    out_layer0="out/Reshape:1"<br>out_layer1="out/Reshape:2"<br>
+    out_layer1="out/Reshape:1" <br>out_layer2="out/Reshape:2" <br>
+    triton_client = grpcclient.InferenceServerClient(url=server_url)<br>
+    
     batch_size = 5<br>
     inputs = []<br>
-    triton_client = grpcclient.InferenceServerClient(url=server_url)<br>
-    inputs.append(grpcclient.InferInput("peptides_in_str:0",[batch_size, 1],TYPE_STRING))<br>inputs.append(grpcclient.InferInput("precursor_charge_in_int:0",[batch_size, 1],TYPE_INT32))<br>inputs.append(grpcclient.InferInput("collision_energy_in:0",[batch_size, 1],TYPE_FP32))<br># Create the data for the two input tensors. Initialize the first \ n# to unique integers and the second to all ones. <br>    
-    peptide_seq_in = np.array([["AAAAAKAKM[UNIMOD:35]"] for i in range(0, batch_size)], dtype=np.object_)<br>"
+    inputs.append(grpcclient.InferInput("peptides_in_str:0", [batch_size, 1], "BYTES"))<br>
+    inputs.append(<br>
+        grpcclient.InferInput("collision_energy_in:0", [batch_size, 1], "FP32")<br>
+    )<br>
+    inputs.append(<br>
+        grpcclient.InferInput("precursor_charge_in_int:0", [batch_size, 1], "INT32")<br>
+    )<br>
+    peptide_seq_in = np.array([["AAAAAKAKM[UNIMOD:35]"] for i in range(0, batch_size)], dtype=np.object_)<br>
     ce_in = np.array([[25] for i in range(0, batch_size)], dtype=np.float32)<br>
     precursor_charge_in = np.array([[2] for i in range(0, batch_size)], dtype=np.int32)<br>
     print("len: " + str(len(inputs)))<br>
     inputs[0].set_data_from_numpy(peptide_seq_in)<br>
     inputs[1].set_data_from_numpy(ce_in)<br>
     inputs[2].set_data_from_numpy(precursor_charge_in)<br>
-    outputs = [grpcclient.InferRequestedOutput(out_layer0), grpcclient.InferRequestedOutput(out_layer1), ]<br>start = time.time()<br>
-    result = triton_client.infer(model_name, inputs=inputs, outputs=outputs)<br>
-    end = time.time()<br>
-    print("Time: " + str(end - start))<br>
-    print("Result")<br>
-    print(np.round(result.as_numpy(out_layer1), 1))<br>
-    print(np.round(result.as_numpy(out_layer2), 1))<br>
-    	  </pre>
-    '
+    
+            outputs.append(grpcclient.InferRequestedOutput(out_layer1))<br>
+        
+            outputs.append(grpcclient.InferRequestedOutput(out_layer2))<br>
+        result = triton_client.infer(model_name, inputs=inputs, outputs=outputs)<br>print("Result")<br>print(np.round(result.as_numpy(out_layer1), 1))<br>print(np.round(result.as_numpy(out_layer2), 1))<br></pre>'
       operationId: infer
       requestBody:
         description: Body
@@ -102,10 +109,32 @@ The below code allows you to send request via GRPC in python
      post:
       tags:
         - intensity
-      summary: Ms2Pip model summary
-      description: '<b>Ms2Pip model</b> takes peptide string and returns the intensity
+      summary: MS2Pip predicts intensity of peptides
+      description: '<b>MS(2)PIP</b> for predicting the intensity of the most important fragment ion signal peaks from a peptide sequence. 
 
-'
+
+    <pre>
+    import numpy as np<br>
+    import time<br>
+    import tritonclient.grpc as grpcclient<br>
+    outputs=[]<br>
+    server_url = "10.152.171.77:8504"<br>
+    model_name = "ms2pip_ensemble"<br>
+    out_layer1="model_20210416_HCD2021_B_output" <br>
+    triton_client = grpcclient.InferenceServerClient(url=server_url)<br>
+    
+    peptides = [["ACDEK/2"], ["AAAAAAAAAAAAA/3"]]<br>
+    batch_size = len(peptides)<br>
+    inputs = []<br>
+    outputs = []<br>
+    triton_client = grpcclient.InferenceServerClient(url=server_url)<br>
+    inputs.append(grpcclient.InferInput("proforma_ensemble", [batch_size, 1], "BYTES"))<br>
+    peptide_seq_in = np.array([i for i in peptides], dtype=np.object_)<br>
+    print("len: " + str(len(inputs)))<br>
+    inputs[0].set_data_from_numpy(peptide_seq_in)<br>
+    
+            outputs.append(grpcclient.InferRequestedOutput(out_layer1))<br>
+        result = triton_client.infer(model_name, inputs=inputs, outputs=outputs)<br>print("Result")<br>print(np.round(result.as_numpy(out_layer1), 1))<br></pre>'
       operationId: infer
       requestBody:
         description: Body
@@ -243,9 +272,9 @@ components:
           example: [
   {
       "name": "proforma_ensemble",
-      "shape": [1,1],
+      "shape": [1,2],
       "datatype": "BYTES",
-      "data": ["AAAAAKAK"]
+      "data": [["ACDEK/2"], ["AAAAAAAAAAAAA/3"]]
   }
 ]
           items:

@@ -2,7 +2,8 @@ openapi: 3.0.3
 info:
   title: Swagger Triton Prosit model serving - OpenAPI 3.0
   description: |-
-    This is a documentation file for Prosit Triton models
+   This is a documentation for the machine learning models for proteomics DLomix
+   There are multiple different models are hosted. Such as Prosit, MS2PIP and DeepLC
   termsOfService: http://swagger.io/terms/
   contact:
     email: apiteam@swagger.io

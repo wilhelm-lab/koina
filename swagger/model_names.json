@@ -1,4 +1,6 @@
 [
     {"Prosit_2019_intensity_ensemble":"../models/Prosit/Prosit_2019_intensity_ensemble"},
-    {"ms2pip_ensemble":"../models/ms2pip/ms2pip_ensemble"}
+    {"ms2pip_ensemble":"../models/ms2pip/ms2pip_ensemble"},
+    {"Deeplc_Triton_ensemble":"../models/Deeplc/Deeplc_Triton_ensemble"},
+    {"AlphaPept_ms2_generic_ensemble":"../models/AlphaPept/AlphaPept_ms2_generic_ensemble"}
 ]

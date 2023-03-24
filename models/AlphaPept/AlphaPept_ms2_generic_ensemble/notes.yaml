@@ -1,0 +1,34 @@
+description: |
+  <b>Alphapept</b>
+summary: "Alphapept peptide retention time prediction model"
+tag: "intensity"
+tag_description: "Deeplc intensity"
+tag_url: "proteomics.db"
+examples:
+  input: |
+    [
+      {
+        "name": "peptides_in_str:0",
+        "shape": [1,1],
+        "datatype": "BYTES",
+        "data": [["AAAAAKAKM[UNIMOD:21]"]]
+      },
+      {
+        "name": "collision_energy_in:0",
+        "shape": [1,1],
+        "datatype": "INT32",
+        "data": [[25]]
+      },
+      {
+        "name": "precursor_charge_in_int:0",
+        "shape": [1,1],
+        "datatype": "INT32",
+        "data": [[2]]
+      },
+       {
+        "name": "instrument_indices:0",
+        "shape": [1,1],
+        "datatype": "INT64",
+        "data": [[1]]
+      },
+    ]

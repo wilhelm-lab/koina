@@ -1,16 +1,16 @@
 description: |
- <b>Ms2Pip model</b> takes peptide string and returns the intensity
-summary: "Ms2Pip model summary"
+ <b>MS(2)PIP</b> for predicting the intensity of the most important fragment ion signal peaks from a peptide sequence. 
+summary: "MS2Pip predicts intensity of peptides"
 tag: "intensity"
-tag_description: "Prosit intensity 2019"
+tag_description: "MS2Pip intensity"
 tag_url: "proteomics.db"
 examples:
   input: |
     [
       {
           "name": "proforma_ensemble",
-          "shape": [1,1],
+          "shape": [1,2],
           "datatype": "BYTES",
-          "data": ["AAAAAKAK"]
+          "data": [["ACDEK/2"], ["AAAAAAAAAAAAA/3"]]
       }
     ]
