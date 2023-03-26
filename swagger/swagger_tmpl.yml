@@ -32,8 +32,10 @@ paths:
       tags:
         - {{model.note.tag}}
       summary: {{model.note.summary}}
-      description: '{{model.note.description ~ '\n' ~ model.note.code}}'
-      operationId: infer
+      description: |
+              {{model.note.description }}
+              {{model.note.code}}
+      operationId: {{model.name}}
       requestBody:
         description: Body
         content:
@@ -50,13 +52,6 @@ paths:
       responses:
         '200':
           description: Successful operation
-          # content:
-          #   application/json:
-          #     schema:
-          #       $ref: '#/components/schemas/{{model.name ~ '_' ~ 'output'}}'
-          #   application/xml:
-          #     schema:
-          #       $ref: '#/components/schemas/{{model.name ~ '_' ~ 'output'}}'
         '405':
           description: Invalid input
 {% endfor %}

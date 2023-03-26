@@ -32,7 +32,9 @@ Then the output boilerplate where it generates a code where it appends the outpu
 The input could not be generated due to you have to give the special data to the service for each model and the types of the model had to be stored somewhere to be able to generate correct input data. 
 `generate_append_output_boilerplate`
 
-    One possible solution could be store the needed information in abstract syntax tree and cache and associate each nodes with the data.
+# Input boilerplate
+
+In input initalization you need to define the input tensors, input type, and input size. These information came from the notes.yaml
 
 ## Result boilerplate
 To get the result you have to send the input/output layer and store that information in result variable.

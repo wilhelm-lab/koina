@@ -2,8 +2,8 @@ description: |
   <b>Alphapept</b>
 summary: "Alphapept peptide retention time prediction model"
 tag: "intensity"
-tag_description: "Deeplc intensity"
-tag_url: "proteomics.db"
+tag_description: "Intensity models"
+tag_url: "https://www.proteomicsdb.org/"
 examples:
   input: |
     [
@@ -25,10 +25,10 @@ examples:
         "datatype": "INT32",
         "data": [[2]]
       },
-       {
+      {
         "name": "instrument_indices:0",
         "shape": [1,1],
         "datatype": "INT64",
         "data": [[1]]
-      },
+      }
     ]

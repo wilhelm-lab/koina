@@ -2,8 +2,8 @@ description: |
  <b>MS(2)PIP</b> for predicting the intensity of the most important fragment ion signal peaks from a peptide sequence. 
 summary: "MS2Pip predicts intensity of peptides"
 tag: "intensity"
-tag_description: "MS2Pip intensity"
-tag_url: "proteomics.db"
+tag_description: "Intensity models"
+tag_url: "https://www.proteomicsdb.org/"
 examples:
   input: |
     [

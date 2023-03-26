@@ -2,8 +2,8 @@ description: |
   <b>DeepLC</b>, a deep learning peptide retention time predictor using peptide encoding based on atomic composition that allows the retention time of (previously unseen) modified peptides to be predicted accurately.
 summary: "Deeplc peptide retention time prediction model"
 tag: "Retention Time"
-tag_description: "Deeplc intensity"
-tag_url: "proteomics.db"
+tag_description: "Retention time models"
+tag_url: "https://www.proteomicsdb.org/"
 examples:
   input: |
     [
@@ -11,6 +11,6 @@ examples:
           "name": "peptides_in_str:0",
           "shape": [1,4],
           "datatype": "BYTES",
-          "data": [[b"LGGNEQVTR"], [b"GAGSSEPVTGLDAK"], [b"VEATFGVDESNAK"], [b"LFLQFGAQGSPFLK"]]
+          "data": [["LGGNEQVTR"], ["GAGSSEPVTGLDAK"], ["VEATFGVDESNAK"], ["LFLQFGAQGSPFLK"]]
       }
     ]
