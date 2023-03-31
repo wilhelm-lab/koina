@@ -97,8 +97,8 @@ def generate_input_create_boilerplate(model):
     try:
         input_examples = json.loads(model['note']['examples']['input'])
     except Exception as e:
-        print(e)
-        print(model['note']['examples']['input'])
+        logging.info(e)
+        logging.info(model['note']['examples']['input'])
         exit(1)
     for i in range (0,len(input_examples)):
         input_example = input_examples[i]
@@ -114,9 +114,9 @@ def generate_input_create_boilerplate(model):
         input_shape = input_example['shape']
         input_data_type = input_example['datatype']
         input_data = input_example['data']
-        print("datatype: ")
-        print(input_data_type)
-        print(type(input_data_type))
+        logging.info("datatype: ")
+        logging.info(input_data_type)
+        logging.info(type(input_data_type))
         code = ''
         code = '''input{index} = np.array([{example} for i in range(0,{shape})],dtype={type}) <br>'''.format(
                 index=i,example=input_data,
@@ -148,26 +148,9 @@ def main():
     logging.basicConfig(encoding='utf-8', level=logging.INFO)
     with open('./model_names.json','r') as f:
         model_names = json.load(f)
-    print(model_names[0])
-    serving_started = False
-    wait_time = 10
-    reverse_host = os.getenv("TRITON_SERVER_IP")
-    reverse_port = os.getenv("TRITON_REVERSE_PROXY_SERVER_PORT")
+    reverse_host = "reverse-proxy"
+    reverse_port = "8502"
     triton_url_template = "http://" +reverse_host+ ":" + reverse_port + "/v2/models/{model}/config"
-
-    while (not serving_started):
-        key,val = list(model_names[0].items())[0]
-        url = triton_url_template.format(model=key)
-        logging.info("Waiting for serving to start: " + url)
-        try:
-            r = requests.get(url)
-            if (r.status_code >= 200 and r.status_code <= 299):
-                serving_started = True
-                logging.info("Serving started continuing the program")
-            else:
-                time.sleep(wait_time)
-        except Exception as e:
-            time.sleep(wait_time)
 
     models = []
     for model in model_names:
@@ -192,8 +175,8 @@ def main():
     # Create the Swagger.yaml based on the template
     environment = Environment(loader=FileSystemLoader("./"))
     template = environment.get_template("swagger_tmpl.yml")
-    context = {'models': models,'triton_server_ip':reverse_host,
-              'triton_server_port':reverse_port}
+    context = {'models': models,'triton_server_ip':os.getenv("TRITON_SERVER_IP"),
+              'triton_server_port':"8502"}
 
     content = template.render(context)
     logging.info("Generating the Swagger YAML file ... ")

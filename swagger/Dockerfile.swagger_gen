@@ -1,0 +1,4 @@
+FROM python
+RUN pip install requests
+RUN pip install jinja2
+RUN pip install PyYAML
