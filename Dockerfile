@@ -17,3 +17,12 @@ ARG GID=1001
 RUN groupadd -g $GID devuser
 RUN useradd -ms /bin/bash devuser -u $UID -g $GID
 USER devuser
+
+FROM python as swagger-gen
+RUN pip install requests
+RUN pip install jinja2
+RUN pip install PyYAML
+
+FROM swaggerapi/swagger-ui as swagger-dlomix
+RUN sed -i 's/SwaggerUIStandalonePreset/SwaggerUIStandalonePreset.slice(1)/' /usr/share/nginx/html/index.html
+ENV SWAGGER_JSON=/workspace/swagger/swagger.yml

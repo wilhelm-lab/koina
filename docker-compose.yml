@@ -47,7 +47,8 @@ services:
 
   swagger_gen:
     build:
-      dockerfile: ./swagger/Dockerfile.swagger_gen
+      context: .
+      target: swagger-gen
     depends_on: 
       serving:
         condition: service_healthy
@@ -63,11 +64,11 @@ services:
         python swagger_gen.py
 
   swagger:
+    build:
+      context: .
+      target: swagger-dlomix
     ports:
       - 8080:8080
-    build:
-      context: ./
-      dockerfile: swagger/Dockerfile.swagger
     depends_on:
       swagger_gen:
         condition: service_completed_successfully
