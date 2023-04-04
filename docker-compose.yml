@@ -1,5 +1,7 @@
 services:
   serving:
+    ports:
+      - 8500:8500
     build:
       context: .
       target: develop

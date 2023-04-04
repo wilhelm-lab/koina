@@ -8,7 +8,7 @@ import os
 import json
 import yaml
 import time
-grpc_url= os.getenv("TRITON_SERVER_IP")+":8504"
+grpc_url= os.getenv("TRITON_SERVER_IP")+":8500"
 
 nptype_convert = {
     'FP32':'np.float32',
@@ -142,7 +142,27 @@ def generate_example_code(model):
     python_code += generate_output_boilerplate(model)
 
     return python_code
-   
+
+def sleep_until_service_starts(model_names):
+    reverse_host = "reverse-proxy"
+    reverse_port = "8502"
+    triton_url_template = "http://" +reverse_host+ ":" + reverse_port + "/v2/models/{model}/config"
+    serving_started = False
+    wait_time = 10
+
+    while (not serving_started):
+        key,val = list(model_names[0].items())[0]
+        url = triton_url_template.format(model=key)
+        logging.info("Waiting for serving to start: " + url)
+        try:
+            r = requests.get(url)
+            if (r.status_code >= 200 and r.status_code <= 299):
+                serving_started = True
+                logging.info("Serving started continuing the program")
+            else:
+                time.sleep(wait_time)
+        except Exception as e:
+            time.sleep(wait_time)
 
 def main():
     logging.basicConfig(encoding='utf-8', level=logging.INFO)
@@ -151,6 +171,9 @@ def main():
     reverse_host = "reverse-proxy"
     reverse_port = "8502"
     triton_url_template = "http://" +reverse_host+ ":" + reverse_port + "/v2/models/{model}/config"
+    # there is a slight delay before service turns healthy
+    # therefore sleep just a few seconds
+    sleep_until_service_starts(model_names)
 
     models = []
     for model in model_names:
