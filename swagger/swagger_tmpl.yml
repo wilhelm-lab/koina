@@ -15,7 +15,7 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: http://{{triton_server_ip~':'~triton_server_port}}/v2/models
+  - url: {{tmpl_url}}/v2/models
 
 tags:
 {% for model in models %}

@@ -1,7 +1,5 @@
 services:
   serving:
-    ports:
-      - 8500:8500
     build:
       context: .
       target: develop
@@ -25,6 +23,9 @@ services:
      args:
       UID: ${UID}
       GID: ${GID}
+      GRPC_URL: ${GRPC_URL}
+      HTTP_URL: ${HTTP_URL}
+      TMPL_URL: ${HTTP_URL}
     user: "devuser"
     command: ["sleep", "infinity"]
     working_dir: /workspace/dlomix-serving
@@ -47,32 +48,11 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     command: [nginx-debug, '-g', 'daemon off;']
 
-  swagger_gen:
-    build:
-      context: .
-      target: swagger-gen
-    depends_on: 
-      serving:
-        condition: service_healthy
-    environment:
-      TRITON_SERVER_IP: "10.152.171.77"
-    volumes:
-      - ./:/workspace
-    command:
-      - /bin/sh
-      - -c
-      - |
-        cd /workspace/swagger
-        python swagger_gen.py
-
   swagger:
     build:
       context: .
       target: swagger-dlomix
     ports:
-      - 8080:8080
-    depends_on:
-      swagger_gen:
-        condition: service_completed_successfully
+      - 8503:8080
     volumes:
       - ./:/workspace
