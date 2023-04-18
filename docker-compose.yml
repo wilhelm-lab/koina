@@ -12,41 +12,42 @@ services:
           devices:
             - driver: nvidia
               count: 1
-              capabilities: [gpu]
+              capabilities: [ gpu ]
     shm_size: 2GB
     restart: unless-stopped
 
   develop:
     build:
-     context: .
-     target: util
-     args:
-      UID: ${UID}
-      GID: ${GID}
-      GRPC_URL: ${GRPC_URL}
-      HTTP_URL: ${HTTP_URL}
-      TMPL_URL: ${HTTP_URL}
+      context: .
+      target: util
+      args:
+        UID: ${UID}
+        GID: ${GID}
+        GRPC_URL: ${GRPC_URL}
+        HTTP_URL: ${HTTP_URL}
+        TMPL_URL: ${HTTP_URL}
     user: "devuser"
-    command: ["sleep", "infinity"]
+    command: [ "sleep", "infinity" ]
     working_dir: /workspace/dlomix-serving
     volumes:
-     - .:/workspace/dlomix-serving:Z
+      - .:/workspace/dlomix-serving:Z
     depends_on:
       serving:
         condition: service_healthy
     env_file:
-     - .env
+      - .env
 
   reverse-proxy:
     image: nginx
     depends_on:
       serving:
-          condition: service_healthy
+        condition: service_healthy
     ports:
       - 8502:8502
+      - 8504:8504
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-    command: [nginx-debug, '-g', 'daemon off;']
+      - ./nginx:/etc/nginx:ro
+    command: [ nginx-debug, '-g', 'daemon off;' ]
 
   swagger:
     build:
