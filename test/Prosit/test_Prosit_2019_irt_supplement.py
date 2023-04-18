@@ -17,7 +17,7 @@ def test_available_grpc():
 
 
 def test_inference():
-    seq = np.load(f"test/Prosit/arr_Prosit_2019_intensity_seq.npy")
+    seq = np.load("test/Prosit/arr_Prosit_2019_intensity_seq.npy")
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
@@ -32,13 +32,13 @@ def test_inference():
         ],
     )
 
-    intensities = result.as_numpy("prediction/BiasAdd:0")
+    irt = result.as_numpy("prediction/BiasAdd:0")
 
-    assert intensities.shape == (5, 1)
+    assert irt.shape == (5, 1)
 
     assert np.allclose(
-        intensities,
-        np.load(f"test/Prosit/arr_{MODEL_NAME}_raw.npy"),
+        irt,
+        np.load("test/Prosit/arr_Prosit_2019_irt_supplement_raw.npy"),
         rtol=0,
         atol=1e-5,
     )
