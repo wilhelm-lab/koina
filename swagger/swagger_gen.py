@@ -132,7 +132,7 @@ def generate_input_create_boilerplate(model):
         logging.info(input_data_type)
         logging.info(type(input_data_type))
         code = ""
-        code = """input{index} = np.array([{example} for i in range(0,{shape})],dtype={type}) <br>""".format(
+        code = """input{index} = np.array({example},dtype={type}) <br>""".format(
             index=i,
             example=input_data,
             shape=input_shape[1],

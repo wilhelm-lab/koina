@@ -9,7 +9,7 @@ examples:
     [
       {
           "name": "proforma_ensemble",
-          "shape": [1,2],
+          "shape": [2,1],
           "datatype": "BYTES",
           "data": [["ACDEK/2"], ["AAAAAAAAAAAAA/3"]]
       }

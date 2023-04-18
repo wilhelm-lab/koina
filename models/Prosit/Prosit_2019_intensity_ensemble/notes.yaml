@@ -11,18 +11,18 @@ examples:
           "name": "precursor_charge_in_int:0",
           "shape": [1, 1],
           "datatype": "INT32",
-          "data": [1]
+          "data": [[1]]
       },
       {
           "name": "peptides_in_str:0",
           "shape": [1, 1],
           "datatype": "BYTES",
-          "data": ["AAAAAKAK"]
+          "data": [["AAAAAKAK"]]
       },
       {
           "name": "collision_energy_in:0",
           "shape": [1,1],
           "datatype": "FP32",
-          "data": [25]
+          "data": [[25]]
       }
     ]
