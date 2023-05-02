@@ -1,4 +1,4 @@
-# dlomix-serving
+# Koina
 
 ## Accessing a public server
 ### curl
@@ -39,6 +39,7 @@ After installing the dependencies you can pull the docker image and run it with.
 docker run \
     --gpus all \
     --shm-size 2G \
+    --name koina \
     -p 8500:8500 \
     -p 8501:8501 \
     -d \
@@ -54,7 +55,7 @@ docker run \
 3. Clone the repo
 4. Download existing models with `./getModels.sh`
 5. Update `.env` with your user- and group-id to avoid file permission issues 
-6. Start the server with `docker-compose up`
+6. Start the server with `docker-compose up -d serving`
 
 ### Import model files
 This step depends on what framework you used to train your model.
