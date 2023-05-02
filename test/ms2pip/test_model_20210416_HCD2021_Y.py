@@ -1,9 +1,10 @@
 from server_config import SERVER_GRPC, SERVER_HTTP
 import tritonclient.grpc as grpcclient
-import numpy as np
+from pathlib import Path
 import requests
 
-MODEL_NAME = "model_20210416_HCD2021_Y"
+# To ensure MODEL_NAME == test_<filename>.py
+MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
 
 def test_available_http():
