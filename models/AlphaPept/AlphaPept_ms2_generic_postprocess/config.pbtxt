@@ -1,6 +1,4 @@
-name: "AlphaPept_ms2_generic_postprocess"
 max_batch_size: 7000
-backend: "python"
 
 input[
   {

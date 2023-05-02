@@ -1,4 +1,3 @@
-name: "Deeplc_Triton_ensemble_pre"
 max_batch_size: 10
 platform: "ensemble"
 input [

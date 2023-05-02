@@ -1,6 +1,4 @@
-name: "Deeplc_Preprocess_peptide_length"
 max_batch_size: 10
-backend: "python"
 input[
  {
    name: 'stripped_peptide',

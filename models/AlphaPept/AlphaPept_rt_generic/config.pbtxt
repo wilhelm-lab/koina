@@ -1,4 +1,3 @@
-name: "AlphaPept_rt_generic"
 platform: "pytorch_libtorch"
 max_batch_size: 7000
 input[

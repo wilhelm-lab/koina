@@ -1,6 +1,4 @@
-name: "AlphaPept_Preprocess_ProForma"
 max_batch_size: 7000
-backend: "python"
 input[
  {
    name: 'peptides_in_str:0',

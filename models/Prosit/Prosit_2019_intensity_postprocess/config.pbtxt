@@ -1,6 +1,4 @@
-name: "Prosit_2019_intensity_postprocess"
 max_batch_size: 7000
-backend: "python"
 
 input[
   {
