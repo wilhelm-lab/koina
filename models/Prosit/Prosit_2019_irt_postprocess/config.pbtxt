@@ -1,0 +1,18 @@
+name: "Prosit_2019_irt_postprocess"
+max_batch_size: 7000
+backend: "python"
+
+input[
+  {
+   name: 'in/irt_raw',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+]
+output [
+ {
+   name: 'out/irt_norm',
+   data_type: TYPE_FP32,
+   dims: [1]
+ }
+]

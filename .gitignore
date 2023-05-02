@@ -1,11 +1,14 @@
 # Pyton models
-*pyc
+*.pyc
 
 # PyTorch model
-*pt
+*.pt
 
 # Tensorflow model
 **model.savedmodel
 
 # Xgboost model
 **xgboost.json
+
+# Hide private models
+**privatemodelrepo
