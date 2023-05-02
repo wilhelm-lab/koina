@@ -6,7 +6,7 @@ FROM develop AS prod
 ADD ./models  /models
 CMD [ "/models/start_triton_server.sh" ]
 
-FROM python:3.8.16-slim AS util
+FROM nvcr.io/nvidia/tritonserver:22.09-py3-sdk AS util
 RUN pip install -U pip pytest pylint tritonclient[all] requests black jupyter ms2pip psm-utils pandas
 RUN apt-get update
 RUN apt-get install git vim curl -y
