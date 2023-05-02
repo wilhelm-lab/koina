@@ -28,9 +28,9 @@ services:
         TMPL_URL: ${HTTP_URL}
     user: "devuser"
     command: [ "sleep", "infinity" ]
-    working_dir: /workspace/dlomix-serving
+    working_dir: /workspace/
     volumes:
-      - .:/workspace/dlomix-serving:Z
+      - .:/workspace/:Z
     depends_on:
       serving:
         condition: service_healthy

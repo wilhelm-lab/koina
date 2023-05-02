@@ -12,7 +12,7 @@ RUN apt-get update
 RUN apt-get install git vim curl -y
 RUN echo '#!/bin/bash\npylint --recursive=y test models $@' > /usr/local/bin/lint
 RUN chmod +x /usr/local/bin/lint
-ARG UID=1001 # 1001 is the default if you build it with docker-compose it automatically sets it to your UID
+ARG UID=1001
 ARG GID=1001 
 RUN groupadd -g $GID devuser
 RUN useradd -ms /bin/bash devuser -u $UID -g $GID
