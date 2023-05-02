@@ -1,4 +1,4 @@
-from server_config import SERVER_GRPC, SERVER_HTTP
+from test.server_config import SERVER_GRPC, SERVER_HTTP
 import tritonclient.grpc as grpcclient
 import numpy as np
 from pathlib import Path

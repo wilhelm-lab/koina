@@ -1,5 +1,5 @@
 import requests
-from server_config import SERVER_HTTP, SERVER_GRPC
+from test.server_config import SERVER_HTTP, SERVER_GRPC
 import tritonclient.grpc as grpcclient
 
 
