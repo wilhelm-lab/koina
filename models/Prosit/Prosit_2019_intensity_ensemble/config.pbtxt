@@ -57,7 +57,7 @@ ensemble_scheduling {
       }
     },
     {
-      model_name: "Prosit_2019_intensity"
+      model_name: "Prosit_2019_intensity_core"
       model_version: 1
       input_map {
         key: "peptides_in:0"
