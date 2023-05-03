@@ -43,7 +43,7 @@ docker run \
     -p 8500:8500 \
     -p 8501:8501 \
     -d \
-    ghcr.io/wilhelm-lab/dlomix-serving:latest
+    ghcr.io/wilhelm-lab/koina:latest
 ```
 
 ## Adding your own model
