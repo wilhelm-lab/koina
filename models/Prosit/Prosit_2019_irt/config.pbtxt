@@ -30,7 +30,7 @@ ensemble_scheduling {
       }
     },
     {
-      model_name: "Prosit_2019_irt"
+      model_name: "Prosit_2019_irt_core"
       model_version: 1
       input_map {
         key: "sequence_integer"
