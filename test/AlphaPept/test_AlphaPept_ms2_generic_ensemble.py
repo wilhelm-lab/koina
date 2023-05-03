@@ -8,6 +8,7 @@ from pathlib import Path
 # To ensure MODEL_NAME == test_<filename>.py
 MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
+
 def test_available_http():
     req = requests.get(f"{SERVER_HTTP}/v2/models/{MODEL_NAME}", timeout=1)
     assert req.status_code == 200
