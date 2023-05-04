@@ -60,9 +60,9 @@ def test_inference():
     assert intensities.shape == fragmentmz.shape == (4, 44)
 
     # Assert intensities consistent
-    # assert np.allclose(
-    #     intensities,
-    #     np.load("test/AlphaPept/arr_AlphaPept_ms2_raw.npy"),
-    #     rtol=0,
-    #     atol=1e-5,
-    # )
+    assert np.allclose(
+        intensities,
+        np.load("test/AlphaPept/arr_AlphaPept_ms2_int_norm.npy"),
+        rtol=0,
+        atol=1e-5,
+    )
