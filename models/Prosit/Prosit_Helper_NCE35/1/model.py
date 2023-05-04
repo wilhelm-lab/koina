@@ -2,6 +2,7 @@ import triton_python_backend_utils as pb_utils
 import numpy as np
 import json
 
+
 class TritonPythonModel:
     def initialize(self, args):
         self.model_config = json.loads(args["model_config"])
@@ -19,9 +20,7 @@ class TritonPythonModel:
 
             charge_in_raw = charge_in_raw.astype(self.output_dtype)
             charge_in_raw.fill(0.35)
-            t = pb_utils.Tensor(
-                "collision_energy_in:0", charge_in_raw
-            )
+            t = pb_utils.Tensor("collision_energy_in:0", charge_in_raw)
             responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
         return responses
 

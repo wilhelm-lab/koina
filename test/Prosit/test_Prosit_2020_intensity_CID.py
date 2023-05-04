@@ -31,7 +31,7 @@ def test_inference():
     )
 
     charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.int32)
-    
+
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
     in_pep_seq = grpcclient.InferInput("peptides_in_str:0", [5, 1], "BYTES")

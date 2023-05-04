@@ -17,6 +17,7 @@ def test_available_grpc():
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
     assert triton_client.is_model_ready(MODEL_NAME)
 
+
 def test_inference():
     seq = np.load("test/Prosit/arr_Prosit_2019_intensity_seq.npy")
     charge = np.load("test/Prosit/arr_Prosit_2019_intensity_charge.npy")
