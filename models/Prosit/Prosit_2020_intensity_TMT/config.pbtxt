@@ -1,0 +1,113 @@
+max_batch_size: 7000
+platform: "ensemble"
+input [
+  {
+   name: 'peptides_in_str:0',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+    name: 'precursor_charge_in_int:0',
+    data_type: TYPE_INT32,
+    dims: [1],
+  },
+  {
+    name: 'collision_energy_in:0',
+    data_type: TYPE_FP32,
+    dims: [1],
+  },
+  {
+    name: 'fragmentation_type_in:0',
+    data_type: TYPE_FP32,
+    dims: [1],
+  }
+]
+output [
+  {
+   name: 'out/Reshape:1',
+   data_type: TYPE_FP32,
+   dims: [174]
+  },
+ {
+   name: 'out/Reshape:2',
+   data_type: TYPE_FP32,
+   dims: [174]
+ }
+]
+
+ensemble_scheduling {
+  step [
+     {
+      model_name: "Prosit_Preprocess_charge"
+      model_version: 1
+      input_map {
+        key: "precursor_charge_in_int:0"
+        value: "precursor_charge_in_int:0"
+      },
+      output_map {
+        key: "precursor_charge_in:0"
+        value: "precursor_charge_in_preprocessed:0"
+      }
+    },
+    {
+      model_name: "Prosit_Preprocess_peptide"
+      model_version: 1
+      input_map {
+        key: "peptides_in_str:0"
+        value: "peptides_in_str:0"
+      },
+      output_map {
+        key: "peptides_in:0"
+        value: "peptides_in:0"
+      }
+    },
+    {
+      model_name: "Prosit_2020_intensity_TMT_core"
+      model_version: 1
+      input_map {
+        key: "peptides_in:0"
+        value: "peptides_in:0"
+      },
+      input_map {
+        key: "collision_energy_in:0"
+        value: "collision_energy_in:0"
+      },
+      input_map {
+        key: "precursor_charge_in:0"
+        value: "precursor_charge_in_preprocessed:0"
+      }
+      input_map {
+        key: "fragmentation_type_in:0"
+        value: "fragmentation_type_in:0"
+      }
+      output_map {
+        key: "out/Reshape:0"
+        value: "out/Reshape:0"
+      }
+    },
+    {
+      model_name: "Prosit_2019_intensity_postprocess"
+      model_version: 1
+      input_map {
+        key: "peptides_in:0"
+        value: "peptides_in_str:0"
+      },
+      input_map{
+        key: "precursor_charge_in:0"
+        value: "precursor_charge_in_preprocessed:0"
+      }
+      input_map{
+        key: "peaks_in:0",
+        value: "out/Reshape:0"
+      }
+      output_map {
+        key: "out/Reshape:1"
+        value: "out/Reshape:1"
+      }
+      output_map {
+        key: "out/Reshape:2"
+        value: "out/Reshape:2"
+      }
+    }
+  ]
+}
