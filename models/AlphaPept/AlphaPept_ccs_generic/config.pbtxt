@@ -1,0 +1,74 @@
+max_batch_size: 7000
+platform: "ensemble"
+input [
+  {
+   name: 'peptides_in_str:0',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+    name: 'precursor_charge_in_int:0',
+    data_type: TYPE_INT32,
+    dims: [1],
+  }
+]
+output [
+  {
+   name: 'out/ccs',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+]
+
+ensemble_scheduling {
+  step [
+     {
+      model_name: "AlphaPept_Preprocess_ProForma"
+      model_version: 1
+      input_map {
+        key: "peptides_in_str:0"
+        value: "peptides_in_str:0"
+      },
+      output_map {
+        key: "encoded_seq:0"
+        value: "encoded_seq"
+      },
+      output_map {
+        key: "encoded_mod_feature:0"
+        value: "encoded_mod_features"
+      }
+    },
+    {
+      model_name: "AlphaPept_Preprocess_charge"
+      model_version: 1
+      input_map {
+        key: "charge_raw"
+        value: "precursor_charge_in_int:0"
+      },
+      output_map {
+        key: "charge_norm"
+        value: "charge_norm"
+      }
+    },
+    {
+      model_name: "AlphaPept_ccs_generic_core"
+      model_version: 1
+      input_map {
+        key: "aa_indices__0"
+        value: "encoded_seq"
+      },
+      input_map {
+        key: "mod_x__1"
+        value: "encoded_mod_features"
+      },
+      input_map {
+        key: "charges__2"
+        value: "charge_norm"
+      }
+      output_map {
+        key: "output__0"
+        value: "out/ccs"
+      }
+    }
+  ]
+}
