@@ -9,7 +9,7 @@ CMD [ "/models/start_triton_server.sh" ]
 FROM nvcr.io/nvidia/tritonserver:22.09-py3-sdk AS util
 RUN pip install -U pip pytest pylint tritonclient[all] requests black jupyter ms2pip psm-utils pandas jinja2 PyYAML
 RUN apt-get update
-RUN apt-get install git vim curl -y
+RUN apt-get install git vim curl ripgrep -y
 RUN echo '#!/bin/bash\npylint --recursive=y test models $@' > /usr/local/bin/lint
 RUN chmod +x /usr/local/bin/lint
 ARG UID=1001
