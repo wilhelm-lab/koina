@@ -3,9 +3,9 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    server_url = "serving:8501"
-    model_name = "AlphaPept_ms2_generic_ensemble"
-    out_layer = "out/Reshape:0"
+    server_url = "serving:8500"
+    model_name = "AlphaPept_ms2_generic"
+    out_layer = "intensities"
     # model_name = "AlphaPept_Preprocess_ProForma"
     # out_layer = 'encoded_seq:0'
     batch_size = 100

@@ -6,15 +6,15 @@ if __name__ == "__main__":
     server_url = "serving:8500"
     model_name = "fragment_mz"
     batch_size = 100
-    out_layer = "fragment_mz"
+    out_layer = "output_fragmentmz"
     inputs = []
     outputs = []
 
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
-    inputs.append(grpcclient.InferInput("ProForma", [batch_size, 1], "BYTES"))
+    inputs.append(grpcclient.InferInput("ProForma", [batch_size], "BYTES"))
     peptide_seq_in = np.array(
-        [["A" * 120] for _ in range(0, batch_size)], dtype=np.object_
+        ["A" * 120 for _ in range(0, batch_size)], dtype=np.object_
     )
     inputs[-1].set_data_from_numpy(peptide_seq_in)
 

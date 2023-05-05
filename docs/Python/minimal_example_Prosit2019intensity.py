@@ -4,9 +4,9 @@ import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
     server_url = "serving:8500"
-    model_name = "Prosit_2019_intensity_ensemble"
-    out_layer1 = "out/Reshape:1"
-    out_layer2 = "out/Reshape:2"
+    model_name = "Prosit_2019_intensity"
+    out_layer1 = "intensities"
+    out_layer2 = "mz"
     batch_size = 5
     inputs = []
 

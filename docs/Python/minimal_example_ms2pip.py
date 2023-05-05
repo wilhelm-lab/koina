@@ -3,8 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    # server_url = 'localhost:8500'
-    server_url = "eubic2023.external.msaid.io:8500"
+    server_url = "serving:8500"
     model_name = "ms2pip_ensemble"
     out_layer = "model_20210416_HCD2021_B_output"
     peptides = [["ACDEK/2"], ["AAAAAAAAAAAAA/3"]]

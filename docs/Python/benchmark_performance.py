@@ -3,8 +3,8 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    server_url = "localhost:8500"
-    model_name = "AlphaPept_ms2_generic_ensemble"
+    server_url = "serving:8500"
+    model_name = "AlphaPept_ms2_generic"
     out_layer = "out/Reshape:0"
     batch_size = 7000
     inputs = []

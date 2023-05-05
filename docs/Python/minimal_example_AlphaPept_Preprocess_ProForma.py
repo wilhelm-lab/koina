@@ -3,7 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    server_url = "213.239.214.190:8504"
+    server_url = "serving:8500"
     model_name = "AlphaPept_Preprocess_ProForma"
     out_layer = "encoded_mod_feature:0"
     batch_size = 100

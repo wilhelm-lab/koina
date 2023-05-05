@@ -2,9 +2,9 @@ import numpy as np
 import time
 import tritonclient.grpc as grpcclient
 
-server_url = "eubic2023.external.msaid.io:8500"
-model_name_ms = "Prosit_2019_intensity_triton"
-out_layer_ms = "out/Reshape:1"
+server_url = "serving:8500"
+model_name_ms = "Prosit_2019_intensity"
+out_layer_ms = "intensities"
 inputs_ms = []
 outputs_ms = []
 
