@@ -1,7 +1,7 @@
 max_batch_size: 7000
 input[
  {
-   name: 'peptides_in_str:0',
+   name: 'peptide_sequences',
    data_type: TYPE_STRING,
    dims: [-1]
  }

@@ -8,19 +8,19 @@ examples:
   input: |
     [
       {
-          "name": "precursor_charge_in_int:0",
+          "name": "precursor_charge",
           "shape": [1, 1],
           "datatype": "INT32",
           "data": [[1]]
       },
       {
-          "name": "peptides_in_str:0",
+          "name": "peptide_sequences",
           "shape": [1, 1],
           "datatype": "BYTES",
           "data": [["AAAAAKAK"]]
       },
       {
-          "name": "collision_energy_in:0",
+          "name": "collision_energies",
           "shape": [1,1],
           "datatype": "FP32",
           "data": [[25]]

@@ -8,7 +8,7 @@ examples:
   input: |
     [
       {
-          "name": "peptides_in_str:0",
+          "name": "peptide_sequences",
           "shape": [1,4],
           "datatype": "BYTES",
           "data": [["LGGNEQVTR"], ["GAGSSEPVTGLDAK"], ["VEATFGVDESNAK"], ["LFLQFGAQGSPFLK"]]

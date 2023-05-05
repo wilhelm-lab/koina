@@ -1,7 +1,7 @@
 max_batch_size: 7000
 input[
  {
-   name: 'precursor_charge_in_int:0',
+   name: 'precursor_charge',
    data_type: TYPE_INT32,
    dims: [1]
  }

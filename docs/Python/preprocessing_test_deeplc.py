@@ -13,7 +13,7 @@ if __name__ == "__main__":
 
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
-    inputs.append(grpcclient.InferInput("peptides_in_str:0", [4, 1], "BYTES"))
+    inputs.append(grpcclient.InferInput("peptide_sequences", [4, 1], "BYTES"))
 
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.

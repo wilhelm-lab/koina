@@ -27,7 +27,7 @@ def test_inference():
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("peptides_in_str:0", SEQUENCES.shape, "BYTES")
+    in_pep_seq = grpcclient.InferInput("peptide_sequences", SEQUENCES.shape, "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
     result = triton_client.infer(

@@ -2,7 +2,7 @@ max_batch_size: 7000
 platform: "ensemble"
 input [
   {
-   name: 'in/proforma',
+   name: 'peptide_sequences',
    data_type: TYPE_STRING,
    dims: [-1]
   }
@@ -21,8 +21,8 @@ ensemble_scheduling {
       model_name: "Prosit_Preprocess_peptide"
       model_version: 1
       input_map {
-        key: "peptides_in_str:0"
-        value: "in/proforma"
+        key: "peptide_sequences"
+        value: "peptide_sequences"
       },
       output_map {
         key: "peptides_in:0"

@@ -28,7 +28,7 @@ class TritonPythonModel:
         peptide_in_str = []
         responses = []
         for request in requests:
-            peptide_in = pb_utils.get_input_tensor_by_name(request, "peptides_in_str:0")
+            peptide_in = pb_utils.get_input_tensor_by_name(request, "peptide_sequences")
             peptides_ = peptide_in.as_numpy().tolist()
             peptide_in_list = [x[0].decode("utf-8") for x in peptides_]
 

@@ -32,7 +32,7 @@ class TritonPythonModel:
     def execute(self, requests):
         responses = []
         for request in requests:
-            peptide_in = pb_utils.get_input_tensor_by_name(request, "peptides_in_str:0")
+            peptide_in = pb_utils.get_input_tensor_by_name(request, "peptide_sequences")
             peptide_in_list = [
                 x[0].decode("utf-8") for x in peptide_in.as_numpy().tolist()
             ]

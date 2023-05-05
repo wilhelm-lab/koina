@@ -34,7 +34,7 @@ class TritonPythonModel:
         print("Pre-processing of charge is called")
         for request in requests:
             charge_in_raw = pb_utils.get_input_tensor_by_name(
-                request, "precursor_charge_in_int:0"
+                request, "precursor_charge"
             )
             charge_in_flat = sum(charge_in_raw.as_numpy().tolist(), [])
             charge_in = to_on_hot(charge_in_flat)

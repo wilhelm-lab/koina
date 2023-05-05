@@ -35,13 +35,13 @@ def test_inference():
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("peptides_in_str:0", [5, 1], "BYTES")
+    in_pep_seq = grpcclient.InferInput("peptide_sequences", [5, 1], "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
-    in_charge = grpcclient.InferInput("precursor_charge_in_int:0", [5, 1], "INT32")
+    in_charge = grpcclient.InferInput("precursor_charge", [5, 1], "INT32")
     in_charge.set_data_from_numpy(charge)
 
-    in_ces = grpcclient.InferInput("collision_energy_in:0", [5, 1], "FP32")
+    in_ces = grpcclient.InferInput("collision_energies", [5, 1], "FP32")
     in_ces.set_data_from_numpy(ces)
 
     result = triton_client.infer(

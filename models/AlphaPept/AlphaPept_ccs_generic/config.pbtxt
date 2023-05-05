@@ -2,12 +2,12 @@ max_batch_size: 7000
 platform: "ensemble"
 input [
   {
-   name: 'peptides_in_str:0',
+   name: 'peptide_sequences',
    data_type: TYPE_STRING,
    dims: [-1]
   },
   {
-    name: 'precursor_charge_in_int:0',
+    name: 'precursor_charge',
     data_type: TYPE_INT32,
     dims: [1],
   }
@@ -26,8 +26,8 @@ ensemble_scheduling {
       model_name: "AlphaPept_Preprocess_ProForma"
       model_version: 1
       input_map {
-        key: "peptides_in_str:0"
-        value: "peptides_in_str:0"
+        key: "peptide_sequences"
+        value: "peptide_sequences"
       },
       output_map {
         key: "encoded_seq:0"
@@ -43,7 +43,7 @@ ensemble_scheduling {
       model_version: 1
       input_map {
         key: "charge_raw"
-        value: "precursor_charge_in_int:0"
+        value: "precursor_charge"
       },
       output_map {
         key: "charge_norm"
