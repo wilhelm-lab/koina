@@ -41,11 +41,11 @@ def test_inference():
         MODEL_NAME,
         inputs=[in_pep_seq, in_charge],
         outputs=[
-            grpcclient.InferRequestedOutput("out/ccs")
+            grpcclient.InferRequestedOutput("ccs")
         ],
     )
 
-    ccs = result.as_numpy("out/ccs")
+    ccs = result.as_numpy("ccs")
 
     # Assert intensities consistent
     assert np.allclose(

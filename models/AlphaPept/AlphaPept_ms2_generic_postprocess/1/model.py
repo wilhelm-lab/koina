@@ -15,7 +15,7 @@ class TritonPythonModel:
         print("Preprocessing of the Peptide_input")
         model_config = json.loads(args["model_config"])
         output0_config = pb_utils.get_output_config_by_name(
-            model_config, "out/Reshape:1"
+            model_config, "intensities"
         )
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
 
@@ -37,8 +37,8 @@ class TritonPythonModel:
             peaks_norm = self.normalize_intensity(peaks_in)
 
             output_tensors = [
-                pb_utils.Tensor("out/Reshape:1", peaks_norm.astype(self.output_dtype)),
-                pb_utils.Tensor("out/Reshape:2", fragmentmz.astype(self.output_dtype)),
+                pb_utils.Tensor("intensities", peaks_norm.astype(self.output_dtype)),
+                pb_utils.Tensor("mz", fragmentmz.astype(self.output_dtype)),
             ]
 
             responses.append(pb_utils.InferenceResponse(output_tensors=output_tensors))

@@ -39,11 +39,11 @@ def test_inference():
         MODEL_NAME,
         inputs=[in_pep_seq],
         outputs=[
-            grpcclient.InferRequestedOutput("out/irt"),
+            grpcclient.InferRequestedOutput("irt"),
         ],
     )
 
-    irt = result.as_numpy("out/irt")
+    irt = result.as_numpy("irt")
 
     assert irt.shape == (5, 1)
 

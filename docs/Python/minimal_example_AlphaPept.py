@@ -3,7 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    server_url = "localhost:8504"
+    server_url = "serving:8501"
     model_name = "AlphaPept_ms2_generic_ensemble"
     out_layer = "out/Reshape:0"
     # model_name = "AlphaPept_Preprocess_ProForma"
@@ -22,7 +22,7 @@ if __name__ == "__main__":
         grpcclient.InferInput("precursor_charge", [batch_size, 1], "INT32")
     )
     inputs.append(
-        grpcclient.InferInput("instrument_type", [batch_size, 1], "INT64")
+        grpcclient.InferInput("instrument_types", [batch_size, 1], "INT64")
     )
 
     # Create the data for the two input tensors. Initialize the first

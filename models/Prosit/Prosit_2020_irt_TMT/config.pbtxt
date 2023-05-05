@@ -9,7 +9,7 @@ input [
 ]
 output [
   {
-   name: 'out/irt',
+   name: 'irt',
    data_type: TYPE_FP32,
    dims: [1]
   }
@@ -38,7 +38,7 @@ ensemble_scheduling {
       },
       output_map {
         key: "prediction/BiasAdd:0"
-        value: "out/irt"
+        value: "irt"
       }
     }
   ]

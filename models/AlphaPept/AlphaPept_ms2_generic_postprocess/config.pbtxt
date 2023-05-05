@@ -14,12 +14,12 @@ input[
 ]
 output [
  {
-   name: 'out/Reshape:1',
+   name: 'intensities',
    data_type: TYPE_FP32,
    dims: [-1]
  },
  {
-   name: 'out/Reshape:2',
+   name: 'mz',
    data_type: TYPE_FP32,
    dims: [-1]
  }

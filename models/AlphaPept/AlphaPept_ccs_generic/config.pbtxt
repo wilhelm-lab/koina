@@ -14,7 +14,7 @@ input [
 ]
 output [
   {
-   name: 'out/ccs',
+   name: 'ccs',
    data_type: TYPE_FP32,
    dims: [1]
   }
@@ -67,7 +67,7 @@ ensemble_scheduling {
       }
       output_map {
         key: "output__0"
-        value: "out/ccs"
+        value: "ccs"
       }
     }
   ]

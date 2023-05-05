@@ -14,12 +14,12 @@ input [
 ]
 output [
   {
-   name: 'out/Reshape:1',
+   name: 'intensities',
    data_type: TYPE_FP32,
    dims: [174]
   },
  {
-   name: 'out/Reshape:2',
+   name: 'mz',
    data_type: TYPE_FP32,
    dims: [174]
  }
@@ -99,12 +99,12 @@ ensemble_scheduling {
         value: "out/Reshape:0"
       }
       output_map {
-        key: "out/Reshape:1"
-        value: "out/Reshape:1"
+        key: "intensities"
+        value: "intensities"
       }
       output_map {
-        key: "out/Reshape:2"
-        value: "out/Reshape:2"
+        key: "mz"
+        value: "mz"
       }
     }
   ]

@@ -20,7 +20,7 @@ if __name__ == "__main__":
         grpcclient.InferInput("precursor_charge", [batch_size, 1], "INT32")
     )
     inputs.append(
-        grpcclient.InferInput("instrument_type", [batch_size, 1], "INT64")
+        grpcclient.InferInput("instrument_types", [batch_size, 1], "INT64")
     )
 
     # Create the data for the two input tensors. Initialize the first

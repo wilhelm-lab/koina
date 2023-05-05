@@ -44,13 +44,13 @@ def test_inference():
         MODEL_NAME,
         inputs=[in_pep_seq, in_charge],
         outputs=[
-            grpcclient.InferRequestedOutput("out/Reshape:1"),
-            grpcclient.InferRequestedOutput("out/Reshape:2"),
+            grpcclient.InferRequestedOutput("intensities"),
+            grpcclient.InferRequestedOutput("mz"),
         ],
     )
 
-    intensities = result.as_numpy("out/Reshape:1")
-    fragmentmz = result.as_numpy("out/Reshape:2")
+    intensities = result.as_numpy("intensities")
+    fragmentmz = result.as_numpy("mz")
 
     assert intensities.shape == (5, 174)
     assert fragmentmz.shape == (5, 174)
