@@ -4,6 +4,7 @@ import numpy as np
 import requests
 from pathlib import Path
 
+
 # To ensure MODEL_NAME == test_<filename>.py
 MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
@@ -19,32 +20,30 @@ def test_available_grpc():
 
 
 def test_inference():
-    seq = np.load("test/AlphaPept/arr_AlphaPept_rt_aa.npy")
-    mod = np.load("test/AlphaPept/arr_AlphaPept_rt_mod.npy")
+    SEQUENCES = np.array(
+        [["TPVISGGPYEYR"], ["TPVITGAPYEYR"], ["GTFIIDPGGVIR"], ["GTFIIDPAAVIR"]],
+        dtype=np.object_,
+    )
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("aa_indices__0", seq.shape, "INT64")
-    in_pep_seq.set_data_from_numpy(seq)
-
-    in_mod = grpcclient.InferInput("mod_x__1", mod.shape, "FP32")
-    in_mod.set_data_from_numpy(mod)
+    in_pep_seq = grpcclient.InferInput("peptides_in_str:0", SEQUENCES.shape, "BYTES")
+    in_pep_seq.set_data_from_numpy(SEQUENCES)
 
     result = triton_client.infer(
         MODEL_NAME,
-        inputs=[in_pep_seq, in_mod],
+        inputs=[in_pep_seq],
         outputs=[
-            grpcclient.InferRequestedOutput("output__0"),
+            grpcclient.InferRequestedOutput("irt")
         ],
     )
 
-    rt = result.as_numpy("output__0")
+    irt = result.as_numpy("irt")
 
-    assert rt.shape == (4,1)
-
+    # Assert intensities consistent
     assert np.allclose(
-        rt,
-        np.load("test/AlphaPept/arr_AlphaPept_rt_raw.npy").reshape((4,1)),
+        irt,
+        np.load("test/AlphaPept/arr_AlphaPept_irt.npy").reshape((4,1)),
         rtol=0,
-        atol=1e-5,
+        atol=1e-4,
     )

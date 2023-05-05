@@ -1,0 +1,65 @@
+max_batch_size: 7000
+platform: "ensemble"
+input [
+  {
+   name: 'peptides_in_str:0',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  }
+]
+output [
+  {
+   name: 'irt',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+]
+
+ensemble_scheduling {
+  step [
+     {
+      model_name: "AlphaPept_Preprocess_ProForma"
+      model_version: 1
+      input_map {
+        key: "peptides_in_str:0"
+        value: "peptides_in_str:0"
+      },
+      output_map {
+        key: "encoded_seq:0"
+        value: "encoded_seq"
+      },
+      output_map {
+        key: "encoded_mod_feature:0"
+        value: "encoded_mod_features"
+      }
+    },
+    {
+      model_name: "AlphaPept_rt_generic_core"
+      model_version: 1
+      input_map {
+        key: "aa_indices__0"
+        value: "encoded_seq"
+      },
+      input_map {
+        key: "mod_x__1"
+        value: "encoded_mod_features"
+      }
+      output_map {
+        key: "output__0"
+        value: "rt_raw"
+      }
+    },
+    {
+      model_name: "AlphaPept_rt_generic_postprocess"
+      model_version: 1
+      input_map {
+        key: "rt_raw"
+        value: "rt_raw"
+      },
+      output_map {
+        key: "irt"
+        value: "irt"
+      }
+    }
+  ]
+}
