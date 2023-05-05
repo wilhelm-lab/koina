@@ -5,17 +5,16 @@
 Here is an example http request using only curl sending a POST request to with a json body.
 
 ```
-curl -X POST "http://eubic2023.external.msaid.io:8501/v2/models/Prosit_2019_intensity_ensemble/infer" \
+curl "http://eubic2023.external.msaid.io:8501/v2/models/Prosit_2019_intensity/infer" \
  --data-raw '
 {
   "id": "LGGNEQVTR_GAGSSEPVTGLDAK",
   "inputs": [
-    {"name": "peptides_in_str:0",         "shape": [2,1], "datatype": "BYTES", "data": ["LGGNEQVTR","GAGSSEPVTGLDAK"]},
-    {"name": "collision_energy_in:0",     "shape": [2,1], "datatype": "FP32",  "data": [25,25]},
-    {"name": "precursor_charge_in_int:0", "shape": [2,1], "datatype": "INT32", "data": [1,2]}
+    {"name": "peptide_sequences",   "shape": [2,1], "datatype": "BYTES", "data": ["LGGNEQVTR","GAGSSEPVTGLDAK"]},
+    {"name": "collision_energies",  "shape": [2,1], "datatype": "FP32",  "data": [25,25]},
+    {"name": "precursor_charge",    "shape": [2,1], "datatype": "INT32", "data": [1,2]}
   ]
-}
-'
+}'
 ```
 
 
