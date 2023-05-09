@@ -17,10 +17,7 @@ class MinimalMS2PIP:
         self.peptideArray = np.array(
             [0] + [AMINO_ACID_IDS[x] for x in self.peptide] + [0], dtype=np.uint16
         )
-        self.modification_lists = [
-            "Carbamidomethyl,57.02146,opt,C",
-            "Oxidation,15.994915,opt,M",
-        ]
+        self.modification_lists = []
         self.mod_info = Modifications()
         self.mod_info.modifications = {"ptm": {}, "sptm": {}}
         self.mod_info.add_from_ms2pip_modstrings(self.modification_lists)

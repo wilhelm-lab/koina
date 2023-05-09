@@ -10,9 +10,9 @@ input [
 ]
 output [
   {
-   name: 'model_20210416_HCD2021_B_output',
+   name: 'norm_intensities',
    data_type: TYPE_FP32,
-   dims: [ 1]
+   dims: [29]
   }
 ]
 
@@ -40,6 +40,18 @@ ensemble_scheduling {
       output_map {
         key: "output__0"
         value: "model_20210416_HCD2021_B_output"
+      }
+    },
+     {
+      model_name: "ms2pip_postprocess_single_model"
+      model_version: 1
+      input_map {
+        key: "raw_intensities" 
+        value: "model_20210416_HCD2021_B_output"
+      },
+      output_map {
+        key: "norm_intensities"
+        value: "norm_intensities"
       }
     }
   ]
