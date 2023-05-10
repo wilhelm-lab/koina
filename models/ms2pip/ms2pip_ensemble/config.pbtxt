@@ -10,9 +10,9 @@ input [
 ]
 output [
   {
-   name: 'norm_intensities',
+   name: 'intensities',
    data_type: TYPE_FP32,
-   dims: [29]
+   dims: [58]
   }
 ]
 
@@ -43,6 +43,18 @@ ensemble_scheduling {
       }
     },
      {
+      model_name: "model_20210416_HCD2021_Y"
+      model_version: 1
+      input_map {
+        key: "input__0" 
+        value: "xgboost_input"
+      },
+      output_map {
+        key: "output__0"
+        value: "model_20210416_HCD2021_Y_output"
+      }
+    },
+     {
       model_name: "ms2pip_postprocess_single_model"
       model_version: 1
       input_map {
@@ -51,7 +63,35 @@ ensemble_scheduling {
       },
       output_map {
         key: "norm_intensities"
-        value: "norm_intensities"
+        value: "norm_intensities_b"
+      }
+    },
+     {
+      model_name: "ms2pip_postprocess_single_model"
+      model_version: 1
+      input_map {
+        key: "raw_intensities" 
+        value: "model_20210416_HCD2021_Y_output"
+      },
+      output_map {
+        key: "norm_intensities"
+        value: "norm_intensities_y"
+      }
+    },
+     {
+      model_name: "ms2pip_postprocess_merge_and_norm"
+      model_version: 1
+      input_map {
+        key: "raw_intensities_y" 
+        value: "norm_intensities_y"
+      },
+      input_map {
+        key: "raw_intensities_b" 
+        value: "norm_intensities_b"
+      },
+      output_map {
+        key: "intensities"
+        value: "intensities"
       }
     }
   ]

@@ -16,9 +16,18 @@ class TritonPythonModel:
         responses = []
         for request in requests:
             peptide_in = pb_utils.get_input_tensor_by_name(request, "raw_intensities")
+
             peptides = 2 ** peptide_in.as_numpy() - 0.001
             logger.log_info(f"peptides.shape {peptides.shape}")
             peptides[peptides < 0] = 0
+
+            peptides[
+                np.isclose(peptides, 0.0024771910736963655)
+            ] = np.nan  # y ion placeholder predictions
+            peptides[
+                np.isclose(peptides, 0.001630736981153869)
+            ] = np.nan  # b ion placeholder predictions
+
             peptides = peptides.reshape((-1, 29))
             logger.log_info(f"peptides.shape {peptides.shape}")
             output_tensors = [
