@@ -40,9 +40,7 @@ def test_inference():
     in_pep_seq = grpcclient.InferInput("peptide_sequences", SEQUENCES.shape, "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
-    in_charge = grpcclient.InferInput(
-        "precursor_charge", charge.shape, "INT32"
-    )
+    in_charge = grpcclient.InferInput("precursor_charge", charge.shape, "INT32")
     in_charge.set_data_from_numpy(charge)
 
     in_ces = grpcclient.InferInput("collision_energies", ces.shape, "FP32")

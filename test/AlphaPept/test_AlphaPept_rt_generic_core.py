@@ -40,11 +40,11 @@ def test_inference():
 
     rt = result.as_numpy("output__0")
 
-    assert rt.shape == (4,1)
+    assert rt.shape == (4, 1)
 
     assert np.allclose(
         rt,
-        np.load("test/AlphaPept/arr_AlphaPept_rt_raw.npy").reshape((4,1)),
+        np.load("test/AlphaPept/arr_AlphaPept_rt_raw.npy").reshape((4, 1)),
         rtol=0,
         atol=1e-5,
     )

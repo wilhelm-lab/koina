@@ -16,12 +16,14 @@ class TritonPythonModel:
         responses = []
         for request in requests:
             peptide_in = pb_utils.get_input_tensor_by_name(request, "raw_intensities")
-            peptides = 2**peptide_in.as_numpy()-0.001
+            peptides = 2 ** peptide_in.as_numpy() - 0.001
             logger.log_info(f"peptides.shape {peptides.shape}")
             peptides[peptides < 0] = 0
-            peptides = peptides.reshape((-1,29))
+            peptides = peptides.reshape((-1, 29))
             logger.log_info(f"peptides.shape {peptides.shape}")
-            output_tensors = [pb_utils.Tensor("norm_intensities", peptides.astype(self.output_dtype))]
+            output_tensors = [
+                pb_utils.Tensor("norm_intensities", peptides.astype(self.output_dtype))
+            ]
             responses.append(pb_utils.InferenceResponse(output_tensors=output_tensors))
         return responses
 

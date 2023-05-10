@@ -25,9 +25,7 @@ class TritonPythonModel:
     def initialize(self, args):
         print("Preprocessing of the Peptide_input")
         model_config = json.loads(args["model_config"])
-        output0_config = pb_utils.get_output_config_by_name(
-            model_config, "intensities"
-        )
+        output0_config = pb_utils.get_output_config_by_name(model_config, "intensities")
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
 
     def execute(self, requests):
@@ -54,9 +52,7 @@ class TritonPythonModel:
             fragmentmz[masked_peaks == -1] = -1  # mask fragmentmz based on masked_peaks
 
             output_tensors = [
-                pb_utils.Tensor(
-                    "intensities", masked_peaks.astype(self.output_dtype)
-                ),
+                pb_utils.Tensor("intensities", masked_peaks.astype(self.output_dtype)),
                 pb_utils.Tensor("mz", fragmentmz.astype(self.output_dtype)),
             ]
 

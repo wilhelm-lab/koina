@@ -33,9 +33,7 @@ def test_inference():
     result = triton_client.infer(
         MODEL_NAME,
         inputs=[in_pep_seq],
-        outputs=[
-            grpcclient.InferRequestedOutput("irt")
-        ],
+        outputs=[grpcclient.InferRequestedOutput("irt")],
     )
 
     irt = result.as_numpy("irt")
@@ -43,7 +41,7 @@ def test_inference():
     # Assert intensities consistent
     assert np.allclose(
         irt,
-        np.load("test/AlphaPept/arr_AlphaPept_irt.npy").reshape((4,1)),
+        np.load("test/AlphaPept/arr_AlphaPept_irt.npy").reshape((4, 1)),
         rtol=0,
         atol=1e-4,
     )

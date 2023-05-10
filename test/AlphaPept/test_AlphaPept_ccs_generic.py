@@ -26,23 +26,19 @@ def test_inference():
     )
 
     charge = np.array([[2] for _ in range(len(SEQUENCES))], dtype=np.int32)
-    
+
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
     in_pep_seq = grpcclient.InferInput("peptide_sequences", SEQUENCES.shape, "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
-    in_charge = grpcclient.InferInput(
-        "precursor_charge", charge.shape, "INT32"
-    )
+    in_charge = grpcclient.InferInput("precursor_charge", charge.shape, "INT32")
     in_charge.set_data_from_numpy(charge)
 
     result = triton_client.infer(
         MODEL_NAME,
         inputs=[in_pep_seq, in_charge],
-        outputs=[
-            grpcclient.InferRequestedOutput("ccs")
-        ],
+        outputs=[grpcclient.InferRequestedOutput("ccs")],
     )
 
     ccs = result.as_numpy("ccs")

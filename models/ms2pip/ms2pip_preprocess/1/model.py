@@ -15,8 +15,7 @@ class TritonPythonModel:
 
     def execute(self, requests):
         responses = []
-        
-        
+
         logger = pb_utils.Logger
         ## every request is up to abatch_size
         for request in requests:
@@ -30,9 +29,9 @@ class TritonPythonModel:
                 inter = ms2.ms2pipInput()
                 logger.log_info(f"inter.shape: {inter.shape}")
                 list_ms2pip_input.append(inter)
-                
+
             more_fun = np.vstack(list_ms2pip_input)
-            
+
             logger.log_info(f"more_fun.shape {more_fun.shape}")
 
             output_tensors = []
