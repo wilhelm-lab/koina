@@ -20,12 +20,17 @@ class TritonPythonModel:
         ## every request is up to abatch_size
         for request in requests:
             peptide_in = pb_utils.get_input_tensor_by_name(request, "proforma")
-            peptides_ = peptide_in.as_numpy().tolist()
+            peptides_ = peptide_in.as_numpy().flatten().tolist()
+
+            charge_in = pb_utils.get_input_tensor_by_name(request, "charge_in")
+            charge_ = charge_in.as_numpy().flatten().tolist()
+            
+
             list_ms2pip_input = []
-            for peptide in peptides_:
-                peptide_in_list = peptide[0].decode("utf-8")
-                logger.log_info(peptide_in_list)
-                ms2 = MinimalMS2PIP(peptide_in_list)
+            for peptide, charge in zip(peptides_, charge_):
+                peptide_in_list = peptide.decode("utf-8")
+                logger.log_info(f"{peptide_in_list} | {charge}")
+                ms2 = MinimalMS2PIP(peptide_in_list, charge)
                 inter = ms2.ms2pipInput()
                 logger.log_info(f"inter.shape: {inter.shape}")
                 list_ms2pip_input.append(inter)

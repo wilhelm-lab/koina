@@ -8,11 +8,14 @@ import numpy as np
 
 
 class MinimalMS2PIP:
-    def __init__(self, proforma: str, maximal_length: int = 30):
-        self.peptidoform = Peptidoform(proforma)
+    def __init__(self, peptide: str, charge: int, maximal_length: int = 30):
+        # self.peptidoform = Peptidoform(proforma)
+        # self.peprec_tuple = proforma_to_peprec(self.peptidoform)
+        # self.peptide, , self.charge = self.peprec_tuple
+        self.modifications = "-" # modifications do not impact intensities
         self.maximal_length = maximal_length
-        self.peprec_tuple = proforma_to_peprec(self.peptidoform)
-        self.peptide, self.modifications, self.charge = self.peprec_tuple
+        self.peptide = peptide
+        self.charge = charge
         self.peptide = self.peptide.upper().replace("L", "I")
         self.peptideArray = np.array(
             [0] + [AMINO_ACID_IDS[x] for x in self.peptide] + [0], dtype=np.uint16

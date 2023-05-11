@@ -6,6 +6,11 @@ input [
    name: 'proforma_ensemble',
    data_type: TYPE_STRING,
    dims: [-1]
+  },
+  {
+   name: 'charges',
+   data_type: TYPE_INT16,
+   dims: [1]
   }
 ]
 output [
@@ -24,6 +29,10 @@ ensemble_scheduling {
       input_map {
         key: "proforma" 
         value: "proforma_ensemble"
+      },
+      input_map {
+        key: "charge_in" 
+        value: "charges"
       },
       output_map {
         key: "xgboost_input"

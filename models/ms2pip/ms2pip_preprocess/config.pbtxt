@@ -6,6 +6,11 @@ input[
    name: 'proforma',
    data_type: TYPE_STRING,
    dims: [-1]
+ },
+ {
+   name: 'charge_in',
+   data_type: TYPE_INT16,
+   dims: [-1]
  }
 ]
 output [

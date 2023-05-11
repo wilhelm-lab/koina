@@ -20,8 +20,13 @@ def test_available_grpc():
 
 def test_inference():
     SEQUENCES = np.array(
-        [["ACDEK/2"], ["ACDEFGK/2"], ["ACDEFGHIKLR/3"], ["ACDEFGHIKLMNPK/3"]],
+        [["ACDEK"], ["ACDEFGK"], ["ACDEFGHIKLR"], ["ACDEFGHIKLMNPK"]],
         dtype=np.object_,
+    )
+
+    CHARGES = np.array(
+        [[2], [2], [3], [3]],
+        dtype=np.int16,
     )
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
@@ -29,9 +34,12 @@ def test_inference():
     in_pep_seq = grpcclient.InferInput("proforma_ensemble", SEQUENCES.shape, "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
+    in_charge = grpcclient.InferInput("charges", CHARGES.shape, "INT16")
+    in_charge.set_data_from_numpy(CHARGES)
+
     result = triton_client.infer(
         MODEL_NAME,
-        inputs=[in_pep_seq],
+        inputs=[in_pep_seq, in_charge],
         outputs=[
             grpcclient.InferRequestedOutput("intensities"),
         ],
