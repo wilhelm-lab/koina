@@ -24,7 +24,6 @@ class TritonPythonModel:
 
             charge_in = pb_utils.get_input_tensor_by_name(request, "charge_in")
             charge_ = charge_in.as_numpy().flatten().tolist()
-            
 
             list_ms2pip_input = []
             for peptide, charge in zip(peptides_, charge_):

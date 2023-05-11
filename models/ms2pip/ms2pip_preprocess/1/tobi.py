@@ -12,7 +12,7 @@ class MinimalMS2PIP:
         # self.peptidoform = Peptidoform(proforma)
         # self.peprec_tuple = proforma_to_peprec(self.peptidoform)
         # self.peptide, , self.charge = self.peprec_tuple
-        self.modifications = "-" # modifications do not impact intensities
+        self.modifications = "-"  # modifications do not impact intensities
         self.maximal_length = maximal_length
         self.peptide = peptide
         self.charge = charge
