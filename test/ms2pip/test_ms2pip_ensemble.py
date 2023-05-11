@@ -20,7 +20,12 @@ def test_available_grpc():
 
 def test_inference():
     SEQUENCES = np.array(
-        [["ACDEK"], ["ACDEFGK"], ["ACDEFGHIKLR"], ["ACDEFGHIKLMNPK"]],
+        [
+            ["ACDEK"],
+            ["ACDEFGK"],
+            ["ACDEFGHI[+367.0537]KLR"],
+            ["ACDEFGHIKLM[UNIMOD:35]NPK"],
+        ],
         dtype=np.object_,
     )
 
