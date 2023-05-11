@@ -36,10 +36,10 @@ def test_inference():
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("proforma_ensemble", SEQUENCES.shape, "BYTES")
+    in_pep_seq = grpcclient.InferInput("peptide_sequences", SEQUENCES.shape, "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
-    in_charge = grpcclient.InferInput("charges", CHARGES.shape, "INT16")
+    in_charge = grpcclient.InferInput("precursor_charge", CHARGES.shape, "INT16")
     in_charge.set_data_from_numpy(CHARGES)
 
     result = triton_client.infer(
@@ -47,12 +47,12 @@ def test_inference():
         inputs=[in_pep_seq, in_charge],
         outputs=[
             grpcclient.InferRequestedOutput("intensities"),
-            grpcclient.InferRequestedOutput("fragmentmz"),
+            grpcclient.InferRequestedOutput("mz"),
         ],
     )
 
     intensities = result.as_numpy("intensities")
-    fragmentmz = result.as_numpy("fragmentmz")
+    fragmentmz = result.as_numpy("mz")
 
     assert intensities.shape == (4, 58)
     assert fragmentmz.shape == (4, 58)

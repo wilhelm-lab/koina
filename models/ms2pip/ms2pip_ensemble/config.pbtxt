@@ -3,12 +3,12 @@ max_batch_size: 500
 platform: "ensemble"
 input [
   {
-   name: 'proforma_ensemble',
+   name: 'peptide_sequences',
    data_type: TYPE_STRING,
    dims: [-1]
   },
   {
-   name: 'charges',
+   name: 'precursor_charge',
    data_type: TYPE_INT16,
    dims: [1]
   }
@@ -20,7 +20,7 @@ output [
    dims: [58]
   },
   {
-   name: 'fragmentmz',
+   name: 'mz',
    data_type: TYPE_FP32,
    dims: [58]
   }
@@ -33,11 +33,11 @@ ensemble_scheduling {
       model_version: 1
       input_map {
         key: "proforma" 
-        value: "proforma_ensemble"
+        value: "peptide_sequences"
       },
       input_map {
         key: "charge_in" 
-        value: "charges"
+        value: "precursor_charge"
       },
       output_map {
         key: "xgboost_input"
@@ -113,11 +113,11 @@ ensemble_scheduling {
       model_version: 1
       input_map {
         key: "peptides_in:0" 
-        value: "proforma_ensemble"
+        value: "peptide_sequences"
       }
       output_map {
         key: "mz"
-        value: "fragmentmz"
+        value: "mz"
       }
     }
   ]
