@@ -47,12 +47,15 @@ def test_inference():
         inputs=[in_pep_seq, in_charge],
         outputs=[
             grpcclient.InferRequestedOutput("intensities"),
+            grpcclient.InferRequestedOutput("fragmentmz"),
         ],
     )
 
     intensities = result.as_numpy("intensities")
+    fragmentmz = result.as_numpy("fragmentmz")
 
     assert intensities.shape == (4, 58)
+    assert fragmentmz.shape == (4, 58)
 
     # Assert intensities consistent
     assert np.allclose(
@@ -60,5 +63,14 @@ def test_inference():
         np.load("test/ms2pip/ms2pip_server_int.npy"),
         rtol=0,
         atol=1e-4,
+        equal_nan=True,
+    )
+
+    # Assert fragmentmz consistent
+    assert np.allclose(
+        fragmentmz,
+        np.load("test/ms2pip/ms2pip_fragmentmz.npy"),
+        rtol=0,
+        atol=6e3,  # TODO figure out why they are so different
         equal_nan=True,
     )

@@ -18,6 +18,11 @@ output [
    name: 'intensities',
    data_type: TYPE_FP32,
    dims: [58]
+  },
+  {
+   name: 'fragmentmz',
+   data_type: TYPE_FP32,
+   dims: [58]
   }
 ]
 
@@ -101,6 +106,18 @@ ensemble_scheduling {
       output_map {
         key: "intensities"
         value: "intensities"
+      }
+    },
+     {
+      model_name: "ms2pip_fragmentmz_wrapper"
+      model_version: 1
+      input_map {
+        key: "peptides_in:0" 
+        value: "proforma_ensemble"
+      }
+      output_map {
+        key: "mz"
+        value: "fragmentmz"
       }
     }
   ]
