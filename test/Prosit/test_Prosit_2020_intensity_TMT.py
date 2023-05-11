@@ -31,7 +31,7 @@ def test_inference():
     )
 
     charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.int32)
-    ces = np.array([[0.25] for _ in range(len(SEQUENCES))], dtype=np.float32)
+    ces = np.array([[25] for _ in range(len(SEQUENCES))], dtype=np.float32)
     frag = np.array([[0] for _ in range(len(SEQUENCES))], dtype=np.float32)
     # frag = np.load("test/Prosit/arr_Prosit_2020_intensityTMT_frag.npy").reshape([5,1])
 

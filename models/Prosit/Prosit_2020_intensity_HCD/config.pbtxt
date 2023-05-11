@@ -57,6 +57,18 @@ ensemble_scheduling {
       }
     },
     {
+      model_name: "Prosit_Preprocess_collision_energy"
+      model_version: 1
+      input_map {
+        key: "raw_collision_energy"
+        value: "collision_energies"
+      },
+      output_map {
+        key: "norm_collision_energy"
+        value: "norm_collision_energy"
+      }
+    },
+    {
       model_name: "Prosit_2020_intensity_HCD_core"
       model_version: 1
       input_map {
@@ -65,7 +77,7 @@ ensemble_scheduling {
       },
       input_map {
         key: "collision_energy_in:0"
-        value: "collision_energies"
+        value: "norm_collision_energy"
       },
       input_map {
         key: "precursor_charge_in:0"
