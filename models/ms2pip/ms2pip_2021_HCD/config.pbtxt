@@ -1,4 +1,4 @@
-name: "ms2pip_ensemble"
+name: "ms2pip_2021_HCD"
 max_batch_size: 500
 platform: "ensemble"
 input [
