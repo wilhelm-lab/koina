@@ -61,4 +61,5 @@ def test_inference():
         np.load("test/Prosit/arr_Prosit_2020_intensity_cid_int.npy"),
         rtol=0,
         atol=1e-5,
+        equal_nan=True,
     )
