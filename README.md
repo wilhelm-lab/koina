@@ -5,7 +5,7 @@
 Here is an example http request using only curl sending a POST request to with a json body.
 
 ```
-curl "http://eubic2023.external.msaid.io:8501/v2/models/Prosit_2019_intensity/infer" \
+curl "http://koina.proteomicsdb.org/v2/models/Prosit_2019_intensity/infer" \
  --data-raw '
 {
   "id": "LGGNEQVTR_GAGSSEPVTGLDAK",
