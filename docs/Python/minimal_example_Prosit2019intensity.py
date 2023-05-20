@@ -13,12 +13,8 @@ if __name__ == "__main__":
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
     inputs.append(grpcclient.InferInput("peptide_sequences", [batch_size, 1], "BYTES"))
-    inputs.append(
-        grpcclient.InferInput("collision_energies", [batch_size, 1], "FP32")
-    )
-    inputs.append(
-        grpcclient.InferInput("precursor_charge", [batch_size, 1], "INT32")
-    )
+    inputs.append(grpcclient.InferInput("collision_energies", [batch_size, 1], "FP32"))
+    inputs.append(grpcclient.InferInput("precursor_charge", [batch_size, 1], "INT32"))
 
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.

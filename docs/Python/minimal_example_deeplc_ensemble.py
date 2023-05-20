@@ -1,6 +1,7 @@
 import numpy as np
 import time
 import tritonclient.grpc as grpcclient
+import pandas as pd
 
 if __name__ == "__main__":
     server_url = "serving:8500"
@@ -12,14 +13,16 @@ if __name__ == "__main__":
 
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
-    inputs.append(grpcclient.InferInput("peptide_sequences", [4, 1], "BYTES"))
+    df = pd.read_csv("docs/Python/example_deeplc_predictions.csv")[:10]
+
+    inputs.append(grpcclient.InferInput("peptide_sequences", [len(df), 1], "BYTES"))
 
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.
     input_141 = np.array(
-        [["ACDEK"], ["ACDEFGK"], ["ACDEFGHIKLR"], ["ACDEFGHIKLMNPK"]],
+        df.seq,
         dtype=np.object_,
-    )
+    ).reshape(-1,1)
 
     # Initialize the data
     inputs[0].set_data_from_numpy(input_141)
@@ -33,3 +36,8 @@ if __name__ == "__main__":
 
     print("Result")
     print(result.as_numpy(out_layer))
+
+
+    np.corrcoef(df["tr"], result.as_numpy(out_layer).flatten())
+
+    np.abs(scipy.stats.zscore(df["tr"])-scipy.stats.zscore(result.as_numpy(out_layer).flatten()))
