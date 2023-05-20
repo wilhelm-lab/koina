@@ -57,25 +57,19 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
     return map(split_modstring, sequences, repeat(regex_pattern))
 
 
-def character_to_array(character, filter=False):
+def character_to_array(character):
     array = np.zeros((1, SEQ_LEN), dtype=np.uint8)
     logger = pb_utils.Logger
 
     logger.log_info(str(character))
     generator_sequence_numeric = parse_modstrings(
-        [character], alphabet=ALPHABET, translate=True, filter=filter
+        [character], alphabet=ALPHABET, translate=True, filter=True
     )
     enum_gen_seq_num = enumerate(generator_sequence_numeric)
     print(enum_gen_seq_num)
     for i, sequence_numeric in enum_gen_seq_num:
         if len(sequence_numeric) > SEQ_LEN:
-            if filter:
-                pass  # don't overwrite 0 in the array that is how we can differentiate
-            else:
-                raise Exception(
-                    f"The Sequence {sequence_numeric}, has {len(sequence_numeric)} Amino Acids."
-                    f"The maximum number of amino acids allowed is {SEQ_LEN}"
-                )
+            pass  # don't overwrite 0 in the array that is how we can differentiate
         else:
             array[i, 0 : len(sequence_numeric)] = sequence_numeric
     return array

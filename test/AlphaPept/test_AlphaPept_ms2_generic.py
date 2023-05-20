@@ -1,9 +1,12 @@
-from server_config import SERVER_GRPC, SERVER_HTTP
+from test.server_config import SERVER_GRPC, SERVER_HTTP
 import tritonclient.grpc as grpcclient
 import numpy as np
 import requests
+from pathlib import Path
 
-MODEL_NAME = "AlphaPept_ms2_generic"
+
+# To ensure MODEL_NAME == test_<filename>.py
+MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
 
 def test_available_http():
@@ -17,44 +20,47 @@ def test_available_grpc():
 
 
 def test_inference():
-    seq = np.load("test/AlphaPept/arr_AlphaPept_rt_aa.npy")
-    mod = np.load("test/AlphaPept/arr_AlphaPept_rt_mod.npy")
-    charge = np.load("test/AlphaPept/arr_AlphaPept_ms2_charge.npy")
-    nce = np.load("test/AlphaPept/arr_AlphaPept_ms2_nce.npy")
-    instr = np.load("test/AlphaPept/arr_AlphaPept_ms2_instrument.npy").reshape([4, 1])
+    SEQUENCES = np.array(
+        [["TPVISGGPYEYR"], ["TPVITGAPYEYR"], ["GTFIIDPGGVIR"], ["GTFIIDPAAVIR"]],
+        dtype=np.object_,
+    )
+
+    charge = np.array([[2] for _ in range(len(SEQUENCES))], dtype=np.int32)
+    ces = np.array([[30] for _ in range(len(SEQUENCES))], dtype=np.int32)
+    instr = np.array([[0] for _ in range(len(SEQUENCES))], dtype=np.int64)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("aa_indices__0", seq.shape, "INT64")
-    in_pep_seq.set_data_from_numpy(seq)
+    in_pep_seq = grpcclient.InferInput("peptide_sequences", SEQUENCES.shape, "BYTES")
+    in_pep_seq.set_data_from_numpy(SEQUENCES)
 
-    in_mod = grpcclient.InferInput("mod_x__1", mod.shape, "FP32")
-    in_mod.set_data_from_numpy(mod)
-
-    in_charge = grpcclient.InferInput("charges__2", charge.shape, "FP32")
+    in_charge = grpcclient.InferInput("precursor_charge", charge.shape, "INT32")
     in_charge.set_data_from_numpy(charge)
 
-    in_nce = grpcclient.InferInput("NCEs__3", nce.shape, "FP32")
-    in_nce.set_data_from_numpy(nce)
+    in_ces = grpcclient.InferInput("collision_energies", ces.shape, "INT32")
+    in_ces.set_data_from_numpy(ces)
 
-    in_instr = grpcclient.InferInput("instrument_indices__4", instr.shape, "INT64")
+    in_instr = grpcclient.InferInput("instrument_types", instr.shape, "INT64")
     in_instr.set_data_from_numpy(instr)
 
     result = triton_client.infer(
         MODEL_NAME,
-        inputs=[in_pep_seq, in_mod, in_charge, in_nce, in_instr],
+        inputs=[in_pep_seq, in_charge, in_ces, in_instr],
         outputs=[
-            grpcclient.InferRequestedOutput("output__0"),
+            grpcclient.InferRequestedOutput("intensities"),
+            grpcclient.InferRequestedOutput("mz"),
         ],
     )
 
-    intensities = result.as_numpy("output__0")
+    intensities = result.as_numpy("intensities")
+    fragmentmz = result.as_numpy("mz")
 
-    assert intensities.shape == (4, 11, 8)
+    assert intensities.shape == fragmentmz.shape == (4, 44)
 
+    # Assert intensities consistent
     assert np.allclose(
         intensities,
-        np.load("test/AlphaPept/arr_AlphaPept_ms2_raw.npy"),
+        np.load("test/AlphaPept/arr_AlphaPept_ms2_int_norm.npy"),
         rtol=0,
         atol=1e-5,
     )

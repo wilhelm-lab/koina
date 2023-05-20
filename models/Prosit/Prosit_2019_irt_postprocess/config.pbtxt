@@ -1,6 +1,4 @@
-name: "Prosit_2019_irt_postprocess"
 max_batch_size: 7000
-backend: "python"
 
 input[
   {
@@ -11,7 +9,7 @@ input[
 ]
 output [
  {
-   name: 'out/irt_norm',
+   name: 'irt_norm',
    data_type: TYPE_FP32,
    dims: [1]
  }

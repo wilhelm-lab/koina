@@ -1,9 +1,11 @@
-from server_config import SERVER_GRPC, SERVER_HTTP
+from test.server_config import SERVER_GRPC, SERVER_HTTP
 import tritonclient.grpc as grpcclient
 import numpy as np
+from pathlib import Path
 import requests
 
-MODEL_NAME = "Prosit_2019_intensity"
+# To ensure MODEL_NAME == test_<filename>.py
+MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
 
 def test_available_http():
@@ -17,36 +19,51 @@ def test_available_grpc():
 
 
 def test_inference():
-    seq = np.load("test/Prosit/arr_Prosit_2019_intensity_seq.npy")
-    charge = np.load("test/Prosit/arr_Prosit_2019_intensity_charge.npy")
-    ces = np.load("test/Prosit/arr_Prosit_2019_intensity_ces.npy")
+    SEQUENCES = np.array(
+        [
+            ["AA"],
+            ["PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
+            ["RHKDESTNQCGPAVILMFYW"],
+            ["RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
+            ["RHKDESTNQCGPAVILM[UNIMOD:35]FYW"],
+        ],
+        dtype=np.object_,
+    )
+
+    charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.int32)
+    ces = np.array([[25] for _ in range(len(SEQUENCES))], dtype=np.float32)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("peptides_in:0", seq.shape, "INT32")
-    in_pep_seq.set_data_from_numpy(seq)
+    in_pep_seq = grpcclient.InferInput("peptide_sequences", [5, 1], "BYTES")
+    in_pep_seq.set_data_from_numpy(SEQUENCES)
 
-    in_charge = grpcclient.InferInput("precursor_charge_in:0", charge.shape, "FP32")
+    in_charge = grpcclient.InferInput("precursor_charge", [5, 1], "INT32")
     in_charge.set_data_from_numpy(charge)
 
-    in_ces = grpcclient.InferInput("collision_energy_in:0", ces.shape, "FP32")
+    in_ces = grpcclient.InferInput("collision_energies", [5, 1], "FP32")
     in_ces.set_data_from_numpy(ces)
 
     result = triton_client.infer(
         MODEL_NAME,
         inputs=[in_pep_seq, in_charge, in_ces],
         outputs=[
-            grpcclient.InferRequestedOutput("out/Reshape:0"),
+            grpcclient.InferRequestedOutput("intensities"),
+            grpcclient.InferRequestedOutput("mz"),
         ],
     )
 
-    intensities = result.as_numpy("out/Reshape:0")
+    intensities = result.as_numpy("intensities")
+    fragmentmz = result.as_numpy("mz")
 
     assert intensities.shape == (5, 174)
+    assert fragmentmz.shape == (5, 174)
 
+    # Assert intensities consistent
     assert np.allclose(
         intensities,
-        np.load("test/Prosit/arr_Prosit_2019_intensity_int_raw.npy"),
+        np.load("test/Prosit/arr_Prosit_2019_intensity_int.npy"),
         rtol=0,
         atol=1e-5,
+        equal_nan=True,
     )

@@ -1,4 +1,3 @@
-name: "Deeplc_rt"
 max_batch_size: 10
 platform: "tensorflow_savedmodel"
 

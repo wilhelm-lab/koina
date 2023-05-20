@@ -1,9 +1,8 @@
-name: "Deeplc_Triton_ensemble_pre"
 max_batch_size: 10
 platform: "ensemble"
 input [
   {
-   name: 'peptides_in_str:0',
+   name: 'peptide_sequences',
    data_type: TYPE_STRING,
    dims: [-1]
   }
@@ -38,8 +37,8 @@ ensemble_scheduling {
       model_name: "Deeplc_Preprocess_unmod"
       model_version: 1
       input_map {
-        key: "peptides_in_str:0"
-        value: "peptides_in_str:0"
+        key: "peptide_sequences"
+        value: "peptide_sequences"
       },
       output_map {
         key: "stripped_peptide"
@@ -50,8 +49,8 @@ ensemble_scheduling {
       model_name: "Deeplc_Preprocess_AC"
       model_version: 1
       input_map {
-        key: "peptides_in_str:0"
-        value: "peptides_in_str:0"
+        key: "peptide_sequences"
+        value: "peptide_sequences"
       },
       output_map {
         key: "single_ac"
@@ -62,7 +61,7 @@ ensemble_scheduling {
       model_name: "Deeplc_Preprocess_onehot"
       model_version: 1
       input_map {
-        key: "peptides_in_str:0"
+        key: "peptide_sequences"
         value: "stripped_peptide"
       },
       output_map {

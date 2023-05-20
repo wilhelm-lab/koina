@@ -3,7 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    server_url = "213.239.214.190:8504"
+    server_url = "serving:8500"
     model_name = "AlphaPept_Preprocess_ProForma"
     out_layer = "encoded_mod_feature:0"
     batch_size = 100
@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
-    inputs.append(grpcclient.InferInput("peptides_in_str:0", [batch_size, 1], "BYTES"))
+    inputs.append(grpcclient.InferInput("peptide_sequences", [batch_size, 1], "BYTES"))
 
     peptide_seq_in = np.array(
         [["AAAAAKAK"] for i in range(0, batch_size)], dtype=np.object_

@@ -1,0 +1,15 @@
+max_batch_size: 7000
+input[
+ {
+   name: 'raw_collision_energy',
+   data_type: TYPE_FP32,
+   dims: [1]
+ }
+]
+output [
+ {
+   name: 'norm_collision_energy',
+   data_type: TYPE_FP32,
+   dims: [1]
+ }
+]

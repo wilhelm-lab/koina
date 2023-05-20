@@ -1,21 +1,20 @@
-# dlomix-serving
+# Koina
 
 ## Accessing a public server
 ### curl
 Here is an example http request using only curl sending a POST request to with a json body.
 
 ```
-curl -X POST "http://eubic2023.external.msaid.io:8501/v2/models/Prosit_2019_intensity_ensemble/infer" \
+curl "http://koina.proteomicsdb.org/v2/models/Prosit_2019_intensity/infer" \
  --data-raw '
 {
   "id": "LGGNEQVTR_GAGSSEPVTGLDAK",
   "inputs": [
-    {"name": "peptides_in_str:0",         "shape": [2,1], "datatype": "BYTES", "data": ["LGGNEQVTR","GAGSSEPVTGLDAK"]},
-    {"name": "collision_energy_in:0",     "shape": [2,1], "datatype": "FP32",  "data": [25,25]},
-    {"name": "precursor_charge_in_int:0", "shape": [2,1], "datatype": "INT32", "data": [1,2]}
+    {"name": "peptide_sequences",   "shape": [2,1], "datatype": "BYTES", "data": ["LGGNEQVTR","GAGSSEPVTGLDAK"]},
+    {"name": "collision_energies",  "shape": [2,1], "datatype": "FP32",  "data": [25,25]},
+    {"name": "precursor_charge",    "shape": [2,1], "datatype": "INT32", "data": [1,2]}
   ]
-}
-'
+}'
 ```
 
 
@@ -39,10 +38,11 @@ After installing the dependencies you can pull the docker image and run it with.
 docker run \
     --gpus all \
     --shm-size 2G \
+    --name koina \
     -p 8500:8500 \
     -p 8501:8501 \
     -d \
-    ghcr.io/wilhelm-lab/dlomix-serving:latest
+    ghcr.io/wilhelm-lab/koina:latest
 ```
 
 ## Adding your own model
@@ -54,7 +54,7 @@ docker run \
 3. Clone the repo
 4. Download existing models with `./getModels.sh`
 5. Update `.env` with your user- and group-id to avoid file permission issues 
-6. Start the server with `docker-compose up`
+6. Start the server with `docker-compose up -d serving`
 
 ### Import model files
 This step depends on what framework you used to train your model.

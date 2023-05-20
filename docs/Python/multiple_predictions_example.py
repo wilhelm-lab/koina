@@ -2,9 +2,9 @@ import numpy as np
 import time
 import tritonclient.grpc as grpcclient
 
-server_url = "eubic2023.external.msaid.io:8500"
-model_name_ms = "Prosit_2019_intensity_triton"
-out_layer_ms = "out/Reshape:1"
+server_url = "serving:8500"
+model_name_ms = "Prosit_2019_intensity"
+out_layer_ms = "intensities"
 inputs_ms = []
 outputs_ms = []
 
@@ -18,15 +18,11 @@ batch_size = 2
 
 triton_client = grpcclient.InferenceServerClient(url=server_url)
 
-inputs_ms.append(grpcclient.InferInput("peptides_in_str:0", [batch_size, 1], "BYTES"))
-inputs_ms.append(
-    grpcclient.InferInput("collision_energy_in:0", [batch_size, 1], "FP32")
-)
-inputs_ms.append(
-    grpcclient.InferInput("precursor_charge_in_int:0", [batch_size, 1], "INT32")
-)
+inputs_ms.append(grpcclient.InferInput("peptide_sequences", [batch_size, 1], "BYTES"))
+inputs_ms.append(grpcclient.InferInput("collision_energies", [batch_size, 1], "FP32"))
+inputs_ms.append(grpcclient.InferInput("precursor_charge", [batch_size, 1], "INT32"))
 
-inputs_rt.append(grpcclient.InferInput("peptides_in_str:0", [batch_size, 1], "BYTES"))
+inputs_rt.append(grpcclient.InferInput("peptide_sequences", [batch_size, 1], "BYTES"))
 
 
 # Create the data for the two input tensors. Initialize the first

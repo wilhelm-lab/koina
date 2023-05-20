@@ -4,7 +4,7 @@ input [
  {  
     name: "input__0"
     data_type: TYPE_FP32
-    dims: [   139]                    
+    dims: [ 139 ]
   } 
 ]
 output [
@@ -12,7 +12,6 @@ output [
     name: "output__0"
     data_type: TYPE_FP32
     dims: [ 1 ]
-
   }
 ]
 instance_group [{ kind: KIND_AUTO }]

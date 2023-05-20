@@ -4,21 +4,17 @@ import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
     server_url = "serving:8500"
-    model_name = "Prosit_2019_intensity_ensemble"
-    out_layer1 = "out/Reshape:1"
-    out_layer2 = "out/Reshape:2"
+    model_name = "Prosit_2019_intensity"
+    out_layer1 = "intensities"
+    out_layer2 = "mz"
     batch_size = 5
     inputs = []
 
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
-    inputs.append(grpcclient.InferInput("peptides_in_str:0", [batch_size, 1], "BYTES"))
-    inputs.append(
-        grpcclient.InferInput("collision_energy_in:0", [batch_size, 1], "FP32")
-    )
-    inputs.append(
-        grpcclient.InferInput("precursor_charge_in_int:0", [batch_size, 1], "INT32")
-    )
+    inputs.append(grpcclient.InferInput("peptide_sequences", [batch_size, 1], "BYTES"))
+    inputs.append(grpcclient.InferInput("collision_energies", [batch_size, 1], "FP32"))
+    inputs.append(grpcclient.InferInput("precursor_charge", [batch_size, 1], "INT32"))
 
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.

@@ -1,9 +1,7 @@
-name: "Deeplc_Preprocess_onehot"
 max_batch_size: 10
-backend: "python"
 input[
  {
-   name: 'peptides_in_str:0',
+   name: 'peptide_sequences',
    data_type: TYPE_STRING,
    dims: [1]
  }

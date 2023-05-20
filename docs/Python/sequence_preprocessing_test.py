@@ -3,7 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    server_url = "eubic2023.external.msaid.io:8500"
+    server_url = "serving:8500"
     model_name = "Deeplc_Preprocess_unmod"
     out_layers = ["stripped_peptide"]
     batch_size = 1
@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
-    inputs.append(grpcclient.InferInput("peptides_in_str:0", [batch_size, 1], "BYTES"))
+    inputs.append(grpcclient.InferInput("peptide_sequences", [batch_size, 1], "BYTES"))
 
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.

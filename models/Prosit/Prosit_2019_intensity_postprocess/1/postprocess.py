@@ -17,7 +17,7 @@ def create_masking(charges_array, sequences_lengths):
 
     assert len(charges_array) == len(sequences_lengths)
 
-    mask = np.ones(shape=(len(charges_array), VEC_LENGTH), dtype=np.int32)
+    mask = np.ones(shape=(len(charges_array), VEC_LENGTH), dtype=np.float16)
 
     for i in range(len(charges_array)):
         charge_one_hot = charges_array[i]
@@ -29,15 +29,15 @@ def create_masking(charges_array, sequences_lengths):
             invalid_indexes = [(x * 3 + 1) for x in range((SEQ_LEN - 1) * 2)] + [
                 (x * 3 + 2) for x in range((SEQ_LEN - 1) * 2)
             ]
-            m[invalid_indexes] = -1
+            m[invalid_indexes] = np.nan
 
         elif np.array_equal(charge_one_hot, [0, 1, 0, 0, 0, 0]):
             invalid_indexes = [x * 3 + 2 for x in range((SEQ_LEN - 1) * 2)]
-            m[invalid_indexes] = -1
+            m[invalid_indexes] = np.nan
 
         if len_seq < SEQ_LEN:
             invalid_indexes = range((len_seq - 1) * 6, VEC_LENGTH)
-            m[invalid_indexes] = -1
+            m[invalid_indexes] = np.nan
 
     return mask
 
@@ -45,6 +45,5 @@ def create_masking(charges_array, sequences_lengths):
 def apply_masking(peaks, mask):
     peaks[peaks < 0] = np.finfo(np.float32).eps
     out = np.multiply(peaks, mask)
-    out = (out.T / np.max(out, axis=1)).T
-    out[out < 0] = -1
+    out = (out.T / np.nanmax(out, axis=1)).T
     return out

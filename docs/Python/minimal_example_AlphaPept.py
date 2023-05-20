@@ -3,9 +3,9 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    server_url = "localhost:8504"
-    model_name = "AlphaPept_ms2_generic_ensemble"
-    out_layer = "out/Reshape:0"
+    server_url = "serving:8500"
+    model_name = "AlphaPept_ms2_generic"
+    out_layer = "intensities"
     # model_name = "AlphaPept_Preprocess_ProForma"
     # out_layer = 'encoded_seq:0'
     batch_size = 100
@@ -14,16 +14,10 @@ if __name__ == "__main__":
 
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
-    inputs.append(grpcclient.InferInput("peptides_in_str:0", [batch_size, 1], "BYTES"))
-    inputs.append(
-        grpcclient.InferInput("collision_energy_in:0", [batch_size, 1], "INT32")
-    )
-    inputs.append(
-        grpcclient.InferInput("precursor_charge_in_int:0", [batch_size, 1], "INT32")
-    )
-    inputs.append(
-        grpcclient.InferInput("instrument_indices:0", [batch_size, 1], "INT64")
-    )
+    inputs.append(grpcclient.InferInput("peptide_sequences", [batch_size, 1], "BYTES"))
+    inputs.append(grpcclient.InferInput("collision_energies", [batch_size, 1], "INT32"))
+    inputs.append(grpcclient.InferInput("precursor_charge", [batch_size, 1], "INT32"))
+    inputs.append(grpcclient.InferInput("instrument_types", [batch_size, 1], "INT64"))
 
     # Create the data for the two input tensors. Initialize the first
     # to unique integers and the second to all ones.

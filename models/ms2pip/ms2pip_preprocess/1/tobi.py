@@ -5,22 +5,29 @@ from ms2pip.cython_modules import ms2pip_pyx
 from ms2pip.ms2pipC import apply_mods
 from ms2pip.peptides import AMINO_ACID_IDS, Modifications
 import numpy as np
+import re
+
+
+def remove_mods(seq, regex=r"\[.*?\]|\-"):
+    """
+    Function to remove any proforma mod identifiers and return the plain AA sequence.
+    :param sequences: List[str] of sequences
+    :return: List[str] of modified sequences
+    """
+    return re.sub(regex, "", seq)
 
 
 class MinimalMS2PIP:
-    def __init__(self, proforma: str, maximal_length: int = 30):
-        self.peptidoform = Peptidoform(proforma)
+    def __init__(self, peptide: str, charge: int, maximal_length: int = 30):
+        self.modifications = "-"  # modifications do not impact intensities
         self.maximal_length = maximal_length
-        self.peprec_tuple = proforma_to_peprec(self.peptidoform)
-        self.peptide, self.modifications, self.charge = self.peprec_tuple
+        self.peptide = remove_mods(peptide)
+        self.charge = charge
         self.peptide = self.peptide.upper().replace("L", "I")
         self.peptideArray = np.array(
             [0] + [AMINO_ACID_IDS[x] for x in self.peptide] + [0], dtype=np.uint16
         )
-        self.modification_lists = [
-            "Carbamidomethyl,57.02146,opt,C",
-            "Oxidation,15.994915,opt,M",
-        ]
+        self.modification_lists = []
         self.mod_info = Modifications()
         self.mod_info.modifications = {"ptm": {}, "sptm": {}}
         self.mod_info.add_from_ms2pip_modstrings(self.modification_lists)

@@ -3,7 +3,7 @@ import time
 import tritonclient.grpc as grpcclient
 
 if __name__ == "__main__":
-    server_url = "localhost:8500"
+    server_url = "serving:8500"
     model_name = "Deeplc_rt"
     out_layer = "dense_323"
     batch_size = 1

@@ -1,6 +1,4 @@
-name: "Prosit_2019_intensity_postprocess"
 max_batch_size: 7000
-backend: "python"
 
 input[
   {
@@ -21,12 +19,12 @@ input[
 ]
 output [
  {
-   name: 'out/Reshape:1',
+   name: 'intensities',
    data_type: TYPE_FP32,
    dims: [174]
  },
  {
-   name: 'out/Reshape:2',
+   name: 'mz',
    data_type: TYPE_FP32,
    dims: [174]
  }

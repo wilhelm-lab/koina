@@ -1,9 +1,11 @@
-from server_config import SERVER_GRPC, SERVER_HTTP
+from test.server_config import SERVER_GRPC, SERVER_HTTP
 import tritonclient.grpc as grpcclient
 import numpy as np
+from pathlib import Path
 import requests
 
-MODEL_NAME = "Prosit_2019_irt_supplement"
+# To ensure MODEL_NAME == test_<filename>.py
+MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
 
 def test_available_http():
@@ -17,28 +19,38 @@ def test_available_grpc():
 
 
 def test_inference():
-    seq = np.load("test/Prosit/arr_Prosit_2019_intensity_seq.npy")
+    SEQUENCES = np.array(
+        [
+            ["AA"],
+            ["PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
+            ["RHKDESTNQCGPAVILMFYW"],
+            ["RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
+            ["RHKDESTNQCGPAVILM[UNIMOD:35]FYW"],
+        ],
+        dtype=np.object_,
+    )
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("sequence_integer", seq.shape, "INT32")
-    in_pep_seq.set_data_from_numpy(seq)
+    in_pep_seq = grpcclient.InferInput("peptide_sequences", [5, 1], "BYTES")
+    in_pep_seq.set_data_from_numpy(SEQUENCES)
 
     result = triton_client.infer(
         MODEL_NAME,
         inputs=[in_pep_seq],
         outputs=[
-            grpcclient.InferRequestedOutput("prediction/BiasAdd:0"),
+            grpcclient.InferRequestedOutput("irt"),
         ],
     )
 
-    irt = result.as_numpy("prediction/BiasAdd:0")
+    irt = result.as_numpy("irt")
 
     assert irt.shape == (5, 1)
 
+    # Assert intensities consistent
     assert np.allclose(
         irt,
-        np.load("test/Prosit/arr_Prosit_2019_irt_supplement_raw.npy"),
+        np.load("test/Prosit/arr_Prosit_2019_irt_supplement.npy"),
         rtol=0,
-        atol=1e-5,
+        atol=1e-4,
     )

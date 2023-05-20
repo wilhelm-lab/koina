@@ -1,6 +1,4 @@
-name: "AlphaPept_Preprocess_ce"
 max_batch_size: 7000
-backend: "python"
 input[
  {
    name: 'ce_raw',
