@@ -34,7 +34,7 @@ class TritonPythonModel:
                 .as_numpy()
                 .shape[0]
             )
-            annotation = np.tile(gen_annotation(), batchsize)
+            annotation = np.tile(gen_annotation(), batchsize).reshape((-1, 174))
             t = pb_utils.Tensor("annotation", annotation)
             responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
         return responses
