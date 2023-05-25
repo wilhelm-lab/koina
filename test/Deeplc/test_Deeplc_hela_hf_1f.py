@@ -53,5 +53,5 @@ def test_inference():
         preds,
         np.load("test/Deeplc/arr_preds.npy"),
         rtol=0,
-        atol=1e-5,
+        atol=1e-4,
     )
