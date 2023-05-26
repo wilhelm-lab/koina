@@ -5,12 +5,16 @@ tag: "intensity"
 tag_description: "Intensity models"
 tag_url: "https://www.proteomicsdb.org/"
 examples:
-  input: |
+  inputs:
     [
       {
-          "name": "proforma_ensemble",
-          "shape": [2,1],
-          "datatype": "BYTES",
-          "data": [["ACDEK/2"], ["AAAAAAAAAAAAA/3"]]
+          "name": "peptide_sequences",
+          "datatype": "np.object_",
+          "data": '[["ACDEK"], ["AAAAAAAAAAAAA"]]'
+      },
+      {
+          "name": "precursor_charge",
+          "datatype": "np.int16",
+          "data": '[[2], [3]]'
       }
     ]

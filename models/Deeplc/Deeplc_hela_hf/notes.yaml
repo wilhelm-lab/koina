@@ -5,12 +5,12 @@ tag: "Retention Time"
 tag_description: "Retention time models"
 tag_url: "https://www.proteomicsdb.org/"
 examples:
-  input: |
+  inputs:
     [
       {
           "name": "peptide_sequences",
-          "shape": [1,4],
-          "datatype": "BYTES",
-          "data": [["LGGNEQVTR"], ["GAGSSEPVTGLDAK"], ["VEATFGVDESNAK"], ["LFLQFGAQGSPFLK"]]
+          "datatype": "np.object_",
+          "data": "[['LGGNEQVTR'], ['GAGSSEPVTGLDAK'], ['VEATFGVDESNAK'], ['LFLQFGAQGSPFLK']]"
       }
     ]
+  outputs: ["intensities", "mz"]
