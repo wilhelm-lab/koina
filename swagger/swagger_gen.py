@@ -17,31 +17,15 @@ nptype_convert = {
 }
 
 
-def get_notes(model_name, path):
-    notes = {}
+def get_notes(path):
     with open(path, "r", encoding="UTF-8") as yaml_file:
-        notes[model_name] = yaml.load(yaml_file, Loader=yaml.FullLoader)
-    return notes
-
-
-def remove_type_prefix(models):
-    for model in models:
-        for i in range(0, len(model["input"])):
-            model["input"][i]["data_type"] = model["input"][i]["data_type"].replace(
-                "TYPE_", ""
-            )
-            if model["input"][i]["data_type"] == "STRING":
-                model["input"][i]["data_type"] = "BYTES"
-
-    return models
+        return yaml.load(yaml_file, Loader=yaml.FullLoader)
 
 
 def generate_example_code(model, grpc_url):
     """
     Generates the GRPC examples codes based on the notes
     """
-    logging.info("@" * 50)
-    logging.info(model)
     environment = Environment(loader=FileSystemLoader("./"))
     template = environment.get_template("swagger/tmpl_python_code.txt")
     context = model
@@ -70,56 +54,107 @@ def sleep_until_service_starts(http_server):
             time.sleep(wait_time)
 
 
-def get_configs(names):
-    configs = []
-    for name in names:
-        url = http_url + f"/v2/models/{name}/config"
-        logging.info(f"The selected triton back-end to generate swagger from: {url}")
-        r = requests.get(url, timeout=1)
-        configs.append(r.json())
-    return configs
+def get_config(http_url, name):
+    url = http_url + f"/v2/models/{name}/config"
+    logging.info(f"Getting config from: {url}")
+    r = requests.get(url, timeout=1)
+    return r.json()
 
 
-def create_swagger_yaml(models):
+def create_swagger_yaml(models, tmpl_url):
     # Create the Swagger.yaml based on the template
     environment = Environment(loader=FileSystemLoader("./"))
     template = environment.get_template("swagger/swagger_tmpl.yml")
     context = {"models": models, "tmpl_url": tmpl_url}
 
     content = template.render(context)
-    logging.info("Generating the Swagger YAML file ... ")
+    logging.info("Generating the Swagger YAML file. ")
     with open("swagger/swagger.yml", mode="w", encoding="utf-8") as yam:
         yam.write(content)
-    logging.info("Finished Generating the Swagger YAML file ... ")
+    logging.info("Finished Generating the Swagger YAML file. ")
 
 
-def main(http_url, grpc_url):
-    logging.basicConfig(level=logging.INFO)
-
+def main(http_url, grpc_url, tmpl_url):
     model_dict = {x.parent.name: x for x in Path("models").rglob("notes.yaml")}
 
     # there is a slight delay before service turns healthy
     # therefore sleep just a few seconds
     sleep_until_service_starts(http_url)
 
-    models = get_configs(model_dict.keys())
-    logging.info(f"Models: {models}")
+    # models = get_configs(model_dict.keys())
+    # logging.info(f"Models: {models}")
 
     # Remove the type prefix because the python code doesn't use the same type notations
-    models = remove_type_prefix(models)
-    for name, model_path in model_dict.items():
-        notes = get_notes(name, model_path)
-        for i, _ in enumerate(models):
-            if models[i]["name"] == name:
-                models[i]["note"] = notes[name]
-                code = generate_example_code(models[i], grpc_url)
-                models[i]["note"]["code"] = code
+    # models = remove_type_prefix(models)
 
-    create_swagger_yaml(models)
+    models = []
+    for name, model_path in model_dict.items():
+        models.append(
+            {
+                "name": name,
+                "note": get_notes(model_path),
+                "config": get_config(http_url, name),
+            }
+        )
+        add_np_and_swagger_dtype(models[-1]["note"])
+        copy_outputs_to_note(models[-1])
+        logging.info(models[-1]["note"]["outputs"])
+        verify_inputs(models[-1])
+        models[-1]["code"] = generate_example_code(models[-1], grpc_url)
+
+    logging.info(f"Template URL: {tmpl_url}")
+    create_swagger_yaml(models, tmpl_url)
+
+
+def copy_outputs_to_note(model_dict):
+    model_dict["note"]["outputs"] = [o["name"] for o in model_dict["config"]["output"]]
+
+
+def verify_inputs(model_dict):
+    for x, y in zip(
+        model_dict["note"]["examples"]["inputs"], model_dict["config"]["input"]
+    ):
+        try:
+            assert x["name"] == y["name"]
+            assert x["httpdtype"] == tritondtype_to_httpdtype(y["data_type"])
+        except AssertionError as e:
+            raise AssertionError(
+                f"Inputs inconsistent for {model_dict['name']} {x} != {y}"
+            )
+
+
+def httpdtype_to_npdtype(dtype):
+    mapping = {
+        "FP32": 'np.dtype("float32")',
+        "BYTES": 'np.dtype("O")',
+        "INT16": 'np.dtype("int16")',
+        "INT32": 'np.dtype("int32")',
+        "INT64": 'np.dtype("int64")',
+    }
+    return mapping[dtype]
+
+
+def httpdtype_to_swaggerdtype(dtype):
+    if dtype == "BYTES":
+        return "string"
+    return "number"
+
+
+def tritondtype_to_httpdtype(dtype):
+    if dtype == "TYPE_STRING":
+        return "BYTES"
+    return dtype.replace("TYPE_", "")
+
+
+def add_np_and_swagger_dtype(model_note):
+    for x in model_note["examples"]["inputs"]:
+        x["npdtype"] = httpdtype_to_npdtype(x["httpdtype"])
+        x["swaggerdtype"] = httpdtype_to_swaggerdtype(x["httpdtype"])
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     http_url = os.getenv("HTTP_URL")
     tmpl_url = os.getenv("TMPL_URL")
     grpc_url = os.getenv("GRPC_URL")
-    main(http_url, grpc_url)
+    main(http_url, grpc_url, tmpl_url)

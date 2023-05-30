@@ -14,9 +14,9 @@ server_url = "{{ url }}"
 model_name = "{{ name }}"
 batch_size = 1000
 inputs = { {% for input in note.examples.inputs %}
-    "{{input.name}}": np.array({{input.data}}, dtype={{input.datatype}}),{% endfor %}
+    "{{input.name}}": np.array({{input.data}}, dtype={{input.npdtype}}).reshape({{input.shape}}),{% endfor %}
 }
-outputs = [{% for o in output %} "{{o.name}}", {% endfor %}]
+outputs = [{% for o in note.outputs %} "{{o}}", {% endfor %}]
 
 triton_client = grpcclient.InferenceServerClient(url=server_url)
 

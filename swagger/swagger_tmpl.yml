@@ -34,7 +34,7 @@ paths:
       summary: {{model.note.summary}}
       description: |
               {{model.note.description }}
-              {{model.note.code}}
+              {{model.code}}
       operationId: {{model.name}}
       requestBody:
         description: Body
@@ -80,28 +80,31 @@ components:
           example: "it_can_be_anything"
         inputs:
           type: array
-          example: {{ model.note['examples']['input'] }}
           items:
-            allOf:
-              {% for input in model.input %}
-              - $ref: "#/components/schemas/{{model.name ~ '_' ~ 'input_'~input.name}}"
+            oneOf:
+              {% for input in model.note.examples.inputs %}
+              - $ref: "#/components/schemas/{{model.name ~ '_input_'~input.name}}"
               {% endfor %}
         
-  {% for input in model.input %}
+  {% for input in model.note.examples.inputs %}
     {{model.name ~ '_' ~ 'input_'~input.name}}:
       type: object
       properties:
         name:
           type: string
+          example: {{input.name}}
         shape:
           type: array
+          example: {{input.shape}}
           items:
             type: integer
         datatype:
           type: string
+          example: {{input.httpdtype}}
         data:
           type: array
+          example: {{input.data}}
           items:
-            type: string
+            type: {{input.swaggerdtype}}
   {% endfor %}
 {% endfor %}

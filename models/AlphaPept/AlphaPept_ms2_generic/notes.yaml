@@ -9,22 +9,22 @@ examples:
     [
       {
         "name": "peptide_sequences",
-        "datatype": "np.object_",
+        "httpdtype": "BYTES",
         "data": '[["AAAAAKAKM[UNIMOD:21]"]]'
       },
       {
-        "name": "collision_energies",
-        "datatype": "np.int32",
-        "data": '[[25]]'
-      },
-      {
         "name": "precursor_charge",
-        "datatype": "np.int32",
+        "httpdtype": "INT32",
         "data": '[[2]]'
       },
       {
+        "name": "collision_energies",
+        "httpdtype": "INT32",
+        "data": '[[25]]'
+      },
+      {
         "name": "instrument_types",
-        "datatype": "np.int64",
+        "httpdtype": "INT64",
         "data": '[[1]]'
       }
     ]

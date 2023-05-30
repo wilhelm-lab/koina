@@ -9,12 +9,12 @@ examples:
     [
       {
           "name": "peptide_sequences",
-          "datatype": "np.object_",
+          "httpdtype": "BYTES",
           "data": '[["ACDEK"], ["AAAAAAAAAAAAA"]]'
       },
       {
           "name": "precursor_charge",
-          "datatype": "np.int16",
+          "httpdtype": "INT16",
           "data": '[[2], [3]]'
       }
     ]

@@ -8,18 +8,21 @@ examples:
   inputs:
     [
       {
-          "name": "precursor_charge",
-          "datatype": "np.int32",
-          "data": '[[1]]'
+          "name": "peptide_sequences",
+          "httpdtype": "BYTES",
+          "shape": "[2,1]",
+          "data": '["AAAAAKAK", "AAAAAKAK"]'
       },
       {
-          "name": "peptide_sequences",
-          "datatype": "np.object_",
-          "data": '[["AAAAAKAK"]]'
+          "name": "precursor_charge",
+          "httpdtype": "INT32",
+          "shape": "[2,1]",
+          "data": '[1,2]'
       },
       {
           "name": "collision_energies",
-          "datatype": "np.float32",
-          "data": '[[25]]'
+          "httpdtype": "FP32",
+          "shape": "[2,1]",
+          "data": '[25, 25]'
       }
     ]

@@ -9,7 +9,7 @@ examples:
     [
       {
           "name": "peptide_sequences",
-          "datatype": "np.object_",
+          "httpdtype": "BYTES",
           "data": "[['LGGNEQVTR'], ['GAGSSEPVTGLDAK'], ['VEATFGVDESNAK'], ['LFLQFGAQGSPFLK']]"
       }
     ]
