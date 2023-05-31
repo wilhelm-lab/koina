@@ -4,7 +4,7 @@
 ### curl
 Here is an example http request using only curl sending a POST request to with a json body.
 
-```
+```bash
 curl "http://koina.proteomicsdb.org/v2/models/Prosit_2019_intensity/infer" \
  --data-raw '
 {
@@ -34,7 +34,7 @@ You can find an ansible script that installs all dependencies [here](docs/server
 
 ### How to run it
 After installing the dependencies you can pull the docker image and run it with. 
-```
+```bash
 docker run \
     --gpus all \
     --shm-size 2G \
@@ -42,7 +42,18 @@ docker run \
     -p 8500:8500 \
     -p 8501:8501 \
     -d \
+    --restart unless-stopped \
     ghcr.io/wilhelm-lab/koina:latest
+```
+
+If you want to stay up to date with the latest version of Koina we suggest you also deploy containrrr/watchtower.
+
+```bash
+docker run 
+  -d \  
+  --name watchtower \   
+  -v /var/run/docker.sock:/var/run/docker.sock \  
+  containrrr/watchtower -i 30
 ```
 
 ## Adding your own model
