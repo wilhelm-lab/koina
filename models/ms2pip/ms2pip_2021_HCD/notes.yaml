@@ -10,11 +10,13 @@ examples:
       {
           "name": "peptide_sequences",
           "httpdtype": "BYTES",
-          "data": '[["ACDEK"], ["AAAAAAAAAAAAA"]]'
+          "data": '["ACDEK", "AAAAAAAAAAAAA"]',
+          "shape": "[2,1]"
       },
       {
           "name": "precursor_charge",
           "httpdtype": "INT16",
-          "data": '[[2], [3]]'
+          "data": '[2, 3]',
+          "shape": "[2,1]"
       }
     ]

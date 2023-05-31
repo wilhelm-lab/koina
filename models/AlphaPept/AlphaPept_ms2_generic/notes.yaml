@@ -10,21 +10,25 @@ examples:
       {
         "name": "peptide_sequences",
         "httpdtype": "BYTES",
-        "data": '[["AAAAAKAKM[UNIMOD:21]"]]'
+        "data": '["AAAAAKAKM[UNIMOD:21]"]',
+        "shape": "[1,1]"
       },
       {
         "name": "precursor_charge",
         "httpdtype": "INT32",
-        "data": '[[2]]'
+        "data": '[2]',
+        "shape": "[1,1]"
       },
       {
         "name": "collision_energies",
         "httpdtype": "INT32",
-        "data": '[[25]]'
+        "data": '[25]',
+        "shape": "[1,1]"
       },
       {
         "name": "instrument_types",
         "httpdtype": "INT64",
-        "data": '[[1]]'
+        "data": '[1]',
+        "shape": "[1,1]"
       }
     ]

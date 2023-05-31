@@ -10,7 +10,8 @@ examples:
       {
           "name": "peptide_sequences",
           "httpdtype": "BYTES",
-          "data": "[['LGGNEQVTR'], ['GAGSSEPVTGLDAK'], ['VEATFGVDESNAK'], ['LFLQFGAQGSPFLK']]"
+          "data": "[['LGGNEQVTR'], ['GAGSSEPVTGLDAK'], ['VEATFGVDESNAK'], ['LFLQFGAQGSPFLK']]",
+          "shape": "[4,1]"
       }
     ]
-  outputs: ["intensities", "mz"]
+  outputs: ["irt"]
