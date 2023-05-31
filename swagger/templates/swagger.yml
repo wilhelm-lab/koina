@@ -25,7 +25,7 @@ info:
     You can join in this community effort, it's as simple as running the provided docker image and sending an email to Ludwig.Lautenbacher@tum.de telling me under which URL your server can be accessed. 
 
     <b> Adding your own model </b>
-    If you are developing a machine learning model in the field of proteomics, and want to make it as wiedly available as possible you can contribute by adding your model to Koina.
+    If you are developing a machine learning model in the field of proteomics, and want to make it as widely available as possible you can contribute by adding your model to Koina.
     You will find detailed instructions on how to do this in our <a href="https://github.com/wilhelm-lab/koina">GitHub</a>
 
   termsOfService: https://github.com/wilhelm-lab/koina
