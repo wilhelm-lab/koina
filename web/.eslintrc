@@ -1,0 +1,6 @@
+{
+  "extends": ["@nuxtjs/eslint-config-typescript", "prettier"],
+  "rules": {
+    "vue/no-deprecated-slot-attribute": "off"
+  }
+}
