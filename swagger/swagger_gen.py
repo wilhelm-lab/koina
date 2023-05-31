@@ -17,7 +17,7 @@ nptype_convert = {
 }
 
 
-def get_notes(path):
+def load_yaml(path):
     with open(path, "r", encoding="UTF-8") as yaml_file:
         return yaml.load(yaml_file, Loader=yaml.FullLoader)
 
@@ -26,8 +26,11 @@ def generate_example_code(model, grpc_url):
     """
     Generates the GRPC examples codes based on the notes
     """
+    python_code_template = "swagger/templates/python_code.txt"
+    logging.info(f"Using grpc url:\t{grpc_url}")
+    logging.info(f"Using template to create python code:\t\t{python_code_template}")
     environment = Environment(loader=FileSystemLoader("./"))
-    template = environment.get_template("swagger/tmpl_python_code.txt")
+    template = environment.get_template(python_code_template)
     context = model
     context["url"] = grpc_url
 
@@ -46,9 +49,9 @@ def sleep_until_service_starts(http_server):
             if r.status_code >= 200 and r.status_code <= 299:
                 serving_started = True
                 logging.info("Serving started continuing the program")
-            else:
-                logging.info(f"Waiting for serving to start: {url}")
-                time.sleep(wait_time)
+                return
+            logging.info(f"Waiting for serving to start: {url}")
+            time.sleep(wait_time)
         except requests.exceptions.ConnectionError:
             logging.info(f"Waiting for serving to start: {url}")
             time.sleep(wait_time)
@@ -56,22 +59,25 @@ def sleep_until_service_starts(http_server):
 
 def get_config(http_url, name):
     url = http_url + f"/v2/models/{name}/config"
-    logging.info(f"Getting config from: {url}")
+    logging.info(f"Getting config from:\t\t{url}")
     r = requests.get(url, timeout=1)
     return r.json()
 
 
 def create_swagger_yaml(models, tmpl_url):
     # Create the Swagger.yaml based on the template
+
+    swagger_template_file = "swagger/templates/swagger.yml"
+    logging.info(f"Using template file:\t\t{swagger_template_file}")
+
     environment = Environment(loader=FileSystemLoader("./"))
-    template = environment.get_template("swagger/swagger_tmpl.yml")
+    template = environment.get_template(swagger_template_file)
     context = {"models": models, "tmpl_url": tmpl_url}
 
     content = template.render(context)
-    logging.info("Generating the Swagger YAML file. ")
     with open("swagger/swagger.yml", mode="w", encoding="utf-8") as yam:
         yam.write(content)
-    logging.info("Finished Generating the Swagger YAML file. ")
+    logging.info("Finished Generating the Swagger YAML file.")
 
 
 def main(http_url, grpc_url, tmpl_url):
@@ -89,16 +95,16 @@ def main(http_url, grpc_url, tmpl_url):
 
     models = []
     for name, model_path in model_dict.items():
+        logging.info(f"Start working on model:\t{name}")
         models.append(
             {
                 "name": name,
-                "note": get_notes(model_path),
+                "note": load_yaml(model_path),
                 "config": get_config(http_url, name),
             }
         )
         add_np_and_swagger_dtype(models[-1]["note"])
         copy_outputs_to_note(models[-1])
-        logging.info(models[-1]["note"]["outputs"])
         verify_inputs(models[-1])
         models[-1]["code"] = generate_example_code(models[-1], grpc_url)
 
@@ -117,7 +123,7 @@ def verify_inputs(model_dict):
         try:
             assert x["name"] == y["name"]
             assert x["httpdtype"] == tritondtype_to_httpdtype(y["data_type"])
-        except AssertionError as e:
+        except AssertionError:
             raise AssertionError(
                 f"Inputs inconsistent for {model_dict['name']} {x} != {y}"
             )
@@ -154,7 +160,5 @@ def add_np_and_swagger_dtype(model_note):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    http_url = os.getenv("HTTP_URL")
-    tmpl_url = os.getenv("TMPL_URL")
-    grpc_url = os.getenv("GRPC_URL")
-    main(http_url, grpc_url, tmpl_url)
+    config = load_yaml("swagger/config.yml")
+    main(config["HTTP_URL"], config["TMPLT_GRPC_URL"], config["TMPLT_HTTP_URL"])
