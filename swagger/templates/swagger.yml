@@ -1,19 +1,43 @@
 openapi: 3.0.3
 info:
-  title: Swagger Triton Prosit model serving - OpenAPI 3.0
+  title: Koina
   description: |-
-   This is a documentation for the machine learning models for proteomics DLomix
-   There are multiple different models are hosted. Such as Prosit, MS2PIP and DeepLC
-  termsOfService: http://swagger.io/terms/
+    This is the official documentation of the machine learning model hosting platform Koina. 
+    Koina is a generic, open-source, and online-accessible prediction service 
+    that significantly simplifies using machine learning models by making them accessible via the web.
+
+    <b> Accessing a public server </b>
+    You can access Koina using either http or grpc. 
+    For each model endpoint below you will find multiple examples of how to request predictions.
+    The simplest option is to use the "Try Out" button which will send a request directly in your browser.
+    The "Try out" button will also autogenerate an example code using curl.
+    Lastly for each model there is also an example of how to send gRPC requests using Python.
+
+    <b> Hosting your own server </b>
+    Koina is open source and free to use as such you can host your own instance of Koina. 
+    For this we provide an easy to use docker image. 
+    For more information regarding this go to our  <a href="https://github.com/wilhelm-lab/koina">GitHub</a>.
+
+    Koina was initially developed at EUBIC Developers Meeting 2023 and is meant as a resource from the community for the community. 
+    Multiple organizations are already hosting instances of Koina. 
+    Such as the  <a href="https://fgcz.ch/omics_areas/bioinf/proteome_informatics.html">ETH</a>, <a href="https://www1.ls.tum.de/en/compms/home/">TUM</a> as well as <a href="https://www.msaid.de/">MSAID</a>.
+    
+    You can join in this community effort, it's as simple as running the provided docker image and sending an email to Ludwig.Lautenbacher@tum.de telling me under which URL your server can be accessed. 
+
+    <b> Adding your own model </b>
+    If you are developing a machine learning model in the field of proteomics, and want to make it as wiedly available as possible you can contribute by adding your model to Koina.
+    You will find detailed instructions on how to do this in our <a href="https://github.com/wilhelm-lab/koina">GitHub</a>
+
+  termsOfService: https://github.com/wilhelm-lab/koina
   contact:
-    email: apiteam@swagger.io
+    email: Ludwig.Lautenbacher@tum.de
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.11
+  version: 0.0.7
 externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
+  description: Koina GitHub
+  url: https://github.com/wilhelm-lab/koina
 servers:
   - url: {{tmpl_url}}/v2/models
 
