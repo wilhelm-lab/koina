@@ -1,0 +1,50 @@
+import numpy as np
+import time
+import tritonclient.grpc as grpcclient
+
+nptype_convert = {
+    np.dtype("float32"): "FP32",
+    np.dtype("O"): "BYTES",
+    np.dtype("int16"): "INT16",
+    np.dtype("int32"): "INT32",
+    np.dtype("int64"): "INT64",
+}
+
+server_url = "{{ url }}"
+model_name = "{{ name }}"
+batch_size = 1000
+inputs = { {% for input in note.examples.inputs %}
+    "{{input.name}}": np.array({{input.data}}, dtype={{input.npdtype}}).reshape({{input.shape}}),{% endfor %}
+}
+outputs = [{% for o in note.outputs %} "{{o}}", {% endfor %}]
+
+triton_client = grpcclient.InferenceServerClient(url=server_url)
+
+koina_outputs = []
+for name in outputs:
+    koina_outputs.append(grpcclient.InferRequestedOutput(name))
+
+predictions = {name: [] for name in outputs}
+len_inputs = list(inputs.values())[0].shape[0]
+for i in range(0, len_inputs, batch_size):
+    if len_inputs < i+batch_size:
+        current_batchsize = len_inputs
+    else:
+        current_batchsize = batch_size
+
+    koina_inputs = []
+    for iname, iarr in inputs.items():
+        koina_inputs.append(
+            grpcclient.InferInput(iname, [current_batchsize, 1], nptype_convert[iarr.dtype])
+        )
+        koina_inputs[-1].set_data_from_numpy(iarr[i:i+current_batchsize])
+
+    prediction = triton_client.infer(model_name, inputs=koina_inputs, outputs=koina_outputs)
+    
+    for name in outputs:
+        predictions[name].append(prediction.as_numpy(name))
+
+for key, value in predictions.items():
+    predictions[key] = np.vstack(value)
+    print(key)
+    print(predictions[key])

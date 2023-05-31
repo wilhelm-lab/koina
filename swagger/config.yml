@@ -1,0 +1,3 @@
+TMPLT_HTTP_URL: "http://koina.proteomicsdb.org"
+TMPLT_GRPC_URL: "koina.proteomicsdb.org:8008"
+HTTP_URL: "http://serving:8501"

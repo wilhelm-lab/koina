@@ -55,14 +55,17 @@ def test_inference():
         outputs=[
             grpcclient.InferRequestedOutput("intensities"),
             grpcclient.InferRequestedOutput("mz"),
+            grpcclient.InferRequestedOutput("annotation"),
         ],
     )
 
     intensities = result.as_numpy("intensities")
     fragmentmz = result.as_numpy("mz")
+    annotation = result.as_numpy("annotation")
 
     assert intensities.shape == (5, 174)
     assert fragmentmz.shape == (5, 174)
+    assert annotation.shape == (5, 174)
 
     # Assert intensities consistent
     assert np.allclose(

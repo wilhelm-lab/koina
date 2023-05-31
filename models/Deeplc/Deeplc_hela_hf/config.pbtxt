@@ -9,24 +9,9 @@ input [
 ]
 output [
   {
-   name: 'single_ac',
+   name: 'dense_323',
    data_type: TYPE_FP32,
-   dims: [60,6]
-  },
-  {
-   name: 'diamino_ac',
-   data_type: TYPE_FP32,
-   dims: [30,6]
-  },
-  {
-   name: 'peptides_in:0',
-   data_type: TYPE_FP32,
-   dims: [60,20]
-  },
-  {
-   name: 'general_features',
-   data_type: TYPE_FP32,
-   dims: [55]
+   dims: [1]
   }
   
 ]
@@ -139,6 +124,30 @@ ensemble_scheduling {
       output_map {
         key: "general_features"
         value: "general_features"
+      }
+    },
+	{
+      model_name: "Deeplc_hela_hf_1f"
+      model_version: 1
+      input_map {
+        key: "input_141"
+        value: "single_ac"
+      },
+	  input_map {
+        key: "input_142"
+        value: "diamino_ac"
+      },
+	  input_map {
+        key: "input_143"
+        value: "general_features"
+      },
+	  input_map {
+        key: "input_144"
+        value: "peptides_in:0"
+      },
+      output_map {
+        key: "dense_323"
+        value: "dense_323"
       }
     }
   ]

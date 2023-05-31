@@ -22,6 +22,11 @@ output [
    name: 'mz',
    data_type: TYPE_FP32,
    dims: [174]
+ },
+ {
+   name: 'annotation',
+   data_type: TYPE_STRING,
+   dims: [174]
  }
 ]
 
@@ -105,6 +110,18 @@ ensemble_scheduling {
       output_map {
         key: "mz"
         value: "mz"
+      }
+    },
+    {
+      model_name: "Prosit_Helper_annotation"
+      model_version: 1
+      input_map {
+        key: "precursor_charge"
+        value: "precursor_charge"
+      },
+      output_map {
+        key: "annotation"
+        value: "annotation"
       }
     }
   ]

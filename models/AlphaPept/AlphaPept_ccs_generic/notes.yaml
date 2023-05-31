@@ -7,7 +7,7 @@ description: |
   
   Wen-Feng Zeng, Xie-Xuan Zhou, Sander Willems, Constantin Ammar, Maria Wahle, Isabell Bludau, Eugenia Voytik, Maximillian T. Strauss & Matthias Mann. AlphaPeptDeep: a modular deep learning framework to predict peptide properties for proteomics. Nat Commun 13, 7238 (2022). https://doi.org/10.1038/s41467-022-34904-3
 summary: ""
-tag: "Intensity"
+tag: "Collisional cross section"
 tag_url: "https://www.proteomicsdb.org/"
 examples:
   inputs:
@@ -22,18 +22,6 @@ examples:
         "name": "precursor_charge",
         "httpdtype": "INT32",
         "data": '[2]',
-        "shape": "[1,1]"
-      },
-      {
-        "name": "collision_energies",
-        "httpdtype": "INT32",
-        "data": '[25]',
-        "shape": "[1,1]"
-      },
-      {
-        "name": "instrument_types",
-        "httpdtype": "INT64",
-        "data": '[1]',
         "shape": "[1,1]"
       }
     ]

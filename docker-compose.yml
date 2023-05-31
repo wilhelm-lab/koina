@@ -23,9 +23,6 @@ services:
       args:
         UID: ${UID}
         GID: ${GID}
-        GRPC_URL: ${GRPC_URL}
-        HTTP_URL: ${HTTP_URL}
-        TMPL_URL: ${HTTP_URL}
     user: "devuser"
     command: [ "sleep", "infinity" ]
     working_dir: /workspace/koina
@@ -36,18 +33,6 @@ services:
         condition: service_healthy
     env_file:
       - .env
-
-  reverse-proxy:
-    image: nginx
-    depends_on:
-      serving:
-        condition: service_healthy
-    ports:
-      - 8502:8502
-      - 8504:8504
-    volumes:
-      - ./nginx:/etc/nginx:ro
-    command: [ nginx-debug, '-g', 'daemon off;' ]
 
   swagger:
     build:
