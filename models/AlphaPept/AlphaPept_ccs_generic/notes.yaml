@@ -1,8 +1,8 @@
 description: |
   <b>Alphapept</b>
-summary: "Alphapept peptide retention time prediction model"
-tag: "Intensity"
-tag_description: "Intensity models"
+summary: "Alphapept CCS prediction model"
+tag: "CCS"
+tag_description: "Collisional cross section models"
 tag_url: "https://www.proteomicsdb.org/"
 examples:
   inputs:
@@ -17,18 +17,6 @@ examples:
         "name": "precursor_charge",
         "httpdtype": "INT32",
         "data": '[2]',
-        "shape": "[1,1]"
-      },
-      {
-        "name": "collision_energies",
-        "httpdtype": "INT32",
-        "data": '[25]',
-        "shape": "[1,1]"
-      },
-      {
-        "name": "instrument_types",
-        "httpdtype": "INT64",
-        "data": '[1]',
         "shape": "[1,1]"
       }
     ]

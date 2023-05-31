@@ -24,5 +24,11 @@ examples:
           "httpdtype": "FP32",
           "shape": "[2,1]",
           "data": '[25, 25]'
+      },
+      {
+        "name": "fragmentation_types",
+        "httpdtype": "FP32",
+        "shape": "[2,1]",
+        "data": '[0, 0]'
       }
     ]

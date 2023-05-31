@@ -1,0 +1,16 @@
+description: |
+  <b>Prosit</b>
+summary: "Prosit peptide retention time prediction model"
+tag: "Retention Time"
+tag_description: "Retention time models"
+tag_url: "https://www.proteomicsdb.org/"
+examples:
+  inputs:
+    [
+      {
+        "name": "peptide_sequences",
+        "httpdtype": "BYTES",
+        "data": '["AAAAAKAKM[UNIMOD:21]"]',
+        "shape": "[1,1]"
+      }
+    ]
