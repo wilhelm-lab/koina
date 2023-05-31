@@ -8,6 +8,7 @@ import html
 import yaml
 import requests
 from jinja2 import Environment, FileSystemLoader
+from itertools import zip_longest
 
 nptype_convert = {
     "FP32": "np.float32",
@@ -117,7 +118,7 @@ def copy_outputs_to_note(model_dict):
 
 
 def verify_inputs(model_dict):
-    for x, y in zip(
+    for x, y in zip_longest(
         model_dict["note"]["examples"]["inputs"], model_dict["config"]["input"]
     ):
         try:
