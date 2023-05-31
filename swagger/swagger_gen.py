@@ -104,6 +104,9 @@ def main(http_url, grpc_url, tmpl_url):
                 "config": get_config(http_url, name),
             }
         )
+        models[-1]["note"]["description"] = models[-1]["note"]["description"].replace(
+            "\n", "<br>"
+        )
         add_np_and_swagger_dtype(models[-1]["note"])
         copy_outputs_to_note(models[-1])
         verify_inputs(models[-1])

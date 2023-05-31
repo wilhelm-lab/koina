@@ -31,9 +31,9 @@ info:
   termsOfService: https://github.com/wilhelm-lab/koina
   contact:
     email: Ludwig.Lautenbacher@tum.de
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  # license:
+  #   name: Apache 2.0
+  #   url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.0.7
 externalDocs:
   description: Koina GitHub
@@ -44,7 +44,6 @@ servers:
 tags:
 {% for model in models %}
   - name: {{model.note.tag}}
-    description: {{model.note.tag_description }}
     externalDocs:
       description: Find out more
       url: {{model.note.tag_url}}
@@ -56,9 +55,9 @@ paths:
       tags:
         - {{model.note.tag}}
       summary: {{model.note.summary}}
-      description: |
-              {{model.note.description }}
-              {{model.code}}
+      description: | 
+        {{model.note.description }} 
+        {{model.code}}
       operationId: {{model.name}}
       requestBody:
         description: Body
