@@ -1,25 +1,17 @@
-# Nuxt 3 Minimal Starter
+# Web Page
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
-## Setup
-
-Make sure to install the dependencies:
-
-```bash
-# yarn
-yarn install
-
-# npm
-npm install
-
-# pnpm
-pnpm install
-```
+Koina landing page and documentation built with [Nuxt](https://nuxt.com)
+and [RapiDoc](https://rapidocweb.com/index.html)
 
 ## Development Server
 
-Start the development server on `http://localhost:3000`
+Make sure to install the dependencies first
+
+```bash
+npm install
+```
+
+Start the development server
 
 ```bash
 npm run dev
@@ -27,16 +19,16 @@ npm run dev
 
 ## Production
 
-Build the application for production:
+Build the web page
 
 ```bash
-npm run build
+npm run generate
 ```
+
+This will generate the static files in the `.output/public` directory.
 
 Locally preview production build:
 
 ```bash
 npm run preview
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
