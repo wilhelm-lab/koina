@@ -51,8 +51,12 @@
           For more information on how to host an instance of Koina or add your
           own model, check out the links below.
         </p>
-        <BaseButton to="/docs"> Host Koina </BaseButton>
-        <BaseButton to="/docs" class="ml-4"> Add your model </BaseButton>
+        <BaseButton to="/docs#overview--hosting-your-own-server">
+          Host Koina
+        </BaseButton>
+        <BaseButton to="/docs#overview--adding-your-own-model" class="ml-4">
+          Add your model
+        </BaseButton>
       </div>
     </div>
 

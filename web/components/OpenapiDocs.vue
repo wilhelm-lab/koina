@@ -8,6 +8,7 @@
     allow-authentication="false"
     allow-server-selection="false"
     nav-bg-color="#f0f0f0"
+    info-description-headings-in-navbar="true"
     font-size="largest"
   >
     <div slot="footer">

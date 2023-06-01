@@ -10,14 +10,14 @@ info:
     Koina is a generic, open-source, and online-accessible prediction service
     that significantly simplifies using machine learning models by making them accessible via the web.
 
-    <b> Accessing a public server </b>
+    ## Accessing a public server
     You can access Koina using either http or grpc.
     For each model endpoint below you will find multiple examples of how to request predictions.
     The simplest option is to use the "Try Out" button which will send a request directly in your browser.
     The "Try out" button will also autogenerate an example code using curl.
     Lastly for each model there is also an example of how to send gRPC requests using Python.
 
-    <b> Hosting your own server </b>
+    ## Hosting your own server
     Koina is open source and free to use as such you can host your own instance of Koina.
     For this we provide an easy to use docker image.
     For more information regarding this go to our  <a href="https://github.com/wilhelm-lab/koina">GitHub</a>.
@@ -28,7 +28,7 @@ info:
 
     You can join in this community effort, it's as simple as running the provided docker image and sending an email to Ludwig.Lautenbacher@tum.de telling me under which URL your server can be accessed.
 
-    <b> Adding your own model </b>
+    ## Adding your own model
     If you are developing a machine learning model in the field of proteomics, and want to make it as widely available as possible you can contribute by adding your model to Koina.
     You will find detailed instructions on how to do this in our <a href="https://github.com/wilhelm-lab/koina">GitHub</a>
 
