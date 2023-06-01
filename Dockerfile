@@ -12,11 +12,15 @@ RUN apt-get update
 RUN apt-get install git vim curl ripgrep -y
 RUN echo '#!/bin/bash\npylint --recursive=y test models $@' > /usr/local/bin/lint
 RUN chmod +x /usr/local/bin/lint
-ARG UID=1001
-ARG GID=1001 
+ARG UID=1000
+ARG GID=1000 
 RUN groupadd -g $GID devuser
 RUN useradd -ms /bin/bash devuser -u $UID -g $GID
 USER devuser
 
-FROM swaggerapi/swagger-ui as swagger-dlomix
-ENV SWAGGER_JSON=/workspace/swagger/swagger.yml
+FROM node:latest as web
+ARG UID=1000
+ARG GID=1000 
+RUN groupadd -g $GID devuser
+RUN useradd -ms /bin/bash devuser -u $UID -g $GID
+USER devuser
