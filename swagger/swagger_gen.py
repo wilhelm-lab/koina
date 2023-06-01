@@ -34,9 +34,7 @@ def generate_example_code(model, grpc_url):
     template = environment.get_template(python_code_template)
     context = model
     context["url"] = grpc_url
-
-    txt = html.escape(template.render(context)).replace("\n", "<br>")
-    return f"<pre>{txt}</pre>"
+    return template.render(context).replace("\n", "\n        ")
 
 
 def sleep_until_service_starts(http_server):

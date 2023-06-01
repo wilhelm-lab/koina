@@ -3,7 +3,7 @@
     class="py-8 px-2 md:px-4 lg:px-8 flex items-center justify-center border-t-2 border-gray-200"
   >
     <div>
-      <nuxt-link to="https://www1.ls.tum.de/proteomics/impressum/" class="ml-8">
+      <nuxt-link to="https://www1.ls.tum.de/en/compms/impressum/" class="ml-8">
         Imprint
       </nuxt-link>
     </div>

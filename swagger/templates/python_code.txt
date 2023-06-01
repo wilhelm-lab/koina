@@ -3,20 +3,20 @@ import time
 import tritonclient.grpc as grpcclient
 
 nptype_convert = {
-    np.dtype("float32"): "FP32",
-    np.dtype("O"): "BYTES",
-    np.dtype("int16"): "INT16",
-    np.dtype("int32"): "INT32",
-    np.dtype("int64"): "INT64",
+    np.dtype('float32'): 'FP32',
+    np.dtype('O'): 'BYTES',
+    np.dtype('int16'): 'INT16',
+    np.dtype('int32'): 'INT32',
+    np.dtype('int64'): 'INT64',
 }
 
-server_url = "{{ url }}"
-model_name = "{{ name }}"
+server_url = '{{ url }}'
+model_name = '{{ name }}'
 batch_size = 1000
 inputs = { {% for input in note.examples.inputs %}
-    "{{input.name}}": np.array({{input.data}}, dtype={{input.npdtype}}).reshape({{input.shape}}),{% endfor %}
+    '{{input.name}}': np.array({{input.data}}, dtype={{input.npdtype}}).reshape({{input.shape}}),{% endfor %}
 }
-outputs = [{% for o in note.outputs %} "{{o}}", {% endfor %}]
+outputs = [{% for o in note.outputs %} '{{o}}', {% endfor %}]
 
 triton_client = grpcclient.InferenceServerClient(url=server_url)
 
