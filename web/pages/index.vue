@@ -64,9 +64,8 @@
       <h2 class="text-3xl mb-4">Organizations hosting Koina</h2>
       <div class="flex justify-between">
         <img src="~/assets/img/tum-logo.png" alt="TUM logo" class="h-16" />
-        <img src="~/assets/img/eth-logo.svg" alt="TUM logo" class="h-16" />
-        <img src="~/assets/img/uzh-logo.svg" alt="TUM logo" class="h-16" />
-        <img src="~/assets/img/msaid-logo.webp" alt="TUM logo" class="h-16" />
+        <img src="~/assets/img/eth-uzh-logo.svg" alt="ETH-UZH logo" class="h-16" />
+        <img src="~/assets/img/msaid-logo.webp" alt="MSAID logo" class="h-16" />
       </div>
     </div>
   </div>
