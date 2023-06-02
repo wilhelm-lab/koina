@@ -65,12 +65,7 @@
       <div class="flex justify-around flex-wrap">
         <img src="~/assets/img/tum-logo.png" alt="TUM logo" class="h-16 mb-2" />
         <img
-          src="~/assets/img/eth-logo.svg"
-          alt="TUM logo"
-          class="h-16 ml-2 mb-2"
-        />
-        <img
-          src="~/assets/img/uzh-logo.svg"
+          src="~/assets/img/eth-uzh-logo.svg"
           alt="TUM logo"
           class="h-16 ml-2 mb-2"
         />
