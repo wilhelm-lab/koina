@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Koina
   description: |-
-    HI LUDWIG!!! This is the official documentation of the machine learning model hosting platform Koina. 
+    This is the official documentation of the machine learning model hosting platform Koina. 
     Koina is a generic, open-source, and online-accessible prediction service 
     that significantly simplifies using machine learning models by making them accessible via the web.
     ## Accessing a public server 
