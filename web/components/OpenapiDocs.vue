@@ -1,6 +1,6 @@
 <template>
   <rapi-doc
-    spec-url="/swagger.yml"
+    spec-url="/openapi.yml"
     show-header="false"
     render-style="read"
     theme="light"

@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Koina
   description: |-
-    This is the official documentation of the machine learning model hosting platform Koina. 
+    HI LUDWIG!!! This is the official documentation of the machine learning model hosting platform Koina. 
     Koina is a generic, open-source, and online-accessible prediction service 
     that significantly simplifies using machine learning models by making them accessible via the web.
     ## Accessing a public server 
@@ -164,12 +164,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ms2pip_2021_HCD_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/ms2pip_2021_HCD_input'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ms2pip_2021_HCD_input'
         required: true
       responses:
         '200':
@@ -242,12 +236,6 @@ paths:
         description: Body
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/AlphaPept_rt_generic_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/AlphaPept_rt_generic_input'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/AlphaPept_rt_generic_input'
         required: true
@@ -327,12 +315,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AlphaPept_ms2_generic_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/AlphaPept_ms2_generic_input'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/AlphaPept_ms2_generic_input'
         required: true
       responses:
         '200':
@@ -406,12 +388,6 @@ paths:
         description: Body
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/AlphaPept_ccs_generic_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/AlphaPept_ccs_generic_input'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/AlphaPept_ccs_generic_input'
         required: true
@@ -490,12 +466,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Prosit_2020_intensity_HCD_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Prosit_2020_intensity_HCD_input'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Prosit_2020_intensity_HCD_input'
         required: true
       responses:
         '200':
@@ -568,12 +538,6 @@ paths:
         description: Body
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/Prosit_2020_irt_TMT_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Prosit_2020_irt_TMT_input'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/Prosit_2020_irt_TMT_input'
         required: true
@@ -653,12 +617,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Prosit_2020_intensity_TMT_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Prosit_2020_intensity_TMT_input'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Prosit_2020_intensity_TMT_input'
         required: true
       responses:
         '200':
@@ -735,12 +693,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Prosit_2019_intensity_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Prosit_2019_intensity_input'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Prosit_2019_intensity_input'
         required: true
       responses:
         '200':
@@ -813,12 +765,6 @@ paths:
         description: Body
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/Prosit_2019_irt_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Prosit_2019_irt_input'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/Prosit_2019_irt_input'
         required: true
@@ -896,12 +842,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Prosit_2020_intensity_CID_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Prosit_2020_intensity_CID_input'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Prosit_2020_intensity_CID_input'
         required: true
       responses:
         '200':
@@ -976,12 +916,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Deeplc_hela_hf_input'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Deeplc_hela_hf_input'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Deeplc_hela_hf_input'
         required: true
       responses:
         '200':
@@ -1051,7 +985,7 @@ components:
           type: array
           example: ["ACDEK", "AAAAAAAAAAAAA"]
           items:
-            type: string
+            type: 
   
     ms2pip_2021_HCD_input_precursor_charge:
       type: object
@@ -1068,7 +1002,7 @@ components:
           type: array
           example: [2, 3]
           items:
-            type: number
+            type: 
   
 
     AlphaPept_rt_generic_input:
@@ -1111,7 +1045,7 @@ components:
           type: array
           example: ["AAAAAKAKM[UNIMOD:21]"]
           items:
-            type: string
+            type: 
   
 
     AlphaPept_ms2_generic_input:
@@ -1175,7 +1109,7 @@ components:
           type: array
           example: ["AAAAAKAKM[UNIMOD:21]"]
           items:
-            type: string
+            type: 
   
     AlphaPept_ms2_generic_input_precursor_charge:
       type: object
@@ -1192,7 +1126,7 @@ components:
           type: array
           example: [2]
           items:
-            type: number
+            type: 
   
     AlphaPept_ms2_generic_input_collision_energies:
       type: object
@@ -1209,7 +1143,7 @@ components:
           type: array
           example: [25]
           items:
-            type: number
+            type: 
   
     AlphaPept_ms2_generic_input_instrument_types:
       type: object
@@ -1226,7 +1160,7 @@ components:
           type: array
           example: [1]
           items:
-            type: number
+            type: 
   
 
     AlphaPept_ccs_generic_input:
@@ -1276,7 +1210,7 @@ components:
           type: array
           example: ["AAAAAKAKM[UNIMOD:21]"]
           items:
-            type: string
+            type: 
   
     AlphaPept_ccs_generic_input_precursor_charge:
       type: object
@@ -1293,7 +1227,7 @@ components:
           type: array
           example: [2]
           items:
-            type: number
+            type: 
   
 
     Prosit_2020_intensity_HCD_input:
@@ -1350,7 +1284,7 @@ components:
           type: array
           example: ["AAAAAKAK", "AAAAAKAK"]
           items:
-            type: string
+            type: 
   
     Prosit_2020_intensity_HCD_input_precursor_charge:
       type: object
@@ -1367,7 +1301,7 @@ components:
           type: array
           example: [1,2]
           items:
-            type: number
+            type: 
   
     Prosit_2020_intensity_HCD_input_collision_energies:
       type: object
@@ -1384,7 +1318,7 @@ components:
           type: array
           example: [25, 25]
           items:
-            type: number
+            type: 
   
 
     Prosit_2020_irt_TMT_input:
@@ -1427,7 +1361,7 @@ components:
           type: array
           example: ["AAAAAKAKM[UNIMOD:21]"]
           items:
-            type: string
+            type: 
   
 
     Prosit_2020_intensity_TMT_input:
@@ -1491,7 +1425,7 @@ components:
           type: array
           example: ["AAAAAKAK", "AAAAAKAK"]
           items:
-            type: string
+            type: 
   
     Prosit_2020_intensity_TMT_input_precursor_charge:
       type: object
@@ -1508,7 +1442,7 @@ components:
           type: array
           example: [1,2]
           items:
-            type: number
+            type: 
   
     Prosit_2020_intensity_TMT_input_collision_energies:
       type: object
@@ -1525,7 +1459,7 @@ components:
           type: array
           example: [25, 25]
           items:
-            type: number
+            type: 
   
     Prosit_2020_intensity_TMT_input_fragmentation_types:
       type: object
@@ -1542,7 +1476,7 @@ components:
           type: array
           example: [0, 0]
           items:
-            type: number
+            type: 
   
 
     Prosit_2019_intensity_input:
@@ -1599,7 +1533,7 @@ components:
           type: array
           example: ["AAAAAKAK", "AAAAAKAK"]
           items:
-            type: string
+            type: 
   
     Prosit_2019_intensity_input_precursor_charge:
       type: object
@@ -1616,7 +1550,7 @@ components:
           type: array
           example: [1,2]
           items:
-            type: number
+            type: 
   
     Prosit_2019_intensity_input_collision_energies:
       type: object
@@ -1633,7 +1567,7 @@ components:
           type: array
           example: [25, 25]
           items:
-            type: number
+            type: 
   
 
     Prosit_2019_irt_input:
@@ -1676,7 +1610,7 @@ components:
           type: array
           example: ["AAAAAKAKM[UNIMOD:21]"]
           items:
-            type: string
+            type: 
   
 
     Prosit_2020_intensity_CID_input:
@@ -1726,7 +1660,7 @@ components:
           type: array
           example: ["AAAAAKAK", "AAAAAKAK"]
           items:
-            type: string
+            type: 
   
     Prosit_2020_intensity_CID_input_precursor_charge:
       type: object
@@ -1743,7 +1677,7 @@ components:
           type: array
           example: [1,2]
           items:
-            type: number
+            type: 
   
 
     Deeplc_hela_hf_input:
@@ -1786,5 +1720,5 @@ components:
           type: array
           example: [['LGGNEQVTR'], ['GAGSSEPVTGLDAK'], ['VEATFGVDESNAK'], ['LFLQFGAQGSPFLK']]
           items:
-            type: string
+            type: 
   

@@ -27,7 +27,7 @@ def generate_example_code(model, grpc_url):
     """
     Generates the GRPC examples codes based on the notes
     """
-    python_code_template = "swagger/templates/python_code.txt"
+    python_code_template = "web/openapi/templates/python_code.txt"
     logging.info(f"Using grpc url:\t{grpc_url}")
     logging.info(f"Using template to create python code:\t\t{python_code_template}")
     environment = Environment(loader=FileSystemLoader("./"))
@@ -63,18 +63,18 @@ def get_config(http_url, name):
     return r.json()
 
 
-def create_swagger_yaml(models, tmpl_url):
+def create_openapi_yaml(models, tmpl_url):
     # Create the Swagger.yaml based on the template
 
-    swagger_template_file = "swagger/templates/swagger.yml"
-    logging.info(f"Using template file:\t\t{swagger_template_file}")
+    openapi_template_file = "web/openapi/templates/openapi.yml"
+    logging.info(f"Using template file:\t\t{openapi_template_file}")
 
     environment = Environment(loader=FileSystemLoader("./"))
-    template = environment.get_template(swagger_template_file)
+    template = environment.get_template(openapi_template_file)
     context = {"models": models, "tmpl_url": tmpl_url}
 
     content = template.render(context)
-    with open("swagger/swagger.yml", mode="w", encoding="utf-8") as yam:
+    with open("web/public/openapi.yml", mode="w", encoding="utf-8") as yam:
         yam.write(content)
     logging.info("Finished Generating the Swagger YAML file.")
 
@@ -105,13 +105,13 @@ def main(http_url, grpc_url, tmpl_url):
         models[-1]["note"]["description"] = models[-1]["note"]["description"].replace(
             "\n", "<br>"
         )
-        add_np_and_swagger_dtype(models[-1]["note"])
+        add_np_and_openapi_dtype(models[-1]["note"])
         copy_outputs_to_note(models[-1])
         verify_inputs(models[-1])
         models[-1]["code"] = generate_example_code(models[-1], grpc_url)
 
     logging.info(f"Template URL: {tmpl_url}")
-    create_swagger_yaml(models, tmpl_url)
+    create_openapi_yaml(models, tmpl_url)
 
 
 def copy_outputs_to_note(model_dict):
@@ -142,7 +142,7 @@ def httpdtype_to_npdtype(dtype):
     return mapping[dtype]
 
 
-def httpdtype_to_swaggerdtype(dtype):
+def httpdtype_to_openapidtype(dtype):
     if dtype == "BYTES":
         return "string"
     return "number"
@@ -154,13 +154,13 @@ def tritondtype_to_httpdtype(dtype):
     return dtype.replace("TYPE_", "")
 
 
-def add_np_and_swagger_dtype(model_note):
+def add_np_and_openapi_dtype(model_note):
     for x in model_note["examples"]["inputs"]:
         x["npdtype"] = httpdtype_to_npdtype(x["httpdtype"])
-        x["swaggerdtype"] = httpdtype_to_swaggerdtype(x["httpdtype"])
+        x["openapidtype"] = httpdtype_to_openapidtype(x["httpdtype"])
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
-    config = load_yaml("swagger/config.yml")
+    config = load_yaml("web/openapi/config.yml")
     main(config["HTTP_URL"], config["TMPLT_GRPC_URL"], config["TMPLT_HTTP_URL"])
