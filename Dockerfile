@@ -21,6 +21,6 @@ USER devuser
 FROM node:latest as web
 ARG UID=1000
 ARG GID=1000 
-RUN groupadd -g $GID devuser
+RUN groupadd -f -g $GID devuser
 RUN useradd -ms /bin/bash devuser -u $UID -g $GID
 USER devuser

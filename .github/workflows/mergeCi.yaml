@@ -18,7 +18,7 @@ jobs:
         run: ./getModels.sh
 
       - name: Start service
-        run: docker compose up -d --build --no-cache
+        run: docker compose up -d --build
 
       - name: Pytest
         run: docker compose exec develop pytest
