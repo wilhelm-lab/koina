@@ -22,6 +22,7 @@ class TritonPythonModel:
             int_out = np.hstack([r_int_b, r_int_y])
 
             int_out = int_out / np.nansum(int_out, 1).reshape(-1, 1)
+            int_out[np.isnan(int_out)] = -1
 
             output_tensors = [
                 pb_utils.Tensor("intensities", int_out.astype(self.output_dtype))
