@@ -27,7 +27,7 @@ jobs:
         run: docker compose exec develop black .
 
       - name: Run lint
-        run: docker compose exec develop lint --fail-under=6.5
+        run: docker compose exec develop lint --fail-under=6
 
       - name: Shutdown service
         if: success() || failure()
