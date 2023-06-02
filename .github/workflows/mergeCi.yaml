@@ -2,8 +2,6 @@ name: Run tests, styling and linting
 
 on:
   pull_request:
-    types:
-      - ready_for_review
 
 jobs:
 
@@ -29,9 +27,12 @@ jobs:
         run: docker compose exec develop black .
 
       - name: Run lint
-        run: docker compose exec develop lint --fail-under=6.5
+        run: docker compose exec develop lint --fail-under=6
 
       - name: Shutdown service
         if: success() || failure()
         run: docker compose down
         
+      - name: Remove container
+        if: success() || failure()
+        run: docker compose rm

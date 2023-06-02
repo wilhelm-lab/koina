@@ -74,6 +74,6 @@ class TritonPythonModel:
                 np.sort(tmp[:, 1, 0, :29]), 1
             )  # y charge 1 TODO clean up this mess
 
-            output[output == 0] = np.nan
+            output[output == 0] = -1
 
             return output

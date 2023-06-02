@@ -5,29 +5,26 @@ info:
     This is the official documentation of the machine learning model hosting platform Koina. 
     Koina is a generic, open-source, and online-accessible prediction service 
     that significantly simplifies using machine learning models by making them accessible via the web.
-
-    <b> Accessing a public server </b>
+    ## Accessing a public server 
     You can access Koina using either http or grpc. 
     For each model endpoint below you will find multiple examples of how to request predictions.
     The simplest option is to use the "Try Out" button which will send a request directly in your browser.
     The "Try out" button will also autogenerate an example code using curl.
     Lastly for each model there is also an example of how to send gRPC requests using Python.
-
-    <b> Hosting your own server </b>
+    ## Hosting your own server 
     Koina is open source and free to use as such you can host your own instance of Koina. 
     For this we provide an easy to use docker image. 
-    For more information regarding this go to our  <a href="https://github.com/wilhelm-lab/koina">GitHub</a>.
-
-    Koina was initially developed at EUBIC Developers Meeting 2023 and is meant as a resource from the community for the community. 
+    For more information regarding this go to our [GitHub](https://github.com/wilhelm-lab/koina)
+    Koina was initially developed at [EuBIC-MS Developers Meeting 2023](https://eubic-ms.org/events/2023-developers-meeting/) and is meant as a resource from the community for the community. 
     Multiple organizations are already hosting instances of Koina. 
-    Such as the  <a href="https://fgcz.ch/omics_areas/bioinf/proteome_informatics.html">ETH</a>, <a href="https://www1.ls.tum.de/en/compms/home/">TUM</a> as well as <a href="https://www.msaid.de/">MSAID</a>.
+    Such as the [ETH|UZH](https://fgcz.ch/omics_areas/bioinf/proteome_informatics.html), 
+    [TUM](https://www1.ls.tum.de/en/compms/home/) as well as 
+    [MSAID](https://www.msaid.de/).
     
     You can join in this community effort, it's as simple as running the provided docker image and sending an email to Ludwig.Lautenbacher@tum.de telling me under which URL your server can be accessed. 
-
-    <b> Adding your own model </b>
-    If you are developing a machine learning model in the field of proteomics, and want to make it as wiedly available as possible you can contribute by adding your model to Koina.
-    You will find detailed instructions on how to do this in our <a href="https://github.com/wilhelm-lab/koina">GitHub</a>
-
+    ## Adding your own model 
+    If you are developing a machine learning model in the field of proteomics, and want to make it as widely available as possible you can contribute by adding your model to Koina.
+    You will find detailed instructions on how to do this in our [GitHub](https://github.com/wilhelm-lab/koina)
   termsOfService: https://github.com/wilhelm-lab/koina
   contact:
     email: Ludwig.Lautenbacher@tum.de
@@ -40,7 +37,6 @@ externalDocs:
   url: https://github.com/wilhelm-lab/koina
 servers:
   - url: {{tmpl_url}}/v2/models
-
 tags:
 {% for model in models %}
   - name: {{model.note.tag}}
@@ -54,21 +50,18 @@ paths:
      post:
       tags:
         - {{model.note.tag}}
-      summary: {{model.note.summary}}
-      description: | 
-        {{model.note.description }} 
+      summary: {{model.name}}
+      description: |
+        {{model.note.description }}
+        ```python
         {{model.code}}
+        ```
+        "
       operationId: {{model.name}}
       requestBody:
         description: Body
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/{{model.name ~ '_' ~ 'input'}}'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/{{model.name ~ '_' ~ 'input'}}'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/{{model.name ~ '_' ~ 'input'}}'
         required: true
@@ -78,7 +71,6 @@ paths:
         '405':
           description: Invalid input
 {% endfor %}
-
 components:
   schemas:
     parameters:
@@ -93,21 +85,30 @@ components:
         sequence_end:
           type: boolean
           example: false
-
 {% for model in models %}
     {{model.name ~ '_' ~ 'input'}}:
       type: object
       properties:
         id:
           type: string
-          example: "it_can_be_anything"
+          example: "0"
         inputs:
+          example:
+            {% for input in model.note.examples.inputs %}
+            - name: {{input.name}}
+              shape: {{input.shape}}
+              datatype: {{input.httpdtype}}
+              data: {{input.data}}
+            {% endfor %}
           type: array
           items:
             oneOf:
               {% for input in model.note.examples.inputs %}
               - $ref: "#/components/schemas/{{model.name ~ '_input_'~input.name}}"
               {% endfor %}
+            minItems: {{model.note.examples.inputs|length}}
+            maxItems: {{model.note.examples.inputs|length}}
+            uniqueItems: true
         
   {% for input in model.note.examples.inputs %}
     {{model.name ~ '_' ~ 'input_'~input.name}}:
@@ -115,15 +116,12 @@ components:
       properties:
         name:
           type: string
-          example: {{input.name}}
         shape:
           type: array
-          example: {{input.shape}}
           items:
             type: integer
         datatype:
           type: string
-          example: {{input.httpdtype}}
         data:
           type: array
           example: {{input.data}}

@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  a {
+    @apply text-primary;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply mb-4;
+  }
+
+  p {
+    @apply mb-4;
+  }
+}
