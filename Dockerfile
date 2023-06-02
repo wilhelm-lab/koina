@@ -14,7 +14,7 @@ RUN echo '#!/bin/bash\npylint --recursive=y test models $@' > /usr/local/bin/lin
 RUN chmod +x /usr/local/bin/lint
 ARG UID=1000
 ARG GID=1000 
-RUN groupadd -g $GID devuser
+RUN groupadd -f -g $GID devuser
 RUN useradd -ms /bin/bash devuser -u $UID -g $GID
 USER devuser
 
