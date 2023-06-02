@@ -63,17 +63,19 @@
     <div class="py-16 px-2 max-w-5xl mx-auto">
       <h2 class="text-3xl mb-4">Organizations hosting Koina</h2>
       <div class="flex justify-around flex-wrap">
-        <img src="~/assets/img/tum-logo.png" alt="TUM logo" class="h-16 mb-2" />
-        <img
-          src="~/assets/img/eth-uzh-logo.svg"
-          alt="TUM logo"
-          class="h-16 ml-2 mb-2"
-        />
-        <img
-          src="~/assets/img/msaid-logo.webp"
-          alt="TUM logo"
-          class="h-16 ml-2 mb-2"
-        />
+        <a href="https://www1.ls.tum.de/en/compms/home/" class="mb-2">
+          <img src="~/assets/img/tum-logo.png" alt="TUM logo" class="h-16" />
+        </a>
+        <a href="https://fgcz.ch/" class="ml-2 mb-2">
+          <img
+            src="~/assets/img/eth-uzh-logo.svg"
+            alt="TUM logo"
+            class="h-16"
+          />
+        </a>
+        <a href="https://www.msaid.de/" class="ml-2 mb-2">
+          <img src="~/assets/img/msaid-logo.webp" alt="TUM logo" class="h-16" />
+        </a>
       </div>
     </div>
   </div>
