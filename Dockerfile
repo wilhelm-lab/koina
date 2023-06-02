@@ -15,12 +15,12 @@ RUN chmod +x /usr/local/bin/lint
 ARG UID=1000
 ARG GID=1000 
 RUN groupadd -f -g $GID devuser
-RUN useradd -ms /bin/bash devuser -u $UID -g $GID
+RUN useradd -ms /bin/bash devuser -u $UID -g $GID --non-unique
 USER devuser
 
 FROM node:latest as web
 ARG UID=1000
 ARG GID=1000 
 RUN groupadd -f -g $GID devuser
-RUN useradd -ms /bin/bash devuser -u $UID -g $GID
+RUN useradd -ms /bin/bash devuser -u $UID -g $GID --non-unique
 USER devuser
