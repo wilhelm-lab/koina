@@ -9,7 +9,7 @@ input[
  },
  {
    name: 'charge_in',
-   data_type: TYPE_INT16,
+   data_type: TYPE_INT32,
    dims: [-1]
  }
 ]

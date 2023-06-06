@@ -9,7 +9,7 @@ input [
   },
   {
    name: 'precursor_charges',
-   data_type: TYPE_INT16,
+   data_type: TYPE_INT32,
    dims: [1]
   }
 ]
