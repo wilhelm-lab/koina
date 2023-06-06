@@ -1,4 +1,4 @@
-max_batch_size: 10
+max_batch_size: 5000
 input[
  {
    name: 'single_ac',

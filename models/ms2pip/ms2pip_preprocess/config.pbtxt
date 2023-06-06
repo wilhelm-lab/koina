@@ -1,5 +1,5 @@
 name: "ms2pip_preprocess"
-max_batch_size: 500
+max_batch_size: 5000
 backend: "python"
 input[
  {

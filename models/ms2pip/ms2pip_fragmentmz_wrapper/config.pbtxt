@@ -1,4 +1,4 @@
-max_batch_size: 7000
+max_batch_size: 5000
 input[
   {
    name: 'peptides_in:0',

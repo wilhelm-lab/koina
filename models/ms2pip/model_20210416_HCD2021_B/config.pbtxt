@@ -1,5 +1,5 @@
 backend: "fil"
-max_batch_size: 500
+max_batch_size: 5000
 input [
  {  
     name: "input__0"
