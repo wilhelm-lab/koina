@@ -49,9 +49,8 @@ class TritonPythonModel:
             masked_peaks = apply_masking(peaks_in, mask)
 
             fragmentmz = self.get_fragments(peptide_in)
-            fragmentmz[
-                np.isnan(masked_peaks)
-            ] = np.nan  # mask fragmentmz based on masked_peaks
+            fragmentmz[np.isnan(masked_peaks)] = -1
+            masked_peaks[np.isnan(masked_peaks)] = -1
 
             output_tensors = [
                 pb_utils.Tensor("intensities", masked_peaks.astype(self.output_dtype)),
