@@ -12,7 +12,7 @@ curl "http://koina.proteomicsdb.org/v2/models/Prosit_2019_intensity/infer" \
   "inputs": [
     {"name": "peptide_sequences",   "shape": [2,1], "datatype": "BYTES", "data": ["LGGNEQVTR","GAGSSEPVTGLDAK"]},
     {"name": "collision_energies",  "shape": [2,1], "datatype": "FP32",  "data": [25,25]},
-    {"name": "precursor_charge",    "shape": [2,1], "datatype": "INT32", "data": [1,2]}
+    {"name": "precursor_charges",    "shape": [2,1], "datatype": "INT32", "data": [1,2]}
   ]
 }'
 ```

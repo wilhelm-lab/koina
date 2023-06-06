@@ -4,7 +4,7 @@
       "peptide_sequences": [
         "PEPTIDE"
       ],
-      "precursor_charge": [
+      "precursor_charges": [
         2
       ],
       "collision_energies": [
