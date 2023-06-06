@@ -7,7 +7,7 @@ input [
    dims: [-1]
   },
   {
-    name: 'precursor_charge',
+    name: 'precursor_charges',
     data_type: TYPE_INT32,
     dims: [1],
   },
@@ -46,12 +46,12 @@ ensemble_scheduling {
       model_name: "Prosit_Preprocess_charge"
       model_version: 1
       input_map {
-        key: "precursor_charge"
-        value: "precursor_charge"
+        key: "precursor_charges"
+        value: "precursor_charges"
       },
       output_map {
-        key: "precursor_charge_in:0"
-        value: "precursor_charge_in_preprocessed:0"
+        key: "precursor_charges_in:0"
+        value: "precursor_charges_in_preprocessed:0"
       }
     },
     {
@@ -91,7 +91,7 @@ ensemble_scheduling {
       },
       input_map {
         key: "precursor_charge_in:0"
-        value: "precursor_charge_in_preprocessed:0"
+        value: "precursor_charges_in_preprocessed:0"
       }
       input_map {
         key: "fragmentation_type_in:0"
@@ -110,8 +110,8 @@ ensemble_scheduling {
         value: "peptide_sequences"
       },
       input_map{
-        key: "precursor_charge_in:0"
-        value: "precursor_charge_in_preprocessed:0"
+        key: "precursor_charges_in:0"
+        value: "precursor_charges_in_preprocessed:0"
       }
       input_map{
         key: "peaks_in:0",
@@ -130,8 +130,8 @@ ensemble_scheduling {
       model_name: "Prosit_Helper_annotation"
       model_version: 1
       input_map {
-        key: "precursor_charge"
-        value: "precursor_charge"
+        key: "precursor_charges"
+        value: "precursor_charges"
       },
       output_map {
         key: "annotation"

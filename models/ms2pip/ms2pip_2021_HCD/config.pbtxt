@@ -8,7 +8,7 @@ input [
    dims: [-1]
   },
   {
-   name: 'precursor_charge',
+   name: 'precursor_charges',
    data_type: TYPE_INT16,
    dims: [1]
   }
@@ -37,7 +37,7 @@ ensemble_scheduling {
       },
       input_map {
         key: "charge_in" 
-        value: "precursor_charge"
+        value: "precursor_charges"
       },
       output_map {
         key: "xgboost_input"

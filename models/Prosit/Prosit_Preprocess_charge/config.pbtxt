@@ -1,14 +1,14 @@
 max_batch_size: 5000
 input[
  {
-   name: 'precursor_charge',
+   name: 'precursor_charges',
    data_type: TYPE_INT32,
    dims: [1]
  }
 ]
 output [
  {
-   name: 'precursor_charge_in:0',
+   name: 'precursor_charges_in:0',
    data_type: TYPE_FP32,
    dims: [6]
  }

@@ -1,5 +1,5 @@
 description: |
- <b>Prosit intensity 2020 model</b> takes precursor_charge,collision_energy,peptides_in produces intensity of peptides. General applicability of Prosit by predicting spectra for proteases other than trypsin, generating spectral libraries  for data-independent acquisition and improving the analysis of metaproteomes. The below code allows you to send request via GRPC in python
+ <b>Prosit intensity 2020 model</b> takes precursor_charges,collision_energy,peptides_in produces intensity of peptides. General applicability of Prosit by predicting spectra for proteases other than trypsin, generating spectral libraries  for data-independent acquisition and improving the analysis of metaproteomes. The below code allows you to send request via GRPC in python
 summary: "Prosit 2020 model predicts intensity"
 tag: "Intensity"
 tag_url: "https://www.proteomicsdb.org/"
@@ -13,7 +13,7 @@ examples:
           "data": '["AAAAAKAK", "AAAAAKAK"]'
       },
       {
-          "name": "precursor_charge",
+          "name": "precursor_charges",
           "httpdtype": "INT32",
           "shape": "[2,1]",
           "data": '[1,2]'

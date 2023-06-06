@@ -7,7 +7,7 @@ input[
    dims: [-1]
   },
   {
-	  name: 'precursor_charge_in:0',
+	  name: 'precursor_charges_in:0',
 	  data_type: TYPE_FP32,
 	  dims: [6],
 	},

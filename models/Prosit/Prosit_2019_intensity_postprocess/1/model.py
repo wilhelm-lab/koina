@@ -38,14 +38,14 @@ class TritonPythonModel:
             )
 
             peptide_in = [x[0].decode("utf-8") for x in peptide_in]
-            precursor_charge_in = pb_utils.get_input_tensor_by_name(
-                request, "precursor_charge_in:0"
+            precursor_charges_in = pb_utils.get_input_tensor_by_name(
+                request, "precursor_charges_in:0"
             ).as_numpy()
             peaks_in = pb_utils.get_input_tensor_by_name(
                 request, "peaks_in:0"
             ).as_numpy()
             peptide_lengths = [len(x) for x in internal_without_mods(peptide_in)]
-            mask = create_masking(precursor_charge_in, peptide_lengths)
+            mask = create_masking(precursor_charges_in, peptide_lengths)
             masked_peaks = apply_masking(peaks_in, mask)
 
             fragmentmz = self.get_fragments(peptide_in)
