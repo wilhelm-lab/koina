@@ -15,7 +15,7 @@ class TritonPythonModel:
         responses = []
         for request in requests:
             charge_in_raw = pb_utils.get_input_tensor_by_name(
-                request, "precursor_charge"
+                request, "precursor_charges"
             ).as_numpy()
 
             charge_in_raw = charge_in_raw.astype(self.output_dtype)

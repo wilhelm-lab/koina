@@ -30,7 +30,7 @@ class TritonPythonModel:
         responses = []
         for request in requests:
             batchsize = (
-                pb_utils.get_input_tensor_by_name(request, "precursor_charge")
+                pb_utils.get_input_tensor_by_name(request, "precursor_charges")
                 .as_numpy()
                 .shape[0]
             )

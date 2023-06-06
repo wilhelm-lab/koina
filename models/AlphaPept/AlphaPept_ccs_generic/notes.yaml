@@ -16,7 +16,7 @@ examples:
         "shape": "[1,1]"
       },
       {
-        "name": "precursor_charge",
+        "name": "precursor_charges",
         "httpdtype": "INT32",
         "data": '[2]',
         "shape": "[1,1]"

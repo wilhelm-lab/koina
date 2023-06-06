@@ -1,8 +1,8 @@
-max_batch_size: 7000
+max_batch_size: 5000
 input[
  {
    name: 'ce_raw',
-   data_type: TYPE_INT32,
+   data_type: TYPE_FP32,
    dims: [1]
  }
 ]

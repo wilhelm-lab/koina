@@ -21,10 +21,10 @@ def to_on_hot(numeric):
 
 class TritonPythonModel:
     def initialize(self, args):
-        print("Preprocessing of the Precursor_Charge_In")
+        print("Preprocessing of the precursor_charges_In")
         self.model_config = model_config = json.loads(args["model_config"])
         output0_config = pb_utils.get_output_config_by_name(
-            self.model_config, "precursor_charge_in:0"
+            self.model_config, "precursor_charges_in:0"
         )
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
 
@@ -34,12 +34,12 @@ class TritonPythonModel:
         print("Pre-processing of charge is called")
         for request in requests:
             charge_in_raw = pb_utils.get_input_tensor_by_name(
-                request, "precursor_charge"
+                request, "precursor_charges"
             )
             charge_in_flat = sum(charge_in_raw.as_numpy().tolist(), [])
             charge_in = to_on_hot(charge_in_flat)
             t = pb_utils.Tensor(
-                "precursor_charge_in:0", charge_in.astype(self.output_dtype)
+                "precursor_charges_in:0", charge_in.astype(self.output_dtype)
             )
             responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
             print("charge_in: ")

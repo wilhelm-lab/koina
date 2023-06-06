@@ -26,7 +26,7 @@ def test_inference():
     )
 
     charge = np.array([[2] for _ in range(len(SEQUENCES))], dtype=np.int32)
-    ces = np.array([[30] for _ in range(len(SEQUENCES))], dtype=np.int32)
+    ces = np.array([[30] for _ in range(len(SEQUENCES))], dtype=np.float32)
     instr = np.array([[0] for _ in range(len(SEQUENCES))], dtype=np.int64)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
@@ -34,10 +34,10 @@ def test_inference():
     in_pep_seq = grpcclient.InferInput("peptide_sequences", SEQUENCES.shape, "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
-    in_charge = grpcclient.InferInput("precursor_charge", charge.shape, "INT32")
+    in_charge = grpcclient.InferInput("precursor_charges", charge.shape, "INT32")
     in_charge.set_data_from_numpy(charge)
 
-    in_ces = grpcclient.InferInput("collision_energies", ces.shape, "INT32")
+    in_ces = grpcclient.InferInput("collision_energies", ces.shape, "FP32")
     in_ces.set_data_from_numpy(ces)
 
     in_instr = grpcclient.InferInput("instrument_types", instr.shape, "INT64")

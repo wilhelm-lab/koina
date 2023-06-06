@@ -22,7 +22,7 @@ examples:
           "shape": "[2,1]"
       },
       {
-          "name": "precursor_charge",
+          "name": "precursor_charges",
           "httpdtype": "INT16",
           "data": '[2, 3]',
           "shape": "[2,1]"

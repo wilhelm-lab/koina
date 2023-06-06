@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "peptide_sequences": [
+        "PEPTIDE"
+      ],
+      "precursor_charges": [
+        2
+      ],
+      "collision_energies": [
+        0.35
+      ]
+    }
+  ]
+}
