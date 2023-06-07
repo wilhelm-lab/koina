@@ -23,7 +23,7 @@ examples:
       },
       {
         "name": "collision_energies",
-        "httpdtype": "INT32",
+        "httpdtype": "FP32",
         "data": '[25]',
         "shape": "[1,1]"
       },

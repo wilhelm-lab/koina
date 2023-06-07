@@ -121,7 +121,7 @@ paths:
         batch_size = 1000
         inputs = { 
             'peptide_sequences': np.array(["ACDEK", "AAAAAAAAAAAAA"], dtype=np.dtype("O")).reshape([2,1]),
-            'precursor_charge': np.array([2, 3], dtype=np.dtype("int16")).reshape([2,1]),
+            'precursor_charges': np.array([2, 3], dtype=np.dtype("int32")).reshape([2,1]),
         }
         outputs = [ 'intensities',  'mz', ]
         
@@ -270,8 +270,8 @@ paths:
         batch_size = 1000
         inputs = { 
             'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:21]"], dtype=np.dtype("O")).reshape([1,1]),
-            'precursor_charge': np.array([2], dtype=np.dtype("int32")).reshape([1,1]),
-            'collision_energies': np.array([25], dtype=np.dtype("int32")).reshape([1,1]),
+            'precursor_charges': np.array([2], dtype=np.dtype("int32")).reshape([1,1]),
+            'collision_energies': np.array([25], dtype=np.dtype("float32")).reshape([1,1]),
             'instrument_types': np.array([1], dtype=np.dtype("int64")).reshape([1,1]),
         }
         outputs = [ 'intensities',  'mz', ]
@@ -347,7 +347,7 @@ paths:
         batch_size = 1000
         inputs = { 
             'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:21]"], dtype=np.dtype("O")).reshape([1,1]),
-            'precursor_charge': np.array([2], dtype=np.dtype("int32")).reshape([1,1]),
+            'precursor_charges': np.array([2], dtype=np.dtype("int32")).reshape([1,1]),
         }
         outputs = [ 'ccs', ]
         
@@ -422,7 +422,7 @@ paths:
         batch_size = 1000
         inputs = { 
             'peptide_sequences': np.array(["AAAAAKAK", "AAAAAKAK"], dtype=np.dtype("O")).reshape([2,1]),
-            'precursor_charge': np.array([1,2], dtype=np.dtype("int32")).reshape([2,1]),
+            'precursor_charges': np.array([1,2], dtype=np.dtype("int32")).reshape([2,1]),
             'collision_energies': np.array([25, 25], dtype=np.dtype("float32")).reshape([2,1]),
         }
         outputs = [ 'intensities',  'mz',  'annotation', ]
@@ -572,7 +572,7 @@ paths:
         batch_size = 1000
         inputs = { 
             'peptide_sequences': np.array(["AAAAAKAK", "AAAAAKAK"], dtype=np.dtype("O")).reshape([2,1]),
-            'precursor_charge': np.array([1,2], dtype=np.dtype("int32")).reshape([2,1]),
+            'precursor_charges': np.array([1,2], dtype=np.dtype("int32")).reshape([2,1]),
             'collision_energies': np.array([25, 25], dtype=np.dtype("float32")).reshape([2,1]),
             'fragmentation_types': np.array([0, 0], dtype=np.dtype("float32")).reshape([2,1]),
         }
@@ -649,7 +649,7 @@ paths:
         batch_size = 1000
         inputs = { 
             'peptide_sequences': np.array(["AAAAAKAK", "AAAAAKAK"], dtype=np.dtype("O")).reshape([2,1]),
-            'precursor_charge': np.array([1,2], dtype=np.dtype("int32")).reshape([2,1]),
+            'precursor_charges': np.array([1,2], dtype=np.dtype("int32")).reshape([2,1]),
             'collision_energies': np.array([25, 25], dtype=np.dtype("float32")).reshape([2,1]),
         }
         outputs = [ 'intensities',  'mz',  'annotation', ]
@@ -799,7 +799,7 @@ paths:
         batch_size = 1000
         inputs = { 
             'peptide_sequences': np.array(["AAAAAKAK", "AAAAAKAK"], dtype=np.dtype("O")).reshape([2,1]),
-            'precursor_charge': np.array([1,2], dtype=np.dtype("int32")).reshape([2,1]),
+            'precursor_charges': np.array([1,2], dtype=np.dtype("int32")).reshape([2,1]),
         }
         outputs = [ 'intensities',  'mz',  'annotation', ]
         
@@ -952,9 +952,9 @@ components:
               datatype: BYTES
               data: ["ACDEK", "AAAAAAAAAAAAA"]
             
-            - name: precursor_charge
+            - name: precursor_charges
               shape: [2,1]
-              datatype: INT16
+              datatype: INT32
               data: [2, 3]
             
           type: array
@@ -963,7 +963,7 @@ components:
               
               - $ref: "#/components/schemas/ms2pip_2021_HCD_input_peptide_sequences"
               
-              - $ref: "#/components/schemas/ms2pip_2021_HCD_input_precursor_charge"
+              - $ref: "#/components/schemas/ms2pip_2021_HCD_input_precursor_charges"
               
             minItems: 2
             maxItems: 2
@@ -987,7 +987,7 @@ components:
           items:
             type: 
   
-    ms2pip_2021_HCD_input_precursor_charge:
+    ms2pip_2021_HCD_input_precursor_charges:
       type: object
       properties:
         name:
@@ -1062,14 +1062,14 @@ components:
               datatype: BYTES
               data: ["AAAAAKAKM[UNIMOD:21]"]
             
-            - name: precursor_charge
+            - name: precursor_charges
               shape: [1,1]
               datatype: INT32
               data: [2]
             
             - name: collision_energies
               shape: [1,1]
-              datatype: INT32
+              datatype: FP32
               data: [25]
             
             - name: instrument_types
@@ -1083,7 +1083,7 @@ components:
               
               - $ref: "#/components/schemas/AlphaPept_ms2_generic_input_peptide_sequences"
               
-              - $ref: "#/components/schemas/AlphaPept_ms2_generic_input_precursor_charge"
+              - $ref: "#/components/schemas/AlphaPept_ms2_generic_input_precursor_charges"
               
               - $ref: "#/components/schemas/AlphaPept_ms2_generic_input_collision_energies"
               
@@ -1111,7 +1111,7 @@ components:
           items:
             type: 
   
-    AlphaPept_ms2_generic_input_precursor_charge:
+    AlphaPept_ms2_generic_input_precursor_charges:
       type: object
       properties:
         name:
@@ -1177,7 +1177,7 @@ components:
               datatype: BYTES
               data: ["AAAAAKAKM[UNIMOD:21]"]
             
-            - name: precursor_charge
+            - name: precursor_charges
               shape: [1,1]
               datatype: INT32
               data: [2]
@@ -1188,7 +1188,7 @@ components:
               
               - $ref: "#/components/schemas/AlphaPept_ccs_generic_input_peptide_sequences"
               
-              - $ref: "#/components/schemas/AlphaPept_ccs_generic_input_precursor_charge"
+              - $ref: "#/components/schemas/AlphaPept_ccs_generic_input_precursor_charges"
               
             minItems: 2
             maxItems: 2
@@ -1212,7 +1212,7 @@ components:
           items:
             type: 
   
-    AlphaPept_ccs_generic_input_precursor_charge:
+    AlphaPept_ccs_generic_input_precursor_charges:
       type: object
       properties:
         name:
@@ -1244,7 +1244,7 @@ components:
               datatype: BYTES
               data: ["AAAAAKAK", "AAAAAKAK"]
             
-            - name: precursor_charge
+            - name: precursor_charges
               shape: [2,1]
               datatype: INT32
               data: [1,2]
@@ -1260,7 +1260,7 @@ components:
               
               - $ref: "#/components/schemas/Prosit_2020_intensity_HCD_input_peptide_sequences"
               
-              - $ref: "#/components/schemas/Prosit_2020_intensity_HCD_input_precursor_charge"
+              - $ref: "#/components/schemas/Prosit_2020_intensity_HCD_input_precursor_charges"
               
               - $ref: "#/components/schemas/Prosit_2020_intensity_HCD_input_collision_energies"
               
@@ -1286,7 +1286,7 @@ components:
           items:
             type: 
   
-    Prosit_2020_intensity_HCD_input_precursor_charge:
+    Prosit_2020_intensity_HCD_input_precursor_charges:
       type: object
       properties:
         name:
@@ -1378,7 +1378,7 @@ components:
               datatype: BYTES
               data: ["AAAAAKAK", "AAAAAKAK"]
             
-            - name: precursor_charge
+            - name: precursor_charges
               shape: [2,1]
               datatype: INT32
               data: [1,2]
@@ -1399,7 +1399,7 @@ components:
               
               - $ref: "#/components/schemas/Prosit_2020_intensity_TMT_input_peptide_sequences"
               
-              - $ref: "#/components/schemas/Prosit_2020_intensity_TMT_input_precursor_charge"
+              - $ref: "#/components/schemas/Prosit_2020_intensity_TMT_input_precursor_charges"
               
               - $ref: "#/components/schemas/Prosit_2020_intensity_TMT_input_collision_energies"
               
@@ -1427,7 +1427,7 @@ components:
           items:
             type: 
   
-    Prosit_2020_intensity_TMT_input_precursor_charge:
+    Prosit_2020_intensity_TMT_input_precursor_charges:
       type: object
       properties:
         name:
@@ -1493,7 +1493,7 @@ components:
               datatype: BYTES
               data: ["AAAAAKAK", "AAAAAKAK"]
             
-            - name: precursor_charge
+            - name: precursor_charges
               shape: [2,1]
               datatype: INT32
               data: [1,2]
@@ -1509,7 +1509,7 @@ components:
               
               - $ref: "#/components/schemas/Prosit_2019_intensity_input_peptide_sequences"
               
-              - $ref: "#/components/schemas/Prosit_2019_intensity_input_precursor_charge"
+              - $ref: "#/components/schemas/Prosit_2019_intensity_input_precursor_charges"
               
               - $ref: "#/components/schemas/Prosit_2019_intensity_input_collision_energies"
               
@@ -1535,7 +1535,7 @@ components:
           items:
             type: 
   
-    Prosit_2019_intensity_input_precursor_charge:
+    Prosit_2019_intensity_input_precursor_charges:
       type: object
       properties:
         name:
@@ -1627,7 +1627,7 @@ components:
               datatype: BYTES
               data: ["AAAAAKAK", "AAAAAKAK"]
             
-            - name: precursor_charge
+            - name: precursor_charges
               shape: [2,1]
               datatype: INT32
               data: [1,2]
@@ -1638,7 +1638,7 @@ components:
               
               - $ref: "#/components/schemas/Prosit_2020_intensity_CID_input_peptide_sequences"
               
-              - $ref: "#/components/schemas/Prosit_2020_intensity_CID_input_precursor_charge"
+              - $ref: "#/components/schemas/Prosit_2020_intensity_CID_input_precursor_charges"
               
             minItems: 2
             maxItems: 2
@@ -1662,7 +1662,7 @@ components:
           items:
             type: 
   
-    Prosit_2020_intensity_CID_input_precursor_charge:
+    Prosit_2020_intensity_CID_input_precursor_charges:
       type: object
       properties:
         name:
