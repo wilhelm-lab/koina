@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+MAX_SESSION_SHARE_COUNT=100
+
 tritonserver  \
   --model-repository=/models/Generic \
   --model-repository=/models/AlphaPept \
@@ -13,4 +15,5 @@ tritonserver  \
   --log-info=true \
   --log-warning=true \
   --log-error=true \
-  --cuda-memory-pool-byte-size 0:1073741824
+  --rate-limit "execution_count" \
+  --cuda-memory-pool-byte-size 0:536870912 \

@@ -1,5 +1,5 @@
 name: "ms2pip_2021_HCD"
-max_batch_size: 5000
+max_batch_size: 1000
 platform: "ensemble"
 input [
   {
