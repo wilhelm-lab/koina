@@ -12,3 +12,6 @@
 
 # Hide private models
 **privatemodelrepo
+
+# Hide logs
+**.log
