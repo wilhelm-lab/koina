@@ -67,6 +67,18 @@ ensemble_scheduling {
       }
       output_map {
         key: "output__0"
+        value: "ccs_raw"
+      }
+    },
+    {
+      model_name: "AlphaPept_ccs_generic_postprocess"
+      model_version: 1
+      input_map {
+        key: "ccs_raw"
+        value: "ccs_raw"
+      },
+      output_map {
+        key: "ccs"
         value: "ccs"
       }
     }
