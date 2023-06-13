@@ -21,7 +21,19 @@ def test_available_grpc():
 
 def test_inference():
     SEQUENCES = np.array(
-        [["TPVISGGPYEYR"], ["TPVITGAPYEYR"], ["GTFIIDPGGVIR"], ["GTFIIDPAAVIR"]],
+        [
+            ["LGGNEQVTR"],
+            ["GAGSSEPVTGLDAK"],
+            ["VEATFGVDESNAK"],
+            ["YILAGVENSK"],
+            ["TPVISGGPYEYR"],
+            ["TPVITGAPYEYR"],
+            ["DGLDAASYYAPVR"],
+            ["ADVTPADFSEWSK"],
+            ["GTFIIDPGGVIR"],
+            ["GTFIIDPAAVIR"],
+            ["LFLQFGAQGSPFLK"],
+        ],
         dtype=np.object_,
     )
 
@@ -33,15 +45,19 @@ def test_inference():
     result = triton_client.infer(
         MODEL_NAME,
         inputs=[in_pep_seq],
-        outputs=[grpcclient.InferRequestedOutput("irt")],
+        outputs=[
+            grpcclient.InferRequestedOutput("irt"),
+        ],
     )
 
     irt = result.as_numpy("irt")
 
+    assert irt.shape == (11, 1)
+
     # Assert intensities consistent
     assert np.allclose(
         irt,
-        np.load("test/AlphaPept/arr_AlphaPept_irt.npy").reshape((4, 1)),
+        np.load("test/AlphaPept/arr_AlphaPept_irt_mb.npy").reshape(-1, 1),
         rtol=0,
         atol=1e-4,
     )

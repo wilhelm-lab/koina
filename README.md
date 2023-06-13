@@ -39,8 +39,7 @@ docker run \
     --gpus all \
     --shm-size 2G \
     --name koina \
-    -p 8500:8500 \
-    -p 8501:8501 \
+    -p 8500-8502:8500-8502 \
     -d \
     --restart unless-stopped \
     ghcr.io/wilhelm-lab/koina:latest

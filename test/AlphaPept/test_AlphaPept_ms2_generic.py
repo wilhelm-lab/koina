@@ -21,7 +21,19 @@ def test_available_grpc():
 
 def test_inference():
     SEQUENCES = np.array(
-        [["TPVISGGPYEYR"], ["TPVITGAPYEYR"], ["GTFIIDPGGVIR"], ["GTFIIDPAAVIR"]],
+        [
+            ["LGGNEQVTR"],
+            ["GAGSSEPVTGLDAK"],
+            ["VEATFGVDESNAK"],
+            ["YILAGVENSK"],
+            ["TPVISGGPYEYR"],
+            ["TPVITGAPYEYR"],
+            ["DGLDAASYYAPVR"],
+            ["ADVTPADFSEWSK"],
+            ["GTFIIDPGGVIR"],
+            ["GTFIIDPAAVIR"],
+            ["LFLQFGAQGSPFLK"],
+        ],
         dtype=np.object_,
     )
 
@@ -55,12 +67,12 @@ def test_inference():
     intensities = result.as_numpy("intensities")
     fragmentmz = result.as_numpy("mz")
 
-    assert intensities.shape == fragmentmz.shape == (4, 44)
+    assert intensities.shape == fragmentmz.shape == (11, 52)
 
     # Assert intensities consistent
     assert np.allclose(
         intensities,
-        np.load("test/AlphaPept/arr_AlphaPept_ms2_int_norm.npy"),
+        np.load("test/AlphaPept/arr_AlphaPept_ms2_multibatch.npy"),
         rtol=0,
         atol=1e-5,
     )

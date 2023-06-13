@@ -45,11 +45,11 @@ def test_inference():
 
     intensities = result.as_numpy("output__0")
 
-    assert intensities.shape == (4,)
+    assert intensities.shape == (4, 1)
 
     assert np.allclose(
         intensities,
-        np.load("test/AlphaPept/arr_AlphaPept_ccs_raw.npy"),
+        np.load("test/AlphaPept/arr_AlphaPept_ccs_raw.npy").reshape(-1, 1),
         rtol=0,
         atol=1e-4,
     )

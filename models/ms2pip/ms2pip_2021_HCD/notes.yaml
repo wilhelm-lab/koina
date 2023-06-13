@@ -23,7 +23,7 @@ examples:
       },
       {
           "name": "precursor_charges",
-          "httpdtype": "INT16",
+          "httpdtype": "INT32",
           "data": '[2, 3]',
           "shape": "[2,1]"
       }
