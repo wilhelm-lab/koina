@@ -116,7 +116,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'ms2pip_2021_HCD'
         batch_size = 1000
         inputs = { 
@@ -125,7 +125,7 @@ paths:
         }
         outputs = [ 'intensities',  'mz', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -191,7 +191,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'AlphaPept_rt_generic'
         batch_size = 1000
         inputs = { 
@@ -199,7 +199,7 @@ paths:
         }
         outputs = [ 'irt', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -265,7 +265,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'AlphaPept_ms2_generic'
         batch_size = 1000
         inputs = { 
@@ -276,7 +276,7 @@ paths:
         }
         outputs = [ 'intensities',  'mz', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -342,7 +342,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'AlphaPept_ccs_generic'
         batch_size = 1000
         inputs = { 
@@ -351,7 +351,7 @@ paths:
         }
         outputs = [ 'ccs', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -417,7 +417,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'Prosit_2020_intensity_HCD'
         batch_size = 1000
         inputs = { 
@@ -427,7 +427,7 @@ paths:
         }
         outputs = [ 'intensities',  'mz',  'annotation', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -493,7 +493,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'Prosit_2020_irt_TMT'
         batch_size = 1000
         inputs = { 
@@ -501,7 +501,7 @@ paths:
         }
         outputs = [ 'irt', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -567,7 +567,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'Prosit_2020_intensity_TMT'
         batch_size = 1000
         inputs = { 
@@ -578,7 +578,7 @@ paths:
         }
         outputs = [ 'intensities',  'mz',  'annotation', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -644,7 +644,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'Prosit_2019_intensity'
         batch_size = 1000
         inputs = { 
@@ -654,7 +654,7 @@ paths:
         }
         outputs = [ 'intensities',  'mz',  'annotation', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -720,7 +720,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'Prosit_2019_irt'
         batch_size = 1000
         inputs = { 
@@ -728,7 +728,7 @@ paths:
         }
         outputs = [ 'irt', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -794,7 +794,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'Prosit_2020_intensity_CID'
         batch_size = 1000
         inputs = { 
@@ -803,7 +803,7 @@ paths:
         }
         outputs = [ 'intensities',  'mz',  'annotation', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:
@@ -869,7 +869,7 @@ paths:
             np.dtype('int64'): 'INT64',
         }
         
-        server_url = 'koina.proteomicsdb.org:8008'
+        server_url = 'koina.proteomicsdb.org:443'
         model_name = 'Deeplc_hela_hf'
         batch_size = 1000
         inputs = { 
@@ -877,7 +877,7 @@ paths:
         }
         outputs = [ 'dense_323', ]
         
-        triton_client = grpcclient.InferenceServerClient(url=server_url)
+        triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
         
         koina_outputs = []
         for name in outputs:

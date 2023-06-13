@@ -18,7 +18,7 @@ inputs = { {% for input in note.examples.inputs %}
 }
 outputs = [{% for o in note.outputs %} '{{o}}', {% endfor %}]
 
-triton_client = grpcclient.InferenceServerClient(url=server_url)
+triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
 
 koina_outputs = []
 for name in outputs:
