@@ -41,6 +41,7 @@ docker run \
     --name koina \
     -p 8500:8500 \
     -p 8501:8501 \
+    -p 8502:8502 \
     -d \
     --restart unless-stopped \
     ghcr.io/wilhelm-lab/koina:latest
