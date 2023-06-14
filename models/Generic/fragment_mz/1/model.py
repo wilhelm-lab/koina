@@ -85,4 +85,4 @@ class TritonPythonModel:
         return responses
 
     def finalize(self):
-        print("Done processing")
+        pass

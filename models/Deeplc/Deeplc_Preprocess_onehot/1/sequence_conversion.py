@@ -62,7 +62,6 @@ def character_to_array(character, filter=False):
         character, alphabet=ALPHABET, translate=True, filter=filter
     )
     enum_gen_seq_num = enumerate(generator_sequence_numeric)
-    print(enum_gen_seq_num)
     for i, sequence_numeric in enum_gen_seq_num:
         if len(sequence_numeric) > SEQ_LEN:
             if filter:

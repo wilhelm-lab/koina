@@ -31,4 +31,4 @@ class TritonPythonModel:
         return responses
 
     def finalize(self):
-        print("Cleaning up")
+        pass
