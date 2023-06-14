@@ -1,0 +1,154 @@
+max_batch_size: 5000
+platform: "ensemble"
+input [
+  {
+   name: 'peptide_sequences_1',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+   name: 'peptide_sequences_2',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+    name: 'precursor_charges',
+    data_type: TYPE_INT32,
+    dims: [1],
+  }
+  {
+    name: 'collision_energies',
+    data_type: TYPE_FP32,
+    dims: [1],
+  }
+]
+output [
+  {
+   name: 'intensities',
+   data_type: TYPE_FP32,
+   dims: [348]
+  },
+ {
+   name: 'mz',
+   data_type: TYPE_FP32,
+   dims: [348]
+ },
+ {
+   name: 'annotation',
+   data_type: TYPE_STRING,
+   dims: [348]
+ }
+]
+
+ensemble_scheduling {
+  step [
+     {
+      model_name: "Prosit_Preprocess_charge"
+      model_version: 1
+      input_map {
+        key: "precursor_charges"
+        value: "precursor_charges"
+      },
+      output_map {
+        key: "precursor_charges_in:0"
+        value: "precursor_charges_in_preprocessed:0"
+      }
+    },
+    {
+      model_name: "XL_Prosit_Preprocess_peptide"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences_1"
+        value: "peptide_sequences_1"
+      },
+      input_map {
+        key: "peptide_sequences_2"
+        value: "peptide_sequences_2"
+      }
+      output_map {
+        key: "peptides_in_1:0"
+        value: "peptides_in_1:0"
+      },
+      output_map {
+        key: "peptides_in_2:0"
+        value: "peptides_in_2:0"
+      }
+    },
+    {
+      model_name: "Prosit_Preprocess_collision_energy"
+      model_version: 1
+      input_map {
+        key: "raw_collision_energy"
+        value: "collision_energies"
+      },
+      output_map {
+        key: "norm_collision_energy"
+        value: "norm_collision_energy"
+      }
+    },
+    {
+      model_name: "Prosit_2023_intensity_XL_CMS2_core"
+      model_version: 1
+      input_map {
+        key: "peptides_in_1:0"
+        value: "peptides_in_1:0"
+      },
+      input_map {
+        key: "peptides_in_2:0"
+        value: "peptides_in_2:0"
+      },
+      input_map {
+        key: "collision_energy_in:0"
+        value: "norm_collision_energy"
+      },
+      input_map {
+        key: "precursor_charge_in:0"
+        value: "precursor_charges_in_preprocessed:0"
+      }
+      output_map {
+        key: "out/Reshape:0"
+        value: "out/Reshape:0"
+      }
+    },
+    {
+      model_name: "Prosit_2023_intensity_XL_CMS2_postprocess"
+      model_version: 1
+      input_map {
+        key: "peptides_in_1:0"
+        value: "peptide_sequences_1"
+      },
+      input_map {
+        key: "peptides_in_2:0"
+        value: "peptide_sequences_2"
+      },
+      input_map{
+        key: "precursor_charges_in:0"
+        value: "precursor_charges_in_preprocessed:0"
+      }
+      input_map{
+        key: "peaks_in:0",
+        value: "out/Reshape:0"
+      }
+      output_map {
+        key: "intensities"
+        value: "intensities"
+      }
+      output_map {
+        key: "mz"
+        value: "mz"
+      }
+    },
+    {
+      model_name: "Prosit_Helper_annotation"
+      model_version: 1
+      input_map {
+        key: "precursor_charges"
+        value: "precursor_charges"
+      },
+      output_map {
+        key: "annotation"
+        value: "annotation"
+      }
+    }
+  ]
+}
