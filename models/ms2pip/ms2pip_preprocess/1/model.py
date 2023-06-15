@@ -34,7 +34,6 @@ class TritonPythonModel:
 
             more_fun = np.vstack(list_ms2pip_input)
 
-
             output_tensors = []
             output_tensors.append(
                 pb_utils.Tensor("xgboost_input", more_fun.astype(self.output_dtype))
