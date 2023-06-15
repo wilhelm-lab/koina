@@ -1,11 +1,11 @@
 # Koina
 
 ## Accessing a public server
-### curl
-Here is an example http request using only curl sending a POST request to with a json body.
+### cURL
+Here is an example http request using only cURL sending a POST request to with a json body.
 
 ```bash
-curl "http://koina.proteomicsdb.org/v2/models/Prosit_2019_intensity/infer" \
+curl "https://koina.proteomicsdb.org/v2/models/Prosit_2019_intensity/infer" \
  --data-raw '
 {
   "id": "LGGNEQVTR_GAGSSEPVTGLDAK",
@@ -16,14 +16,11 @@ curl "http://koina.proteomicsdb.org/v2/models/Prosit_2019_intensity/infer" \
   ]
 }'
 ```
-
-
 ### Python
-See the examples in the corresponding [documentation folder](docs/Python/)
+For examples of how to access models using python you can check out [our OpenAPI documentation ](https://koina.proteomicsdb.org/docs/#overview).
 
 ### R
 TODO
-
 
 ## Hosting your own server
 
@@ -65,13 +62,18 @@ docker run
 4. Download existing models with `./getModels.sh`
 5. Update `.env` with your user- and group-id to avoid file permission issues 
 6. Start the server with `docker-compose up -d`
-7. Confirm that the server started successfully with `docker-compose logs -f serving`
+7. Confirm that the server started successfully with `docker-compose logs -f serving`. It the startup wass successful you will see something like this.:
+```
+koina-serving-1  | I0615 13:27:04.260871 90 grpc_server.cc:2450] Started GRPCInferenceService at 0.0.0.0:8500
+koina-serving-1  | I0615 13:27:04.261163 90 http_server.cc:3555] Started HTTPService at 0.0.0.0:8501
+koina-serving-1  | I0615 13:27:04.303178 90 http_server.cc:185] Started Metrics Service at 0.0.0.0:8502
+```
 
-Some further considerations:
+Further considerations
 - For development we suggest to use Visual Studio Code with the `Dev Containers` and `Remote - SSH` extensions.
-  Using this system you can connect to the server and open the cloned git repo. You will be prompted to reopen the folder in a Devcontainer where a lot of useful dependencies are already installed including the dependencies required for testing, linting and styling. Using the devcontainer you can lint your code by running `lint`, run all tests with `pytest` and style your code with `black .`
-- Server with multiple gpus:
-  If you have multiple GPUs in your server and want to use a specific gpu you can specify this in the `docker-comppose.yaml` by replacing `count: 1` with `device_ids: ['1']`
+  Using this system you can connect to the server and open the cloned git repo. You will be prompted to reopen the folder in a DevContainer where a lot of useful dependencies are already installed including the dependencies required for testing, linting and styling. Using the dev-container you can lint your code by running `lint`, run tests with `pytest` and style your code with `black .`
+- From within the dev-container you can get requests from the `serving` container by providing the url `serving:8501` for http and `serving:8501` for gRPC. 
+- If you have multiple GPUs in your server and want to use a specific gpu you can specify this in the `docker-comppose.yaml` by replacing `count: 1` with `device_ids: ['1']`
 
 ### Import model files
 Triton supports all major machine learning frameworks. The format you need to save your model in depends on the framework used to train your model. For detailed instructions you can check out this [documentation](https://github.com/triton-inference-server/server/blob/main/docs/user_guide/model_repository.md#model-files).
@@ -84,6 +86,7 @@ For storing the model files themselves we use Zenodo. If you want to add your mo
 A major aspect of Koina, is that all models share a common interface making it easier for clients to use all models.
 Triton supports models written in pure python. If your model requires pre- and/or post-processing you can implement this as a "standalone" model in python.
 There are numerous examples in this repository. One with low complexity you can find [here](models/AlphaPept/AlphaPept_Preprocess_charge/1).
+If you made changes to your model you need to restart Triton. You can do that with `docker-compose restart serving`.
 
 ### Create an ensemble model to connect everything
 The pre- and postprocessing models you just implemented need to be connected to the 
