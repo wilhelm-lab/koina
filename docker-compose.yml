@@ -1,3 +1,4 @@
+name: koina_${UID}
 services:
   serving:
     build:
@@ -11,7 +12,7 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              count: 1
+              device_ids: ['1']
               capabilities: [ gpu ]
     shm_size: 2GB
     restart: unless-stopped
