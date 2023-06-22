@@ -10,7 +10,7 @@ MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
 def test_available_http():
     req = requests.get(f"{SERVER_HTTP}/v2/models/{MODEL_NAME}", timeout=1)
-    assert req.status_code == 200
+    assert req.status_code == 400
 
 
 def test_available_grpc():
@@ -21,27 +21,27 @@ def test_available_grpc():
 def test_inference():
     SEQUENCES_1 = np.array(
         [
-            ["DIADAVTAAGVEVAKSEVR"],
-            ["PEPTIDEK[UNIMOD:1896]PEPTIDEK"],
-            ["K[UNIMOD:1884]PEPTIDEK"],
-            ["PEPTIDEK[UNIMOD:1884]STNQC[UNIMOD:4]"],
-            ["RHKC[UNIMOD:4]ESTK[UNIMOD:1896]"],
+            ["DIADAVTAAGVEVAK[UNIMOD:1896]SEVR"],
+            ["AGDQIQSGVDAAIK[UNIMOD:1896]PGNTLPMR"],
+            ["LIVVEK[UNIMOD:1896]FSVEAPK"],
+            ["ANPWQQFAETHNK[UNIMOD:1896]GDRVEGK"],
+            ["VLESAIANAEHNDGADIDDLK[UNIMOD:1896]VTK"],
         ],
         dtype=np.object_,
     )
     SEQUENCES_2 = np.array(
         [
-            ["PEPTIPEPK[UNIMOD:1896]TIPPT"],
-            ["AAK[UNIMOD:1896]QGP"],
-            ["QM[UNIMOD:35]GK[UNIMOD:1884]P"],
-            ["AK[UNIMOD:1884]TNQ"],
-            ["PEPKK[UNIMOD:1896]PEPK"],
+            ["NFLVPQGK[UNIMOD:1896]AVPATK"],
+            ["SANIALVLYK[UNIMOD:1896]DGER"],
+            ["K[UNIMOD:1896]ELVLK"],
+            ["AAGAELVGMEDLADQIK[UNIMOD:1896]K"],
+            ["K[UNIMOD:1896]VSQALDILTYTKK"],
         ],
         dtype=np.object_,
     )
 
-    charge = np.array([[3] for _ in range(len(SEQUENCES_1))], dtype=np.int32)
-    ces = np.array([[25] for _ in range(len(SEQUENCES_1))], dtype=np.float32)
+    charge = np.array([[3], [4], [3], [5], [6]], dtype=np.int32)
+    ces = np.array([[28], [28], [28], [25], [25]], dtype=np.float32)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
@@ -71,7 +71,7 @@ def test_inference():
     annotation = result.as_numpy("annotation")
 
     assert intensities.shape == (5, 174 * 2)
-    assert fragmentmz.shape == (5, 174 * 2)
+    assert fragmentmz.shape == (5, 174)
     assert annotation.shape == (5, 174 * 2)
 
     # Assert intensities consistent

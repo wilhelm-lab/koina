@@ -56,6 +56,8 @@ def test_inference():
 
     intensities = result.as_numpy("intensities")
     fragmentmz = result.as_numpy("mz")
+    print("test")
+    print(fragmentmz)
     annotation = result.as_numpy("annotation")
 
     assert intensities.shape == (5, 174)
