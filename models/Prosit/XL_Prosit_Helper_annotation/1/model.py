@@ -1,5 +1,4 @@
 import triton_python_backend_utils as pb_utils
-from spectrum_fundamentals.annotation.annotation import peak_pos_xl_cms2
 import triton_python_backend_utils as pb_utils
 import numpy as np
 import json

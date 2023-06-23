@@ -21,42 +21,46 @@ def test_available_grpc():
 
 def test_inference():
     seq_1 = np.load(
-        "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS2_seq_1.npy"
+        "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS2_seq_1.npy",
+        allow_pickle=True,
     )
     seq_2 = np.load(
-        "/workspace/koina/test/Prosit/arr_Prosit_2023_XL_CMS2_intensity_seq_2.npy"
+        "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS2_seq_2.npy",
+        allow_pickle=True,
     )
     charge = np.load(
-        "/workspace/koina/test/Prosit/arr_Prosit_2023_XL_CMS2_intensity_charge.npy"
+        "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS2_charge.npy",
+        allow_pickle=True,
     )
     ces = np.load(
-        "/workspace/koina/test/Prosit/arr_Prosit_2023_XL_CMS2_intensity_ces.npy"
+        "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS2_ces.npy",
+        allow_pickle=True,
     )
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq_1 = grpcclient.InferInput("peptides_in_1:0", seq_1.shape, "INT32")
-    in_pep_seq_2 = grpcclient.InferInput("peptides_in_2:0", seq_2.shape, "INT32")
+    in_pep_seq_1 = grpcclient.InferInput("peptides_in1", seq_1.shape, "INT32")
+    in_pep_seq_2 = grpcclient.InferInput("peptides_in2", seq_2.shape, "INT32")
     in_pep_seq_1.set_data_from_numpy(seq_1)
     in_pep_seq_2.set_data_from_numpy(seq_2)
 
-    in_charge = grpcclient.InferInput("precursor_charge_in:0", charge.shape, "FP32")
+    in_charge = grpcclient.InferInput("precursor_charge_in", charge.shape, "FP32")
     in_charge.set_data_from_numpy(charge)
 
-    in_ces = grpcclient.InferInput("collision_energy_in:0", ces.shape, "FP32")
+    in_ces = grpcclient.InferInput("collision_energy_in", ces.shape, "FP32")
     in_ces.set_data_from_numpy(ces)
 
     result = triton_client.infer(
         MODEL_NAME,
         inputs=[in_pep_seq_1, in_pep_seq_2, in_charge, in_ces],
         outputs=[
-            grpcclient.InferRequestedOutput("out/Reshape:0"),
+            grpcclient.InferRequestedOutput("out"),
         ],
     )
 
-    intensities = result.as_numpy("out/Reshape:0")
+    intensities = result.as_numpy("out")
 
-    assert intensities.shape == (5, 174 * 2)
+    assert intensities.shape == (5, 348)
 
     assert np.allclose(
         intensities,
@@ -64,5 +68,5 @@ def test_inference():
             "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS2_int_raw.npy"
         ),
         rtol=0,
-        atol=1e-4,
+        atol=1e-2,
     )

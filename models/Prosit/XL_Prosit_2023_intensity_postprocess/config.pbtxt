@@ -1,4 +1,4 @@
-max_batch_size: 5000
+max_batch_size: 1000
 
 input[
   {
@@ -19,18 +19,18 @@ input[
   {
    name: 'peaks_in:0',
    data_type: TYPE_FP32,
-   dims: [174 * 2]
+   dims: [348]
   }
 ]
 output [
  {
    name: 'intensities',
    data_type: TYPE_FP32,
-   dims: [174 * 2]
+   dims: [348]
  },
  {
    name: 'mz',
    data_type: TYPE_FP32,
-   dims: [174 * 2]
+   dims: [174]
  }
 ]
