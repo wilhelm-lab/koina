@@ -31,7 +31,7 @@ output [
  {
    name: 'mz',
    data_type: TYPE_FP32,
-   dims: [174]
+   dims: [348]
  },
  {
    name: 'annotation',

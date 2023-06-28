@@ -64,18 +64,30 @@ class TritonPythonModel:
             mask = create_masking(unmod_seq, crosslinker_position)
             masked_peaks = apply_masking(peaks_in, mask)
 
-            # fragmentmz = self.get_fragments(peptide_in)
-            # logger.log_info(f"fragmentmz: {fragmentmz}")
+            # considr mass of short and long part of crosslinker
+            peptide_in_s = []
+            peptide_in_l = []
+            for pep in peptide_in:
+                if "K[UNIMOD:1896]" in pep:
+                    pep_s = pep.replace("K[UNIMOD:1896]", "K[UNIMOD:1881]")
+                    pep_l = pep.replace("K[UNIMOD:1896]", "K[UNIMOD:1882]")
+                    peptide_in_s.append(pep_s)
+                    peptide_in_l.append(pep_l)
+                else:
+                    pep_s = pep.replace("K[UNIMOD:1884]", "K[UNIMOD:1886]")
+                    pep_l = pep.replace("K[UNIMOD:1884]", "K[UNIMOD:1885]")
+                    peptide_in_s.append(pep_s)
+                    peptide_in_l.append(pep_l)
 
-            # fragmentmz[np.isnan(masked_peaks)] = -1
+            fragmentmz_s = self.get_fragments(peptide_in_s)
+            fragmentmz_l = self.get_fragments(peptide_in_l)
+            fragmentmz = np.concatenate((fragmentmz_s, fragmentmz_l), axis=1)
+            fragmentmz[np.isnan(masked_peaks)] = -1
             masked_peaks[np.isnan(masked_peaks)] = -1
 
-            # logger.log_info(f"fragmentmz: {fragmentmz}")
-            # logger.log_info(f"len(fragmentmz): {len(fragmentmz)}")
-
             output_tensors = [
-                pb_utils.Tensor("intensities", masked_peaks.astype(self.output_dtype))
-                # pb_utils.Tensor("mz", fragmentmz.astype(self.output_dtype)),
+                pb_utils.Tensor("intensities", masked_peaks.astype(self.output_dtype)),
+                pb_utils.Tensor("mz", fragmentmz.astype(self.output_dtype)),
             ]
 
             responses.append(pb_utils.InferenceResponse(output_tensors=output_tensors))

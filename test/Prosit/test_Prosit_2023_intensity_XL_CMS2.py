@@ -62,20 +62,20 @@ def test_inference(capfd):
         inputs=[in_pep_seq_1, in_pep_seq_2, in_charge, in_ces],
         outputs=[
             grpcclient.InferRequestedOutput("intensities"),
-            # grpcclient.InferRequestedOutput("mz"),
+            grpcclient.InferRequestedOutput("mz"),
             grpcclient.InferRequestedOutput("annotation"),
         ],
     )
 
     intensities = result.as_numpy("intensities")
-    # fragmentmz = result.as_numpy("mz")
+    fragmentmz = result.as_numpy("mz")
     annotation = result.as_numpy("annotation")
 
     captured = capfd.readouterr()
     output_lines = captured.out.splitlines()
 
     assert intensities.shape == (5, 348)
-    # assert fragmentmz.shape == (5, 174)
+    assert fragmentmz.shape == (5, 348)
     assert annotation.shape == (5, 348)
 
     # Assert intensities consistent

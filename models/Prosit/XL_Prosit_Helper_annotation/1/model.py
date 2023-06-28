@@ -165,7 +165,6 @@ class TritonPythonModel:
                 annotation_i = gen_annotation_xl(unmod_seq, crosslinker_position)
                 annotation = np.vstack((annotation, annotation_i))
 
-            logger.log_info(f"annotation[4]: {annotation[4]}")
             t = pb_utils.Tensor("annotation", annotation)
             responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
 
