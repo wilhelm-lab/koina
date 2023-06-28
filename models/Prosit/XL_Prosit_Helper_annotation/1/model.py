@@ -101,7 +101,7 @@ def gen_annotation_linear_pep():
     return annotation
 
 
-def gen_annotation_xl(crosslinker_position: int):
+def gen_annotation_xl(unmod_seq: str, crosslinker_position: int):
     annotations = gen_annotation_linear_pep()
     annotation = np.concatenate((annotations, annotations))
     annotation = annotation.tolist()
@@ -113,7 +113,7 @@ def gen_annotation_xl(crosslinker_position: int):
         peaks_bshort,
         peaks_ylong,
         peaks_blong,
-    ) = peak_pos_xl_cms2("K" * 30, crosslinker_position)
+    ) = peak_pos_xl_cms2(unmod_seq, crosslinker_position)
     for pos in peaks_yshort:
         annotation[pos] = "y_short_" + annotation[pos][1:]
     for pos in peaks_bshort:
@@ -122,7 +122,13 @@ def gen_annotation_xl(crosslinker_position: int):
         annotation[pos] = "y_long_" + annotation[pos][1:]
     for pos in peaks_blong:
         annotation[pos] = "b_long_" + annotation[pos][1:]
-    pos_none = [num + 174 for num in peaks_y] + [num + 174 for num in peaks_b]
+    pos_none = (
+        [num + 174 for num in peaks_y]
+        + [num + 174 for num in peaks_b]
+        + list(np.arange((len(unmod_seq) - 1) * 6, 174, 1))
+        + list(np.arange((len(unmod_seq) - 1) * 6 + 174, 348, 1))
+        + list(np.arange(2, 348, 3))
+    )
     for pos in pos_none:
         annotation[pos] = "None"
     return np.array(annotation).astype(np.object_)
@@ -155,10 +161,11 @@ class TritonPythonModel:
             for i in range(batchsize):
                 regular_sequence = peptide_sequences_1[i][0].decode("utf-8")
                 crosslinker_position = find_crosslinker_position(regular_sequence)
-                annotation_i = gen_annotation_xl(crosslinker_position)
+                unmod_seq = re.sub(r"\[.*?\]", "", regular_sequence)
+                annotation_i = gen_annotation_xl(unmod_seq, crosslinker_position)
                 annotation = np.vstack((annotation, annotation_i))
 
-            logger.log_info(f"annotation[0]: {annotation[0]}")
+            logger.log_info(f"annotation[4]: {annotation[4]}")
             t = pb_utils.Tensor("annotation", annotation)
             responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
 
