@@ -145,6 +145,10 @@ ensemble_scheduling {
         key: "precursor_charges"
         value: "precursor_charges"
       },
+      input_map {
+        key: "peptide_sequences_1"
+        value: "peptide_sequences_1"
+      }
       output_map {
         key: "annotation"
         value: "annotation"

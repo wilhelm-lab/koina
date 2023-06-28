@@ -36,6 +36,7 @@ class TritonPythonModel:
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
 
     def execute(self, requests):
+        logger = pb_utils.Logger
         responses = []
         for request in requests:
             peptide_in = (
@@ -44,12 +45,16 @@ class TritonPythonModel:
                 .tolist()
             )
 
-            peptide_in = [x[0].decode("utf-8") for x in peptide_in]
+            peptide_in_numpy = pb_utils.get_input_tensor_by_name(
+                request, "peptides_in_1:0"
+            ).as_numpy()
+
             crosslinker_position = []
-            for pep in peptide_in:
-                crosslinker_position = crosslinker_position.append(
-                    find_crosslinker_position(pep)
-                )
+            for i in range(len(peptide_in_numpy)):
+                regular_sequence = peptide_in_numpy[i][0].decode("utf-8")
+                crosslinker_position.append(find_crosslinker_position(regular_sequence))
+
+            peptide_in = [x[0].decode("utf-8") for x in peptide_in]
             unmod_seq = [x for x in internal_without_mods(peptide_in)]
 
             peaks_in = pb_utils.get_input_tensor_by_name(
@@ -58,13 +63,19 @@ class TritonPythonModel:
 
             mask = create_masking(unmod_seq, crosslinker_position)
             masked_peaks = apply_masking(peaks_in, mask)
-            fragmentmz = self.get_fragments(peptide_in)
-            fragmentmz[np.isnan(masked_peaks)] = -1
+
+            # fragmentmz = self.get_fragments(peptide_in)
+            # logger.log_info(f"fragmentmz: {fragmentmz}")
+
+            # fragmentmz[np.isnan(masked_peaks)] = -1
             masked_peaks[np.isnan(masked_peaks)] = -1
 
+            # logger.log_info(f"fragmentmz: {fragmentmz}")
+            # logger.log_info(f"len(fragmentmz): {len(fragmentmz)}")
+
             output_tensors = [
-                pb_utils.Tensor("intensities", masked_peaks.astype(self.output_dtype)),
-                pb_utils.Tensor("mz", fragmentmz.astype(self.output_dtype)),
+                pb_utils.Tensor("intensities", masked_peaks.astype(self.output_dtype))
+                # pb_utils.Tensor("mz", fragmentmz.astype(self.output_dtype)),
             ]
 
             responses.append(pb_utils.InferenceResponse(output_tensors=output_tensors))

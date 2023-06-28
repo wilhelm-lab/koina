@@ -3,7 +3,12 @@ input [
   {
     name: 'precursor_charges',
     data_type: TYPE_INT32,
-    dims: [1],
+    dims: [1]
+  },
+  {
+   name: 'peptide_sequences_1',
+   data_type: TYPE_STRING,
+   dims: [-1]
   }
 ]
 output [

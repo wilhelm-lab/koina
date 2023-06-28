@@ -40,10 +40,11 @@ class TritonPythonModel:
         logger = pb_utils.Logger
         for request in requests:
             peptide_in_1 = pb_utils.get_input_tensor_by_name(
-                request, "peptides_sequence_1"
+                request, "peptide_sequences_1"
             )
+
             peptide_in_2 = pb_utils.get_input_tensor_by_name(
-                request, "peptides_sequence_2"
+                request, "peptide_sequences_2"
             )
             peptides_1 = peptide_in_1.as_numpy().tolist()
             peptides_2 = peptide_in_2.as_numpy().tolist()
@@ -68,14 +69,15 @@ class TritonPythonModel:
                 "peptides_in_2:0", sequences_2.astype(self.output_dtype)
             )
 
-            responses.append(pb_utils.InferenceResponse(output_tensors=[t_1]))
-            responses.append(pb_utils.InferenceResponse(output_tensors=[t_2]))
+            responses.append(pb_utils.InferenceResponse(output_tensors=([t_1, t_2])))
+            # responses.append(pb_utils.InferenceResponse(output_tensors=[t_2]))
             print("sequences_1: ")
             print("sequences_2: ")
             print(len(sequences_1))
             print(len(sequences_2))
             print(sequences_1)
             print(sequences_2)
+
         return responses
 
     def finalize(self):

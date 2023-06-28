@@ -2,7 +2,7 @@ import numpy as np
 
 # from spectrum_fundamentals.annotation.annotation import peak_pos_xl_cms2
 
-VEC_LENGTH = 174 * 2
+VEC_LENGTH = 348
 
 
 def peak_pos_xl_cms2(unmod_seq: str, crosslinker_position: int) -> list:
@@ -92,6 +92,8 @@ def create_masking(unmod_seq, crosslinker_position):
         m = mask[i].copy()
         peaks_ranges = peak_pos_xl_cms2(unmod_seq[i], crosslinker_position[i])
         updated_mask = np.setdiff1d(np.arange(0, 348), peaks_ranges[0])
+        updated_mask_charge_3 = np.arange(2, 348, 3)
+        updated_mask = np.sort(np.concatenate((updated_mask, updated_mask_charge_3)))
         m[updated_mask] = np.nan
         mask[i] = m
     return mask

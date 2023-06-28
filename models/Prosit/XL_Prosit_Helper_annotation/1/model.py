@@ -137,22 +137,31 @@ class TritonPythonModel:
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
 
     def execute(self, requests):
+        logger = pb_utils.Logger
         responses = []
+        annotation = np.empty((0, 348))
+
         for request in requests:
             batchsize = (
                 pb_utils.get_input_tensor_by_name(request, "precursor_charges")
                 .as_numpy()
                 .shape[0]
             )
+
             peptide_sequences_1 = pb_utils.get_input_tensor_by_name(
                 request, "peptide_sequences_1"
-            )
-            crosslinker_position = find_crosslinker_position(peptide_sequences_1)
-            annotation = np.tile(
-                gen_annotation_xl(crosslinker_position), batchsize
-            ).reshape((-1, 348))
+            ).as_numpy()
+
+            for i in range(batchsize):
+                regular_sequence = peptide_sequences_1[i][0].decode("utf-8")
+                crosslinker_position = find_crosslinker_position(regular_sequence)
+                annotation_i = gen_annotation_xl(crosslinker_position)
+                annotation = np.vstack((annotation, annotation_i))
+
+            logger.log_info(f"annotation[0]: {annotation[0]}")
             t = pb_utils.Tensor("annotation", annotation)
             responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
+
         return responses
 
     def finalize(self):

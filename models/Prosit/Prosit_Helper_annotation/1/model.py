@@ -27,6 +27,7 @@ class TritonPythonModel:
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
 
     def execute(self, requests):
+        logger = pb_utils.Logger
         responses = []
         for request in requests:
             batchsize = (
@@ -34,9 +35,13 @@ class TritonPythonModel:
                 .as_numpy()
                 .shape[0]
             )
+
             annotation = np.tile(gen_annotation(), batchsize).reshape((-1, 174))
             t = pb_utils.Tensor("annotation", annotation)
+            logger.log_info(f"t: {t}")
+
             responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
+
         return responses
 
     def finalize(self):

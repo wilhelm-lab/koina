@@ -46,6 +46,7 @@ class TritonPythonModel:
             print("sequences: ")
             print(len(sequences))
             print(sequences)
+
         return responses
 
     def finalize(self):
