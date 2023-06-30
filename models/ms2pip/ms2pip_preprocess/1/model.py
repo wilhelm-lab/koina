@@ -28,15 +28,11 @@ class TritonPythonModel:
             list_ms2pip_input = []
             for peptide, charge in zip(peptides_, charge_):
                 peptide_in_list = peptide.decode("utf-8")
-                logger.log_info(f"{peptide_in_list} | {charge}")
                 ms2 = MinimalMS2PIP(peptide_in_list, charge)
                 inter = ms2.ms2pipInput()
-                logger.log_info(f"inter.shape: {inter.shape}")
                 list_ms2pip_input.append(inter)
 
             more_fun = np.vstack(list_ms2pip_input)
-
-            logger.log_info(f"more_fun.shape {more_fun.shape}")
 
             output_tensors = []
             output_tensors.append(
@@ -46,4 +42,4 @@ class TritonPythonModel:
         return responses
 
     def finalize(self):
-        print("Cleaning up")
+        pass

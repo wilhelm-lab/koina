@@ -32,6 +32,11 @@ output [
    name: 'mz',
    data_type: TYPE_FP32,
    dims: [-1]
+  },
+  {
+   name: 'annotation',
+   data_type: TYPE_STRING,
+   dims: [-1]
   }
 ]
 
@@ -123,6 +128,10 @@ ensemble_scheduling {
       output_map {
         key: "mz"
         value: "mz"
+      },
+      output_map {
+        key: "annotation"
+        value: "annotation"
       }
     }
   ]

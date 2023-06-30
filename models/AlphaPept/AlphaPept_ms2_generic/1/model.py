@@ -24,12 +24,14 @@ class TritonPythonModel:
         model_config = model_config = json.loads(args["model_config"])
         seq_out_config = pb_utils.get_output_config_by_name(model_config, "intensities")
         mod_out_config = pb_utils.get_output_config_by_name(model_config, "mz")
+        anno_config = pb_utils.get_output_config_by_name(model_config, "annotation")
         self.seq_out_dtype = pb_utils.triton_string_to_numpy(
             seq_out_config["data_type"]
         )
         self.mod_out_dtype = pb_utils.triton_string_to_numpy(
             mod_out_config["data_type"]
         )
+        self.anno_out_dtype = pb_utils.triton_string_to_numpy(anno_config["data_type"])
 
     def execute(self, requests):
         responses = []
@@ -62,6 +64,7 @@ class TritonPythonModel:
                 (peptide_in.shape[0], (np.max(pep_len) - 1) * 4), -1, dtype=np.float32
             )
             omz = np.full(oint.shape, -1, dtype=np.float32)
+            oan = np.full(oint.shape, "", dtype=np.dtype("U5"))
             for l in set(pep_len):
                 idx = l == pep_len
                 tmp = self.predict_batch(
@@ -69,6 +72,7 @@ class TritonPythonModel:
                 )
                 oint[idx, : tmp[0].shape[1]] = tmp[0]
                 omz[idx, : tmp[1].shape[1]] = tmp[1]
+                oan[idx, : tmp[2].shape[1]] = tmp[2]
 
             output_tensors = [
                 pb_utils.Tensor(
@@ -76,6 +80,7 @@ class TritonPythonModel:
                     oint.astype(self.output_dtype),
                 ),
                 pb_utils.Tensor("mz", omz.astype(self.output_dtype)),
+                pb_utils.Tensor("annotation", oan.astype(self.anno_out_dtype)),
             ]
 
             responses.append(pb_utils.InferenceResponse(output_tensors=output_tensors))
@@ -92,7 +97,7 @@ class TritonPythonModel:
 
         infer_request = pb_utils.InferenceRequest(
             model_name="AlphaPept_ms2_generic_sb",
-            requested_output_names=["intensities", "mz"],
+            requested_output_names=["intensities", "mz", "annotation"],
             inputs=tensor_inputs,
         )
 
@@ -104,6 +109,7 @@ class TritonPythonModel:
             output = [
                 pb_utils.get_output_tensor_by_name(resp, "intensities").as_numpy(),
                 pb_utils.get_output_tensor_by_name(resp, "mz").as_numpy(),
+                pb_utils.get_output_tensor_by_name(resp, "annotation").as_numpy(),
             ]
 
             return output

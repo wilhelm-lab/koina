@@ -17,6 +17,15 @@ rule_files:
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
-  - job_name: 'triton'
+  - job_name: 'msaid'
     static_configs:
-    - targets: ['localhost:8503']
+    - targets: ['eubic2023.external.msaid.io:8502']
+  
+  - job_name: 'eth'
+    scheme : https
+    static_configs:
+      - targets: ['dlomix.fgcz.uzh.ch:443']
+  
+  - job_name: 'wilhelmlab'
+    static_configs:
+      - targets: ['10.157.98.13:8502']

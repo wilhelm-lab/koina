@@ -61,12 +61,10 @@ def character_to_array(character):
     array = np.zeros((1, SEQ_LEN), dtype=np.uint8)
     logger = pb_utils.Logger
 
-    logger.log_info(str(character))
     generator_sequence_numeric = parse_modstrings(
         [character], alphabet=ALPHABET, translate=True, filter=True
     )
     enum_gen_seq_num = enumerate(generator_sequence_numeric)
-    print(enum_gen_seq_num)
     for i, sequence_numeric in enum_gen_seq_num:
         if len(sequence_numeric) > SEQ_LEN:
             pass  # don't overwrite 0 in the array that is how we can differentiate

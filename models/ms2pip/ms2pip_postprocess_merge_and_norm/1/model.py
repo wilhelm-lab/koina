@@ -19,6 +19,11 @@ class TritonPythonModel:
                 request, "raw_intensities_b"
             ).as_numpy()
 
+            tmp = np.full(r_int_y.shape, np.nan)
+            # flip y ions so they are in ascending order making annotation easier
+            tmp[np.flip(~np.isnan(r_int_y), 0)] = np.flip(r_int_y[~np.isnan(r_int_y)])
+            r_int_y = np.flip(tmp, 0)
+
             int_out = np.hstack([r_int_b, r_int_y])
 
             int_out = int_out / np.nansum(int_out, 1).reshape(-1, 1)
@@ -31,4 +36,4 @@ class TritonPythonModel:
         return responses
 
     def finalize(self):
-        print("Cleaning up")
+        pass

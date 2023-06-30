@@ -1,5 +1,6 @@
 docker run -d \
-    -v /home/user02/koina/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml \
+    -v $(realpath prometheus/prometheus.yml):/etc/prometheus/prometheus.yml \
+    -v /var/log/prometheus/data:/prometheus/data \
     --name prometheus \
-    --network host \
-    prom/prometheus --web.listen-address=:8501 --config.file=/etc/prometheus/prometheus.yml
+    -p 9090:9090 \
+    prom/prometheus --config.file=/etc/prometheus/prometheus.yml

@@ -23,6 +23,11 @@ output [
    name: 'mz',
    data_type: TYPE_FP32,
    dims: [58]
+  },
+  {
+   name: 'annotation',
+   data_type: TYPE_STRING,
+   dims: [58]
   }
 ]
 
@@ -118,6 +123,18 @@ ensemble_scheduling {
       output_map {
         key: "mz"
         value: "mz"
+      }
+    },
+     {
+      model_name: "ms2pip_Helper_annotation"
+      model_version: 1
+      input_map {
+        key: "precursor_charges" 
+        value: "precursor_charges"
+      }
+      output_map {
+        key: "annotation"
+        value: "annotation"
       }
     }
   ]
