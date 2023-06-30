@@ -14,7 +14,10 @@ class TritonPythonModel:
     def initialize(self, args):
         model_config = json.loads(args["model_config"])
         output0_config = pb_utils.get_output_config_by_name(model_config, "intensities")
+        anno_config = pb_utils.get_output_config_by_name(model_config, "annotation")
+
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
+        self.anno_dtype = pb_utils.triton_string_to_numpy(anno_config["data_type"])
 
     def execute(self, requests):
         responses = []
@@ -32,15 +35,30 @@ class TritonPythonModel:
 
             fragmentmz = self.get_fragments(peptide_in, peaks_in.shape[1])
             peaks_norm = self.normalize_intensity(peaks_in)
+            anno_arr = self.gen_annotation(peaks_in.shape[0], peaks_in.shape[1])
 
             output_tensors = [
                 pb_utils.Tensor("intensities", peaks_norm.astype(self.output_dtype)),
                 pb_utils.Tensor("mz", fragmentmz.astype(self.output_dtype)),
+                pb_utils.Tensor("annotation", anno_arr.astype(self.anno_dtype)),
             ]
 
             responses.append(pb_utils.InferenceResponse(output_tensors=output_tensors))
 
         return responses
+
+    def gen_annotation(self, nseq, max_fragment_number):
+        anno_arr = np.full([nseq, 2, 2, max_fragment_number], "", dtype="U5")
+        ionnumber = np.array(range(1, max_fragment_number + 1), dtype="U2")
+
+        anno_arr[:, 0, :, :] = np.char.add(anno_arr[:, 0, :, :], "y")
+        anno_arr[:, 1, :, :] = np.char.add(anno_arr[:, 1, :, :], "b")
+
+        anno_arr = np.char.add(anno_arr, ionnumber)
+
+        anno_arr[:, :, 0, :] = np.char.add(anno_arr[:, :, 0, :], "+1")
+        anno_arr[:, :, 1, :] = np.char.add(anno_arr[:, :, 1, :], "+2")
+        return anno_arr.reshape(nseq, -1)
 
     def get_fragments(self, sequences, max_fragment_number):
         tensor_inputs = [
