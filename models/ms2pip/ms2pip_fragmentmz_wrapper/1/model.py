@@ -68,11 +68,7 @@ class TritonPythonModel:
             ).as_numpy()
 
             output[:, :29] = tmp[:, 0, 0, :29]  # b charge 1
-
-            output[:, 29:] = np.flip(
-                np.sort(tmp[:, 1, 0, :29]), 1
-            )  # y charge 1 TODO clean up this mess
-
+            output[:, 29:] = tmp[:, 1, 0, :29]  # y charge 1
             output[output == 0] = -1
 
             return output
