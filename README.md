@@ -44,6 +44,7 @@ docker run \
 
 If you want to stay up to date with the latest version of Koina we suggest you also deploy containrrr/watchtower.
 
+
 ```bash
 docker run 
   -d \  
