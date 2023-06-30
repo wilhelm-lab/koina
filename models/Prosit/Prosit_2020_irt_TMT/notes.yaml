@@ -14,7 +14,7 @@ examples:
       {
         "name": "peptide_sequences",
         "httpdtype": "BYTES",
-        "data": '["AAAAAKAKM[UNIMOD:21]"]',
+        "data": '["AAAAAKAKM[UNIMOD:35]"]',
         "shape": "[1,1]"
       }
     ]
