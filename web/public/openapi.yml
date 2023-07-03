@@ -269,7 +269,7 @@ paths:
         model_name = 'AlphaPept_ccs_generic'
         batch_size = 1000
         inputs = { 
-            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:21]"], dtype=np.dtype("O")).reshape([1,1]),
+            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:35]"], dtype=np.dtype("O")).reshape([1,1]),
             'precursor_charges': np.array([2], dtype=np.dtype("int32")).reshape([1,1]),
         }
         outputs = [ 'ccs', ]
@@ -344,7 +344,7 @@ paths:
         model_name = 'AlphaPept_ms2_generic'
         batch_size = 1000
         inputs = { 
-            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:21]"], dtype=np.dtype("O")).reshape([1,1]),
+            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:35]"], dtype=np.dtype("O")).reshape([1,1]),
             'precursor_charges': np.array([2], dtype=np.dtype("int32")).reshape([1,1]),
             'collision_energies': np.array([25], dtype=np.dtype("float32")).reshape([1,1]),
             'instrument_types': np.array([1], dtype=np.dtype("int64")).reshape([1,1]),
@@ -421,7 +421,7 @@ paths:
         model_name = 'AlphaPept_rt_generic'
         batch_size = 1000
         inputs = { 
-            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:21]"], dtype=np.dtype("O")).reshape([1,1]),
+            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:35]"], dtype=np.dtype("O")).reshape([1,1]),
         }
         outputs = [ 'irt', ]
         
@@ -495,7 +495,7 @@ paths:
         model_name = 'Prosit_2019_irt'
         batch_size = 1000
         inputs = { 
-            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:21]"], dtype=np.dtype("O")).reshape([1,1]),
+            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:35]"], dtype=np.dtype("O")).reshape([1,1]),
         }
         outputs = [ 'irt', ]
         
@@ -873,7 +873,7 @@ paths:
         model_name = 'Prosit_2020_irt_TMT'
         batch_size = 1000
         inputs = { 
-            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:21]"], dtype=np.dtype("O")).reshape([1,1]),
+            'peptide_sequences': np.array(["AAAAAKAKM[UNIMOD:35]"], dtype=np.dtype("O")).reshape([1,1]),
         }
         outputs = [ 'irt', ]
         
@@ -1060,7 +1060,7 @@ components:
             - name: peptide_sequences
               shape: [1,1]
               datatype: BYTES
-              data: ["AAAAAKAKM[UNIMOD:21]"]
+              data: ["AAAAAKAKM[UNIMOD:35]"]
             
             - name: precursor_charges
               shape: [1,1]
@@ -1093,7 +1093,7 @@ components:
           type: string
         data:
           type: array
-          example: ["AAAAAKAKM[UNIMOD:21]"]
+          example: ["AAAAAKAKM[UNIMOD:35]"]
           items:
             type: 
   
@@ -1127,7 +1127,7 @@ components:
             - name: peptide_sequences
               shape: [1,1]
               datatype: BYTES
-              data: ["AAAAAKAKM[UNIMOD:21]"]
+              data: ["AAAAAKAKM[UNIMOD:35]"]
             
             - name: precursor_charges
               shape: [1,1]
@@ -1174,7 +1174,7 @@ components:
           type: string
         data:
           type: array
-          example: ["AAAAAKAKM[UNIMOD:21]"]
+          example: ["AAAAAKAKM[UNIMOD:35]"]
           items:
             type: 
   
@@ -1242,7 +1242,7 @@ components:
             - name: peptide_sequences
               shape: [1,1]
               datatype: BYTES
-              data: ["AAAAAKAKM[UNIMOD:21]"]
+              data: ["AAAAAKAKM[UNIMOD:35]"]
             
           type: array
           items:
@@ -1268,7 +1268,7 @@ components:
           type: string
         data:
           type: array
-          example: ["AAAAAKAKM[UNIMOD:21]"]
+          example: ["AAAAAKAKM[UNIMOD:35]"]
           items:
             type: 
   
@@ -1285,7 +1285,7 @@ components:
             - name: peptide_sequences
               shape: [1,1]
               datatype: BYTES
-              data: ["AAAAAKAKM[UNIMOD:21]"]
+              data: ["AAAAAKAKM[UNIMOD:35]"]
             
           type: array
           items:
@@ -1311,7 +1311,7 @@ components:
           type: string
         data:
           type: array
-          example: ["AAAAAKAKM[UNIMOD:21]"]
+          example: ["AAAAAKAKM[UNIMOD:35]"]
           items:
             type: 
   
@@ -1692,7 +1692,7 @@ components:
             - name: peptide_sequences
               shape: [1,1]
               datatype: BYTES
-              data: ["AAAAAKAKM[UNIMOD:21]"]
+              data: ["AAAAAKAKM[UNIMOD:35]"]
             
           type: array
           items:
@@ -1718,7 +1718,7 @@ components:
           type: string
         data:
           type: array
-          example: ["AAAAAKAKM[UNIMOD:21]"]
+          example: ["AAAAAKAKM[UNIMOD:35]"]
           items:
             type: 
   
