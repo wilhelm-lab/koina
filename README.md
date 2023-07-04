@@ -46,10 +46,11 @@ If you want to stay up to date with the latest version of Koina we suggest you a
 
 
 ```bash
-docker run 
-  -d \  
-  --name watchtower \   
-  -v /var/run/docker.sock:/var/run/docker.sock \  
+docker run \
+  -d \
+  --name watchtower \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  --restart unless-stopped \
   containrrr/watchtower -i 30
 ```
 
