@@ -25,7 +25,7 @@ TODO
 ## Hosting your own server
 
 ### Dependencies
-dlomix-serving depends on [docker](https://docs.docker.com/engine/install/) and [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/overview.html). 
+Koina depends on [docker](https://docs.docker.com/engine/install/) and [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/overview.html). 
 
 You can find an ansible script that installs all dependencies [here](docs/server/).
 
