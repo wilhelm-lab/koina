@@ -20,6 +20,9 @@ jobs:
       - name: Start service
         run: docker compose up -d serving develop --build
 
+      - name: Wait for serving startup
+        run: sleep 60
+
       - name: Pytest
         run: docker compose exec develop pytest
 
