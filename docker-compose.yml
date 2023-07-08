@@ -28,13 +28,10 @@ services:
     working_dir: /workspace/koina
     volumes:
       - .:/workspace/koina/:Z
-    depends_on:
-      serving:
-        condition: service_healthy
     env_file:
       - .env
 
-  web :
+  web:
     build:
       context: .
       target: web
