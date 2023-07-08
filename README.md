@@ -30,7 +30,8 @@ dlomix-serving depends on [docker](https://docs.docker.com/engine/install/) and 
 You can find an ansible script that installs all dependencies [here](docs/server/).
 
 ### How to run it
-After installing the dependencies you can pull the docker image and run it with. 
+After installing the dependencies you can pull the docker image and run it.
+When using this docker image you need to accept the terms in the [NVIDIA Deep Learning Container License](NVIDIA_Deep_Learning_Container_License.pdf) 
 ```bash
 docker run \
     --gpus all \
