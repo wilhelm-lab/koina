@@ -1,0 +1,29 @@
+description: |  
+  The Prosit_2019_intensity_TOF model developed by Charlotte Adams et al. 
+  
+  More information about this model will be added soon.
+
+tag: "Intensity"
+tag_url: "https://www.proteomicsdb.org/"
+examples:
+  inputs:
+    [
+      {
+          "name": "peptide_sequences",
+          "httpdtype": "BYTES",
+          "shape": "[2,1]",
+          "data": '["AAAAAKAK", "AAAAAKAK"]'
+      },
+      {
+          "name": "precursor_charges",
+          "httpdtype": "INT32",
+          "shape": "[2,1]",
+          "data": '[1,2]'
+      },
+      {
+          "name": "collision_energies",
+          "httpdtype": "FP32",
+          "shape": "[2,1]",
+          "data": '[25, 25]'
+      }
+    ]
