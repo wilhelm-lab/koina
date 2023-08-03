@@ -14,9 +14,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
       
-      - name: Download models 
-        run: ./getModels.sh
-
       - name: Start service
         run: docker compose up -d serving develop --build
 
