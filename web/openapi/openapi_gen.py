@@ -57,6 +57,8 @@ def sleep_until_service_starts(http_server):
 
 
 def get_config(http_url, name):
+    # TODO throw an error when the an unknown model is requested
+    # {'error': "Request for unknown model: 'Deeplc_hela_hf' is not found"}
     url = http_url + f"/v2/models/{name}/config"
     logging.info(f"Getting config from:\t\t{url}")
     r = requests.get(url, timeout=1)
@@ -105,6 +107,12 @@ def main(http_url, grpc_url, tmpl_url):
         models[-1]["note"]["description"] = models[-1]["note"]["description"].replace(
             "\n", "<br>"
         )
+        try:
+            models[-1]["note"]["citation"] = models[-1]["note"]["citation"].replace(
+                "\n", "<br>"
+            )
+        except KeyError:
+            logging.warning(f"Model {name} does not contain a citation")
         add_np_and_openapi_dtype(models[-1]["note"])
         copy_outputs_to_note(models[-1])
         verify_inputs(models[-1])
