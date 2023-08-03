@@ -38,12 +38,9 @@ externalDocs:
 servers:
   - url: {{tmpl_url}}/v2/models
 tags:
-{% for model in models %}
-  - name: {{model.note.tag}}
-    externalDocs:
-      description: Find out more
-      url: {{model.note.tag_url}}
-{% endfor %}
+  - name: Retention Time
+  - name: Intensity
+  - name: Collisional cross section
 paths:
 {% for model in models %}
   /{{model.name}}/infer:
@@ -52,11 +49,24 @@ paths:
         - {{model.note.tag}}
       summary: {{model.name}}
       description: |
+        **Summary**
+
         {{model.note.description }}
+        
+        **Citaton**
+        
+        {{model.note.citation }}
+
+        **Examples**
+
+        <details>
+        <summary>Python using GRPC</summary>
+        
         ```python
         {{model.code}}
         ```
-        "
+
+        </details>
       operationId: {{model.name}}
       requestBody:
         description: Body
