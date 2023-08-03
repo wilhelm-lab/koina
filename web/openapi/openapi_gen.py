@@ -57,7 +57,7 @@ def sleep_until_service_starts(http_server):
 
 
 def get_config(http_url, name):
-    #TODO throw an error when the an unknown model is requested
+    # TODO throw an error when the an unknown model is requested
     # {'error': "Request for unknown model: 'Deeplc_hela_hf' is not found"}
     url = http_url + f"/v2/models/{name}/config"
     logging.info(f"Getting config from:\t\t{url}")
