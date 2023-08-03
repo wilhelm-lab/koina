@@ -3,7 +3,6 @@ services:
     build:
       context: .
       target: develop
-    command: /models/start_triton_server.sh
     volumes:
       - ./models:/models
     deploy:
