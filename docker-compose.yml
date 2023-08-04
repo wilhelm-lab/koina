@@ -39,7 +39,7 @@ services:
         UID: ${UID}
         GID: ${GID}
     ports:
-      - 8503:3000
+      - 3000:3000
     volumes:
       - ./:/workspace/koina
     working_dir: /workspace/koina/web
