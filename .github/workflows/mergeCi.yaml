@@ -21,10 +21,10 @@ jobs:
         run: docker compose exec develop black .
 
       - name: Linting
-        run: docker compose exec develop koina_lint --fail-under=6
+        run: docker compose exec develop koina_lint.sh --fail-under=6
 
       - name: Testing
-        run: docker compose exec develop koina_test
+        run: docker compose exec develop koina_test.sh
 
       - name: Shutdown
         if: success() || failure()
