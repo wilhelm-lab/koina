@@ -12,7 +12,7 @@ env:
 
 jobs:
 
-  release:
+  release_docker:
     runs-on: ubuntu-latest
     if: ${{ github.event.pull_request.merged && (contains(github.event.pull_request.labels.*.name, 'patch') || contains(github.event.pull_request.labels.*.name, 'minor') || contains(github.event.pull_request.labels.*.name, 'major')) }} 
     permissions:
@@ -57,4 +57,44 @@ jobs:
           #tags: ${{ steps.tag_and_prepare_release.outputs.tag }}
           labels: ${{ steps.meta.outputs.labels }}
 
+  release_ui:
+    runs-on: [self-hosted,Linux,X64,gpu]
+    if: ${{ github.event.pull_request.merged && (contains(github.event.pull_request.labels.*.name, 'patch') || contains(github.event.pull_request.labels.*.name, 'minor') || contains(github.event.pull_request.labels.*.name, 'major')) }} 
+    permissions:
+      contents: read
 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Startup
+        run: docker-compose --env-file .env.ci up -d serving develop web --build
+
+      - name: Install npm dependencies
+        run: docker-compose --env-file .env.ci run web npm install
+
+      - name: Wait for serving
+        run: docker-compose --env-file .env.ci exec develop koina_test.sh
+
+      - name: Update OpenAPI
+        run: docker-compose --env-file .env.ci exec develop python web/openapi/openapi_gen.py 
+
+      - name: Build UI
+        run: docker-compose --env-file .env.ci run web npm run generate
+
+      - name: Copy folder content recursively to remote
+        uses: garygrossgarten/github-action-scp@release
+        with:
+          local: web/.output/public
+          remote: /var/www/koina/
+          host: ${{ secrets.WEBSERVER }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.PASSWORD }}
+
+      - name: Shutdown
+        if: always()
+        run: docker-compose --env-file .env.ci down
+        
+      - name: Cleanup
+        if: always()
+        run: docker-compose --env-file .env.ci rm

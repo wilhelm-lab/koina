@@ -15,21 +15,21 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Startup
-        run: docker compose --env-file .env.ci up -d serving develop --build
+        run: docker-compose --env-file .env.ci up -d serving develop --build
 
       - name: Styling
-        run: docker compose --env-file .env.ci exec develop black .
+        run: docker-compose --env-file .env.ci exec develop black .
 
       - name: Linting
-        run: docker compose --env-file .env.ci exec develop koina_lint.sh --fail-under=6
+        run: docker-compose --env-file .env.ci exec develop koina_lint.sh --fail-under=6
 
       - name: Testing
-        run: docker compose --env-file .env.ci exec develop koina_test.sh
+        run: docker-compose --env-file .env.ci exec develop koina_test.sh
 
       - name: Shutdown
-        if: success() || failure()
-        run: docker compose --env-file .env.ci down
+        if: always()
+        run: docker-compose --env-file .env.ci down
         
       - name: Cleanup
-        if: success() || failure()
-        run: docker compose --env-file .env.ci rm
+        if: always()
+        run: docker-compose --env-file .env.ci rm
