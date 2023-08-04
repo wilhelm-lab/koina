@@ -11,28 +11,25 @@ jobs:
       contents: read
    
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
       
-      - name: Start service
+      - name: Start
         run: docker compose up -d serving develop --build
 
-      - name: Wait for serving startup
-        run: sleep 60
-
-      - name: Pytest
-        run: docker compose exec develop pytest
-
-      - name: Verify code style
+      - name: Styling
         run: docker compose exec develop black .
 
-      - name: Run lint
-        run: docker compose exec develop lint --fail-under=6
+      - name: Linting
+        run: docker compose exec develop koina_lint --fail-under=6
 
-      - name: Shutdown service
+      - name: Testing
+        run: docker compose exec develop koina_test
+
+      - name: Shutdown
         if: success() || failure()
         run: docker compose down
         
-      - name: Remove container
+      - name: Cleanup
         if: success() || failure()
         run: docker compose rm
