@@ -3,9 +3,9 @@ services:
     build:
       context: .
       target: develop
-    command: /models/start_triton_server.sh
+    user: "${UID}:${GID}"
     volumes:
-      - ./models:/models
+      - ./models:/models:z
     deploy:
       resources:
         reservations:
@@ -27,7 +27,7 @@ services:
     command: [ "sleep", "infinity" ]
     working_dir: /workspace/koina
     volumes:
-      - .:/workspace/koina/:Z
+      - .:/workspace/koina/:z
     env_file:
       - .env
 

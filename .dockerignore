@@ -10,11 +10,5 @@
 # Xgboost model
 **xgboost.json
 
-# Hide private models
-**privatemodelrepo
-
-# Hide logs
-**.log
-
 # Hide zipfiles
-**.zip
+**/*.zip
