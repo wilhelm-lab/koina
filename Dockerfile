@@ -10,8 +10,8 @@ FROM nvcr.io/nvidia/tritonserver:22.09-py3-sdk AS util
 RUN pip install -U pip pytest pylint tritonclient[all] requests black jupyter ms2pip psm-utils pandas jinja2 PyYAML
 RUN apt-get update
 RUN apt-get install git vim curl ripgrep -y
-RUN printf '#!/bin/bash\npylint --recursive=y test models $@' > /usr/local/bin/lint
-RUN chmod +x /usr/local/bin/lint
+ADD ./koina_test.sh /usr/local/bin/
+ADD ./koina_lint.sh /usr/local/bin/
 ARG UID=1000
 ARG GID=1000 
 RUN groupadd -f -g $GID devuser
