@@ -27,11 +27,11 @@ jobs:
         run: docker compose --env-file .env.ci exec develop koina_test.sh
 
       - name: Shutdown
-        if: success() || failure()
+        if: always()
         run: docker compose --env-file .env.ci down
         
       - name: Cleanup
-        if: success() || failure()
+        if: always()
         run: docker compose --env-file .env.ci rm
 
   release_ui:
@@ -68,9 +68,9 @@ jobs:
           password: ${{ secrets.PASSWORD }}
 
       - name: Shutdown
-        if: success() || failure()
+        if: always()
         run: docker compose --env-file .env.ci down
         
       - name: Cleanup
-        if: success() || failure()
+        if: always()
         run: docker compose --env-file .env.ci rm
