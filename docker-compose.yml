@@ -3,6 +3,7 @@ services:
     build:
       context: .
       target: develop
+    user: "${UID}:${GID}"
     volumes:
       - ./models:/models:z
     deploy:
