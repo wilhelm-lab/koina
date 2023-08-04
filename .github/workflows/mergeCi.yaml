@@ -56,7 +56,7 @@ jobs:
         run: docker compose --env-file .env.ci exec develop python web/openapi/openapi_gen.py 
 
       - name: Build UI
-        run: docker compose --env-file .env.ci run web npm generate
+        run: docker compose --env-file .env.ci run web npm run generate
 
       - name: Copy folder content recursively to remote
         uses: garygrossgarten/github-action-scp@release
