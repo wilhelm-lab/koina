@@ -48,17 +48,22 @@ class TritonPythonModel:
         return responses
 
     def gen_annotation(self, nseq, max_fragment_number):
-        anno_arr = np.full([nseq, 2, 2, max_fragment_number], "", dtype="U5")
-        ionnumber = np.array(range(1, max_fragment_number + 1), dtype="U2")
-
-        anno_arr[:, 0, :, :] = np.char.add(anno_arr[:, 0, :, :], "y")
-        anno_arr[:, 1, :, :] = np.char.add(anno_arr[:, 1, :, :], "b")
-
-        anno_arr = np.char.add(anno_arr, ionnumber)
-
-        anno_arr[:, :, 0, :] = np.char.add(anno_arr[:, :, 0, :], "+1")
-        anno_arr[:, :, 1, :] = np.char.add(anno_arr[:, :, 1, :], "+2")
-        return anno_arr.reshape(nseq, -1)
+        max_fragment_number = max_fragment_number+1
+        ions = [
+            "b",
+            "y"
+        ]
+        charges = [1, 2]
+        positions = [x for x in range(1, max_fragment_number)]
+        annotation = []
+        for pos in positions:
+            for ion in ions:
+                for charge in charges:
+                    if ion == "y":
+                        annotation.append(f"{ion}{max_fragment_number-pos}+{charge}")
+                    else:
+                        annotation.append(f"{ion}{pos}+{charge}")
+        return np.tile(annotation, nseq).reshape((nseq, (max_fragment_number-1)*4))
 
     def get_fragments(self, sequences, max_fragment_number):
         tensor_inputs = [
