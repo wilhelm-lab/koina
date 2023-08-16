@@ -87,7 +87,15 @@ class TritonPythonModel:
                 resp, "output_fragmentmz"
             ).as_numpy()
 
-            return tmp[:, :, :, :max_fragment_number].reshape(len(sequences), -1)
+            out = np.full((len(sequences), max_fragment_number*4), -1.0)
+            # out = out.reshape((tmp.shape[0],-1))
+            out[:,::4] = tmp[:,1,0,:max_fragment_number].reshape(out.shape[0],-1)  #b 1
+            out[:,1::4] = tmp[:,1,1,:max_fragment_number].reshape(out.shape[0],-1) #b 2
+            out[:,2::4] = np.flip(tmp[:,0,0,:max_fragment_number].reshape(out.shape[0],-1),1) #y 1
+            out[:,3::4] = np.flip(tmp[:,0,1,:max_fragment_number].reshape(out.shape[0],-1),1) #y 2
+
+            # return tmp[:, :, :, :max_fragment_number].reshape(len(sequences), -1)
+            return out
 
     def normalize_intensity(self, peaks):
         apex_intens = peaks.reshape((peaks.shape[0], -1)).max(axis=1)
