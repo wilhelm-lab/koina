@@ -48,17 +48,22 @@ class TritonPythonModel:
         return responses
 
     def gen_annotation(self, nseq, max_fragment_number):
-        anno_arr = np.full([nseq, 2, 2, max_fragment_number], "", dtype="U5")
-        ionnumber = np.array(range(1, max_fragment_number + 1), dtype="U2")
-
-        anno_arr[:, 0, :, :] = np.char.add(anno_arr[:, 0, :, :], "y")
-        anno_arr[:, 1, :, :] = np.char.add(anno_arr[:, 1, :, :], "b")
-
-        anno_arr = np.char.add(anno_arr, ionnumber)
-
-        anno_arr[:, :, 0, :] = np.char.add(anno_arr[:, :, 0, :], "+1")
-        anno_arr[:, :, 1, :] = np.char.add(anno_arr[:, :, 1, :], "+2")
-        return anno_arr.reshape(nseq, -1)
+        max_fragment_number = max_fragment_number+1
+        ions = [
+            "b",
+            "y"
+        ]
+        charges = [1, 2]
+        positions = [x for x in range(1, max_fragment_number)]
+        annotation = []
+        for pos in positions:
+            for ion in ions:
+                for charge in charges:
+                    if ion == "y":
+                        annotation.append(f"{ion}{max_fragment_number-pos}+{charge}")
+                    else:
+                        annotation.append(f"{ion}{pos}+{charge}")
+        return np.tile(annotation, nseq).reshape((nseq, (max_fragment_number-1)*4))
 
     def get_fragments(self, sequences, max_fragment_number):
         tensor_inputs = [
@@ -82,7 +87,15 @@ class TritonPythonModel:
                 resp, "output_fragmentmz"
             ).as_numpy()
 
-            return tmp[:, :, :, :max_fragment_number].reshape(len(sequences), -1)
+            out = np.full((len(sequences), max_fragment_number*4), -1.0)
+            # out = out.reshape((tmp.shape[0],-1))
+            out[:,::4] = tmp[:,1,0,:max_fragment_number].reshape(out.shape[0],-1)  #b 1
+            out[:,1::4] = tmp[:,1,1,:max_fragment_number].reshape(out.shape[0],-1) #b 2
+            out[:,2::4] = np.flip(tmp[:,0,0,:max_fragment_number].reshape(out.shape[0],-1),1) #y 1
+            out[:,3::4] = np.flip(tmp[:,0,1,:max_fragment_number].reshape(out.shape[0],-1),1) #y 2
+
+            # return tmp[:, :, :, :max_fragment_number].reshape(len(sequences), -1)
+            return out
 
     def normalize_intensity(self, peaks):
         apex_intens = peaks.reshape((peaks.shape[0], -1)).max(axis=1)
