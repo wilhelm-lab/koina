@@ -14,7 +14,7 @@ server_url = '{{ url }}'
 model_name = '{{ name }}'
 batch_size = 1000
 inputs = { {% for input in note.examples.inputs %}
-    '{{input.name}}': np.array({{input.data}}, dtype={{input.npdtype}}).reshape({{input.shape}}),{% endfor %}
+    '{{input.name}}': np.array({{input.data}}, dtype={{input.npdtype}}).reshape(-1,1),{% endfor %}
 }
 outputs = [{% for o in note.outputs %} '{{o}}', {% endfor %}]
 
@@ -27,17 +27,13 @@ for name in outputs:
 predictions = {name: [] for name in outputs}
 len_inputs = list(inputs.values())[0].shape[0]
 for i in range(0, len_inputs, batch_size):
-    if len_inputs < i+batch_size:
-        current_batchsize = len_inputs
-    else:
-        current_batchsize = batch_size
-
     koina_inputs = []
     for iname, iarr in inputs.items():
+        islice = iarr[i:i+batchsize]
         koina_inputs.append(
-            grpcclient.InferInput(iname, [current_batchsize, 1], nptype_convert[iarr.dtype])
+            grpcclient.InferInput(iname, islice.shape, nptype_convert[iarr.dtype])
         )
-        koina_inputs[-1].set_data_from_numpy(iarr[i:i+current_batchsize])
+        koina_inputs[-1].set_data_from_numpy(islice)
 
     prediction = triton_client.infer(model_name, inputs=koina_inputs, outputs=koina_outputs)
     
