@@ -54,12 +54,11 @@ jobs:
           target: "prod"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
-          #tags: ${{ steps.tag_and_prepare_release.outputs.tag }}
           labels: ${{ steps.meta.outputs.labels }}
 
   release_ui:
     runs-on: [self-hosted,Linux,X64,gpu]
-    if: ${{ github.event.pull_request.merged && (contains(github.event.pull_request.labels.*.name, 'patch') || contains(github.event.pull_request.labels.*.name, 'minor') || contains(github.event.pull_request.labels.*.name, 'major')) }} 
+    if: ${{ github.event.pull_request.merged && (contains(github.event.pull_request.labels.*.name, 'docs') || contains(github.event.pull_request.labels.*.name, 'patch') || contains(github.event.pull_request.labels.*.name, 'minor') || contains(github.event.pull_request.labels.*.name, 'major')) }} 
     permissions:
       contents: read
 
