@@ -29,7 +29,7 @@ len_inputs = list(inputs.values())[0].shape[0]
 for i in range(0, len_inputs, batch_size):
     koina_inputs = []
     for iname, iarr in inputs.items():
-        islice = iarr[i:i+batchsize]
+        islice = iarr[i:i+batch_size]
         koina_inputs.append(
             grpcclient.InferInput(iname, islice.shape, nptype_convert[iarr.dtype])
         )
