@@ -1,7 +1,9 @@
 import numpy as np
 import triton_python_backend_utils as pb_utils
 
-SEQ_LEN = 30
+SEQ_LEN = (
+    31  # initalize array with 31 because we verify N-term TMT before we delete it.
+)
 ALPHABET_UNMOD = {
     "A": 1,
     "D": 3,
@@ -28,8 +30,18 @@ MAX_CHARGE = 6
 ALPHABET_MOD = {
     "M[UNIMOD:35]": 21,
     "C[UNIMOD:4]": 2,
-    "K[UNIMOD:259]": 9,  # SILAC
-    "R[UNIMOD:267]": 15,  # SILAC
+    "K[UNIMOD:259]": 9,  # Map SILAC to unmodified AA
+    "R[UNIMOD:267]": 15,  # Map SILAC to unmodified AA
+    "K[UNIMOD:737]": 22,
+    "K[UNIMOD:2016]": 22,
+    "K[UNIMOD:2016]": 22,
+    "K[UNIMOD:214]": 22,
+    "[UNIMOD:730]-": 23,  # N-terminal  mods
+    "[UNIMOD:737]-": 23,
+    "[UNIMOD:2016]-": 23,
+    "[UNIMOD:2016]-": 23,
+    "[UNIMOD:214]-": 23,
+    "[UNIMOD:730]-": 23,
 }
 
 # ALPHABET contains all amino acid and ptm abbreviations and
@@ -64,8 +76,6 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
 
 def character_to_array(character):
     array = np.zeros((1, SEQ_LEN), dtype=np.uint8)
-    logger = pb_utils.Logger
-
     generator_sequence_numeric = parse_modstrings(
         [character], alphabet=ALPHABET, translate=True, filter=False
     )
@@ -75,4 +85,11 @@ def character_to_array(character):
             pass  # don't overwrite 0 in the array that is how we can differentiate
         else:
             array[i, 0 : len(sequence_numeric)] = sequence_numeric
+
+    # Check if first AA is
+    if np.all(array[:, 0] == 23):
+        array = np.delete(array, 0, axis=1)
+    else:
+        raise ValueError("The TMT model only supports N-term labelled peptides.")
+
     return array

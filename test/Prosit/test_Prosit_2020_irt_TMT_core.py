@@ -40,7 +40,7 @@ def test_inference():
 
     assert np.allclose(
         irt,
-        np.load("test/Prosit/arr_Prosit_2020_irt_TMT_irt.npy"),
+        np.load("test/Prosit/arr_Prosit_2020_irt_TMT_irt_core.npy"),
         rtol=0,
         atol=1e-4,
     )
