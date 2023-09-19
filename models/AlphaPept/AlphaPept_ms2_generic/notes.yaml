@@ -29,8 +29,8 @@ examples:
       },
       {
         "name": "instrument_types",
-        "httpdtype": "INT64",
-        "data": '[1]',
+        "httpdtype": "BYTES",
+        "data": '["QE"]',
         "shape": "[1,1]"
       }
     ]

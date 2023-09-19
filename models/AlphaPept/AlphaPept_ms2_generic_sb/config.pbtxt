@@ -18,7 +18,7 @@ input [
   },
   {
     name: 'instrument_types',
-    data_type: TYPE_INT64,
+    data_type: TYPE_STRING,
     dims: [1],
   }
 ]
@@ -83,6 +83,18 @@ ensemble_scheduling {
       }
     },
     {
+      model_name: "AlphaPept_Preprocess_instrument_types"
+      model_version: 1
+      input_map {
+        key: "instrument_types"
+        value: "instrument_types"
+      },
+      output_map {
+        key: "instrument_types_encoding"
+        value: "instrument_types_encoding"
+      }
+    },
+    {
       model_name: "AlphaPept_ms2_generic_core"
       model_version: 1
       input_map {
@@ -103,7 +115,7 @@ ensemble_scheduling {
       },
       input_map {
         key: "instrument_indices__4"
-        value: "instrument_types"
+        value: "instrument_types_encoding"
       },
       output_map {
         key: "output__0"
