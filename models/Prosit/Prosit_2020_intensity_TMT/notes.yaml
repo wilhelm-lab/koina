@@ -15,7 +15,7 @@ examples:
           "name": "peptide_sequences",
           "httpdtype": "BYTES",
           "shape": "[2,1]",
-          "data": '["AAAAAKAK", "AAAAAKAK"]'
+          "data": '["[UNIMOD:737]-AAAAAKAK", "[UNIMOD:737]-AAAAAKAK"]'
       },
       {
           "name": "precursor_charges",
