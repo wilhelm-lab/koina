@@ -24,10 +24,8 @@ class TritonPythonModel:
             ).as_numpy()
 
             instrument_types_encoding = np.zeros(instrument_types.shape)
-            self.logger.log_info(f"{instrument_types}")
             for k, v in {"QE": 0, "LUMOS": 1, "TIMSTOF": 2, "SCIEXTOF": 3}.items():
                 instrument_types_encoding[instrument_types == str.encode(k)] = v
-            self.logger.log_info(f"{instrument_types_encoding}")
 
             t = pb_utils.Tensor(
                 "instrument_types_encoding",
