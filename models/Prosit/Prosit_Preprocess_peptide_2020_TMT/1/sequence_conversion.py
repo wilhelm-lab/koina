@@ -65,8 +65,10 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
                 return [alphabet[aa] for aa in split_seq]
             elif not translate:
                 return split_seq
-        elif filter:
-            return [0]
+        else:
+            raise ValueError(
+                f"Some modifications not supported in sequence: {sequence}"
+            )
 
     pattern = sorted(alphabet, key=len, reverse=True)
     pattern = [re.escape(i) for i in pattern]
