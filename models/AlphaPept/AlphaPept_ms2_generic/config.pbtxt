@@ -17,7 +17,7 @@ input [
   },
   {
     name: 'instrument_types',
-    data_type: TYPE_INT64,
+    data_type: TYPE_STRING,
     dims: [1],
   }
 ]

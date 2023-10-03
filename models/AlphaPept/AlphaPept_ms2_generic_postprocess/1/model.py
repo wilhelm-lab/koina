@@ -48,11 +48,8 @@ class TritonPythonModel:
         return responses
 
     def gen_annotation(self, nseq, max_fragment_number):
-        max_fragment_number = max_fragment_number+1
-        ions = [
-            "b",
-            "y"
-        ]
+        max_fragment_number = max_fragment_number + 1
+        ions = ["b", "y"]
         charges = [1, 2]
         positions = [x for x in range(1, max_fragment_number)]
         annotation = []
@@ -63,7 +60,7 @@ class TritonPythonModel:
                         annotation.append(f"{ion}{max_fragment_number-pos}+{charge}")
                     else:
                         annotation.append(f"{ion}{pos}+{charge}")
-        return np.tile(annotation, nseq).reshape((nseq, (max_fragment_number-1)*4))
+        return np.tile(annotation, nseq).reshape((nseq, (max_fragment_number - 1) * 4))
 
     def get_fragments(self, sequences, max_fragment_number):
         tensor_inputs = [
@@ -87,12 +84,20 @@ class TritonPythonModel:
                 resp, "output_fragmentmz"
             ).as_numpy()
 
-            out = np.full((len(sequences), max_fragment_number*4), -1.0)
+            out = np.full((len(sequences), max_fragment_number * 4), -1.0)
             # out = out.reshape((tmp.shape[0],-1))
-            out[:,::4] = tmp[:,1,0,:max_fragment_number].reshape(out.shape[0],-1)  #b 1
-            out[:,1::4] = tmp[:,1,1,:max_fragment_number].reshape(out.shape[0],-1) #b 2
-            out[:,2::4] = np.flip(tmp[:,0,0,:max_fragment_number].reshape(out.shape[0],-1),1) #y 1
-            out[:,3::4] = np.flip(tmp[:,0,1,:max_fragment_number].reshape(out.shape[0],-1),1) #y 2
+            out[:, ::4] = tmp[:, 1, 0, :max_fragment_number].reshape(
+                out.shape[0], -1
+            )  # b 1
+            out[:, 1::4] = tmp[:, 1, 1, :max_fragment_number].reshape(
+                out.shape[0], -1
+            )  # b 2
+            out[:, 2::4] = np.flip(
+                tmp[:, 0, 0, :max_fragment_number].reshape(out.shape[0], -1), 1
+            )  # y 1
+            out[:, 3::4] = np.flip(
+                tmp[:, 0, 1, :max_fragment_number].reshape(out.shape[0], -1), 1
+            )  # y 2
 
             # return tmp[:, :, :, :max_fragment_number].reshape(len(sequences), -1)
             return out

@@ -21,18 +21,18 @@ def test_available_grpc():
 def test_inference():
     SEQUENCES = np.array(
         [
-            ["AA"],
-            ["PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
-            ["RHKDESTNQCGPAVILMFYW"],
-            ["RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
-            ["RHKDESTNQCGPAVILM[UNIMOD:35]FYW"],
+            ["[UNIMOD:737]-AA"],
+            ["[UNIMOD:737]-PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
+            ["[UNIMOD:737]-RHKDESTNQCGPAVILMFYW"],
+            ["[UNIMOD:737]-RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
+            ["[UNIMOD:737]-RHKDESTNQCGPAVILM[UNIMOD:35]FYW"],
         ],
         dtype=np.object_,
     )
 
     charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.int32)
     ces = np.array([[25] for _ in range(len(SEQUENCES))], dtype=np.float32)
-    frag = np.array([[0] for _ in range(len(SEQUENCES))], dtype=np.float32)
+    frag = np.array([["HCD"] for _ in range(len(SEQUENCES))], dtype=np.object_)
     # frag = np.load("test/Prosit/arr_Prosit_2020_intensityTMT_frag.npy").reshape([5,1])
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
@@ -46,7 +46,7 @@ def test_inference():
     in_ces = grpcclient.InferInput("collision_energies", ces.shape, "FP32")
     in_ces.set_data_from_numpy(ces)
 
-    in_frag = grpcclient.InferInput("fragmentation_types", frag.shape, "FP32")
+    in_frag = grpcclient.InferInput("fragmentation_types", frag.shape, "BYTES")
     in_frag.set_data_from_numpy(frag)
 
     result = triton_client.infer(

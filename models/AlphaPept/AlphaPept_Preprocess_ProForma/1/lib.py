@@ -5,7 +5,6 @@ import pandas as pd
 MOD_DF = pd.read_csv("/models/AlphaPept/AlphaPept_Preprocess_ProForma/1/mod_df.csv")
 
 
-
 MOD_ELEMENTS = [
     "C",
     "H",

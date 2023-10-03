@@ -25,3 +25,16 @@ output [
    reshape: { shape: [ ] }
  }
 ]
+model_repository_agents
+{
+  agents [
+    {
+      name: "checksum",
+      parameters
+      {
+        key: "MD5:./1/model.pt",
+        value: "3ac52192936e3dbcb0a389fe98746770"
+      }
+    }
+  ]
+}

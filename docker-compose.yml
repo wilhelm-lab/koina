@@ -13,7 +13,7 @@ services:
             - driver: nvidia
               device_ids: ["${GPU_DEVICE}"]
               capabilities: [ gpu ]
-    shm_size: 2GB
+    shm_size: 8GB
     restart: unless-stopped
 
   develop:
