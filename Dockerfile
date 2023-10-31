@@ -13,9 +13,9 @@ RUN apt-get install git vim curl ripgrep -y
 ADD ./koina_test.sh /usr/local/bin/
 ADD ./koina_lint.sh /usr/local/bin/
 ARG UID=1000
-ARG GID=1000 
+ARG GID=1000
 RUN groupadd -f -g $GID devuser
-RUN useradd -ms /bin/bash devuser -u $UID -g $GID --non-unique
+RUN useradd -l -ms /bin/bash devuser -u $UID -g $GID --non-unique
 USER devuser
 
 FROM node:latest as web

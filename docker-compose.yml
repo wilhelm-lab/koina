@@ -3,7 +3,12 @@ services:
     build:
       context: .
       target: develop
+    env_file:
+      - .env
     user: "${UID}:${GID}"
+    userns_mode: "host"
+    ports:
+      - 8500-8502:8500-8502
     volumes:
       - ./models:/models:z
     deploy:
@@ -13,7 +18,7 @@ services:
             - driver: nvidia
               device_ids: ["${GPU_DEVICE}"]
               capabilities: [ gpu ]
-    shm_size: 2GB
+    shm_size: 8GB
     restart: unless-stopped
 
   develop:
@@ -24,6 +29,7 @@ services:
         UID: ${UID}
         GID: ${GID}
     user: "devuser"
+    userns_mode: "host"
     command: [ "sleep", "infinity" ]
     working_dir: /workspace/koina
     volumes:
