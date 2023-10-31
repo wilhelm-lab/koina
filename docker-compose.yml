@@ -7,8 +7,6 @@ services:
       - .env
     user: "${UID}:${GID}"
     userns_mode: "host"
-    ports:
-      - 8500-8502:8500-8502
     volumes:
       - ./models:/models:z
     deploy:
