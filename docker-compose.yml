@@ -26,7 +26,7 @@ services:
       args:
         UID: ${UID}
         GID: ${GID}
-    user: "devuser"
+    user: "${UID}:${GID}"
     userns_mode: "host"
     command: [ "sleep", "infinity" ]
     working_dir: /workspace/koina

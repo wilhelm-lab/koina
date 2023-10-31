@@ -16,6 +16,7 @@ ARG UID=1000
 ARG GID=1000
 RUN groupadd -f -g $GID devuser
 RUN useradd -l -ms /bin/bash devuser -u $UID -g $GID --non-unique
+RUN chmod 777 /home/devuser/
 USER devuser
 
 FROM node:latest as web
