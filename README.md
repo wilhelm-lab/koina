@@ -35,7 +35,7 @@ When using this docker image you need to accept the terms in the [NVIDIA Deep Le
 ```bash
 docker run \
     --gpus all \
-    --shm-size 2G \
+    --shm-size 8G \
     --name koina \
     -p 8500-8502:8500-8502 \
     -d \

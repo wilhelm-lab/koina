@@ -36,3 +36,4 @@ tritonserver  \
   --log-error=true \
   --rate-limit "execution_count" \
   --cuda-memory-pool-byte-size 0:536870912 \
+  --grpc-infer-response-compression-level "high"

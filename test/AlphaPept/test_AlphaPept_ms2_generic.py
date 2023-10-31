@@ -39,7 +39,7 @@ def test_inference():
 
     charge = np.array([[2] for _ in range(len(SEQUENCES))], dtype=np.int32)
     ces = np.array([[30] for _ in range(len(SEQUENCES))], dtype=np.float32)
-    instr = np.array([[0] for _ in range(len(SEQUENCES))], dtype=np.int64)
+    instr = np.array([["QE"] for _ in range(len(SEQUENCES))], dtype=np.object_)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
@@ -52,7 +52,7 @@ def test_inference():
     in_ces = grpcclient.InferInput("collision_energies", ces.shape, "FP32")
     in_ces.set_data_from_numpy(ces)
 
-    in_instr = grpcclient.InferInput("instrument_types", instr.shape, "INT64")
+    in_instr = grpcclient.InferInput("instrument_types", instr.shape, "BYTES")
     in_instr.set_data_from_numpy(instr)
 
     result = triton_client.infer(
