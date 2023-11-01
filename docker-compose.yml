@@ -2,8 +2,11 @@ services:
   serving:
     build:
       context: .
-      target: develop
+      target: serving-develop
+    env_file:
+      - .env
     user: "${UID}:${GID}"
+    userns_mode: "host"
     volumes:
       - ./models:/models:z
     deploy:
@@ -23,7 +26,8 @@ services:
       args:
         UID: ${UID}
         GID: ${GID}
-    user: "devuser"
+    user: "${UID}:${GID}"
+    userns_mode: "host"
     command: [ "sleep", "infinity" ]
     working_dir: /workspace/koina
     volumes:
@@ -38,6 +42,7 @@ services:
       args:
         UID: ${UID}
         GID: ${GID}
+    userns_mode: "host"
     ports:
       - 3000:3000
     volumes:
