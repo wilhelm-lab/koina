@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Downloading model files
-for file in $(find /models/repo -name ".zenodo")
+for file in $(find -L /models/repo -name ".zenodo")
 do 
 	folder=${file::-8} # strip .zenodo from the path
     echo "########################################"
