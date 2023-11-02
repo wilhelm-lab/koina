@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 # Downloading model files
-for file in $(find /models -name ".zenodo")
+for file in $(find /models/repo -name ".zenodo")
 do 
 	folder=${file::-8} # strip .zenodo from the path
     echo "########################################"
@@ -18,11 +18,7 @@ done
 # Starting server
 MAX_SESSION_SHARE_COUNT=100
 tritonserver  \
-  --model-repository=/models/Generic \
-  --model-repository=/models/AlphaPept \
-  --model-repository=/models/Prosit \
-  --model-repository=/models/Deeplc \
-  --model-repository=/models/ms2pip \
+  --model-repository=/models/repo \
   --allow-grpc=true \
   --grpc-port=8500 \
   --allow-http=true \
