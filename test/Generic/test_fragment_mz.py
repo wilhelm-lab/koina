@@ -7,6 +7,7 @@ from pathlib import Path
 # To ensure MODEL_NAME == test_<filename>.py
 MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
+
 def ppm_error(arr1, arr2):
     return (np.abs(arr1 - arr2) / arr1) * 1_000_000
 
