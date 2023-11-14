@@ -30,11 +30,11 @@ Koina depends on [docker](https://docs.docker.com/engine/install/) and [nvidia-c
 You can find an ansible script that installs all dependencies [here](docs/server/).
 
 ### How to run it
-After installing the dependencies you can pull the docker image and run it. If you have multiple GPUs installed on your server specify one of them with `--gpus '"device=0"'`
+After installing the dependencies you can pull the docker image and run it. If you have multiple GPUs installed on your server you can choose which one is used by modifying `--gpus '"device=0"'`
 When using this docker image you need to accept the terms in the [NVIDIA Deep Learning Container License](NVIDIA_Deep_Learning_Container_License.pdf) 
 ```bash
 docker run \
-    --gpus all \
+    --gpus '"device=0" \
     --shm-size 8G \
     --name koina \
     -p 8500-8502:8500-8502 \
@@ -62,7 +62,6 @@ docker run \
 1. Install dependencies ([Ansible script](docs/server/))
 2. (Suggested) Install [docker-compose](https://docs.docker.com/desktop/install/linux-install/)
 3. Clone the repo
-4. Download existing models with `./getModels.sh`
 5. Update `.env` with your user- and group-id to avoid file permission issues 
 6. Start the server with `docker-compose up -d`
 7. Confirm that the server started successfully with `docker-compose logs -f serving`. It the startup wass successful you will see something like this.:
@@ -76,7 +75,6 @@ Further considerations
 - For development we suggest to use Visual Studio Code with the `Dev Containers` and `Remote - SSH` extensions.
   Using this system you can connect to the server and open the cloned git repo. You will be prompted to reopen the folder in a DevContainer where a lot of useful dependencies are already installed including the dependencies required for testing, linting and styling. Using the dev-container you can lint your code by running `lint`, run tests with `pytest` and style your code with `black .`
 - From within the dev-container you can get requests from the `serving` container by providing the url `serving:8501` for http and `serving:8501` for gRPC. 
-- If you have multiple GPUs in your server and want to use a specific gpu you can specify this in the `docker-comppose.yaml` by replacing `count: 1` with `device_ids: ['1']`
 
 ### Import model files
 Triton supports all major machine learning frameworks. The format you need to save your model in depends on the framework used to train your model. For detailed instructions you can check out this [documentation](https://github.com/triton-inference-server/server/blob/main/docs/user_guide/model_repository.md#model-files).
