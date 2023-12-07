@@ -48,7 +48,7 @@ ensemble_scheduling {
         key: "precursor_charges_in:0"
         value: "precursor_charges_in_preprocessed:0"
       }
-      },
+    },
     {
       model_name: "Prosit_Preprocess_peptide"
       model_version: 1

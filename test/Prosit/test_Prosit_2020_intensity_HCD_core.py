@@ -43,7 +43,7 @@ def test_inference():
     )
 
     intensities = result.as_numpy("out/Reshape:0")
-    print(intensities)
+    
     assert intensities.shape == (5, 174)
 
     assert np.allclose(

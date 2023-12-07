@@ -11,8 +11,10 @@ services:
         reservations:
           devices:
             - driver: nvidia
-              device_ids: ['2']
+              count: 1
               capabilities: [ gpu ]
+    ports:
+      - 8506:8500
     shm_size: 2GB
     restart: unless-stopped
 
@@ -28,6 +30,9 @@ services:
     working_dir: /workspace/koina
     volumes:
       - .:/workspace/koina/:Z
+    depends_on:
+      serving:
+        condition: service_healthy
     env_file:
       - .env
 
@@ -41,7 +46,6 @@ services:
     ports:
       - 8503:3000
     volumes:
-      - ./:/workspace/koina
+      - .:/workspace/koina
     working_dir: /workspace/koina/web
     command: npm run dev
-

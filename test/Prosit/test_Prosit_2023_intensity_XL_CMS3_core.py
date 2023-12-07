@@ -20,13 +20,13 @@ def test_available_grpc():
 
 def test_inference():
     seq = np.load(
-        "test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_seq.npy", allow_pickle=True
+        "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_seq.npy", allow_pickle=True
     )
     charge = np.load(
-        "test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_charge.npy", allow_pickle=True
+        "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_charge.npy", allow_pickle=True
     )
     ces = np.load(
-        "test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_ces.npy", allow_pickle=True
+        "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_ces.npy", allow_pickle=True
     )
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
@@ -55,7 +55,7 @@ def test_inference():
     assert np.allclose(
         intensities,
         np.load(
-            "test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_int_raw.npy",
+            "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_int_raw.npy",
             allow_pickle=True,
         ),
         rtol=0,

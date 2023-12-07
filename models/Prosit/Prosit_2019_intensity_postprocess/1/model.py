@@ -37,7 +37,6 @@ class TritonPythonModel:
                 .as_numpy()
                 .tolist()
             )
-            logger.log_info(f"peptide_in: {peptide_in}")
             peptide_in = [x[0].decode("utf-8") for x in peptide_in]
             precursor_charges_in = pb_utils.get_input_tensor_by_name(
                 request, "precursor_charges_in:0"
@@ -46,15 +45,8 @@ class TritonPythonModel:
                 request, "peaks_in:0"
             ).as_numpy()
             peptide_lengths = [len(x) for x in internal_without_mods(peptide_in)]
-
-            logger.log_info(f"peaks_in[0]: {peaks_in[0]}")
-            logger.log_info(f"len(peaks_in[0]): {len(peaks_in[0])}")
-
             mask = create_masking(precursor_charges_in, peptide_lengths)
             masked_peaks = apply_masking(peaks_in, mask)
-
-            logger.log_info(f"mask[0]: {mask[0]}")
-            logger.log_info(f"len(mask[0]): {len(mask[0])}")
 
             fragmentmz = self.get_fragments(peptide_in)
             fragmentmz[np.isnan(masked_peaks)] = -1
