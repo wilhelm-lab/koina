@@ -20,12 +20,12 @@ scrape_configs:
   - job_name: 'msaid'
     static_configs:
     - targets: ['eubic2023.external.msaid.io:8502']
-  
+
   - job_name: 'eth'
     scheme : https
     static_configs:
       - targets: ['dlomix.fgcz.uzh.ch:443']
-  
+
   - job_name: 'wilhelmlab'
     static_configs:
       - targets: ['10.157.98.13:8502']

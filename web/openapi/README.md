@@ -16,7 +16,7 @@ One also can access the specific model's input/output tensor via: ` models[i]['i
 
 # Logic of swagger_gen.py
 
-`Swagger.yaml` generation is a service that runs before serving of the Swagger. This service waits until the Triton and Reverse proxy servers are up and running. 
+`Swagger.yaml` generation is a service that runs before serving of the Swagger. This service waits until the Triton and Reverse proxy servers are up and running.
 
 When they're up, it sends request to the revers-eproxy to identify the input/output tensors of the models that are whitelisted in `model_names.json` file. Once the script identifies those data, it proceeds to look into `notes.yaml` file stored under the path points in `model_names.json`.
 

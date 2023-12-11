@@ -10,7 +10,7 @@ input[
    name: 'peptide_sequences_2',
    data_type: TYPE_STRING,
    dims: [-1]
-   
+
  }
 ]
 output [

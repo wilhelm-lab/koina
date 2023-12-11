@@ -45566,5 +45566,3 @@ xref: spec_2_site "N-term"
 xref: spec_2_position "Protein N-term"
 xref: spec_2_classification "Post-translational"
 is_a: UNIMOD:0 ! unimod root node
-
-

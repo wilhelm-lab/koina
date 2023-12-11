@@ -1,11 +1,11 @@
 backend: "fil"
 max_batch_size: 29000
 input [
- {  
+ {
     name: "input__0"
     data_type: TYPE_FP32
     dims: [ 139 ]
-  } 
+  }
 ]
 output [
  {

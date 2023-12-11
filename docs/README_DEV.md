@@ -24,7 +24,7 @@ for batch in peptide_in:
 If the batch parsing is implemented wrong in the ensemble model, it will complain about the batch sizes are wrong the typical error message is:
 
 ```
-tritonclient.utils.InferenceServerException: [StatusCode.INVALID_ARGUMENT] in ensemble 'Prosit_2019_intensity_triton', input 'peptides_in:0' batch size does not match other inputs for 'Prosit_2019_intensity'  
+tritonclient.utils.InferenceServerException: [StatusCode.INVALID_ARGUMENT] in ensemble 'Prosit_2019_intensity_triton', input 'peptides_in:0' batch size does not match other inputs for 'Prosit_2019_intensity'
 ```
 
 # Starting Triton server
@@ -33,7 +33,7 @@ there is a script in the repo called `run.sh` you can invoke the script by calli
 
 # Starting Triton client
 
-The triton client grpc SDK comes with also a docker image. The name of the docker image is: 
+The triton client grpc SDK comes with also a docker image. The name of the docker image is:
 `nvcr.io/nvidia/tritonserver:22.03-py3-sdk`. One way to use this image is to run docker run/exec command to execute bash and invoke the script inside of the image. Or you can use this image to create another image on top, which can override the "entrypoint". The easiest way is to start the image with:
 ```docker run -it nvcr.io/nvidia/tritonserver:22.03-py3-sdk bash``` Once you execute this command you will be inside of the container. In that you have all the SDK and libraries you need. The simple grpc client that is used to test the triton-server is committed in this repo with the name  `simple_grpc_infer_client.py`. You can copy the script into running container by:
 `docker cp simple_grpc_infer_client.py <ID_OF_CONTAINER>:<PATH_IN_CONTAINER>`

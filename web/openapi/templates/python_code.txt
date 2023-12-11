@@ -36,7 +36,7 @@ for i in range(0, len_inputs, batch_size):
         koina_inputs[-1].set_data_from_numpy(islice)
 
     prediction = triton_client.infer(model_name, inputs=koina_inputs, outputs=koina_outputs)
-    
+
     for name in outputs:
         predictions[name].append(prediction.as_numpy(name))
 

@@ -2,27 +2,27 @@ openapi: 3.0.3
 info:
   title: Koina
   description: |-
-    This is the official documentation of the machine learning model hosting platform Koina. 
-    Koina is a generic, open-source, and online-accessible prediction service 
+    This is the official documentation of the machine learning model hosting platform Koina.
+    Koina is a generic, open-source, and online-accessible prediction service
     that significantly simplifies using machine learning models by making them accessible via the web.
-    ## Accessing a public server 
-    You can access Koina using either http or grpc. 
+    ## Accessing a public server
+    You can access Koina using either http or grpc.
     For each model endpoint below you will find multiple examples of how to request predictions.
     The simplest option is to use the "Try Out" button which will send a request directly in your browser.
     The "Try out" button will also autogenerate an example code using curl.
     Lastly for each model there is also an example of how to send gRPC requests using Python.
-    ## Hosting your own server 
-    Koina is open source and free to use as such you can host your own instance of Koina. 
-    For this we provide an easy to use docker image. 
+    ## Hosting your own server
+    Koina is open source and free to use as such you can host your own instance of Koina.
+    For this we provide an easy to use docker image.
     For more information regarding this go to our [GitHub](https://github.com/wilhelm-lab/koina)
-    Koina was initially developed at [EuBIC-MS Developers Meeting 2023](https://eubic-ms.org/events/2023-developers-meeting/) and is meant as a resource from the community for the community. 
-    Multiple organizations are already hosting instances of Koina. 
-    Such as the [ETH|UZH](https://fgcz.ch/omics_areas/bioinf/proteome_informatics.html), 
-    [TUM](https://www1.ls.tum.de/en/compms/home/) as well as 
+    Koina was initially developed at [EuBIC-MS Developers Meeting 2023](https://eubic-ms.org/events/2023-developers-meeting/) and is meant as a resource from the community for the community.
+    Multiple organizations are already hosting instances of Koina.
+    Such as the [ETH|UZH](https://fgcz.ch/omics_areas/bioinf/proteome_informatics.html),
+    [TUM](https://www1.ls.tum.de/en/compms/home/) as well as
     [MSAID](https://www.msaid.de/).
-    
-    You can join in this community effort, it's as simple as running the provided docker image and sending an email to Ludwig.Lautenbacher@tum.de telling me under which URL your server can be accessed. 
-    ## Adding your own model 
+
+    You can join in this community effort, it's as simple as running the provided docker image and sending an email to Ludwig.Lautenbacher@tum.de telling me under which URL your server can be accessed.
+    ## Adding your own model
     If you are developing a machine learning model in the field of proteomics, and want to make it as widely available as possible you can contribute by adding your model to Koina.
     You will find detailed instructions on how to do this in our [GitHub](https://github.com/wilhelm-lab/koina)
   termsOfService: https://github.com/wilhelm-lab/koina
@@ -52,16 +52,16 @@ paths:
         **Summary**
 
         {{model.note.description }}
-        
+
         **Citaton**
-        
+
         {{model.note.citation }}
 
         **Examples**
 
         <details>
         <summary>Python using GRPC</summary>
-        
+
         ```python
         {{model.code}}
         ```
@@ -119,7 +119,7 @@ components:
             minItems: {{model.note.examples.inputs|length}}
             maxItems: {{model.note.examples.inputs|length}}
             uniqueItems: true
-        
+
   {% for input in model.note.examples.inputs %}
     {{model.name ~ '_' ~ 'input_'~input.name}}:
       type: object

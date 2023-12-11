@@ -37,11 +37,11 @@ ensemble_scheduling {
       model_name: "ms2pip_preprocess"
       model_version: 1
       input_map {
-        key: "proforma" 
+        key: "proforma"
         value: "peptide_sequences"
       },
       input_map {
-        key: "charge_in" 
+        key: "charge_in"
         value: "precursor_charges"
       },
       output_map {
@@ -53,7 +53,7 @@ ensemble_scheduling {
       model_name: "model_20210416_HCD2021_B"
       model_version: 1
       input_map {
-        key: "input__0" 
+        key: "input__0"
         value: "xgboost_input"
       },
       output_map {
@@ -65,7 +65,7 @@ ensemble_scheduling {
       model_name: "model_20210416_HCD2021_Y"
       model_version: 1
       input_map {
-        key: "input__0" 
+        key: "input__0"
         value: "xgboost_input"
       },
       output_map {
@@ -77,7 +77,7 @@ ensemble_scheduling {
       model_name: "ms2pip_postprocess_single_model"
       model_version: 1
       input_map {
-        key: "raw_intensities" 
+        key: "raw_intensities"
         value: "model_20210416_HCD2021_B_output"
       },
       output_map {
@@ -89,7 +89,7 @@ ensemble_scheduling {
       model_name: "ms2pip_postprocess_single_model"
       model_version: 1
       input_map {
-        key: "raw_intensities" 
+        key: "raw_intensities"
         value: "model_20210416_HCD2021_Y_output"
       },
       output_map {
@@ -101,11 +101,11 @@ ensemble_scheduling {
       model_name: "ms2pip_postprocess_merge_and_norm"
       model_version: 1
       input_map {
-        key: "raw_intensities_y" 
+        key: "raw_intensities_y"
         value: "norm_intensities_y"
       },
       input_map {
-        key: "raw_intensities_b" 
+        key: "raw_intensities_b"
         value: "norm_intensities_b"
       },
       output_map {
@@ -117,7 +117,7 @@ ensemble_scheduling {
       model_name: "ms2pip_fragmentmz_wrapper"
       model_version: 1
       input_map {
-        key: "peptides_in:0" 
+        key: "peptides_in:0"
         value: "peptide_sequences"
       }
       output_map {
@@ -129,7 +129,7 @@ ensemble_scheduling {
       model_name: "ms2pip_Helper_annotation"
       model_version: 1
       input_map {
-        key: "precursor_charges" 
+        key: "precursor_charges"
         value: "precursor_charges"
       }
       output_map {
