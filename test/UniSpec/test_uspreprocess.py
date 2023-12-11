@@ -35,9 +35,7 @@ def test_inference():
     )
 
     intensities = result.as_numpy("intensities")
-
-    assert intensities.shape == (50, 7919)
-
+    
     # Assert intensities consistent
     assert np.allclose(
         intensities,

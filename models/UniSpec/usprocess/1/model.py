@@ -42,21 +42,22 @@ class TritonPythonModel:
         model_config = json.loads(args["model_config"])
     
     def input_from_str(self, strings):
-        bs = len(strings)
+        bs = len(strings[0])
         outseq = np.zeros((bs, self.channels, self.seq_len), dtype=np.float32)
 
         info = []
-        for m in range(len(strings)):
-            # input comes in as np.array([[byte1], [byte2] ... [byteN]])
+        #assert len(strings) == 50, "%s"%len(strings[0])
+        for m in range(len(strings[0])):
+            # input comes in as np.array([[byte1, byte2 ... byteN]])
             # - each byte looks like e.g. b'AGAGAGA'
             # - str(b'AGAGAGA') == "b'hello'"
-            [seq, other] = str(strings[m][0])[2:-1].split('/')
+            [seq, other] = str(strings[0][m])[2:-1].split('/')
             osplit = other.split("_")
             [charge, mod, ev, nce] = osplit
             charge = int(charge);ev = float(ev[:-2]);nce = float(nce[3:])
             info.append((seq,mod,charge,ev,nce))
             out = self.inptsr(info[-1])
-            outseq[m] = out[0]
+            outseq[m] = out
         
         return outseq, info
 
@@ -121,6 +122,9 @@ class TritonPythonModel:
             model_name="unispec23",
             requested_output_names=['intensities'],
             inputs=tensor_inputs,
+            preferred_memory=pb_utils.PreferredMemory(
+                pb_utils.TRITONSERVER_MEMORY_CPU, 0
+            )
         )
 
         resp = infer_request.exec()
@@ -129,7 +133,7 @@ class TritonPythonModel:
             raise pb_utils.TritonModelException(resp.error().message())
         else:
             output = [
-                pb_utils.get_output_tensor_by_name(resp, 'intensities').as_numpy()
+                pb_utils.get_output_tensor_by_name(resp, 'intensities').as_numpy(),
             ]
 
             return output
