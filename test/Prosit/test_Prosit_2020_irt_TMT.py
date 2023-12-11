@@ -21,11 +21,11 @@ def test_available_grpc():
 def test_inference():
     SEQUENCES = np.array(
         [
-            ["AA"],
-            ["PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
-            ["RHKDESTNQCGPAVILMFYW"],
-            ["RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
-            ["RHKDESTNQCGPAVILM[UNIMOD:35]FYW"],
+            ["[UNIMOD:737]-AA"],
+            ["[UNIMOD:737]-PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
+            ["[UNIMOD:737]-RHKDESTNQCGPAVILMFYW"],
+            ["[UNIMOD:737]-RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
+            ["[UNIMOD:737]-RHKDESTNQCGPAVILM[UNIMOD:35]FYW"],
         ],
         dtype=np.object_,
     )

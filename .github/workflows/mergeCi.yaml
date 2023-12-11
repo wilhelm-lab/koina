@@ -11,28 +11,25 @@ jobs:
       contents: read
    
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
       
-      - name: Download models 
-        run: ./getModels.sh
+      - name: Startup
+        run: docker-compose --env-file .env.ci up -d serving develop --build
 
-      - name: Start service
-        run: docker compose up -d --build
+      - name: Styling
+        run: docker-compose --env-file .env.ci exec develop black .
 
-      - name: Pytest
-        run: docker compose exec develop pytest
+      - name: Linting
+        run: docker-compose --env-file .env.ci exec develop koina_lint.sh --fail-under=6
 
-      - name: Verify code style
-        run: docker compose exec develop black .
+      - name: Testing
+        run: docker-compose --env-file .env.ci exec develop koina_test.sh
 
-      - name: Run lint
-        run: docker compose exec develop lint --fail-under=6
-
-      - name: Shutdown service
-        if: success() || failure()
-        run: docker compose down
+      - name: Shutdown
+        if: always()
+        run: docker-compose --env-file .env.ci down
         
-      - name: Remove container
-        if: success() || failure()
-        run: docker compose rm
+      - name: Cleanup
+        if: always()
+        run: docker-compose --env-file .env.ci rm

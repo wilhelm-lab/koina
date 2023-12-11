@@ -3,8 +3,7 @@ import numpy as np
 import pandas as pd
 
 MOD_DF = pd.read_csv("/models/AlphaPept/AlphaPept_Preprocess_ProForma/1/mod_df.csv")
-MOD_DF.loc[MOD_DF["mod_name"] == "Oxidation@M", "mod_name"] = "M[UNIMOD:21]"
-MOD_DF.loc[MOD_DF["mod_name"] == "Carbamidomethyl@C", "mod_name"] = "C[UNIMOD:4]"
+
 
 MOD_ELEMENTS = [
     "C",

@@ -1,4 +1,4 @@
-max_batch_size: 5000
+max_batch_size: 1000
 platform: "ensemble"
 input [
   {
@@ -18,7 +18,7 @@ input [
   },
   {
     name: 'fragmentation_types',
-    data_type: TYPE_FP32,
+    data_type: TYPE_STRING,
     dims: [1],
   }
 ]
@@ -55,7 +55,7 @@ ensemble_scheduling {
       }
     },
     {
-      model_name: "Prosit_Preprocess_peptide"
+      model_name: "Prosit_Preprocess_peptide_2020_TMT"
       model_version: 1
       input_map {
         key: "peptide_sequences"
@@ -64,6 +64,18 @@ ensemble_scheduling {
       output_map {
         key: "peptides_in:0"
         value: "peptides_in:0"
+      }
+    },
+    {
+      model_name: "Prosit_Preprocess_fragmentation_types"
+      model_version: 1
+      input_map {
+        key: "fragmentation_types"
+        value: "fragmentation_types"
+      },
+      output_map {
+        key: "fragmentation_types_encoding"
+        value: "fragmentation_types_encoding"
       }
     },
     {
@@ -95,7 +107,7 @@ ensemble_scheduling {
       }
       input_map {
         key: "fragmentation_type_in:0"
-        value: "fragmentation_types"
+        value: "fragmentation_types_encoding"
       }
       output_map {
         key: "out/Reshape:0"

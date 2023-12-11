@@ -1,4 +1,4 @@
-max_batch_size: 5000
+max_batch_size: 1000
 platform: "ensemble"
 input [
   {
@@ -18,7 +18,7 @@ output [
 ensemble_scheduling {
   step [
     {
-      model_name: "Prosit_Preprocess_peptide"
+      model_name: "Prosit_Preprocess_peptide_2020_TMT"
       model_version: 1
       input_map {
         key: "peptide_sequences"

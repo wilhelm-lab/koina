@@ -13,7 +13,7 @@ if __name__ == "__main__":
     triton_client = grpcclient.InferenceServerClient(url=server_url)
 
     inputs.append(grpcclient.InferInput("peptide_sequences", [batch_size, 1], "BYTES"))
-    inputs.append(grpcclient.InferInput("collision_energies", [batch_size, 1], "INT32"))
+    inputs.append(grpcclient.InferInput("collision_energies", [batch_size, 1], "FP32"))
     inputs.append(grpcclient.InferInput("precursor_charges", [batch_size, 1], "INT32"))
     inputs.append(grpcclient.InferInput("instrument_types", [batch_size, 1], "INT64"))
 
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     peptide_seq_in = np.array(
         [["AAAAAKAKM[UNIMOD:21]"] for i in range(0, batch_size)], dtype=np.object_
     )
-    ce_in = np.array([[25] for i in range(0, batch_size)], dtype=np.int32)
+    ce_in = np.array([[25] for i in range(0, batch_size)], dtype=np.float32)
     precursor_charges_in = np.array([[2] for i in range(0, batch_size)], dtype=np.int32)
     instrument_in = np.array([[1] for i in range(0, batch_size)], dtype=np.int64)
 

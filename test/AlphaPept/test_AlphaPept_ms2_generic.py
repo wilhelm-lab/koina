@@ -21,13 +21,25 @@ def test_available_grpc():
 
 def test_inference():
     SEQUENCES = np.array(
-        [["TPVISGGPYEYR"], ["TPVITGAPYEYR"], ["GTFIIDPGGVIR"], ["GTFIIDPAAVIR"]],
+        [
+            ["LGGNEQVTR"],
+            ["GAGSSEPVTGLDAK"],
+            ["VEATFGVDESNAK"],
+            ["YILAGVENSK"],
+            ["TPVISGGPYEYR"],
+            ["TPVITGAPYEYR"],
+            ["DGLDAASYYAPVR"],
+            ["ADVTPADFSEWSK"],
+            ["GTFIIDPGGVIR"],
+            ["GTFIIDPAAVIR"],
+            ["LFLQFGAQGSPFLK"],
+        ],
         dtype=np.object_,
     )
 
     charge = np.array([[2] for _ in range(len(SEQUENCES))], dtype=np.int32)
     ces = np.array([[30] for _ in range(len(SEQUENCES))], dtype=np.float32)
-    instr = np.array([[0] for _ in range(len(SEQUENCES))], dtype=np.int64)
+    instr = np.array([["QE"] for _ in range(len(SEQUENCES))], dtype=np.object_)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
@@ -40,7 +52,7 @@ def test_inference():
     in_ces = grpcclient.InferInput("collision_energies", ces.shape, "FP32")
     in_ces.set_data_from_numpy(ces)
 
-    in_instr = grpcclient.InferInput("instrument_types", instr.shape, "INT64")
+    in_instr = grpcclient.InferInput("instrument_types", instr.shape, "BYTES")
     in_instr.set_data_from_numpy(instr)
 
     result = triton_client.infer(
@@ -55,12 +67,12 @@ def test_inference():
     intensities = result.as_numpy("intensities")
     fragmentmz = result.as_numpy("mz")
 
-    assert intensities.shape == fragmentmz.shape == (4, 44)
+    assert intensities.shape == fragmentmz.shape == (11, 52)
 
     # Assert intensities consistent
     assert np.allclose(
         intensities,
-        np.load("test/AlphaPept/arr_AlphaPept_ms2_int_norm.npy"),
+        np.load("test/AlphaPept/arr_AlphaPept_ms2_multibatch.npy"),
         rtol=0,
         atol=1e-5,
     )

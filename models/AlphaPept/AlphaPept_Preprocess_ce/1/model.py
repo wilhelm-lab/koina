@@ -8,10 +8,8 @@ class TritonPythonModel:
         self.output_dtype = []
 
     def initialize(self, args):
-        print("Preprocessing of the Peptide_input")
         model_config = json.loads(args["model_config"])
         output0_config = pb_utils.get_output_config_by_name(model_config, "ce_norm")
-        print("preprocess_peptide type: " + str(output0_config))
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
 
     def execute(self, requests):
@@ -24,4 +22,4 @@ class TritonPythonModel:
         return responses
 
     def finalize(self):
-        print("done processing Preprocess")
+        pass

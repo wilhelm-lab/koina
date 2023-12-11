@@ -12,3 +12,12 @@
 
 # Hide private models
 **privatemodelrepo
+
+# Hide logs
+**.log
+
+# Hide zipfiles
+**.zip
+
+# Hide symlink in models/repo
+models/repo/*

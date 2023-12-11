@@ -33,11 +33,11 @@ def test_inference():
         MODEL_NAME,
         inputs=inputs,
         outputs=[
-            grpcclient.InferRequestedOutput("dense_323"),
+            grpcclient.InferRequestedOutput("irt"),
         ],
     )
 
-    preds = result.as_numpy("dense_323")
+    preds = result.as_numpy("irt")
 
     assert preds.shape == (4, 1)
 

@@ -1,0 +1,150 @@
+max_batch_size: 1000
+platform: "ensemble"
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+    name: 'precursor_charges',
+    data_type: TYPE_INT32,
+    dims: [1],
+  },
+  {
+    name: 'collision_energies',
+    data_type: TYPE_FP32,
+    dims: [1],
+  },
+  {
+    name: 'instrument_types',
+    data_type: TYPE_STRING,
+    dims: [1],
+  }
+]
+output [
+  {
+   name: 'intensities',
+   data_type: TYPE_FP32,
+   dims: [-1]
+  },
+  {
+   name: 'mz',
+   data_type: TYPE_FP32,
+   dims: [-1]
+  },
+  {
+   name: 'annotation',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  }
+]
+
+ensemble_scheduling {
+  step [
+     {
+      model_name: "AlphaPept_Preprocess_ProForma"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "encoded_seq:0"
+        value: "encoded_seq"
+      },
+      output_map {
+        key: "encoded_mod_feature:0"
+        value: "encoded_mod_features"
+      }
+    },
+    {
+      model_name: "AlphaPept_Preprocess_charge"
+      model_version: 1
+      input_map {
+        key: "charge_raw"
+        value: "precursor_charges"
+      },
+      output_map {
+        key: "charge_norm"
+        value: "charge_norm"
+      }
+    },
+    {
+      model_name: "AlphaPept_Preprocess_ce"
+      model_version: 1
+      input_map {
+        key: "ce_raw"
+        value: "collision_energies"
+      },
+      output_map {
+        key: "ce_norm"
+        value: "ce_norm"
+      }
+    },
+    {
+      model_name: "AlphaPept_Preprocess_instrument_types"
+      model_version: 1
+      input_map {
+        key: "instrument_types"
+        value: "instrument_types"
+      },
+      output_map {
+        key: "instrument_types_encoding"
+        value: "instrument_types_encoding"
+      }
+    },
+    {
+      model_name: "AlphaPept_ms2_generic_core"
+      model_version: 1
+      input_map {
+        key: "aa_indices__0"
+        value: "encoded_seq"
+      },
+      input_map {
+        key: "mod_x__1"
+        value: "encoded_mod_features"
+      },
+      input_map {
+        key: "charges__2"
+        value: "charge_norm"
+      },
+      input_map {
+        key: "NCEs__3"
+        value: "ce_norm"
+      },
+      input_map {
+        key: "instrument_indices__4"
+        value: "instrument_types_encoding"
+      },
+      output_map {
+        key: "output__0"
+        value: "out/Reshape:0"
+      }
+    },
+    {
+      model_name: "AlphaPept_ms2_generic_postprocess"
+      model_version: 1
+      input_map {
+        key: "peptides_in:0"
+        value: "peptide_sequences"
+      },
+      input_map {
+        key: "peaks_in:0"
+        value: "out/Reshape:0"
+      },      
+      output_map {
+        key: "intensities"
+        value: "intensities"
+      },
+      output_map {
+        key: "mz"
+        value: "mz"
+      },
+      output_map {
+        key: "annotation"
+        value: "annotation"
+      }
+    }
+  ]
+}

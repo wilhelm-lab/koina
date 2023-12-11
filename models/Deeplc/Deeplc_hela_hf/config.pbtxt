@@ -1,4 +1,4 @@
-max_batch_size: 5000
+max_batch_size: 1000
 platform: "ensemble"
 input [
   {
@@ -9,7 +9,7 @@ input [
 ]
 output [
   {
-   name: 'dense_323',
+   name: 'irt',
    data_type: TYPE_FP32,
    dims: [1]
   }
@@ -147,7 +147,7 @@ ensemble_scheduling {
       },
       output_map {
         key: "dense_323"
-        value: "dense_323"
+        value: "irt"
       }
     }
   ]

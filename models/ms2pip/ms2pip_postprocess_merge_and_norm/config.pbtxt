@@ -1,6 +1,6 @@
 name: "ms2pip_postprocess_merge_and_norm"
 backend: "python"
-max_batch_size: 5000
+max_batch_size: 1000
 input[
  {
    name: 'raw_intensities_y',

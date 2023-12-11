@@ -3,6 +3,10 @@
 Koina landing page and documentation built with [Nuxt](https://nuxt.com)
 and [RapiDoc](https://rapidocweb.com/index.html)
 
+## OpenAPI
+
+Regenerate the `public/openapi.yaml` by running `./web/openapi/openapi_gen.py`
+
 ## Development Server
 
 Make sure to install the dependencies first

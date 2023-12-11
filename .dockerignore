@@ -1,0 +1,14 @@
+# Pyton models
+*.pyc
+
+# PyTorch model
+*.pt
+
+# Tensorflow model
+**model.savedmodel
+
+# Xgboost model
+**xgboost.json
+
+# Hide zipfiles
+**/*.zip

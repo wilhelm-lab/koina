@@ -9,6 +9,12 @@
       ],
       "collision_energies": [
         0.35
+      ],
+      "instrument_types": [
+        0
+      ],
+      "fragmentation_types": [
+        0.0
       ]
     }
   ]

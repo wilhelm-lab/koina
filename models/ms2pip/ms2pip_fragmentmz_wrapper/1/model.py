@@ -22,7 +22,6 @@ class TritonPythonModel:
         self.logger = pb_utils.Logger
 
     def initialize(self, args):
-        print("Preprocessing of the Peptide_input")
         model_config = json.loads(args["model_config"])
         output0_config = pb_utils.get_output_config_by_name(model_config, "mz")
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
@@ -69,11 +68,7 @@ class TritonPythonModel:
             ).as_numpy()
 
             output[:, :29] = tmp[:, 0, 0, :29]  # b charge 1
-
-            output[:, 29:] = np.flip(
-                np.sort(tmp[:, 1, 0, :29]), 1
-            )  # y charge 1 TODO clean up this mess
-
+            output[:, 29:] = tmp[:, 1, 0, :29]  # y charge 1
             output[output == 0] = -1
 
             return output
