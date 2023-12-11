@@ -2,21 +2,21 @@ services:
   serving:
     build:
       context: .
-      target: develop
-    command: /models/start_triton_server.sh
+      target: serving-develop
+    env_file:
+      - .env
+    user: "${UID}:${GID}"
+    userns_mode: "host"
     volumes:
-      - ./models:/models
+      - ./models:/models:z
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              count: 1
+              device_ids: ["${GPU_DEVICE}"]
               capabilities: [ gpu ]
-    ports:
-      - 8506:8500
-    shm_size: 2GB
-    restart: unless-stopped
+    shm_size: 8GB
 
   develop:
     build:
@@ -25,27 +25,26 @@ services:
       args:
         UID: ${UID}
         GID: ${GID}
-    user: "devuser"
+    user: "${UID}:${GID}"
+    userns_mode: "host"
     command: [ "sleep", "infinity" ]
     working_dir: /workspace/koina
     volumes:
-      - .:/workspace/koina/:Z
-    depends_on:
-      serving:
-        condition: service_healthy
+      - .:/workspace/koina/:z
     env_file:
       - .env
 
-  web :
+  web:
     build:
       context: .
       target: web
       args:
         UID: ${UID}
         GID: ${GID}
+    userns_mode: "host"
     ports:
-      - 8503:3000
+      - 3000:3000
     volumes:
-      - .:/workspace/koina
+      - ./:/workspace/koina
     working_dir: /workspace/koina/web
     command: npm run dev
