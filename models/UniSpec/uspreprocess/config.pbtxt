@@ -1,0 +1,15 @@
+max_batch_size: 1000
+input [
+  {
+   name: 'labels',
+   data_type: TYPE_STRING,
+   dims: [1]
+  }
+]
+output [
+  {
+   name: 'intensities',
+   data_type: TYPE_FP32,
+   dims: [ 7918 ]
+  }
+]
