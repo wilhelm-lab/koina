@@ -4,6 +4,63 @@ import json
 import triton_python_backend_utils as pb_utils
 import os
 
+def NCE2eV(nce, mz, charge, instrument='lumos'):
+    """
+    Allowed instrument types (230807):
+    - QE: q_exactive, LUMOS: lumos
+    """
+    assert instrument in ['QE', 'LUMOS'], instrument
+    if instrument.lower()=='qe':#q_exactive' or 'q_exactive_hfx' or 'elite'):
+        if charge==2: cf=0.9
+        elif charge==3: cf=0.85
+        elif charge==4: cf=0.8
+        elif charge==5: cf=0.75
+        else: RuntimeError('Charge not supported')
+    if instrument.lower()=='qe':#('q_exactive' or 'q_exactive_hfx'):
+        ev = nce*mz/500*cf
+    elif instrument.lower()=='elite':
+        ev = nce*mz*500*cf
+    elif instrument.lower()=='velos':
+        if charge==2:
+            ev = (0.0015*nce-0.0004)*mz
+        elif charge==3:
+            ev = (0.0012*nce-0.0006)*mz
+        elif charge==4:
+            ev = (0.0008*nce+0.0061)*mz
+        else:
+            RuntimeError('Charge not supported')
+    elif instrument.lower()=='lumos':
+        if charge==1:
+            crosspoint = (-0.4873*nce+0.1931) / (-0.00094*nce+5.11e-4)
+            if mz < crosspoint:
+                ev = (9.85e-4*nce+5.89e-4)*mz + (0.4049*nce+5.752)
+            else:
+                ev = (1.920e-3*nce+7.84e-5)*mz-8.24e-2*nce+5.945
+        elif charge==2:
+            crosspoint = 0.4106*nce/(7.836e-4*nce-2.704e-6)
+            if mz < crosspoint:
+                ev = (8.544e-4*nce-5.135e-5)*mz+0.3383*nce+5.998
+            else:
+                ev = (1.638e-3*nce-5.405e-5)*mz-0.07234*nce+5.998
+        elif charge==3:
+            crosspoint = (-0.3802*nce+0.3261) / (-7.3e-4*nce+1.027e-3)
+            if mz < crosspoint:
+                ev = (8.09e-4*nce+1.011e-3)*mz+0.3129*nce+5.673
+            else:
+                ev = (1.540e-3*nce-1.62e-5)*mz-0.0673*nce+5.999
+        elif charge>=4:
+            crosspoint = (0.3083*nce+0.9073) / (5.61e-4*nce+2.143e-3)
+            if mz < crosspoint:
+                ev = (8.79e-4*nce-2.183e-3)*mz+0.245*nce+6.917
+            else:
+                ev = (1.44e-3*nce-4e-5)*mz-0.0633*nce+6.010
+        else:
+            RuntimeError('Charge not supported')
+    else:
+        RuntimeError('instrument type not found')
+    
+    return ev
+
 class TritonPythonModel:
     def __init__(self):
         super().__init__()
@@ -29,9 +86,9 @@ class TritonPythonModel:
             35: 'Oxidation',
             21: 'Phospho',
             26: 'Pyro-carbamidomethyl',
-            4: 'CAM'
+            #4: 'CAM'
         }
-        self.rev_mdicum = {n:m for n,m in self.mdicum.items()}
+        self.rev_mdicum = {n:m for m,n in self.mdicum.items()}
         self.um2ch = lambda num: self.mdic[self.mdicum[num]]
 
         self.revmdic = {b:a for a,b in self.mdic.items()}
@@ -62,7 +119,7 @@ class TritonPythonModel:
         ----------
         seq : Peptide sequence (str)
         pcharge : Precursor charge (int)
-        mods : Modification string (str)
+        mods : Modification lists of list ([[pos(int), typ(int)],...])
         ion : Ion type (str)
 
         Returns
@@ -71,14 +128,12 @@ class TritonPythonModel:
 
         """
         # modification
-        Mstart = mods.find('(') if mods!='0' else 1
-        modamt = int(mods[0:Mstart])
-        modlst = []
+        modamt = len(mods)
         if modamt>0:
-            Mods = [re.sub("[()]",'',m).split(',') for m in 
-                     mods[Mstart:].split(')(')]
-            for mod in Mods:
-                [pos,aa,typ] = mod # mod position, amino acid, and type
+            modlst = []
+            for mod in mods:
+                [pos, typ] = mod # mod position, amino acid, and type
+                typ = self.mdicum[typ]
                 modlst.append([int(pos), self.mass[typ]])
         
         # isotope
@@ -157,21 +212,46 @@ class TritonPythonModel:
         else:
             return False
 
-    def input_from_str(self, strings):
-        bs = len(strings[0])
+    def rawinp2tsr(self, sequence, charge, ce, inst):
+        Evs = []
+        def find_mod_indices(subseq_list):
+            inds = [-1]
+            for s in subseq_list:
+                inds.append(inds[-1]+len(s))
+            
+            return inds[1:]
+
+        bs = len(sequence)
         outseq = np.zeros((bs, self.channels, self.seq_len), dtype=np.float32)
 
         info = []
-        #assert len(strings) == 50, "%s"%len(strings[0])
-        for m in range(len(strings[0])):
-            # input comes in as np.array([[byte1, byte2 ... byteN]])
-            # - each byte looks like e.g. b'AGAGAGA'
-            # - str(b'AGAGAGA') == "b'hello'"
-            [seq, other] = str(strings[0][m])[2:-1].split('/')
-            osplit = other.split("_")
-            [charge, mod, ev, nce] = osplit
-            charge = int(charge);ev = float(ev[:-2]);nce = float(nce[3:])
-            info.append((seq,mod,charge,ev,nce))
+        for m, (mse, ch, nce, ins) in enumerate(zip(sequence, charge, ce, inst)):
+            
+            # Extract sequence and mods from sequence with unimod annotations
+            modseq = str(mse)[2:-1]
+            mss = modseq.split("[")
+
+            if len(mss) > 1:
+                
+                list2 = [n.split(']') for n in mss[1:]] # [[UNIMOD:#, AGAGAGA],...]
+                
+                seq1 = [mss[0]]
+                for o in list2: seq1.append(o[1])
+                mod_inds = find_mod_indices(seq1[:-1])
+                assert len(mod_inds) == len(list2), "%d | %d"%(len(mod_inds), len(list2))
+                
+                seq = "".join(seq1)
+                mod = [[o, int(p[0].split(':')[-1])] for o,p in zip(mod_inds, list2)]
+            else:
+                seq = modseq
+                mod = []
+
+            # Convert nce to ev
+            mz = self.calcmass(seq, ch, mod, 'p')
+            ins = str(ins)[2:-1]
+            ev = NCE2eV(nce, mz, ch, ins)
+            
+            info.append((seq,mod,ch,ev,nce))
             out = self.inptsr(info[-1])
             outseq[m] = out
         
@@ -191,14 +271,11 @@ class TritonPythonModel:
         output[:len(self.dic)] = np.eye(len(self.dic))[intseq].T
 
         # PTMs
-        Mstart = mod.find('(') if mod!='0' else 1
-        modamt = int(mod[0:Mstart])
         output[len(self.dic)] = 1.
-        if modamt > 0:
-            hold = [re.sub('[()]', '', n) for n in mod[Mstart:].split(")(")]
-            for n in hold:
-                [pos, aa, modtyp] = n.split(',')
-                output[self.mdic[modtyp], int(pos)] = 1.
+        if len(mod) > 0:
+            for n in mod:
+                [pos, modtyp] = n
+                output[self.um2ch(modtyp), int(pos)] = 1.
                 output[len(self.dic), int(pos)] = 0.
 
         output[self.seq_channels+int(charge)-1] = 1.
@@ -268,6 +345,17 @@ class TritonPythonModel:
             filt.append(a)
         # Qian says all masses must be >60 and <1900
         return (np.array(filt)) & (masses>60)
+    
+    def batch_mz(self, infos):
+        mz = np.zeros((len(infos), 7919)).astype(np.float32)
+        for m, info in enumerate(infos):
+            (seq, mod, charge, ev, nce) = info
+            mzs = np.array([
+                self.calcmass(seq, charge, mod, ion) for ion in self.dictionary.keys()
+            ])
+            mz[m] = mzs
+
+        return mz
 
     def ToSpec_1(self, 
                  pred, 
@@ -302,23 +390,41 @@ class TritonPythonModel:
 
     def execute(self, requests):
         responses = []
-        labels = []
         for request in requests:
-            label_in = (
-                pb_utils.get_input_tensor_by_name(request, "labels")
+            
+            peptide_in = (
+                pb_utils.get_input_tensor_by_name(request, "peptide_sequences")
                 .as_numpy()
                 .flatten()
-                .astype('object')
             )
-            labels.append(label_in)
+            charge_in = (
+                pb_utils.get_input_tensor_by_name(request, "precursor_charges")
+                .as_numpy()
+                .flatten()
+            )
+            ce_in = (
+                pb_utils.get_input_tensor_by_name(request, "collision_energies")
+                .as_numpy()
+                .flatten()
+            )
+            inst_in = (
+                pb_utils.get_input_tensor_by_name(request, "instrument_types")
+                .as_numpy()
+                .flatten()
+            )
 
-            input_tensor, info = self.input_from_str(labels)
+            input_tensor, info = self.rawinp2tsr(peptide_in, charge_in, ce_in, inst_in)
+            mzs = self.batch_mz(info)
+            anns = np.array([list(self.dictionary.keys())]).astype(np.object_)
+            anns = np.tile(anns[None], [mzs.shape[0], 1])
 
             tmp = self.predict_batch(input_tensor)
             
-            #assert len(info[0]) == 4, "%s,%s"%(info[0][0], info[0][1])
-
-            output_tensors = [pb_utils.Tensor("intensities", tmp[0].astype(self.output_dtype))]
+            output_tensors = [
+                pb_utils.Tensor("intensities", tmp[0].astype(self.output_dtype)),
+                pb_utils.Tensor("mz", mzs.astype(self.output_dtype)),
+                pb_utils.Tensor("annotation", anns)
+            ]
 
             responses.append(pb_utils.InferenceResponse(output_tensors=output_tensors))
         
