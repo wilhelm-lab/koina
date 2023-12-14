@@ -81,7 +81,7 @@ def test_inference(capfd):
     # Assert intensities consistent
     assert np.allclose(
         intensities,
-        np.load("/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS2_int.npy"),
+        np.load("test/Prosit/arr_Prosit_2023_intensity_XL_CMS2_int.npy"),
         rtol=0,
         atol=1e-3,
         equal_nan=True,

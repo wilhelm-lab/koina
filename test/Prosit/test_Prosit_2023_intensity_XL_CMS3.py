@@ -61,9 +61,7 @@ def test_inference():
     # Assert intensities consistent
     assert np.allclose(
         intensities,
-        np.load(
-            "/workspace/koina/test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_int.npy", allow_pickle=True
-        ),
+        np.load("test/Prosit/arr_Prosit_2023_intensity_XL_CMS3_int.npy"),
         rtol=0,
         atol=1e-2,
         equal_nan=True,
