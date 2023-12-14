@@ -1,6 +1,6 @@
 FROM nvcr.io/nvidia/tritonserver:23.05-py3 AS serving-develop
 RUN pip install requests ms2pip psm-utils pandas
-HEALTHCHECK --start-period=1m --interval=15s --retries=12 CMD curl localhost:8501/v2/health/ready 
+HEALTHCHECK --start-period=1m --interval=15s --retries=12 CMD curl localhost:8501/v2/health/ready
 CMD [ "/models/start.py" ]
 
 FROM serving-develop AS serving-prod
@@ -21,7 +21,7 @@ USER devuser
 
 FROM node:latest as web
 ARG UID=1000
-ARG GID=1000 
+ARG GID=1000
 RUN groupadd -f -g $GID devuser
 RUN useradd -ms /bin/bash devuser -u $UID -g $GID --non-unique
 USER devuser
