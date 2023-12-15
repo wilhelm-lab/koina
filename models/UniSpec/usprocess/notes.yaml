@@ -1,0 +1,55 @@
+description: |
+  "
+  Unispec is a model trained to predict full HCD mass spectra intensities, containing nearly 8000 different ion types in its output space, including
+  a, b, y ion series, precursors peaks, immonium ions and other fragmentation, 21 neutral losses, up to 5 isotopes and internal ions. The koina version
+  automatically outputs the 200 highest intensities from the prediction, while setting any unfeasible ions (given the sequence, charge and modifications)
+  to have -1 intensity.
+  
+  Peptide sequences are to be submitted as modified sequences, with modifications immediately following the 1-letter AA where they are located.
+  Modifications are represented with the word UNIMOD followed by a colon and the modification's unimod integer, e.g. AGM[UNIMOD:35]MGAK. The
+  model was trained for 7 modifications, listed below ith their unimod integers
+  
+  1 'Acetyl'
+  4 'Carbamidomethyl'
+  28 'Gln->pyro-Glu'
+  27 'Glu->pyro-Glu'
+  35 'Oxidation'
+  21 'Phospho'
+  26 'Pyro-carbamidomethyl'
+
+  The maximum length for peptides can be up to 40 amino acids, and a maximum charge of 8.
+
+  The actual pytorch model was trained on collision energy data in units of eV. The koina version is set up for the user to submit collision energy in NCE 
+  and the instrument type (QE for q_exactive, LUMOS for Lumos), and internally will convert this NCE value to its corresponding eV value.
+  "
+citation: |
+  "Lapin, J., Yan X., Dong, Q. (2023) UniSpec: A Deep Learning Approach for Predicting Energy-Sensitive Peptide Tandem Mass Spectra and Generating"
+  "Proteomics-Wide In-Silico Spectral Libraries. doi: https://doi.org/10.1101/2023.06.14.544947"
+example:
+  inputs:
+    [
+      {
+        "name": "peptide_sequences",
+        "httpdtype": "BYTES",
+        "shape": "[2,1]",
+        "data": '["YYHTLFTHSLPK", "AGC[UNIMOD:23]FS[UNIMOD:27]PK"]'
+      },
+      {
+        "name": "precursor_charges",
+        "httpdtype": "INT32",
+        "shape": "[2,1]",
+        "data": '[1,2]'
+      },
+      {
+        "name": "collision_energies",
+        "httpdtype": "FP32",
+        "shape": "[2,1]",
+        "data": '[25, 25]'
+      },
+      {
+        "name": "instrument_types",
+        "httpdtype": "BYTES",
+        "shape": "[2,1]",
+        "data": "[LUMOS, QE]"
+      }
+    ]

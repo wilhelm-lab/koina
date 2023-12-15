@@ -363,7 +363,6 @@ class TritonPythonModel:
                top=200, 
                rm_lowmz=True, 
                rm_fake=True,
-               minmz=60
     ):
         
         pred /= pred.max(1, keepdims=True)
@@ -383,19 +382,12 @@ class TritonPythonModel:
         pints = pints[tile, sort]
         pions = pions[tile, sort]
         
-        if rm_lowmz:
-            filt = pmass<minmz
-            #pmass = pmass[filt]
-            pints[filt] = -1
-            #pions = pions[filt]
         if rm_fake:
             filt = np.array([
                 self.filter_fake(pepinfo[n], pmass[n], pions[n])
                 for n in range(len(pepinfo))
             ])
-            #pmass = pmass[filt]
             pints[filt==False] = -1
-            #pions = pions[filt]
 
         return (pmass,pints,pions)
 

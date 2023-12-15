@@ -114,5 +114,5 @@ def test_inference():
         mz,
         np.load("test/UniSpec/test_output_top200_mz2.npy"),
         rtol=0,
-        atol=1e-3,
+        atol=1e-8,
     )
