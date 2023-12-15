@@ -129,8 +129,8 @@ class TritonPythonModel:
         """
         # modification
         modamt = len(mods)
+        modlst = []
         if modamt>0:
-            modlst = []
             for mod in mods:
                 [pos, typ] = mod # mod position, amino acid, and type
                 typ = self.mdicum[typ]
@@ -357,34 +357,45 @@ class TritonPythonModel:
 
         return mz
 
-    def ToSpec_1(self, 
-                 pred, 
-                 pepinfo, 
-                 mint=5e-4, 
-                 rm_lowmz=True, 
-                 rm_fake=True
-                 ):
-        pred /= pred.max()
-        piboo = pred > mint
-        rdinds = np.where(piboo)
-        pions = np.array([self.revdictionary[m] for m in rdinds])
-        pints = np.array(pred[piboo])
-        pmass = np.array([self.calcmass(seq,charge,mods,ion) for ion in pions])
-        sort = np.argsort(pmass)
-        pmass = pmass[sort]
-        pints = pints[sort]
-        pions = pions[sort]
-
+    def ToSpec(self, 
+               pred, 
+               pepinfo, 
+               top=200, 
+               rm_lowmz=True, 
+               rm_fake=True,
+               minmz=60
+    ):
+        
+        pred /= pred.max(1, keepdims=True)
+        rdinds = np.argsort(pred, axis=-1)[:, -top:]
+        tile = np.tile(np.arange(pred.shape[0])[:,None], [1,top])
+        pions = np.array(list(self.dictionary.keys()))[rdinds]# for m in rdinds])
+        pints = pred[tile, rdinds]
+        pmass = np.array([
+            [
+                self.calcmass(pepinfo[n][0], pepinfo[n][2], pepinfo[n][1], ion) 
+                for ion in pions[n]
+            ] 
+            for n in range(pred.shape[0])
+        ])
+        sort = np.argsort(pmass, axis=1)
+        pmass = pmass[tile, sort]
+        pints = pints[tile, sort]
+        pions = pions[tile, sort]
+        
         if rm_lowmz:
-            filt = pmass>minmz
-            pmass = pmass[filt]
-            pints = pints[filt]
-            pions = pions[filt]
+            filt = pmass<minmz
+            #pmass = pmass[filt]
+            pints[filt] = -1
+            #pions = pions[filt]
         if rm_fake:
-            filt = self.filter_fake(pepinfo[0], pmass, pions)
-            pmass = pmass[filt]
-            pints = pints[filt]
-            pions = pions[filt]
+            filt = np.array([
+                self.filter_fake(pepinfo[n], pmass[n], pions[n])
+                for n in range(len(pepinfo))
+            ])
+            #pmass = pmass[filt]
+            pints[filt==False] = -1
+            #pions = pions[filt]
 
         return (pmass,pints,pions)
 
@@ -414,16 +425,13 @@ class TritonPythonModel:
             )
 
             input_tensor, info = self.rawinp2tsr(peptide_in, charge_in, ce_in, inst_in)
-            mzs = self.batch_mz(info)
-            anns = np.array([list(self.dictionary.keys())]).astype(np.object_)
-            anns = np.tile(anns[None], [mzs.shape[0], 1])
-
             tmp = self.predict_batch(input_tensor)
+            (mzs, ints, anns) = self.ToSpec(tmp[0], info)
             
             output_tensors = [
-                pb_utils.Tensor("intensities", tmp[0].astype(self.output_dtype)),
+                pb_utils.Tensor("intensities", ints.astype(self.output_dtype)),
                 pb_utils.Tensor("mz", mzs.astype(self.output_dtype)),
-                pb_utils.Tensor("annotation", anns)
+                pb_utils.Tensor("annotation", anns.astype(np.object_))
             ]
 
             responses.append(pb_utils.InferenceResponse(output_tensors=output_tensors))
