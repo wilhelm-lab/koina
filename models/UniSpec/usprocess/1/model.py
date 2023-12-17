@@ -7,16 +7,16 @@ import os
 def NCE2eV(nce, mz, charge, instrument='lumos'):
     """
     Allowed instrument types (230807):
-    - QE: q_exactive, LUMOS: lumos
+    - QE: q_exactive, QEHFX: q_exactive_hfx, LUMOS: lumos, ELITE: elite, VELOS: velos
     """
-    assert instrument in ['QE', 'LUMOS'], instrument
-    if instrument.lower()=='qe':#q_exactive' or 'q_exactive_hfx' or 'elite'):
+    assert instrument in ['QE', 'QEHFX', 'LUMOS', 'VELOS', 'ELITE'], instrument
+    if instrument.lower() == ('qe' or 'qehfx' or 'elite'):
         if charge==2: cf=0.9
         elif charge==3: cf=0.85
         elif charge==4: cf=0.8
         elif charge==5: cf=0.75
         else: RuntimeError('Charge not supported')
-    if instrument.lower()=='qe':#('q_exactive' or 'q_exactive_hfx'):
+    if instrument.lower() == ('qe' or 'qehfx'):
         ev = nce*mz/500*cf
     elif instrument.lower()=='elite':
         ev = nce*mz*500*cf
