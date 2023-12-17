@@ -99,17 +99,24 @@ def test_inference():
     mz = result.as_numpy("mz")
     ann = result.as_numpy("annotation")
     
+    # Assert expected ions are in each prediction
+    ions = np.load("test/UniSpec/test_output_top200_convertedions2.npy")
+    for i in range(50):
+        for j in ions[i]:
+            assert str.encode(j) in ann[i]
+
     # Assert intensities consistent
     # Because of residuals in mz, the argsort comes out a little different between koina
     # and my github repo implementation. Thus intensities and anns would return false in
     # np.allclose
-    
     #assert np.allclose(
     #    intensities,
     #    np.load("test/UniSpec/test_output_top200_int2.npy"),
     #    rtol=0,
     #    atol=1e-4,
     #)
+
+    # Assert masses are consistent
     assert np.allclose(
         mz,
         np.load("test/UniSpec/test_output_top200_mz2.npy"),
