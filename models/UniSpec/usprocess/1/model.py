@@ -304,14 +304,11 @@ class TritonPythonModel:
         (seq,mods,charge,ev,nce) = pepinfo
         
         # modification
-        # modlst = []
-        # Mstart = mods.find('(') if mods!='0' else 1
-        # modamt = int(mods[0:Mstart])
-        # if modamt>0:
-        #     Mods = mods[Mstart:].split(')(') # )( always separates modifications
-        #     for mod in Mods:
-        #         [pos,aa,typ] = re.sub('[()]', '', mod).split(',') # mod position, amino acid, and type
-        #         modlst.append([int(pos), self.D.mass[typ]])
+        modlst = []
+        if len(mods)>0:
+            for mod in mods:
+                [pos, typ] = mod
+                modlst.append(self.mdicum[typ])
         
         filt = []
         for ion in ions:
@@ -333,12 +330,12 @@ class TritonPythonModel:
                 ):
                 # Do not write if a/b/y is longer than length-1 of peptide
                 a = False
-            if ('H3PO4' in ion) & ('Phospho' not in mods):
+            if ('H3PO4' in ion) & ('Phospho' not in modlst):
                 # Do not write Phospho specific neutrals for non-phosphopeptide
                 a = False
-            if ('CH3SOH' in ion) & ('Oxidation' not in mods):
+            if ('CH3SOH' in ion) & ('Oxidation' not in modlst):
                 a = False
-            if ('CH2SH' in ion) & ('Carbamidomethyl' not in mods):
+            if ('CH2SH' in ion) & ('Carbamidomethyl' not in modlst):
                 a = False
             if ('IPA' in ion) & ('P' not in seq):
                 a = False
@@ -356,6 +353,19 @@ class TritonPythonModel:
             mz[m] = mzs
 
         return mz
+    
+    def convert_internal_batch(self, ions, info):
+        for i,j in enumerate(info):
+            seq, mod, charge, ev, nce = j
+            for k, ion in enumerate(ions[i]):
+                if 'Int' in ion:
+                    [start, ext] = [
+                        int(j) for j in 
+                        ion[3:].split('+')[0].split('-')[0].split('>')[:2]
+                    ]
+                    back = ion[len(str(start))+len(str(ext))+4:]
+                    ret_ion = 'Int/%s/%d'%(seq[start:start+ext]+back, start)
+                    ions[i, k] = ret_ion
 
     def ToSpec(self, 
                pred, 
@@ -388,6 +398,8 @@ class TritonPythonModel:
                 for n in range(len(pepinfo))
             ])
             pints[filt==False] = -1
+
+        self.convert_internal_batch(pions, pepinfo)
 
         return (pmass,pints,pions)
 
