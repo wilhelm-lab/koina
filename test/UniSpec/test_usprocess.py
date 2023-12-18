@@ -69,7 +69,7 @@ def test_inference():
     
     labels = open("test/UniSpec/labels_input2.txt").read().split("\n")
     SEQUENCES, charge, ces = label2modseq(labels)
-    instr = np.array(50*['LUMOS'])[:,None].astype(np.object_)
+    instr = np.array(50*['Lumos'])[:,None].astype(np.object_)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
     

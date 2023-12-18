@@ -7,9 +7,14 @@ import os
 def NCE2eV(nce, mz, charge, instrument='lumos'):
     """
     Allowed instrument types (230807):
-    - QE: q_exactive, QEHFX: q_exactive_hfx, LUMOS: lumos, ELITE: elite, VELOS: velos
+    - QE: q_exactive, QEHFX: q_exactive_hfx, LUMOS: lumos, ELITE: elite, VELOS: velos,
+      NONE: use nce (or eV) straight
     """
-    assert instrument in ['QE', 'QEHFX', 'LUMOS', 'VELOS', 'ELITE'], instrument
+    assert instrument.upper() in ['QE', 'QEHFX', 'LUMOS', 'VELOS', 'ELITE', 'NONE'], instrument
+    
+    if instrument.lower() == 'none':
+        return nce
+
     if instrument.lower() == ('qe' or 'qehfx' or 'elite'):
         if charge==2: cf=0.9
         elif charge==3: cf=0.85
@@ -427,7 +432,7 @@ class TritonPythonModel:
                 .as_numpy()
                 .flatten()
             )
-
+            
             input_tensor, info = self.rawinp2tsr(peptide_in, charge_in, ce_in, inst_in)
             tmp = self.predict_batch(input_tensor)
             (mzs, ints, anns) = self.ToSpec(tmp[0], info)

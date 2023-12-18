@@ -20,8 +20,16 @@ description: |
   The maximum length for peptides can be up to 40 amino acids, and a maximum charge of 8.
 
   The actual pytorch model was trained on collision energy data in units of eV. The koina version is set up for the user to submit collision energy in NCE 
-  and the instrument type (QE for q_exactive, QEHFX for q_exative_hfx, LUMOS for Lumos, ELITE for elite, and VELOS for velos), and internally will convert 
+  and the instrument type (case insensitive), and internally will convert 
   this NCE value to its corresponding eV value.
+  
+  QE: q_exactive
+  QEHFX: q_exactive_hfx
+  LUMOS: Lumos
+  ELITE: Elite
+  VELOS: Velos
+  NONE: Use CE value as direct input into the model
+
   "
 citation: |
   "Lapin, J., Yan X., Dong, Q. (2023) UniSpec: A Deep Learning Approach for Predicting Energy-Sensitive Peptide Tandem Mass Spectra and Generating"
