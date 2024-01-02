@@ -26,7 +26,7 @@ parse pbtxt file
 TODO(cp):
 - rename es to ensemble_scheduling
 - rename ri to reverseIndex
-- refactor states 
+- refactor states
 """
 
 

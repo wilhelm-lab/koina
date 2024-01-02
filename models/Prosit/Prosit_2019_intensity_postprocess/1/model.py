@@ -35,7 +35,6 @@ class TritonPythonModel:
                 .as_numpy()
                 .tolist()
             )
-
             peptide_in = [x[0].decode("utf-8") for x in peptide_in]
             precursor_charges_in = pb_utils.get_input_tensor_by_name(
                 request, "precursor_charges_in:0"
