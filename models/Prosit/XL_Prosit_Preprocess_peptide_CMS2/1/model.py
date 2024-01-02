@@ -17,7 +17,6 @@ def internal_without_mods(sequences):
 
 class TritonPythonModel:
     def initialize(self, args):
-        print("Preprocessing of the Peptide_input")
         self.model_config = model_config = json.loads(args["model_config"])
         output0_config_1 = pb_utils.get_output_config_by_name(
             self.model_config, "peptides_in_1:0"
@@ -25,8 +24,6 @@ class TritonPythonModel:
         output0_config_2 = pb_utils.get_output_config_by_name(
             self.model_config, "peptides_in_2:0"
         )
-        print("preprocess_peptide type: " + str(output0_config_1))
-        print("preprocess_peptide type: " + str(output0_config_2))
         self.output_dtype = pb_utils.triton_string_to_numpy(
             output0_config_1["data_type"]
         )
@@ -70,15 +67,8 @@ class TritonPythonModel:
             )
 
             responses.append(pb_utils.InferenceResponse(output_tensors=([t_1, t_2])))
-            # responses.append(pb_utils.InferenceResponse(output_tensors=[t_2]))
-            print("sequences_1: ")
-            print("sequences_2: ")
-            print(len(sequences_1))
-            print(len(sequences_2))
-            print(sequences_1)
-            print(sequences_2)
 
         return responses
 
     def finalize(self):
-        print("done processing Preprocess")
+        pass

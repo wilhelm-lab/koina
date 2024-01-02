@@ -6,7 +6,6 @@ import requests
 
 # To ensure MODEL_NAME == test_<filename>.py
 MODEL_NAME = Path(__file__).stem.replace("test_", "")
-print(MODEL_NAME)
 
 
 def test_available_http():

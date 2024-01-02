@@ -1,5 +1,5 @@
 description: |
-  The XL_Prosit_CMS2 2023 model was trained using 251,449 sets of cross-linked peptides, specifically those created from DSSO and DSBU. 
+  The HCD Prosit 2020 model was fine-tuned using using 251,449 sets of cross-linked peptides, specifically those created from DSSO and DSBU. 
   The model's structure was adjusted to accommodate two input peptides and generate both non-xl and xl fragments in the output. 
   The dataset was divided into three parts: training (80% - 198,294 sets), validation (10% - 26,610 sets), and test (10% - 26,545 sets).
   This model achieved a SA (a measure of accuracy) of at least 0.83, which is a significant improvement compared to the HCD Prosit 2020 model's performance on cross-linked peptides, where the accuracy was SA ≥ 0.58
@@ -14,24 +14,24 @@ examples:
           "name": "peptide_sequences_1",
           "httpdtype": "BYTES",
           "shape": "[2,1]",
-          "data": '["[UNIMOD:1896]FTINAEVRK", "AAAAAKAKK[UNIMOD:1896]"]'
+          "data": '["DIADAVTAAGVEVAK[UNIMOD:1896]SEVR", "AGDQIQSGVDAAIK[UNIMOD:1896]PGNTLPMR"]'
       },
       {
           "name": "peptide_sequences_2",
           "httpdtype": "BYTES",
           "shape": "[2,1]",
-          "data": 'DDAKK[UNIMOD:1896]AK", "PPDDAKAKK[UNIMOD:1896]"]'
+          "data": '["NFLVPQGK[UNIMOD:1896]AVPATK", "SANIALVLYK[UNIMOD:1896]DGER"]'
       },
       {
           "name": "precursor_charges",
           "httpdtype": "INT32",
           "shape": "[2,1]",
-          "data": '[1,2]'
+          "data": '[3,4]'
       },
       {
           "name": "collision_energies",
           "httpdtype": "FP32",
           "shape": "[2,1]",
-          "data": '[25, 25]'
+          "data": '[28, 28]'
       },
     ]
