@@ -87,7 +87,11 @@ def find_and_download():
 if __name__ == "__main__":
     os.chdir("/models")
     clean_repo(True)
-    recursive_dependency_symlink(os.environ["MODEL_PATTERN"])
+    try:
+        recursive_dependency_symlink(os.environ["MODEL_PATTERN"])
+    except KeyError:
+        print("MODEL_PATTERN key not found linking all available models")
+        recursive_dependency_symlink("*")
     find_and_download()
 
     subprocess.run(
