@@ -32,8 +32,8 @@ description: |
 
   "
 citation: |
-  "Lapin, J., Yan X., Dong, Q. (2023) UniSpec: A Deep Learning Approach for Predicting Energy-Sensitive Peptide Tandem Mass Spectra and Generating"
-  "Proteomics-Wide In-Silico Spectral Libraries. doi: https://doi.org/10.1101/2023.06.14.544947"
+  "Lapin, J., Yan X., Dong, Q. (2024) UniSpec: Deep Learning for Predicting the Full Range of Peptide Fragment Ion Series to Enhance the Proteomics Data Analysis Workflow"
+  "Anal Chem. https://doi.org/10.1021/acs.analchem.3c02321"
 example:
   inputs:
     [
