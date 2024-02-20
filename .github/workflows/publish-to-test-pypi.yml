@@ -47,7 +47,7 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: python-package-distributions
-        path: dist/
+        path: clients/python/dist/
     - name: Publish distribution 📦 to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
