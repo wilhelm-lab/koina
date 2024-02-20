@@ -5,9 +5,9 @@ description = "Koina python client"
 authors = ["Wilhelmlab at Technical University of Munich"]
 license = "Apache-2.0"
 readme = "README.md"
-homepage = "https://github.com/wilhelm-lab/oktoberfest"
-repository = "https://github.com/wilhelm-lab/oktoberfest"
-documentation = "https://oktoberfest.readthedocs.io"
+homepage = "https://github.com/wilhelm-lab/koina"
+repository = "https://github.com/wilhelm-lab/koina"
+readme="README.rst"
 
 [tool.poetry.dependencies]
 python = ">=3.8.0,<3.11.0"
@@ -15,5 +15,3 @@ tritonclient = {extras = ["grpc"], version = ">=2.34.0, <2.37"}
 
 [tool.poetry.dev-dependencies]
 
-[project]
-readme="README.rst"
