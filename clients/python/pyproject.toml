@@ -4,7 +4,7 @@ version = "0.0.1"
 description = "Koina python client"
 authors = ["Wilhelmlab at Technical University of Munich"]
 license = "Apache-2.0"
-readme = "README.rst"
+readme = "README.md"
 homepage = "https://github.com/wilhelm-lab/koina"
 repository = "https://github.com/wilhelm-lab/koina"
 
