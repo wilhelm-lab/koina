@@ -6,3 +6,4 @@ labelRule:
     - "patch"
     - "minor"
     - "major"
+    - "python-client"
