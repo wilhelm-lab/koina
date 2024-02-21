@@ -1,16 +1,16 @@
 [tool.poetry]
 name = "koinapy"
-version = "0.0.3"
-description = "Koina python client"
-authors = ["Wilhelmlab at Technical University of Munich"]
-license = "Apache-2.0"
+version = "0.0.4"
+description = "Python client to communicate with Koina."
+authors = ["Ludwig Lautenbacher <Ludwig.Lautenbacher@tum.de>"]
 readme = "README.md"
-homepage = "https://github.com/wilhelm-lab/koina"
-repository = "https://github.com/wilhelm-lab/koina"
 
 [tool.poetry.dependencies]
-python = ">=3.8.0,<3.11.0"
-tritonclient = {extras = ["grpc"], version = ">=2.34.0, <2.37"}
+python = "^3.9"
 tqdm = "^4.66.2"
+tritonclient = "^2.42.0"
 
-[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
