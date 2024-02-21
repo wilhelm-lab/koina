@@ -132,7 +132,7 @@ ensemble_scheduling {
       input_map {
         key: "peaks_in:0"
         value: "out/Reshape:0"
-      },      
+      },
       output_map {
         key: "intensities"
         value: "intensities"

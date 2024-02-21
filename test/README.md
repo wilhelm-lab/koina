@@ -1,7 +1,7 @@
 # Testing
 
-For testing, we use `pytest`. 
-The folder structure in the `test` folder mirrors the folder structure in the `models` folder. 
+For testing, we use `pytest`.
+The folder structure in the `test` folder mirrors the folder structure in the `models` folder.
 Each model is covered in their own file in the corresponding sub folder.
 This especially applies to all pre- and postprocessing models as well as the ensemble model.
 
