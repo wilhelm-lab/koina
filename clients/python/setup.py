@@ -4,6 +4,8 @@ packages = ["koinapy"]
 
 package_data = {"": ["*"]}
 
+install_requires = []
+
 setup_kwargs = {
     "name": "koinapy",
     "version": "0.0.1",
