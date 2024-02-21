@@ -14,14 +14,13 @@ jobs:
       with:
         python-version: "3.9"
 
-    - name: Install pypa/build
+    - name: Install poetry
       run: >-
         cd clients/python &&
-        pip install poetry &&
-        poetry build
-    - name: Build a binary wheel and a source tarball
-      run: cd clients/python && python3 -m build
-    - name: Store the distribution packages
+        pip install poetry
+    - name: Build using poetry
+      run: cd clients/python && poetry build
+    - name: Upload artifacts
       uses: actions/upload-artifact@v3
       with:
         name: python-package-distributions
