@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "koinapy"
+version = "0.0.1"
+description = "Python client to communicate with Koina."
+authors = ["Ludwig Lautenbacher <Ludwig.Lautenbacher@tum.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+tqdm = "^4.66.2"
+tritonclient = "^2.42.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,54 @@
+name: Publish Python client package to PyPI
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: closed
+
+jobs:
+  build:
+    if: ${{ github.event.pull_request.merged && (contains(github.event.pull_request.labels.*.name, 'python-client') }} 
+    name: Build package
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    - name: Install poetry
+      run: >-
+        cd clients/python &&
+        pip install poetry
+    - name: Build using poetry
+      run: cd clients/python && poetry build
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: python-package-distributions
+        path: clients/python/dist/
+  
+  publish-to-pypi:
+    name: Publish package to PyPI
+    needs:
+    - build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: pypi
+      url: https://pypi.org/p/koinapy
+
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v3
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish distribution
+      uses: pypa/gh-action-pypi-publish@release/v1
