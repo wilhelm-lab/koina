@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "koinapy"
-version = "0.0.1"
+version = "0.0.3"
 description = "Koina python client"
 authors = ["Wilhelmlab at Technical University of Munich"]
 license = "Apache-2.0"
@@ -11,6 +11,6 @@ repository = "https://github.com/wilhelm-lab/koina"
 [tool.poetry.dependencies]
 python = ">=3.8.0,<3.11.0"
 tritonclient = {extras = ["grpc"], version = ">=2.34.0, <2.37"}
+tqdm = "^4.66.2"
 
 [tool.poetry.dev-dependencies]
-

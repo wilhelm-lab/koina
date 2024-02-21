@@ -17,10 +17,8 @@ jobs:
     - name: Install pypa/build
       run: >-
         cd clients/python &&
-        python3 -m
-        pip install
-        build
-        --user
+        pip install poetry &&
+        poetry build
     - name: Build a binary wheel and a source tarball
       run: cd clients/python && python3 -m build
     - name: Store the distribution packages
