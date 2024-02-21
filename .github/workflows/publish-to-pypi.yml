@@ -1,4 +1,4 @@
-name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
+name: Publish Python client package to PyPI
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     if: ${{ github.event.pull_request.merged && (contains(github.event.pull_request.labels.*.name, 'python-client') }} 
-    name: Build distribution 📦
+    name: Build package
     runs-on: ubuntu-latest
 
     steps:
@@ -31,8 +31,8 @@ jobs:
         name: python-package-distributions
         path: clients/python/dist/
   
-  publish-to-testpypi:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
+  publish-to-pypi:
+    name: Publish package to PyPI
     needs:
     - build
     runs-on: ubuntu-latest
