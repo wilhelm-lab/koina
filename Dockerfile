@@ -10,7 +10,7 @@ FROM nvcr.io/nvidia/tritonserver:22.09-py3-sdk AS util
 RUN apt-get update
 RUN apt-get install -y git vim curl ripgrep zlib1g zlib1g-dev libssl-dev libbz2-dev libsqlite3-dev libncursesw5 libffi-dev libreadline-dev locales
 RUN locale-gen en_US.UTF-8
-RUN pip install -U pip  nox poetry nox-poetry
+RUN pip install -U pip  nox poetry nox-poetry packaging
 COPY ./koina_test.sh /usr/local/bin/
 COPY ./koina_lint.sh /usr/local/bin/
 # Setup user
