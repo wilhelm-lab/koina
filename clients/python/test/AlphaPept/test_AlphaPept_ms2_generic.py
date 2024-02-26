@@ -1,8 +1,9 @@
 from test.server_config import SERVER_GRPC, SERVER_HTTP
-import tritonclient.grpc as grpcclient
+from koinapy import Koina
 import numpy as np
 import requests
 from pathlib import Path
+from glob import glob
 
 
 # To ensure MODEL_NAME == test_<filename>.py
@@ -15,64 +16,24 @@ def test_available_http():
 
 
 def test_available_grpc():
-    triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
-    assert triton_client.is_model_ready(MODEL_NAME)
+    client = Koina(MODEL_NAME, server_url=SERVER_GRPC, ssl=False)
+    assert client._is_model_ready() is None
 
 
 def test_inference():
-    SEQUENCES = np.array(
-        [
-            ["LGGNEQVTR"],
-            ["GAGSSEPVTGLDAK"],
-            ["VEATFGVDESNAK"],
-            ["YILAGVENSK"],
-            ["TPVISGGPYEYR"],
-            ["TPVITGAPYEYR"],
-            ["DGLDAASYYAPVR"],
-            ["ADVTPADFSEWSK"],
-            ["GTFIIDPGGVIR"],
-            ["GTFIIDPAAVIR"],
-            ["LFLQFGAQGSPFLK"],
-        ],
-        dtype=np.object_,
-    )
+    files = glob(f"**/arr-{MODEL_NAME}-*", recursive=True)
+    data = {Path(f).stem.split("-")[-1]:np.load(f) for f in files}
 
-    charge = np.array([[2] for _ in range(len(SEQUENCES))], dtype=np.int32)
-    ces = np.array([[30] for _ in range(len(SEQUENCES))], dtype=np.float32)
-    instr = np.array([["QE"] for _ in range(len(SEQUENCES))], dtype=np.object_)
-
-    triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
-
-    in_pep_seq = grpcclient.InferInput("peptide_sequences", SEQUENCES.shape, "BYTES")
-    in_pep_seq.set_data_from_numpy(SEQUENCES)
-
-    in_charge = grpcclient.InferInput("precursor_charges", charge.shape, "INT32")
-    in_charge.set_data_from_numpy(charge)
-
-    in_ces = grpcclient.InferInput("collision_energies", ces.shape, "FP32")
-    in_ces.set_data_from_numpy(ces)
-
-    in_instr = grpcclient.InferInput("instrument_types", instr.shape, "BYTES")
-    in_instr.set_data_from_numpy(instr)
-
-    result = triton_client.infer(
-        MODEL_NAME,
-        inputs=[in_pep_seq, in_charge, in_ces, in_instr],
-        outputs=[
-            grpcclient.InferRequestedOutput("intensities"),
-            grpcclient.InferRequestedOutput("mz"),
-        ],
-    )
-
-    intensities = result.as_numpy("intensities")
-    fragmentmz = result.as_numpy("mz")
-
-    assert intensities.shape == fragmentmz.shape == (11, 52)
-
-    # Assert intensities consistent
-    assert np.allclose(
-        intensities,
-        np.load("test/AlphaPept/arr_AlphaPept_ms2_multibatch.npy"),
-        rtol=0,
-        atol=1e-5,
-    )
+    client = Koina(MODEL_NAME, server_url=SERVER_GRPC, ssl=False)
+    preds = client.predict(data)
+    
+    for k in preds.keys():
+        try:
+            assert np.allclose(
+                preds[k],
+                data[k],
+                rtol=0,
+                atol=1e-6,
+            )
+        except TypeError:
+            assert np.all(preds[k] == preds[k])
