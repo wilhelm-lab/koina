@@ -8,9 +8,10 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
 tqdm = "*"
+pandas = "*"
 tritonclient = [
     {extras = ["grpc"], version = "!=2.41", python=">=3.8,<=3.11"},
-    {extras = ["grpc"], version = ">=2.23", python=">=3.8,<=3.11"},
+    {extras = ["grpc"], version = ">=2.23", python=">=3.8,<=3.11"}
 ]
 
 [tool.poetry.group.develop.dependencies]
