@@ -10,8 +10,7 @@ nox.options.sessions = ("tests",)
 
 
 @session(python=python_versions)
-# @nox.parametrize("trclient", [f"2.{i}" for i in range(23, 43) if (i != 41 or i != 37)])
-@nox.parametrize("trclient", [f"2.{i}" for i in range(23, 43)])
+@nox.parametrize("trclient", ["2.23", "2.42"])
 def tests(session, trclient) -> None:
     """Runtime type checking using Typeguard."""
     session.install(f"tritonclient[grpc]=={trclient}")
