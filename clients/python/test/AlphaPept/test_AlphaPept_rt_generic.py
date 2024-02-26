@@ -1,8 +1,9 @@
 from test.server_config import SERVER_GRPC, SERVER_HTTP
-import tritonclient.grpc as grpcclient
+from koinapy import Koina
 import numpy as np
 import requests
 from pathlib import Path
+from glob import glob
 
 
 # To ensure MODEL_NAME == test_<filename>.py
@@ -15,49 +16,21 @@ def test_available_http():
 
 
 def test_available_grpc():
-    triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
-    assert triton_client.is_model_ready(MODEL_NAME)
+    client = Koina(MODEL_NAME, server_url=SERVER_GRPC, ssl=False)
+    assert client._is_model_ready() is None
 
 
 def test_inference():
-    SEQUENCES = np.array(
-        [
-            ["LGGNEQVTR"],
-            ["GAGSSEPVTGLDAK"],
-            ["VEATFGVDESNAK"],
-            ["YILAGVENSK"],
-            ["TPVISGGPYEYR"],
-            ["TPVITGAPYEYR"],
-            ["DGLDAASYYAPVR"],
-            ["ADVTPADFSEWSK"],
-            ["GTFIIDPGGVIR"],
-            ["GTFIIDPAAVIR"],
-            ["LFLQFGAQGSPFLK"],
-        ],
-        dtype=np.object_,
-    )
+    files = glob(f"**/arr-{MODEL_NAME}-*", recursive=True)
+    data = {Path(f).stem.split("-")[-1]:np.load(f) for f in files}
 
-    triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
-
-    in_pep_seq = grpcclient.InferInput("peptide_sequences", SEQUENCES.shape, "BYTES")
-    in_pep_seq.set_data_from_numpy(SEQUENCES)
-
-    result = triton_client.infer(
-        MODEL_NAME,
-        inputs=[in_pep_seq],
-        outputs=[
-            grpcclient.InferRequestedOutput("irt"),
-        ],
-    )
-
-    irt = result.as_numpy("irt")
-
-    assert irt.shape == (11, 1)
-
-    # Assert intensities consistent
-    assert np.allclose(
-        irt,
-        np.load("test/AlphaPept/arr_AlphaPept_irt_mb.npy").reshape(-1, 1),
-        rtol=0,
-        atol=1e-4,
-    )
+    client = Koina(MODEL_NAME, server_url=SERVER_GRPC, ssl=False)
+    preds = client.predict(data)
+    
+    for k in preds.keys():
+        assert np.allclose(
+            preds[k],
+            data[k],
+            rtol=0,
+            atol=1e-4,
+        )
