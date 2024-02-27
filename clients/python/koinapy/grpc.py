@@ -148,7 +148,7 @@ class Koina:
         """
         try:
             self.model_inputs = {
-                i.name: i.datatype
+                i.name: (i.shape, i.datatype)
                 for i in self.client.get_model_metadata(self.model_name).inputs
             }
         except InferenceServerException as e:
@@ -238,12 +238,13 @@ class Koina:
         :return: A list of InferInput objects for the input data.
         """
         batch_inputs = []
-        for iname, idtype in self.model_inputs.items():
+        for iname, (ishape, idtype) in self.model_inputs.items():
+            ishape = data[iname].shape
             batch_inputs.append(
-                InferInput(iname, (len(data[next(iter(data))]), 1), idtype)
+                InferInput(iname, ishape, idtype)
             )
             batch_inputs[-1].set_data_from_numpy(
-                data[iname].reshape(-1, 1).astype(self.type_convert[idtype])
+                data[iname].astype(self.type_convert[idtype])
             )
         return batch_inputs
 
@@ -513,11 +514,11 @@ class Koina:
             }
             predictions = model.predict(input_data)
         """
-        # if isinstance(data, pd.DataFrame):
-        #     data = {
-        #         input_field: data[alternative_column_map[input_field]].to_numpy()
-        #         for input_field in self.model_inputs.keys()
-        #     }
+        if isinstance(data, pd.DataFrame):
+            data = {
+                input_field: data[alternative_column_map[input_field]].to_numpy().reshape(-1,1)
+                for input_field in self.model_inputs.keys()
+            }
         if _async:
             return self.__predict_async(data, debug=debug)
         else:
