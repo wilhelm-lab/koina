@@ -32,3 +32,8 @@ def lib_test_inference(model_name, server_grpc, atol=1e-6):
             )
         except TypeError:
             assert np.all(preds[k] == preds[k])
+        except AssertionError as e:
+            print(k)
+            print(preds[k])
+            print(data[k])
+            raise e
