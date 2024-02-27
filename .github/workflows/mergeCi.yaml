@@ -18,7 +18,7 @@ jobs:
         run: docker-compose --env-file .env.ci up -d serving develop --build
 
       - name: Styling
-        run: docker-compose --env-file .env.ci exec develop black .
+        run: docker-compose --env-file .env.ci exec develop poetry run -C clients/python/ black .
 
       - name: Linting
         run: docker-compose --env-file .env.ci exec develop koina_lint.sh --fail-under=6

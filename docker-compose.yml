@@ -27,7 +27,7 @@ services:
         GID: ${GID}
     user: "${UID}:${GID}"
     userns_mode: "host"
-    command: [ "sleep", "infinity" ]
+    command: [ "./entrypoint.sh"]
     working_dir: /workspace/koina
     volumes:
       - .:/workspace/koina/:z
