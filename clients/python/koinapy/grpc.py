@@ -240,9 +240,7 @@ class Koina:
         batch_inputs = []
         for iname, (ishape, idtype) in self.model_inputs.items():
             ishape = data[iname].shape
-            batch_inputs.append(
-                InferInput(iname, ishape, idtype)
-            )
+            batch_inputs.append(InferInput(iname, ishape, idtype))
             batch_inputs[-1].set_data_from_numpy(
                 data[iname].astype(self.type_convert[idtype])
             )
@@ -516,7 +514,9 @@ class Koina:
         """
         if isinstance(data, pd.DataFrame):
             data = {
-                input_field: data[alternative_column_map[input_field]].to_numpy().reshape(-1,1)
+                input_field: data[alternative_column_map[input_field]]
+                .to_numpy()
+                .reshape(-1, 1)
                 for input_field in self.model_inputs.keys()
             }
         if _async:
