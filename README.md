@@ -5,7 +5,7 @@
 Here is an example http request using only cURL sending a POST request to with a json body.
 
 ```bash
-curl "https://koina.proteomicsdb.org/v2/models/Prosit_2019_intensity/infer" \
+curl "https://koina.wilhelmlab.org/v2/models/Prosit_2019_intensity/infer" \
  --data-raw '
 {
   "id": "LGGNEQVTR_GAGSSEPVTGLDAK",
@@ -17,7 +17,7 @@ curl "https://koina.proteomicsdb.org/v2/models/Prosit_2019_intensity/infer" \
 }'
 ```
 ### Python
-For examples of how to access models using python you can check out [our OpenAPI documentation ](https://koina.proteomicsdb.org/docs/#overview).
+For examples of how to access models using python you can check out [our OpenAPI documentation ](https://koina.wilhelmlab.org/docs/#overview).
 
 ### R
 TODO

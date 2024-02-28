@@ -12,7 +12,7 @@ citation: |
   Charlotte Adams, Wassim Gabriel, Kris Laukens, Mathias Wilhelm, Wout Bittremieux, Kurt Boonen
   bioRxiv 2023.07.17.549401; doi: https://doi.org/10.1101/2023.07.17.549401
 tag: "Intensity"
-tag_url: "https://www.proteomicsdb.org/"
+tag_url: "https://www.wilhelmlab.org/"
 examples:
   inputs:
     [
