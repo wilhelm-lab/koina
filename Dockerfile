@@ -7,6 +7,7 @@ FROM serving-develop AS serving-prod
 COPY ./models  /models
 
 FROM nvcr.io/nvidia/tritonserver:22.09-py3-sdk AS util
+RUN add-apt-repository ppa:git-core/ppa
 RUN apt-get update
 RUN apt-get install -y git vim curl ripgrep zlib1g zlib1g-dev libssl-dev libbz2-dev libsqlite3-dev libncursesw5 libffi-dev libreadline-dev locales
 RUN locale-gen en_US.UTF-8
