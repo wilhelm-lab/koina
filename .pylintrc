@@ -1,2 +1,5 @@
+[MASTER]
+ignore-patterns=.nox
+
 [MESSAGES CONTROL]
 disable=E0401

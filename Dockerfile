@@ -14,6 +14,7 @@ RUN locale-gen en_US.UTF-8
 RUN pip install -U pip  nox poetry nox-poetry packaging
 COPY ./koina_test.sh /usr/local/bin/
 COPY ./koina_lint.sh /usr/local/bin/
+COPY ./koina_format.sh /usr/local/bin/
 # Setup user
 ARG UID=1000
 ARG GID=1000
