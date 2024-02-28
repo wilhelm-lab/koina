@@ -14,16 +14,6 @@ from tritonclient.grpc import (
     InferResult,
 )
 
-
-alternative_column_map = {
-    "peptide_sequences": "MODIFIED_SEQUENCE",
-    "precursor_charges": "PRECURSOR_CHARGE",
-    "collision_energies": "COLLISION_ENERGY",
-    "fragmentation_types": "FRAGMENTATION",
-    "instrument_types": "INSTRUMENT_TYPES",
-}
-
-
 class Koina:
     """A class for interacting with Koina models for inference."""
 
@@ -514,7 +504,7 @@ class Koina:
         """
         if isinstance(data, pd.DataFrame):
             data = {
-                input_field: data[alternative_column_map[input_field]]
+                input_field: data[input_field]
                 .to_numpy()
                 .reshape(-1, 1)
                 for input_field in self.model_inputs.keys()
