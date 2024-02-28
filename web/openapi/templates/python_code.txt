@@ -9,5 +9,6 @@ inputs = pd.DataFrame({ {% for input in note.examples.inputs %}
     '{{input.name}}': np.array({{input.data}}),{% endfor %}
 })
 
+# If you are unsure what inputs your model requires run `model.model_inputs`
 model = Koina("{{ name }}", "{{ url }}")
 predictions = model.predict(inputs)
