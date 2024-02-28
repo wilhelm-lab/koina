@@ -1,0 +1,27 @@
+
+library(httr)
+library(jsonlite)
+
+# Define the URL
+url <- "https://{{ url }}/v2/models/{{ name }}/infer"
+
+# Define the JSON payload
+payload <- toJSON(
+  list(
+    "id" = "0",
+    "inputs" = list({% for input in note.examples.inputs %}
+        list("name"= "{{ input.name }}", "shape"= c({{input.shape[1:-1]}}), "datatype"= "{{input.httpdtype}}", "data"= c({{input.data[1:-1]}})){% if not loop.last %},{% endif %}{% endfor %})
+  ),
+  auto_unbox = TRUE
+)
+
+# Send the HTTP POST request
+response <- httr::POST(url, body = payload, encode = "json")
+
+# Check if the request was successful
+if (httr::http_status(response)$category == "Success") {
+  print("Request was successful!")
+  predictions = httr::content(response)
+} else {
+  cat("Request failed with status code:", httr::http_status(response)$code, "\n")
+}

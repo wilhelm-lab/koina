@@ -23,24 +23,23 @@ def load_yaml(path):
         return yaml.load(yaml_file, Loader=yaml.FullLoader)
 
 
-def generate_example_code(model, grpc_url):
-    """
-    Generates the GRPC examples codes based on the notes
-    """
-    python_code_template = "web/openapi/templates/python_code.txt"
-    logging.info(f"Using grpc url:\t{grpc_url}")
-    logging.info(f"Using template to create python code:\t\t{python_code_template}")
-    environment = Environment(loader=FileSystemLoader("./"))
-    template = environment.get_template(python_code_template)
-    context = model
-    context["url"] = grpc_url
-    return template.render(context).replace("\n", "\n        ")
+# def generate_example_code(model, grpc_url):
+#     """
+#     Generates the GRPC examples codes based on the notes
+#     """
+#     python_code_template = "web/openapi/templates/code/python_koinapy.txt"
+#     logging.info(f"Using grpc url:\t{grpc_url}")
+#     logging.info(f"Using template to create python code:\t\t{python_code_template}")
+#     environment = Environment(loader=FileSystemLoader("./"))
+#     template = environment.get_template(python_code_template)
+#     context = model
+#     context["url"] = grpc_url
+#     return template.render(context).replace("\n", "\n        ")
 
-def generate_example_curl_code(model, grpc_url):
+def generate_example_code(model, grpc_url, code_template):
     """
     Generates the GRPC examples codes based on the notes
     """
-    code_template = "web/openapi/templates/curl_code.txt"
     logging.info(f"Using grpc url:\t{grpc_url}")
     logging.info(f"Using template to create python code:\t\t{code_template}")
     environment = Environment(loader=FileSystemLoader("./"))
@@ -129,8 +128,9 @@ def main(http_url, grpc_url, tmpl_url):
         add_np_and_openapi_dtype(models[-1]["note"])
         copy_outputs_to_note(models[-1])
         verify_inputs(models[-1])
-        models[-1]["code"] = generate_example_code(models[-1], grpc_url)
-        models[-1]["curl_code"] = generate_example_curl_code(models[-1], grpc_url)
+        models[-1]["code"] = generate_example_code(models[-1], grpc_url, code_template="web/openapi/templates/code/python_koinapy.txt")
+        models[-1]["curl_code"] = generate_example_code(models[-1], grpc_url, code_template="web/openapi/templates/code/curl.txt")
+        models[-1]["rlang_code"] = generate_example_code(models[-1], grpc_url, code_template="web/openapi/templates/code/rlang.txt")
 
 
     logging.info(f"Template URL: {tmpl_url}")
