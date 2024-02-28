@@ -33,18 +33,3 @@ services:
       - .:/workspace/koina/:z
     env_file:
       - .env
-
-  web:
-    build:
-      context: .
-      target: web
-      args:
-        UID: ${UID}
-        GID: ${GID}
-    userns_mode: "host"
-    ports:
-      - 3000:3000
-    volumes:
-      - ./:/workspace/koina
-    working_dir: /workspace/koina/web
-    command: npm run dev

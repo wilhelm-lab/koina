@@ -13,7 +13,9 @@
         "ms-python.black-formatter",
         "pbkit.vscode-pbkit",
         "ms-toolsai.jupyter",
-        "ms-azuretools.vscode-docker"
+        "ms-azuretools.vscode-docker",
+        "Vue.volar",
+        "eamodio.gitlens"
       ],
       "settings": {
         "[python]": {
