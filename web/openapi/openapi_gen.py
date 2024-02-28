@@ -36,6 +36,19 @@ def generate_example_code(model, grpc_url):
     context["url"] = grpc_url
     return template.render(context).replace("\n", "\n        ")
 
+def generate_example_curl_code(model, grpc_url):
+    """
+    Generates the GRPC examples codes based on the notes
+    """
+    code_template = "web/openapi/templates/curl_code.txt"
+    logging.info(f"Using grpc url:\t{grpc_url}")
+    logging.info(f"Using template to create python code:\t\t{code_template}")
+    environment = Environment(loader=FileSystemLoader("./"))
+    template = environment.get_template(code_template)
+    context = model
+    context["url"] = grpc_url
+    return template.render(context).replace("\n", "\n        ")
+
 
 def sleep_until_service_starts(http_server):
     serving_started = False
@@ -117,6 +130,8 @@ def main(http_url, grpc_url, tmpl_url):
         copy_outputs_to_note(models[-1])
         verify_inputs(models[-1])
         models[-1]["code"] = generate_example_code(models[-1], grpc_url)
+        models[-1]["curl_code"] = generate_example_curl_code(models[-1], grpc_url)
+
 
     logging.info(f"Template URL: {tmpl_url}")
     create_openapi_yaml(models, tmpl_url)
