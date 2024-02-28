@@ -1,46 +1,13 @@
+# If you get a ModuleNotFound error install koinapy with `pip install koinapy`.
+from koinapy import Koina
 import numpy as np
-import time
-import tritonclient.grpc as grpcclient
+import pandas as pd
 
-nptype_convert = {
-    np.dtype('float32'): 'FP32',
-    np.dtype('O'): 'BYTES',
-    np.dtype('int16'): 'INT16',
-    np.dtype('int32'): 'INT32',
-    np.dtype('int64'): 'INT64',
-}
+# koinapy only takes the input it requires for the current model.
+# if you want to compare multiple models you can use a dataframe wit all columns at the same time.
+inputs = pd.DataFrame({ {% for input in note.examples.inputs %}
+    '{{input.name}}': np.array({{input.data}}),{% endfor %}
+})
 
-server_url = '{{ url }}'
-model_name = '{{ name }}'
-batch_size = 1000
-inputs = { {% for input in note.examples.inputs %}
-    '{{input.name}}': np.array({{input.data}}, dtype={{input.npdtype}}).reshape(-1,1),{% endfor %}
-}
-outputs = [{% for o in note.outputs %} '{{o}}', {% endfor %}]
-
-triton_client = grpcclient.InferenceServerClient(url=server_url, ssl=True)
-
-koina_outputs = []
-for name in outputs:
-    koina_outputs.append(grpcclient.InferRequestedOutput(name))
-
-predictions = {name: [] for name in outputs}
-len_inputs = list(inputs.values())[0].shape[0]
-for i in range(0, len_inputs, batch_size):
-    koina_inputs = []
-    for iname, iarr in inputs.items():
-        islice = iarr[i:i+batch_size]
-        koina_inputs.append(
-            grpcclient.InferInput(iname, islice.shape, nptype_convert[iarr.dtype])
-        )
-        koina_inputs[-1].set_data_from_numpy(islice)
-
-    prediction = triton_client.infer(model_name, inputs=koina_inputs, outputs=koina_outputs)
-
-    for name in outputs:
-        predictions[name].append(prediction.as_numpy(name))
-
-for key, value in predictions.items():
-    predictions[key] = np.vstack(value)
-    print(key)
-    print(predictions[key])
+model = Koina("{{ name }}", "{{ url }}")
+predictions = model.predict(inputs)
