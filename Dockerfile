@@ -12,9 +12,6 @@ RUN apt-get update
 RUN apt-get install -y git vim curl ripgrep zlib1g zlib1g-dev libssl-dev libbz2-dev libsqlite3-dev libncursesw5 libffi-dev libreadline-dev locales
 RUN locale-gen en_US.UTF-8
 RUN pip install -U pip  nox poetry nox-poetry packaging
-COPY ./koina_test.sh /usr/local/bin/
-COPY ./koina_lint.sh /usr/local/bin/
-COPY ./koina_format.sh /usr/local/bin/
 # Setup user
 ARG UID=1000
 ARG GID=1000
@@ -27,6 +24,10 @@ RUN echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >>
 RUN echo 'eval "$(pyenv init -)"' >> /home/devuser/.bashrc
 RUN chmod -R 777 /home/devuser/
 RUN source /home/devuser/.bashrc && pyenv install 3.8 3.9 3.10
+# Setup CI scripts
+COPY ./koina_test.sh /usr/local/bin/
+COPY ./koina_lint.sh /usr/local/bin/
+COPY ./koina_format.sh /usr/local/bin/
 USER devuser
 
 
