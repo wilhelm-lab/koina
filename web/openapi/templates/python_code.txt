@@ -1,3 +1,4 @@
+
 # If you get a ModuleNotFound error install koinapy with `pip install koinapy`.
 from koinapy import Koina
 import numpy as np
