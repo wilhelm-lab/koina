@@ -3,3 +3,6 @@ ignore-patterns=.nox
 
 [MESSAGES CONTROL]
 disable=E0401
+
+[FORMAT]
+max-line-length = 88
