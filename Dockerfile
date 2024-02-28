@@ -11,7 +11,7 @@ RUN add-apt-repository ppa:git-core/ppa
 RUN apt-get update
 RUN apt-get install -y git vim curl ripgrep zlib1g zlib1g-dev libssl-dev libbz2-dev libsqlite3-dev libncursesw5 libffi-dev libreadline-dev locales
 RUN locale-gen en_US.UTF-8
-RUN pip install -U pip  nox poetry nox-poetry packaging
+RUN pip install -U pip  nox poetry nox-poetry packaging jinja2
 # Setup user
 ARG UID=1000
 ARG GID=1000
