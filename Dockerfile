@@ -19,6 +19,7 @@ RUN groupadd -f -g $GID devuser
 RUN useradd -l -ms /bin/bash devuser -u $UID -g $GID --non-unique
 # Setup pyenv
 RUN git clone https://github.com/pyenv/pyenv.git /home/devuser/.pyenv
+RUN rm /home/devuser/.bashrc
 RUN echo 'export PYENV_ROOT="/home/devuser/.pyenv"' >> /home/devuser/.bashrc
 RUN echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> /home/devuser/.bashrc
 RUN echo 'eval "$(pyenv init -)"' >> /home/devuser/.bashrc
