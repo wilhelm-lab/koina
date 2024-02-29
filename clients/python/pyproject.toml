@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "koinapy"
-version = "0.0.1"
+version = "0.0.2"
 description = "Python client to communicate with Koina."
 authors = ["Ludwig Lautenbacher <Ludwig.Lautenbacher@tum.de>"]
 readme = "README.md"
