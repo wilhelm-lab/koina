@@ -1,0 +1,17 @@
+name: "unispec23"
+backend: "pytorch"
+max_batch_size: 1000
+input [
+  {
+   name: 'input_tensor',
+   data_type: TYPE_FP32,
+   dims: [38, 40]
+  }
+]
+output [
+  {
+   name: 'intensities',
+   data_type: TYPE_FP32,
+   dims: [ 7918 ]
+  }
+]
