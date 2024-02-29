@@ -1,6 +1,5 @@
 #!/bin/sh
 source ~/.bashrc
 poetry install --with develop -C ./clients/python/
-pyenv --version
-npm --version
+cd web npm install
 sleep infinity
