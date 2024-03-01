@@ -36,6 +36,7 @@ def load_yaml(path):
 #     context["url"] = grpc_url
 #     return template.render(context).replace("\n", "\n        ")
 
+
 def generate_example_code(model, grpc_url, code_template):
     """
     Generates the GRPC examples codes based on the notes
@@ -128,10 +129,17 @@ def main(http_url, grpc_url, tmpl_url):
         add_np_and_openapi_dtype(models[-1]["note"])
         copy_outputs_to_note(models[-1])
         verify_inputs(models[-1])
-        models[-1]["code"] = generate_example_code(models[-1], grpc_url, code_template="web/openapi/templates/code/python_koinapy.txt")
-        models[-1]["curl_code"] = generate_example_code(models[-1], grpc_url, code_template="web/openapi/templates/code/curl.txt")
-        models[-1]["rlang_code"] = generate_example_code(models[-1], grpc_url, code_template="web/openapi/templates/code/rlang.txt")
-
+        models[-1]["code"] = generate_example_code(
+            models[-1],
+            grpc_url,
+            code_template="web/openapi/templates/code/python_koinapy.txt",
+        )
+        models[-1]["curl_code"] = generate_example_code(
+            models[-1], grpc_url, code_template="web/openapi/templates/code/curl.txt"
+        )
+        models[-1]["rlang_code"] = generate_example_code(
+            models[-1], grpc_url, code_template="web/openapi/templates/code/rlang.txt"
+        )
 
     logging.info(f"Template URL: {tmpl_url}")
     create_openapi_yaml(models, tmpl_url)

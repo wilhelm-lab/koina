@@ -14,6 +14,7 @@ from tritonclient.grpc import (
     InferResult,
 )
 
+
 class Koina:
     """A class for interacting with Koina models for inference."""
 
@@ -504,9 +505,7 @@ class Koina:
         """
         if isinstance(data, pd.DataFrame):
             data = {
-                input_field: data[input_field]
-                .to_numpy()
-                .reshape(-1, 1)
+                input_field: data[input_field].to_numpy().reshape(-1, 1)
                 for input_field in self.model_inputs.keys()
             }
         if _async:
