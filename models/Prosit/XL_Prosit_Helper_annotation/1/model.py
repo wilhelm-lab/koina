@@ -143,7 +143,6 @@ class TritonPythonModel:
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
 
     def execute(self, requests):
-        logger = pb_utils.Logger
         responses = []
         annotation = np.empty((0, 348))
 

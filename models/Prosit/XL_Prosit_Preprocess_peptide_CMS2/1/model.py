@@ -34,7 +34,6 @@ class TritonPythonModel:
     def execute(self, requests):
         peptide_in_str = []
         responses = []
-        logger = pb_utils.Logger
         for request in requests:
             peptide_in_1 = pb_utils.get_input_tensor_by_name(
                 request, "peptide_sequences_1"
@@ -47,8 +46,6 @@ class TritonPythonModel:
             peptides_2 = peptide_in_2.as_numpy().tolist()
             peptide_in_1_list = [x[0].decode("utf-8") for x in peptides_1]
             peptide_in_2_list = [x[0].decode("utf-8") for x in peptides_2]
-            logger.log_info(str(peptide_in_1_list))
-            logger.log_info(str(peptide_in_2_list))
 
             sequences_1 = np.asarray(
                 [character_to_array(seq).flatten() for seq in peptide_in_1_list]
@@ -56,8 +53,6 @@ class TritonPythonModel:
             sequences_2 = np.asarray(
                 [character_to_array(seq).flatten() for seq in peptide_in_2_list]
             )
-            logger.log_info(str(sequences_1))
-            logger.log_info(str(sequences_2))
 
             t_1 = pb_utils.Tensor(
                 "peptides_in_1:0", sequences_1.astype(self.output_dtype)

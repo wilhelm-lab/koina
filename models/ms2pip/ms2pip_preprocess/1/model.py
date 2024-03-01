@@ -16,7 +16,6 @@ class TritonPythonModel:
     def execute(self, requests):
         responses = []
 
-        logger = pb_utils.Logger
         ## every request is up to abatch_size
         for request in requests:
             peptide_in = pb_utils.get_input_tensor_by_name(request, "proforma")
