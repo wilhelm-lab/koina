@@ -29,11 +29,11 @@ class TritonPythonModel:
             peptide_in = pb_utils.get_input_tensor_by_name(request, "peptide_sequences")
             peptides_ = peptide_in.as_numpy().tolist()
             peptide_in_list = [x[0].decode("utf-8") for x in peptides_]
-        
+
             sequences = np.asarray(
                 [character_to_array(seq).flatten() for seq in peptide_in_list]
             )
-        
+
             t = pb_utils.Tensor("peptides_in:0", sequences.astype(self.output_dtype))
 
             responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
