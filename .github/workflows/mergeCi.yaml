@@ -27,7 +27,7 @@ jobs:
         run: docker-compose --env-file .env.ci exec develop koina_lint.sh --fail-under=6
 
       - name: Testing
-        run: docker-compose --env-file .env.ci exec develop koina_test.sh
+        run: docker-compose --env-file .env.ci exec develop koina_test.sh --check
 
       - name: Shutdown
         if: always()

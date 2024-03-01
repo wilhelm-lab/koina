@@ -64,9 +64,6 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
 
 def character_to_array(character):
     array = np.zeros((1, SEQ_LEN), dtype=np.uint8)
-    logger = pb_utils.Logger
-
-    logger.log_info(str(character))
     generator_sequence_numeric = parse_modstrings(
         [character], alphabet=ALPHABET, translate=True, filter=True
     )

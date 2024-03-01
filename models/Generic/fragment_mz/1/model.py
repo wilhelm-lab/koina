@@ -41,7 +41,6 @@ class TritonPythonModel:
     def __init__(self):
         super().__init__()
         self.frag_mz_dtype = None
-        self.logger = pb_utils.Logger
 
     def initialize(self, args):
         model_config = model_config = json.loads(args["model_config"])

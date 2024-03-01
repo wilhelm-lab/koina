@@ -12,7 +12,6 @@ class TritonPythonModel:
         self.output_dtype = pb_utils.triton_string_to_numpy(output0_config["data_type"])
 
     def execute(self, requests):
-        logger = pb_utils.Logger
         responses = []
         for request in requests:
             peptide_in = pb_utils.get_input_tensor_by_name(request, "raw_intensities")
