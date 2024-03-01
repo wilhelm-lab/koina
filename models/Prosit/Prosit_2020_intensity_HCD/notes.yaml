@@ -5,7 +5,7 @@ description: |
 
   Wilhelm, M., Zolg, D.P., Graber, M. et al. Deep learning boosts sensitivity of mass spectrometry-based immunopeptidomics. Nat Commun 12, 3346 (2021). https://doi.org/10.1038/s41467-021-23713-9
 tag: "Intensity"
-tag_url: "https://www.proteomicsdb.org/"
+tag_url: "https://www.wilhelmlab.org/"
 examples:
   inputs:
     [

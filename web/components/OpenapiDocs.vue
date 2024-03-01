@@ -10,6 +10,7 @@
     nav-bg-color="#f0f0f0"
     info-description-headings-in-navbar="true"
     font-size="largest"
+    schema-style="table"
   >
     <div slot="footer">
       <slot name="footer" />

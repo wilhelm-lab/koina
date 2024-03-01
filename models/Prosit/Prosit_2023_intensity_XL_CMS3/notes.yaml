@@ -4,7 +4,7 @@ description: |
 
   
 tag: "Intensity"
-tag_url: "https://koina.proteomicsdb.org/"
+tag_url: "https://koina.wilhelmlab.org/"
 examples:
   inputs:
     [

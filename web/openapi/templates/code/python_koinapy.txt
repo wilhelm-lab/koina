@@ -1,0 +1,15 @@
+
+# If you get a ModuleNotFound error install koinapy with `pip install koinapy`.
+from koinapy import Koina
+import numpy as np
+import pandas as pd
+
+# koinapy only takes the input it requires for the current model.
+# if you want to compare multiple models you can use a dataframe wit all columns at the same time.
+inputs = pd.DataFrame() {% for input in note.examples.inputs %} 
+inputs['{{input.name}}'] = np.array({{input.data}}){% endfor %}
+
+
+# If you are unsure what inputs your model requires run `model.model_inputs`
+model = Koina("{{ name }}", "{{ url }}")
+predictions = model.predict(inputs)

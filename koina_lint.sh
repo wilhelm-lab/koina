@@ -1,2 +1,3 @@
 #!/bin/bash
-pylint --recursive=y test models $@
+cd /workspace/koina/
+poetry run -C clients/python pylint --recursive=y . $@

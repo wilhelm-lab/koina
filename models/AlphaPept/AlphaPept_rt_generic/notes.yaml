@@ -5,7 +5,7 @@ description: |
 
   Wen-Feng Zeng, Xie-Xuan Zhou, Sander Willems, Constantin Ammar, Maria Wahle, Isabell Bludau, Eugenia Voytik, Maximillian T. Strauss & Matthias Mann. AlphaPeptDeep: a modular deep learning framework to predict peptide properties for proteomics. Nat Commun 13, 7238 (2022). https://doi.org/10.1038/s41467-022-34904-3
 tag: "Retention Time"
-tag_url: "https://www.proteomicsdb.org/"
+tag_url: "https://www.wilhelmlab.org/"
 examples:
   inputs:
     [

@@ -11,14 +11,19 @@
         "ms-python.python",
         "ms-python.pylint",
         "ms-python.black-formatter",
-        "pbkit.vscode-pbkit"
+        "pbkit.vscode-pbkit",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker",
+        "Vue.volar",
+        "eamodio.gitlens"
       ],
       "settings": {
         "[python]": {
           "editor.defaultFormatter": "ms-python.black-formatter",
           "editor.formatOnSave": true
         },
-        "python.formatting.provider": "black"
+        "python.formatting.provider": "black",
+        "python.venvPath": "~/.cache/pypoetry/virtualenvs"
       }
     }
   }

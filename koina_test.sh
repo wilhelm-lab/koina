@@ -21,4 +21,5 @@ for ((attempt=1; attempt<=$max_attempts; attempt++)); do
 done
 
 # pytest
-pytest
+cd /workspace/koina/clients/python
+nox -r

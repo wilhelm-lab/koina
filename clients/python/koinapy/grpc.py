@@ -15,15 +15,6 @@ from tritonclient.grpc import (
 )
 
 
-alternative_column_map = {
-    "peptide_sequences": "MODIFIED_SEQUENCE",
-    "precursor_charges": "PRECURSOR_CHARGE",
-    "collision_energies": "COLLISION_ENERGY",
-    "fragmentation_types": "FRAGMENTATION",
-    "instrument_types": "INSTRUMENT_TYPES",
-}
-
-
 class Koina:
     """A class for interacting with Koina models for inference."""
 
@@ -35,7 +26,7 @@ class Koina:
     def __init__(
         self,
         model_name: str,
-        server_url: str = "koina.proteomicsdb.org:443",
+        server_url: str = "koina.wilhelmlab.org:443",
         ssl: bool = True,
         targets: Optional[List[str]] = None,
         disable_progress_bar: bool = False,
@@ -50,7 +41,7 @@ class Koina:
         and that the specified model is available on the server.
 
         :param model_name: The name of the Koina model to be used for inference.
-        :param server_url: The URL of the inference server. Defaults to "koina.proteomicsdb.org:443".
+        :param server_url: The URL of the inference server. Defaults to "koina.wilhelmlab.org:443".
         :param ssl: Indicates whether to use SSL for communication with the server. Defaults to True.
         :param targets: An optional list of targets to predict. If this is None, all model targets are
             predicted and received.
@@ -101,7 +92,7 @@ class Koina:
             if not self.client.is_server_live():
                 raise ValueError("Server not yet started.")
         except InferenceServerException as e:
-            if self.url == "koina.proteomicsdb.org:443":
+            if self.url == "koina.wilhelmlab.org:443":
                 if self.ssl:
                     raise InferenceServerException(
                         "The public koina network seems to be inaccessible at the moment. "
@@ -148,7 +139,7 @@ class Koina:
         """
         try:
             self.model_inputs = {
-                i.name: i.datatype
+                i.name: (i.shape, i.datatype)
                 for i in self.client.get_model_metadata(self.model_name).inputs
             }
         except InferenceServerException as e:
@@ -238,12 +229,11 @@ class Koina:
         :return: A list of InferInput objects for the input data.
         """
         batch_inputs = []
-        for iname, idtype in self.model_inputs.items():
-            batch_inputs.append(
-                InferInput(iname, (len(data[next(iter(data))]), 1), idtype)
-            )
+        for iname, (ishape, idtype) in self.model_inputs.items():
+            ishape = data[iname].shape
+            batch_inputs.append(InferInput(iname, ishape, idtype))
             batch_inputs[-1].set_data_from_numpy(
-                data[iname].reshape(-1, 1).astype(self.type_convert[idtype])
+                data[iname].astype(self.type_convert[idtype])
             )
         return batch_inputs
 
@@ -513,11 +503,11 @@ class Koina:
             }
             predictions = model.predict(input_data)
         """
-        # if isinstance(data, pd.DataFrame):
-        #     data = {
-        #         input_field: data[alternative_column_map[input_field]].to_numpy()
-        #         for input_field in self.model_inputs.keys()
-        #     }
+        if isinstance(data, pd.DataFrame):
+            data = {
+                input_field: data[input_field].to_numpy().reshape(-1, 1)
+                for input_field in self.model_inputs.keys()
+            }
         if _async:
             return self.__predict_async(data, debug=debug)
         else:

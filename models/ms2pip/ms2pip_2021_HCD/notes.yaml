@@ -11,7 +11,7 @@ description: |
 
   Degroeve, S., & Martens, L. (2013). MS²PIP: a tool for MS/MS peak intensity prediction. Bioinformatics (Oxford, England), 29(24), 3199–203. doi:10.1093/bioinformatics/btt544
 tag: "Intensity"
-tag_url: "https://www.proteomicsdb.org/"
+tag_url: "https://www.wilhelmlab.org/"
 examples:
   inputs:
     [

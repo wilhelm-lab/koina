@@ -6,7 +6,7 @@ from glob import glob
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("-u", "--url", default="koina.proteomicsdb.org")
+parser.add_argument("-u", "--url", default="koina.wilhelmlab.org")
 parser.add_argument("-m", "--model")
 parser.add_argument("--no-ssl", action="store_false", dest="ssl")
 parser.add_argument(

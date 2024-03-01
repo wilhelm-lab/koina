@@ -12,13 +12,16 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Startup
-        run: docker-compose --env-file .env.ci up -d serving develop --build
+        run: docker-compose --env-file .env.ci up -d --build serving develop
+
+      - name: Wait for poetry install
+        run: sleep 60
 
       - name: Styling
-        run: docker-compose --env-file .env.ci exec develop black .
+        run: docker-compose --env-file .env.ci exec develop koina_format.sh
 
       - name: Linting
         run: docker-compose --env-file .env.ci exec develop koina_lint.sh --fail-under=6

@@ -20,12 +20,12 @@ class TritonPythonModel:
             peptides = 2 ** peptide_in.as_numpy() - 0.001
             peptides[peptides < 0] = 0
 
-            peptides[
-                np.isclose(peptides, 0.0024771910736963655)
-            ] = np.nan  # y ion placeholder predictions
-            peptides[
-                np.isclose(peptides, 0.001630736981153869)
-            ] = np.nan  # b ion placeholder predictions
+            peptides[np.isclose(peptides, 0.0024771910736963655)] = (
+                np.nan
+            )  # y ion placeholder predictions
+            peptides[np.isclose(peptides, 0.001630736981153869)] = (
+                np.nan
+            )  # b ion placeholder predictions
 
             peptides = peptides.reshape((-1, 29))
             output_tensors = [

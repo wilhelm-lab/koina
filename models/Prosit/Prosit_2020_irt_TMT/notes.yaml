@@ -7,7 +7,7 @@ description: |
   Analytical Chemistry 2022 94 (20), 7181-7190
   DOI: 10.1021/acs.analchem.1c05435
 tag: "Retention Time"
-tag_url: "https://www.proteomicsdb.org/"
+tag_url: "https://www.wilhelmlab.org/"
 examples:
   inputs:
     [

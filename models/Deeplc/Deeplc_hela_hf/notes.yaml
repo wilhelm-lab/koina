@@ -7,7 +7,7 @@ description: |
   Robbin Bouwmeester, Ralf Gabriels, Niels Hulstaert, Lennart Martens & Sven Degroeve
   Nature Methods 18, 1363–1369 (2021) doi: 10.1038/s41592-021-01301-5
 tag: "Retention Time"
-tag_url: "https://www.proteomicsdb.org/"
+tag_url: "https://www.wilhelmlab.org/"
 examples:
   inputs:
     [

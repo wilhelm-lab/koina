@@ -1,0 +1,6 @@
+
+curl "https://{{ url }}/v2/models/{{ name }}/infer" \
+    -d '{
+        "id": "0", "inputs": [{% for input in note.examples.inputs %}
+            {"name": "{{ input.name }}", "shape": {{input.shape}}, "datatype": "{{input.httpdtype}}", "data": {{input.data}}}{% if not loop.last %},{% endif %}{% endfor %}]
+        }'

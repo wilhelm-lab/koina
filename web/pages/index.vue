@@ -42,7 +42,7 @@
           instance of Koina to make more open resources available to the
           community or you can add your own model to Koina. If you want to make
           your Koina instance available via
-          <a href="https://koina.proteomicsdb.org">koina.proteomicsdb.org</a>,
+          <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>,
           <a href="mailto:Ludwig.Lautenbacher@tum.de"
             >please contact us via E-Mail</a
           >.

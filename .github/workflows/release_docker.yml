@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Tag and prepare release
         id: tag_and_prepare_release
@@ -64,22 +64,16 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Startup
-        run: docker-compose --env-file .env.ci up -d serving develop web --build
-
-      - name: Install npm dependencies
-        run: docker-compose --env-file .env.ci run web npm install
+        run: docker-compose --env-file .env.ci up -d --build
 
       - name: Wait for serving
         run: docker-compose --env-file .env.ci exec develop koina_test.sh
 
       - name: Update OpenAPI
-        run: docker-compose --env-file .env.ci exec develop python web/openapi/openapi_gen.py
-
-      - name: Build UI
-        run: docker-compose --env-file .env.ci run web npm run generate
+        run: docker-compose --env-file .env.ci exec develop koina_build_ui.sh
 
       - name: Copy folder content recursively to remote
         uses: garygrossgarten/github-action-scp@release
