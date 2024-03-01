@@ -40,4 +40,5 @@ RUN source /home/devuser/.bashrc && nvm install 21
 COPY ./koina_test.sh /usr/local/bin/
 COPY ./koina_lint.sh /usr/local/bin/
 COPY ./koina_format.sh /usr/local/bin/
+COPY ./koina_build_ui.sh /usr/local/bin/
 USER devuser

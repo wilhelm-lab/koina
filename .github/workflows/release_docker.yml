@@ -16,7 +16,7 @@ jobs:
     runs-on: [self-hosted,Linux,X64,gpu]
     if: ${{ github.event.pull_request.merged && (contains(github.event.pull_request.labels.*.name, 'patch') || contains(github.event.pull_request.labels.*.name, 'minor') || contains(github.event.pull_request.labels.*.name, 'major')) }}
     permissions:
-      contents: read
+      contents: write
       packages: write
 
     steps:
