@@ -1,4 +1,4 @@
 #!/bin/bash
-python web/openapi/openapi_gen.py
-cd web
+cd /workspace/koina/web
+python ./openapi/openapi_gen.py
 npm run generate
