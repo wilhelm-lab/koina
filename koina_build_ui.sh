@@ -1,4 +1,6 @@
 #!/bin/bash
-cd /workspace/koina/web
+source /home/devuser/.bashrc
+cd /workspace/koina/
 python ./openapi/openapi_gen.py
+cd web
 npm run generate
