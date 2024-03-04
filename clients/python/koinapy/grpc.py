@@ -448,7 +448,7 @@ class Koina:
         batch_outputs = self.__get_batch_outputs(self.model_outputs.keys())
         batch_inputs = self.__get_batch_inputs(data)
 
-        for i in range(retries+1):
+        for i in range(retries + 1):
             # need to yield first, before doing sth, but only after first time
             if i > 0:
                 if isinstance(infer_results.get(request_id), InferResult):
