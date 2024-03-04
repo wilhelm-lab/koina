@@ -449,15 +449,13 @@ class Koina:
         batch_inputs = self.__get_batch_inputs(data)
 
         for i in range(retries):
-            if (
-                i > 0
-            ):  # need to yield first, before doing sth, but only after first time
+            # need to yield first, before doing sth, but only after first time
+            if i > 0:
                 yield
                 if isinstance(infer_results.get(request_id), InferResult):
-                    break
-                del infer_results[
-                    request_id
-                ]  # avoid race condition in case inference is slower than tqdm loop
+                    raise StopIteration
+                if i != retries - 1:
+                    del infer_results[request_id]
 
             self.client.async_infer(
                 model_name=self.model_name,
