@@ -428,7 +428,7 @@ class Koina:
         ],
         request_id: int,
         timeout: int = 10000,
-        retries: int = 10,
+        retries: int = 0,
     ):
         """
         Perform asynchronous batch inference on the given data using the Koina model.
@@ -448,13 +448,12 @@ class Koina:
         batch_outputs = self.__get_batch_outputs(self.model_outputs.keys())
         batch_inputs = self.__get_batch_inputs(data)
 
-        for i in range(retries):
+        for i in range(retries+1):
             # need to yield first, before doing sth, but only after first time
             if i > 0:
-                yield
                 if isinstance(infer_results.get(request_id), InferResult):
-                    raise StopIteration
-                if i != retries - 1:
+                    break
+                if i != retries:
                     del infer_results[request_id]
 
             self.client.async_infer(
@@ -465,6 +464,7 @@ class Koina:
                 outputs=batch_outputs,
                 client_timeout=timeout,
             )
+            yield
 
     def predict(
         self,
@@ -535,7 +535,7 @@ class Koina:
         for i, data_batch in enumerate(self.__slice_dict(data, self.batchsize)):
             tasks.append(
                 self.__async_predict_batch(
-                    data_batch, infer_results, request_id=i, retries=3
+                    data_batch, infer_results, request_id=i, retries=0
                 )
             )
             next(tasks[i])
