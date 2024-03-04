@@ -18,13 +18,13 @@ class TritonPythonModel:
     def execute(self, requests):
         responses = []
         for request in requests:
-            instrument_types = pb_utils.get_input_tensor_by_name(
+            instrument_types = np.char.lower(pb_utils.get_input_tensor_by_name(
                 request, "instrument_types"
-            ).as_numpy()
+            ).as_numpy().astype(str))
 
-            instrument_types_encoding = np.zeros(instrument_types.shape)
-            for k, v in {"QE": 0, "LUMOS": 1, "TIMSTOF": 2, "SCIEXTOF": 3}.items():
-                instrument_types_encoding[instrument_types == str.encode(k)] = v
+            instrument_types_encoding = np.full(instrument_types.shape, -1)
+            for k, v in {"qe": 0, "lumos": 1, "timstof": 2, "sciextof": 3}.items():
+                instrument_types_encoding[instrument_types == k] = v
 
             t = pb_utils.Tensor(
                 "instrument_types_encoding",

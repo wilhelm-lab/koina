@@ -16,7 +16,7 @@ def lib_test_available_grpc(model_name, server_grpc):
 
 
 def lib_test_inference(model_name, server_grpc, atol=1e-6):
-    files = glob(f"**/arr-{model_name}-*", recursive=True)
+    files = glob(f"**/arr-{model_name}-*.npy", recursive=True)
     data = {Path(f).stem.split("-")[-1]: np.load(f) for f in files}
 
     client = Koina(model_name, server_url=server_grpc, ssl=False)
