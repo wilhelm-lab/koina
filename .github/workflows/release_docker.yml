@@ -67,13 +67,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Startup
-        run: docker-compose --env-file .env.ci up -d --build
-
-      - name: Wait for serving
-        run: docker-compose --env-file .env.ci exec develop koina_test.sh
+        run: docker compose --env-file .env.ci up -d --build --wait
 
       - name: Update OpenAPI
-        run: docker-compose --env-file .env.ci exec develop koina_build_ui.sh
+        run: docker compose --env-file .env.ci exec develop koina_build_ui.sh
 
       - name: Copy folder content recursively to remote
         uses: garygrossgarten/github-action-scp@release
@@ -84,10 +81,6 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.PASSWORD }}
 
-      - name: Shutdown
+      - name: Shutdown & Cleanup
         if: always()
-        run: docker-compose --env-file .env.ci down
-
-      - name: Cleanup
-        if: always()
-        run: docker-compose --env-file .env.ci rm
+        run: docker compose --env-file .env.ci down

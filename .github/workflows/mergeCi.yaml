@@ -15,24 +15,18 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Startup
-        run: docker-compose --env-file .env.ci up -d --build serving develop
-
-      - name: Wait for poetry install
-        run: sleep 60
+        run: docker compose --env-file .env.ci up -d --build serving develop --wait
 
       - name: Styling
-        run: docker-compose --env-file .env.ci exec develop koina_format.sh
+        run: docker compose --env-file .env.ci exec develop koina_format.sh --check
 
       - name: Linting
-        run: docker-compose --env-file .env.ci exec develop koina_lint.sh --fail-under=6
+        run: docker compose --env-file .env.ci exec develop koina_lint.sh --fail-under=6
 
       - name: Testing
-        run: docker-compose --env-file .env.ci exec develop koina_test.sh --check
+        run: docker compose --env-file .env.ci exec develop koina_test.sh
 
-      - name: Shutdown
+      - name: Shutdown & Cleanup
         if: always()
-        run: docker-compose --env-file .env.ci down
+        run: docker compose --env-file .env.ci down
 
-      - name: Cleanup
-        if: always()
-        run: docker-compose --env-file .env.ci rm
