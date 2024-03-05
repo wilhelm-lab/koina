@@ -60,11 +60,11 @@ docker run \
 ### Set up a development server
 
 1. Install dependencies ([Ansible script](docs/server/))
-2. (Suggested) Install [docker-compose](https://docs.docker.com/desktop/install/linux-install/)
+2. (Suggested) Install [docker compose](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
 3. Clone the repo
 5. Update `.env` with your user- and group-id to avoid file permission issues
-6. Start the server with `docker-compose up -d`
-7. Confirm that the server started successfully with `docker-compose logs -f serving`. It the startup wass successful you will see something like this.:
+6. Start the server with `docker compose up -d --wait`
+7. Confirm that the server started successfully with `docker compose logs -f serving`. It the startup wass successful you will see something like this.:
 ```
 koina-serving-1  | I0615 13:27:04.260871 90 grpc_server.cc:2450] Started GRPCInferenceService at 0.0.0.0:8500
 koina-serving-1  | I0615 13:27:04.261163 90 http_server.cc:3555] Started HTTPService at 0.0.0.0:8501
@@ -87,7 +87,7 @@ For storing the model files themselves we use Zenodo. If you want to add your mo
 A major aspect of Koina, is that all models share a common interface making it easier for clients to use all models.
 Triton supports models written in pure python. If your model requires pre- and/or post-processing you can implement this as a "standalone" model in python.
 There are numerous examples in this repository. One with low complexity you can find [here](models/AlphaPept/AlphaPept_Preprocess_charge/1).
-If you made changes to your model you need to restart Triton. You can do that with `docker-compose restart serving`.
+If you made changes to your model you need to restart Triton. You can do that with `docker compose restart serving`.
 
 ### Create an ensemble model to connect everything
 The pre- and postprocessing models you just implemented need to be connected to the
