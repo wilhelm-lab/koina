@@ -1,8 +1,12 @@
 [tool.poetry]
 name = "koinapy"
-version = "0.0.2"
+version = "0.0.3"
 description = "Python client to communicate with Koina."
 authors = ["Ludwig Lautenbacher <Ludwig.Lautenbacher@tum.de>"]
+license = "Apache 2.0"
+homepage = "https://koina.wilhelmlab.org/"
+repository = "https://github.com/wilhelm-lab/koina"
+documentation = "https://koina.wilhelmlab.org/docs"
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -20,7 +24,6 @@ pylint = "*"
 requests = "*"
 black = "*"
 jupyter = "*"
-jinja2 = "*"
 PyYAML = "*"
 
 
