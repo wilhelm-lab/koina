@@ -70,7 +70,7 @@ jobs:
         run: docker-compose --env-file .env.ci up -d --build
 
       - name: Wait for serving
-        run: docker-compose --env-file .env.ci exec develop koina_test.sh
+        run: docker-compose --env-file .env.ci exec develop koina_wait.sh
 
       - name: Update OpenAPI
         run: docker-compose --env-file .env.ci exec develop koina_build_ui.sh

@@ -17,9 +17,6 @@ jobs:
       - name: Startup
         run: docker-compose --env-file .env.ci up -d --build serving develop
 
-      - name: Wait for poetry install
-        run: sleep 60
-
       - name: Styling
         run: docker-compose --env-file .env.ci exec develop koina_format.sh
 

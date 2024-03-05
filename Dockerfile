@@ -37,8 +37,6 @@ RUN echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /home/devuser/.ba
 RUN echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /home/devuser/.bashrc
 RUN source /home/devuser/.bashrc && nvm install 21
 # Setup CI scripts
-COPY ./koina_test.sh /usr/local/bin/
-COPY ./koina_lint.sh /usr/local/bin/
-COPY ./koina_format.sh /usr/local/bin/
-COPY ./koina_build_ui.sh /usr/local/bin/
+COPY ./koina_*.sh /usr/local/bin/
+HEALTHCHECK --start-period=30s --interval=15s --retries=12 CMD [ "ls", "/tmp/done_setup" ]
 USER devuser
