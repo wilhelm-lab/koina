@@ -24,8 +24,6 @@ pylint = "*"
 requests = "*"
 black = "*"
 jupyter = "*"
-PyYAML = "*"
-
 
 [build-system]
 requires = ["poetry-core"]
