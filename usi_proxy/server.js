@@ -7,21 +7,29 @@ const axios = require('axios');
 
 // Create Express application
 const app = express();
-const PORT = 3000; // Port on which the proxy server will listen
 
 // Import the dotenv package
 require('dotenv').config();
 
 // Use the environment variable for the server URL
-const serverURL = process.env.SERVER_URL || 'http://serving:8501';
+const serverURL = process.env.SERVER_URL || 'http://localhost:8501';
+const PORT = process.env.PORT || 3000; // Port on which the proxy server will listen
 
 // Function to handle proxy requests
 const handleProxyRequest = (req, res, targetURL) => {
   // Determine whether to use HTTP or HTTPS
   const proxyRequest = (targetURL.protocol === 'https:') ? https.request : http.request;
-  const proxyReq = proxyRequest(targetURL, (proxyRes) => {
-    console.log('Response status code:', proxyRes.statusCode);
 
+  // Create options object to include method, headers and body
+  const options = {
+    hostname: targetURL.hostname,
+    port: targetURL.port,
+    path: targetURL.path,
+    method: req.method,
+    headers: req.headers,
+  };
+
+  const proxyReq = proxyRequest(options, (proxyRes) => {
     // Log data received from the target server
     let responseData = '';
     proxyRes.on('data', (chunk) => {
@@ -29,7 +37,6 @@ const handleProxyRequest = (req, res, targetURL) => {
     });
 
     proxyRes.on('end', () => {
-      console.log('Response data:', responseData);
       res.writeHead(proxyRes.statusCode, proxyRes.headers);
       res.end(responseData); // End the client response
     });
@@ -43,6 +50,12 @@ const handleProxyRequest = (req, res, targetURL) => {
 
   // Pipe the incoming request body to the proxy request (if any)
   req.pipe(proxyReq);
+
+  // Listen to the 'end' event on the incoming request body
+  req.on('end', () => {
+    // End the proxy request
+    proxyReq.end();
+  });
 };
 
 function transformKoinaSpectrum(spectrum) {
@@ -139,7 +152,6 @@ try {
     ...data
   });
 } catch (error) {
-  console.error('There was a problem with your fetch operation:', error);
   // Use different status codes based on the type of error
   if (error.message === 'mz or intensities array not found in outputs') {
     res.status(400).send(`[ERROR] ${error.message}`);
@@ -150,15 +162,15 @@ try {
 });
 
 // Middleware for all endpoints
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   // Parse the request URL
   const targetURL = url.parse(serverURL + req.url);
-  handleProxyRequest(req, res, targetURL);
+  await handleProxyRequest(req, res, targetURL);
 });
 
 // Start the proxy server
 app.listen(PORT, () => {
-  console.log(`Proxy server listening on port ${PORT}`);
+  console.log(`Proxy server listening on port ${PORT} forwarding requests to ${serverURL}`);
 });
 
 
