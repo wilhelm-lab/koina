@@ -112,44 +112,37 @@ app.get('/v2/models/*/use', async (req, res) => {
   };
 
   // Define options for the POST request
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  };
+const options = {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  data: JSON.stringify(payload)
+};
 
-  // Modify the requested path to /v2/models/*/infer
-  const targetURL = `http://serving:8501/v2/models/${modelName}/infer`;
+// Modify the requested path to /v2/models/*/infer
+const targetURL = `http://serving:8501/v2/models/${modelName}/infer`;
 
-  // Make the POST request to the target URL
-  fetch(targetURL, options)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(data => {
-      // Handle the response data as needed
-      data = transformKoinaSpectrum(data);
-      res.json({
-        attributes: { "origin": "Koina", "model": modelName, "payload": payload },
-        ...data
-      });
-    })
-    .catch(error => {
-      console.error('There was a problem with your fetch operation:', error);
-      if (error.message === 'mz or intensities array not found in outputs') {
-        res.status(400).send(`[ERROR] ${error.message}`);
-      } else {
-        res.status(500).send('Internal Server Error');
-      }
+// Make the POST request to the target URL using axios
+axios(targetURL, options)
+  .then(response => {
+    // Handle the response data as needed
+    let data = transformKoinaSpectrum(response.data);
+    res.json({
+      attributes: { "origin": "Koina", "model": modelName, "payload": payload },
+      ...data
     });
+  })
+  .catch(error => {
+    console.error('There was a problem with your fetch operation:', error);
+    // Use different status codes based on the type of error
+    if (error.message === 'mz or intensities array not found in outputs') {
+      res.status(400).send(`[ERROR] ${error.message}`);
+    } else {
+      res.status(500).send(`[ERROR] ${error.message}`);
+    }
+  });
 });
-
-
 
 // Middleware for all endpoints
 app.use((req, res, next) => {
@@ -162,3 +155,5 @@ app.use((req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Proxy server listening on port ${PORT}`);
 });
+
+
