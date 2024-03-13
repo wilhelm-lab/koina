@@ -130,24 +130,23 @@ const options = {
 const targetURL = `${serverURL}/v2/models/${modelName}/infer`;
 
 // Make the POST request to the target URL using axios
-axios(targetURL, options)
-  .then(response => {
-    // Handle the response data as needed
-    let data = transformKoinaSpectrum(response.data);
-    res.json({
-      attributes: { "origin": "Koina", "model": modelName, "payload": payload },
-      ...data
-    });
-  })
-  .catch(error => {
-    console.error('There was a problem with your fetch operation:', error);
-    // Use different status codes based on the type of error
-    if (error.message === 'mz or intensities array not found in outputs') {
-      res.status(400).send(`[ERROR] ${error.message}`);
-    } else {
-      res.status(500).send(`[ERROR] ${error.message}`);
-    }
+try {
+  const response = await axios(targetURL, options);
+  // Handle the response data as needed
+  let data = transformKoinaSpectrum(response.data);
+  res.json({
+    attributes: { "origin": "Koina", "model": modelName, "payload": payload },
+    ...data
   });
+} catch (error) {
+  console.error('There was a problem with your fetch operation:', error);
+  // Use different status codes based on the type of error
+  if (error.message === 'mz or intensities array not found in outputs') {
+    res.status(400).send(`[ERROR] ${error.message}`);
+  } else {
+    res.status(500).send(`[ERROR] ${error.message}`);
+  }
+}
 });
 
 // Middleware for all endpoints
