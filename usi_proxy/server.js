@@ -9,6 +9,12 @@ const axios = require('axios');
 const app = express();
 const PORT = 3000; // Port on which the proxy server will listen
 
+// Import the dotenv package
+require('dotenv').config();
+
+// Use the environment variable for the server URL
+const serverURL = process.env.SERVER_URL || 'http://serving:8501';
+
 // Function to handle proxy requests
 const handleProxyRequest = (req, res, targetURL) => {
   // Determine whether to use HTTP or HTTPS
@@ -63,7 +69,7 @@ function usiGetInterpretation(inputString) {
 
 async function createReqInput(modelName) {
   try {
-    const response = await axios.get(`http://serving:8501/v2/models/${modelName}/config`);
+    const response = await axios.get(`${serverURL}/v2/models/${modelName}/config`);
     modelConfig = response.data; // Send the data from the URL back to the client
   } catch (error) {
     console.error('Failed to fetch config:', error);
@@ -121,7 +127,7 @@ const options = {
 };
 
 // Modify the requested path to /v2/models/*/infer
-const targetURL = `http://serving:8501/v2/models/${modelName}/infer`;
+const targetURL = `${serverURL}/v2/models/${modelName}/infer`;
 
 // Make the POST request to the target URL using axios
 axios(targetURL, options)
@@ -147,7 +153,7 @@ axios(targetURL, options)
 // Middleware for all endpoints
 app.use((req, res, next) => {
   // Parse the request URL
-  const targetURL = url.parse('http://serving:8501' + req.url);
+  const targetURL = url.parse(serverURL + req.url);
   handleProxyRequest(req, res, targetURL);
 });
 
