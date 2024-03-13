@@ -97,8 +97,8 @@ async function createReqInput(modelName) {
 }
 
 
-// Route handler for /v2/models/*/use endpoint
-app.get('/v2/models/*/use', async (req, res) => {
+// Route handler for /v2/models/*/usi endpoint
+app.get('/v2/models/*/usi', async (req, res) => {
   // Extract the wildcard (*) part from the URL
   const modelName = req.params[0];
   let peptideSequence;
