@@ -35,7 +35,7 @@ RUN chmod 777 /home/devuser/.nvm
 RUN echo 'export NVM_DIR="/home/devuser/.nvm"' >> /home/devuser/.bashrc
 RUN echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> /home/devuser/.bashrc
 RUN echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >> /home/devuser/.bashrc
-RUN source /home/devuser/.bashrc && nvm install 21
+RUN source /home/devuser/.bashrc && nvm install 20
 # Setup CI scripts
 COPY ./koina_*.sh /usr/local/bin/
 HEALTHCHECK --start-period=30s --interval=15s --retries=12 CMD [ "ls", "/tmp/done_setup" ]

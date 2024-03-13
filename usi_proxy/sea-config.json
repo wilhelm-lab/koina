@@ -1,0 +1,4 @@
+{
+    "main": "build.js",
+    "output": "sea-prep.blob"
+}
