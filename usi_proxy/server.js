@@ -40,11 +40,17 @@ const handleProxyRequest = (req, res, targetURL) => {
 };
 
 function transformKoinaSpectrum(spectrum) {
-  const mzs = spectrum.outputs.find(output => output.name === 'mz').data || [];
-  const intensities = spectrum.outputs.find(output => output.name === 'intensities').data || [];
+  const mzOutput = spectrum.outputs.find(output => output.name === 'mz');
+  const intensityOutput = spectrum.outputs.find(output => output.name === 'intensities');
+
+  if (!mzOutput || !intensityOutput) {
+    throw new Error('mz or intensities array not found in outputs');
+  }
+
+  const mzs = mzOutput.data || [];
+  const intensities = intensityOutput.data || [];
 
   return {
-    // attributes: [],
     mzs: mzs.filter((mz, index) => intensities[index] > 1e-4),
     intensities: intensities.filter((intensity) => intensity > 1e-4),
   };
@@ -135,7 +141,11 @@ app.get('/v2/models/*/use', async (req, res) => {
     })
     .catch(error => {
       console.error('There was a problem with your fetch operation:', error);
-      res.status(500).send('Internal Server Error');
+      if (error.message === 'mz or intensities array not found in outputs') {
+        res.status(400).send(`[ERROR] ${error.message}`);
+      } else {
+        res.status(500).send('Internal Server Error');
+      }
     });
 });
 
