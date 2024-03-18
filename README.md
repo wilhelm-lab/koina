@@ -34,7 +34,7 @@ After installing the dependencies you can pull the docker image and run it. If y
 When using this docker image you need to accept the terms in the [NVIDIA Deep Learning Container License](NVIDIA_Deep_Learning_Container_License.pdf)
 ```bash
 docker run \
-    --gpus '"device=0" \
+    --gpus '"device=0"' \
     --shm-size 8G \
     --name koina \
     -p 8500-8502:8500-8502 \

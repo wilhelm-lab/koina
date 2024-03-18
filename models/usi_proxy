@@ -1,0 +1,7 @@
+#!/bin/bash
+# This file will be replaced by the usi proxy binary when you run `npm run build`
+echo "---------------------------------------------------------------------------------"
+echo "USI proxy server wasn't build. Continue without it. If you need the proxy server,"
+echo "please build it using the devcontainer and then restart/rebuild the server."
+echo "---------------------------------------------------------------------------------"
+exit 1

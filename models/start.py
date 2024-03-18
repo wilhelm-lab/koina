@@ -71,11 +71,11 @@ def recursive_dependency_symlink(pattern: str):
 def find_and_download():
     for path_zen in glob(f"repo/**/.zenodo", recursive=True):
         path_zen = Path(path_zen)
-        print(f"Downloading {path_zen}")
         with open(path_zen) as f:
             url_zip = f.read()
         path_zip = Path(f"{path_zen.parent}/tmp.zip")
         if not path_zip.is_file():
+            print(f"Downloading {path_zen}")
             with open(path_zip, "wb") as f:
                 f.write(requests.get(url_zip).content)
             with zipfile.ZipFile(path_zip, "r") as f:
@@ -94,27 +94,33 @@ if __name__ == "__main__":
         recursive_dependency_symlink("*")
     find_and_download()
 
-    subprocess.run(
-        [
-            "tritonserver",
-            "--model-repository=/models/repo",
-            "--allow-grpc=true",
-            "--grpc-port=8500",
-            "--allow-http=true",
-            "--http-port=8501",
-            "--allow-metrics=true",
-            "--allow-cpu-metrics=true",
-            "--allow-gpu-metrics=true",
-            "--metrics-port=8502",
-            "--log-info=true",
-            "--log-warning=true",
-            "--log-error=true",
-            "--rate-limit",
-            "execution_count",
-            "--cuda-memory-pool-byte-size",
-            "0:536870912",
-            "--grpc-infer-response-compression-level",
-            "high",
-        ],
-        check=False,
-    )
+    triton_cmd = [
+        "tritonserver",
+        "--model-repository=/models/repo",
+        "--allow-grpc=true",
+        "--grpc-port=8500",
+        "--allow-http=true",
+        "--allow-metrics=true",
+        "--allow-cpu-metrics=true",
+        "--allow-gpu-metrics=true",
+        "--metrics-port=8502",
+        "--log-info=true",
+        "--log-warning=true",
+        "--log-error=true",
+        "--rate-limit",
+        "execution_count",
+        "--cuda-memory-pool-byte-size",
+        "0:536870912",
+        "--grpc-infer-response-compression-level",
+        "high",
+    ]
+
+    usi_proxy = subprocess.Popen(["/models/usi_proxy"])
+
+    time.sleep(1)
+    if usi_proxy.poll() is None:
+        # .poll() returns None if the process is still running
+        # that means the usi proxy likely started successfully
+        subprocess.run(triton_cmd + ["--http-port=8503"], check=True)
+    else:
+        subprocess.run(triton_cmd + ["--http-port=8501"], check=True)
