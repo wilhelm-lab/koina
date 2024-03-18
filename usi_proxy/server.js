@@ -12,8 +12,8 @@ const app = express();
 require('dotenv').config();
 
 // Use the environment variable for the server URL
-const serverURL = process.env.SERVER_URL || 'http://localhost:8501';
-const PORT = process.env.PORT || 3000; // Port on which the proxy server will listen
+const serverURL = process.env.SERVER_URL || 'http://localhost:8503';
+const PORT = process.env.PORT || 8501; // Port on which the proxy server will listen
 
 // Function to handle proxy requests
 const handleProxyRequest = (req, res, targetURL) => {

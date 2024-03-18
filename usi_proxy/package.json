@@ -4,10 +4,11 @@
   "description": "",
   "scripts": {
     "srv": "node server.js",
-    "build": "npm run build1 && npm run build2 && npm run postject && npm run build-cleanup",
+    "build": "npm run build1 && npm run build2 && npm run postject && npm run move && npm run build-cleanup",
     "build1": "esbuild server.js --bundle --platform=node --outfile=build.js",
     "build2": "node --experimental-sea-config sea-config.json",
     "postject": "cp $(command -v node) server && postject server NODE_SEA_BLOB sea-prep.blob --sentinel-fuse NODE_SEA_FUSE_fce680ab2cc467b6e072b8b5df1996b2",
+    "move": "cp server ../models/usi_proxy",
     "build-cleanup": "rm build.js sea-prep.blob"
   },
   "author": "",
