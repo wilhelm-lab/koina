@@ -8,6 +8,10 @@ const axios = require('axios');
 // Create Express application
 const app = express();
 
+// // Use cors middleware
+// const cors = require('cors');
+// app.use(cors());
+
 // Import the dotenv package
 require('dotenv').config();
 
@@ -15,12 +19,9 @@ require('dotenv').config();
 const serverURL = process.env.SERVER_URL || 'http://localhost:8503';
 const PORT = process.env.PORT || 8501; // Port on which the proxy server will listen
 
-// Function to handle proxy requests
 const handleProxyRequest = (req, res, targetURL) => {
-  // Determine whether to use HTTP or HTTPS
   const proxyRequest = (targetURL.protocol === 'https:') ? https.request : http.request;
 
-  // Create options object to include method, headers and body
   const options = {
     hostname: targetURL.hostname,
     port: targetURL.port,
@@ -30,32 +31,19 @@ const handleProxyRequest = (req, res, targetURL) => {
   };
 
   const proxyReq = proxyRequest(options, (proxyRes) => {
-    // Log data received from the target server
-    let responseData = '';
-    proxyRes.on('data', (chunk) => {
-      responseData += chunk;
-    });
-
-    proxyRes.on('end', () => {
-      res.writeHead(proxyRes.statusCode, proxyRes.headers);
-      res.end(responseData); // End the client response
-    });
+    res.writeHead(proxyRes.statusCode, proxyRes.headers);
+    proxyRes.pipe(res);
   });
 
-  // Handle errors
   proxyReq.on('error', (err) => {
-    console.error('Proxy error:', err);
-    res.status(500).send('Proxy error');
-  });
-
-  // Pipe the incoming request body to the proxy request (if any)
-  req.pipe(proxyReq);
-
-  // Listen to the 'end' event on the incoming request body
-  req.on('end', () => {
-    // End the proxy request
+    console.error('Proxy request error:', err);
+    if (!res.headersSent) {
+      res.status(500).send('Proxy request error');
+    }
     proxyReq.end();
   });
+
+  req.pipe(proxyReq);
 };
 
 function transformKoinaSpectrum(spectrum) {
