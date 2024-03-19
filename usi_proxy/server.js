@@ -19,7 +19,7 @@ require('dotenv').config();
 const serverURL = process.env.SERVER_URL || 'http://localhost:8503';
 const PORT = process.env.PORT || 8501; // Port on which the proxy server will listen
 
-const handleProxyRequest = (req, res, targetURL) => {
+const handleProxyRequest = async (req, res, targetURL) => {
   const proxyRequest = (targetURL.protocol === 'https:') ? https.request : http.request;
 
   const options = {
@@ -87,12 +87,12 @@ async function createReqInput(modelName) {
 const createPayload = async (req) => {
   // Extract the wildcard (*) part from the URL
   const modelName = req.params[0];
-  let peptideSequence;
-  let precursorCharge;
+  let usiPeptideSequence;
+  let usiPrecursorCharge;
   const usiInterpretation = usiGetInterpretation(req.query.usi ? req.query.usi : '');
 
-  [peptideSequence, precursorCharge] = usiInterpretation.split("/");
-  precursorCharge = parseInt(precursorCharge);
+  [usiPeptideSequence, precursorCharge] = usiInterpretation.split("/");
+  precursorCharge = parseInt(usiPrecursorCharge);
 
   let payload = await createReqInput(modelName)
   // Define the static JSON payload
@@ -101,16 +101,21 @@ const createPayload = async (req) => {
       throw new Error(`Required input ${input.name} was not provided`);
     }
 
+    let dataValue;
+
+    if (input.name === "peptide_sequences" && req.query[input.name] === undefined) {
+      dataValue = usiPeptideSequence;
+    } else if (input.name === "precursor_charges" && req.query[input.name] === undefined) {
+      dataValue = usiPrecursorCharge;
+    } else if (input.datatype != "BYTES") {
+      dataValue = parseFloat(req.query[input.name]);
+    } else {
+      dataValue = req.query[input.name];
+    }
+
     return {
       ...input,
-      data: [
-        input.name === "peptide_sequences" && req.query[input.name] === undefined
-          ? peptideSequence
-          : input.name === "precursor_charges" && req.query[input.name] === undefined
-            ? precursorCharge
-            : input.datatype != "BYTES"
-              ? parseFloat(req.query[input.name])
-              : req.query[input.name]]
+      data: [dataValue]
     }
   }
   );
@@ -169,5 +174,3 @@ app.use(async (req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Proxy server listening on port ${PORT} forwarding requests to ${serverURL}`);
 });
-
-
