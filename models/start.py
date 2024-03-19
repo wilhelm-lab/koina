@@ -123,7 +123,7 @@ if __name__ == "__main__":
         # that means the usi proxy likely started successfully
         subprocess.Popen(triton_cmd + ["--http-port=8503"])
         while True:
-            time.sleep(60)
+            time.sleep(15)
             if usi_proxy.poll() is not None:
                 print("USI Proxy died, restarting")
                 usi_proxy = subprocess.Popen(["/models/usi_proxy"])
