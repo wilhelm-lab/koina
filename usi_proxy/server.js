@@ -84,9 +84,7 @@ async function createReqInput(modelName) {
   }));
 }
 
-
-// Route handler for /v2/models/*/usi endpoint
-app.get('/v2/models/*/usi', async (req, res) => {
+const createPayload = async (req) => {
   // Extract the wildcard (*) part from the URL
   const modelName = req.params[0];
   let peptideSequence;
@@ -99,6 +97,10 @@ app.get('/v2/models/*/usi', async (req, res) => {
   let payload = await createReqInput(modelName)
   // Define the static JSON payload
   payloadInputs = payload.map(input => {
+    if (req.query[input.name] === undefined && input.name !== "peptide_sequences" && input.name !== "precursor_charges") {
+      throw new Error(`Required input ${input.name} was not provided`);
+    }
+
     return {
       ...input,
       data: [
@@ -119,34 +121,41 @@ app.get('/v2/models/*/usi', async (req, res) => {
   };
 
   // Define options for the POST request
-const options = {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  data: JSON.stringify(payload)
-};
-
-// Modify the requested path to /v2/models/*/infer
-const targetURL = `${serverURL}/v2/models/${modelName}/infer`;
-
-// Make the POST request to the target URL using axios
-try {
-  const response = await axios(targetURL, options);
-  // Handle the response data as needed
-  let data = transformKoinaSpectrum(response.data);
-  res.json({
-    attributes: { "origin": "Koina", "model": modelName, "payload": payload },
-    ...data
-  });
-} catch (error) {
-  // Use different status codes based on the type of error
-  if (error.message === 'mz or intensities array not found in outputs') {
-    res.status(400).send(`[ERROR] ${error.message}`);
-  } else {
-    res.status(500).send(`[ERROR] ${error.message}`);
-  }
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: JSON.stringify(payload)
+  };
+  return options
 }
+
+
+// Route handler for /v2/models/*/usi endpoint
+app.get('/v2/models/*/usi', async (req, res) => {
+  const modelName = req.params[0];
+  // Make the POST request to the target URL using axios
+  try {
+    // Modify the requested path to /v2/models/*/infer
+    const targetURL = `${serverURL}/v2/models/${modelName}/infer`;
+
+    const options = await createPayload(req)
+    const response = await axios(targetURL, options);
+    // Handle the response data as needed
+    let data = transformKoinaSpectrum(response.data);
+    res.json({
+      attributes: { "origin": "Koina", "model": modelName, "payload": options['data'] },
+      ...data
+    });
+  } catch (error) {
+    // Use different status codes based on the type of error
+    if (error.message === 'mz or intensities array not found in outputs') {
+      res.status(400).send(`[ERROR] ${error.message}`);
+    } else {
+      res.status(500).send(`[ERROR] ${error.message}`);
+    }
+  }
 });
 
 // Middleware for all endpoints
