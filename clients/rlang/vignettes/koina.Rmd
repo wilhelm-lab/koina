@@ -1,0 +1,94 @@
+---
+title: "On using the R lang client for koina"
+author:
+- name: Ludwig Lautenbacher
+  affiliation:
+    - Technical University of Munich
+  email: ludwig.lautenbacher@tum.de
+- name: Christian Panse
+  affiliation:
+    - Functional Genomics Center Zurich (FGCZ) - University of Zurich | ETH Zurich, Winterthurerstrasse 190, CH-8057 Zurich, Switzerland
+    - Swiss Institute of Bioinformatics (SIB), Quartier Sorge - Batiment Amphipole, CH-1015 Lausanne, Switzerland
+package: koina
+abstract: |
+  some text `r BiocStyle::Biocpkg('koina')`
+output:
+  BiocStyle::html_document:
+    toc_float: true
+bibliography: koina.bib
+vignette: >
+  %\usepackage[utf8]{inputenc}
+  %\VignetteIndexEntry{On using the R lang client for koina}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+urlcolor: blue
+---
+
+```{r style, results = 'asis'}
+BiocStyle::markdown()
+knitr::opts_chunk$set(fig.wide = TRUE, fig.retina = 3, error=FALSE, eval=TRUE)
+```
+
+# Introduction
+
+bla bala xxx bla [@prosit2019]
+```{r Fig1, echo=FALSE, out.width="100%", eval=TRUE, fig.cap="Screenshot of Fig.1d [@prosit2019] https://www.nature.com/articles/s41592-019-0426-7"}
+  knitr::include_graphics("https://user-images.githubusercontent.com/4901987/237583247-a948ceb3-b525-4c30-b701-218346a30cf6.jpg")
+```
+
+```{r Fig2, out.width="100%", fig.cap="Reproducing Fig1"}
+ koina_instance <- koina::Koina$new(
+   model_name = "Prosit_2019_intensity",
+   server_url = "koina.wilhelmlab.org:443",
+   ssl = TRUE
+ )
+
+ input <- list(
+   peptide_sequences = array(c("LKEATIQLDELNQK"),
+     dim = c(1, 1)),
+   collision_energies = array(c(25), dim = c(1, 1)),
+   precursor_charges = array(c(1), dim = c(1, 1))
+ )
+ 
+ prediction_results <- koina_instance$predict(input)
+ 
+ plot(prediction_results$intensities ~ prediction_results$mz, type = 'h', ylim = c(0,1))
+
+ ## only top highest intensities
+ (prediction_results$intensities |> order(decreasing = TRUE))[1:10] -> idx
+ axis(3, at = prediction_results$mz[idx], labels = prediction_results$annotation[idx])
+```
+
+
+
+# Requirements
+
+# Install
+
+
+```{r installRawrr, eval=FALSE}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("koina")
+```
+
+# Usage
+
+## R command line
+
+### Input
+
+### Output
+
+## Launching the shiny application
+
+# FAQ
+
+# References {-}
+
+# Session information {-}
+
+```{r sessioninfo, eval=TRUE}
+sessionInfo()
+```
