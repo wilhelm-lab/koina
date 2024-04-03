@@ -1,6 +1,48 @@
-library(httr)
-library(jsonlite)
+#R
 
+#' koina class
+#'
+#' @field model_inputs list. 
+#' @field model_outputs list. 
+#' @field batch_size numeric. 
+#' @field response_dict list. 
+#' @field model_name character. 
+#' @field url character. 
+#' @field ssl logical. 
+#' @field disable_progress_bar logical. 
+#' @field client ANY. 
+#' @field type_convert list. 
+#' @author Ludwig Lautenbacher, 2024
+#' 
+#' @seealso \url{https://koina.wilhelmlab.org/docs}
+#'
+#' @return an instance of the Koina class
+#' 
+#' @importFrom methods new
+#' @importFrom httr GET status_code content
+#' @importFrom jsonlite fromJSON
+#' @importFrom utils txtProgressBar
+#' @export Koina
+#'
+#' @examples
+#' library(koina)
+#' ## Example instantiation of the Koina class
+#' koina_instance <- Koina$new(
+#'   model_name = "Prosit_2019_intensity",
+#'   server_url = "koina.wilhelmlab.org:443",
+#'   ssl = TRUE
+#' )
+#' 
+#' ## Example input data for predict_batch
+#' ## TODO(cp): detect dim e.g., use length of peptide 
+#' input <- list(
+#'   peptide_sequences = array(c("LGGNEQVTR", "GAGSSEPVTGLDAK"),
+#'     dim = c(2, 1)),
+#'   collision_energies = array(c(25, 25), dim = c(2, 1)),
+#'   precursor_charges = array(c(1, 2), dim = c(2, 1))
+#' )
+#' 
+#' prediction_results <- koina_instance$predict(input)
 Koina <- setRefClass(
   "Koina",
   fields = list(
@@ -20,13 +62,13 @@ Koina <- setRefClass(
       .self$model_inputs <<- list()
       .self$model_outputs <<- list()
       .self$response_dict <<- list()
-
+      
       .self$model_name <<- model_name
       .self$url <<- server_url
       .self$ssl <<- ssl
       .self$disable_progress_bar <<- disable_progress_bar
       .self$client <<- NA # Initialize your InferenceServerClient here, adjust as needed
-
+      
       .self$type_convert <<- list(
         FP32 = "float32",
         BYTES = "character",
@@ -34,7 +76,7 @@ Koina <- setRefClass(
         INT32 = "integer",
         INT64 = "integer"
       )
-
+      
       # Placeholder for server and model check methods
       .self$is_server_ready()
       .self$is_model_ready()
@@ -270,7 +312,7 @@ Koina <- setRefClass(
           aggregated_results[[name]] <- matrix(concatenated_vector, ncol = 1)
         }
       }
-      
+
       return(aggregated_results)
     }
   )
