@@ -21,6 +21,7 @@
 #' @importFrom methods new
 #' @importFrom httr GET status_code content
 #' @importFrom jsonlite fromJSON
+#' @importFrom utils txtProgressBar
 #' @export Koina
 #'
 #' @examples
