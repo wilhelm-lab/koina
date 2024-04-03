@@ -12,7 +12,7 @@ Depends:
 Imports:
   httr,
   jsonlite,
-  rlang,
+  methods,
   shiny (>= 1.5),
 Suggests:
   BiocStyle (>= 2.28),
