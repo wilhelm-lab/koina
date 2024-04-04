@@ -19,7 +19,7 @@ Suggests:
   knitr,
   protViz,
   testthat
-Description: implemnts an R interface for koina.
+Description: implemnts an R interface for koina in OOP-style.
 License: GPL-3
 URL: https://github.com/wilhelm-lab/koina
 BugReports: https://github.com/wilhelm-lab/koina/issues
