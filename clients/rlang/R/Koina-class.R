@@ -1,12 +1,13 @@
 #R
 
+
 #' koina class
 #'
 #' @field model_inputs list. 
 #' @field model_outputs list. 
 #' @field batch_size numeric. 
 #' @field response_dict list. 
-#' @field model_name character. 
+#' @field model_name character, e.g., \code{Prosit_2019_intensity}. 
 #' @field url character. 
 #' @field ssl logical. 
 #' @field disable_progress_bar logical. 
