@@ -13,9 +13,11 @@ Imports:
   httr,
   jsonlite,
   methods,
+  utils
 Suggests:
   BiocStyle (>= 2.28),
   knitr,
+  protViz,
   testthat
 Description: implemnts an R interface for koina.
 License: GPL-3
