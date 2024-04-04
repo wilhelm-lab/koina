@@ -25,7 +25,7 @@
 #' @export Koina
 #'
 #' @examples
-#' library(koina)
+#' library(koinar)
 #' ## Example instantiation of the Koina class
 #' koina_instance <- Koina$new(
 #'   model_name = "Prosit_2019_intensity",
@@ -53,8 +53,6 @@ Koina <- setRefClass(
     model_name = "character",
     url = "character",
     ssl = "logical",
-    disable_progress_bar = "logical",
-    client = "ANY", # Placeholder for client object, adjust as needed
     type_convert = "list"
   ),
   methods = list(
@@ -66,8 +64,6 @@ Koina <- setRefClass(
       .self$model_name <<- model_name
       .self$url <<- server_url
       .self$ssl <<- ssl
-      .self$disable_progress_bar <<- disable_progress_bar
-      .self$client <<- NA # Initialize your InferenceServerClient here, adjust as needed
       
       .self$type_convert <<- list(
         FP32 = "float32",
@@ -77,11 +73,9 @@ Koina <- setRefClass(
         INT64 = "integer"
       )
       
-      # Placeholder for server and model check methods
       .self$is_server_ready()
       .self$is_model_ready()
       
-      # Placeholder for methods to get inputs, outputs, and batch size
       .self$get_inputs()
       .self$get_outputs()
       .self$get_batchsize()
@@ -105,7 +99,6 @@ Koina <- setRefClass(
       if(httr::status_code(response) == 200) {
         return(TRUE)
       } else {
-        # It's a good practice to provide specifics about the failure for better debugging.
         content <- httr::content(response, "text", encoding = "UTF-8")
         if(httr::status_code(response) == 400) {
           stop("ValueError: The specified model is not available at the server. ", content)
@@ -118,15 +111,12 @@ Koina <- setRefClass(
       protocol <- ifelse(.self$ssl, "https", "http")
       endpoint <- paste0(protocol, "://", .self$url, "/v2/models/", .self$model_name)
       
-      # Perform the GET request
       response <- httr::GET(endpoint)
       
-      # Check if the request was successful
       if (httr::status_code(response) != 200) {
         stop("InferenceServerException: An exception occurred while querying the server for model inputs.")
       }
       
-      # Parse the response
       content <- httr::content(response, "parsed")
       
       # Retrieve inputs from the model's metadata and store them
@@ -143,15 +133,12 @@ Koina <- setRefClass(
       protocol <- ifelse(.self$ssl, "https", "http")
       endpoint <- paste0(protocol, "://", .self$url, "/v2/models/", .self$model_name)
       
-      # Perform the GET request
       response <- httr::GET(endpoint)
       
-      # Check if the request was successful
       if (httr::status_code(response) != 200) {
         stop("InferenceServerException: An exception occurred while querying the server for model metadata.")
       }
       
-      # Parse the response
       content <- httr::content(response, "parsed")
       
       # Extract and store outputs from the model's metadata
@@ -199,20 +186,21 @@ Koina <- setRefClass(
         data_list <- input_data[[name]]
         list(
           name = name,
-          shape = dim(data_list),#c(length(data_list), 1), # Assuming the shape from the data list length. Adjust per actual requirements.
+          shape = dim(data_list), # Retrieve shape from the input data
           datatype = .self$model_inputs[[name]]$datatype, # Retrieve datatype from the model inputs information
           data = data_list
         )
       })
       
-      # Prepare the POST data
+      # Prepare the POST json payload
       post_data <- list(
-        id = Sys.time(), # Example ID generation based on system time. Adjust as needed.
+        id = Sys.time(),
         inputs = inputs
       )
       
       # Convert the list to JSON
       json_data <- jsonlite::toJSON(post_data, auto_unbox = TRUE)
+
       # Perform the POST request
       response <- httr::POST(
         url = endpoint,
@@ -225,8 +213,8 @@ Koina <- setRefClass(
       if(httr::status_code(response) != 200) {
         stop("Request failed. Status code: ", httr::content(response))
       } else {
-        response_json <- httr::content(response, "text", encoding = "UTF-8") # Assuming response is obtained from httr::POST
-        return (.self$convert_response_to_list(response_json)) # Use the method to process and return data
+        response_json <- httr::content(response, "text", encoding = "UTF-8")
+        return (.self$convert_response_to_list(response_json))
       }
     },
     convert_response_to_list = function(json_response) {
@@ -247,9 +235,8 @@ Koina <- setRefClass(
           } else if(datatype == "INT32") {
             data <- as.integer(data)
           }
-          # Add more datatype handling as needed
           
-          # Reshape the data based on provided shape, example for 2D shape
+          # Reshape the data based on provided shape TODO check if this works for higher dimensions
           if (length(output$shape) == 2) {
             data <- matrix(data, nrow = as.integer(output$shape[1]), byrow = TRUE)
           }
@@ -286,11 +273,27 @@ Koina <- setRefClass(
         setTxtProgressBar(pb, batch_number)
       }
       
-      close(pb) # Close the progress bar after the loop completes
+      close(pb)
       return(aggregate_batches(results))
     },
     aggregate_batches = function(list_of_list_of_arrays) {
-      # Initialize an empty list to store aggregated results
+      #' Aggregate Batches of Arrays
+      #'
+      #' Takes a list of lists containing arrays and aggregates them by name across all batches. 
+      #' For matrices, they are concatenated along rows. Vectors are treated as 1-column matrices.
+      #' 
+      #' @param list_of_list_of_arrays A list of lists, where each inner list represents a "batch"
+      #'        containing named arrays (either vectors or matrices) to be aggregated.
+      #'
+      #' @return A list of aggregated arrays, where each named element is either a matrix 
+      #'         (for originally matrix-type elements) or a 1-column matrix (for vector-type elements),
+      #'         aggregating corresponding elements across all batches.
+      #'
+      #' @examples
+      #' # Assuming batch1 and batch2 are lists containing named matrices/vectors
+      #' aggregate_batches(list(batch1, batch2))
+      #'
+      #' @export
       aggregated_results <- list()
       
       # Extract names from the first batch as a reference for aggregation

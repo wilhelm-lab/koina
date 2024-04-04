@@ -9,7 +9,7 @@ author:
   affiliation:
     - Functional Genomics Center Zurich (FGCZ) - University of Zurich | ETH Zurich, Winterthurerstrasse 190, CH-8057 Zurich, Switzerland
     - Swiss Institute of Bioinformatics (SIB), Quartier Sorge - Batiment Amphipole, CH-1015 Lausanne, Switzerland
-package: koina
+package: koinar
 abstract: |
   some text `r BiocStyle::Biocpkg('koina')`
 output:
@@ -37,7 +37,7 @@ bla bala xxx bla [@prosit2019]
 ```
 
 ```{r Fig2, out.width="100%", fig.cap="Reproducing Fig1"}
- koina_instance <- koina::Koina$new(
+ koina_instance <- koinar::Koina$new(
    model_name = "Prosit_2019_intensity",
    server_url = "koina.wilhelmlab.org:443",
    ssl = TRUE
@@ -70,7 +70,7 @@ bla bala xxx bla [@prosit2019]
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-BiocManager::install("koina")
+BiocManager::install("koinar")
 ```
 
 # Usage

@@ -21,3 +21,8 @@
 
 # Hide symlink in models/repo
 models/repo/*
+
+# Rclient build
+clients/koinar*tar.gz
+clients/koinar.Rcheck
+.Rproj.user

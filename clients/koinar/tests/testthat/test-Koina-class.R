@@ -5,7 +5,7 @@ test_that("check Prosit2019 Fig1", {
   # indices of top 10 highest intensities
   ground_truth <- c(31, 13, 25, 52, 34, 43, 37, 46, 40, 58)
   
-  koina_instance <- koina::Koina$new(
+  koina_instance <- koinar::Koina$new(
     model_name = "Prosit_2019_intensity",
     server_url = "koina.wilhelmlab.org:443",
     ssl = TRUE
