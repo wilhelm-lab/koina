@@ -22,7 +22,7 @@
 #' @importFrom httr GET status_code content
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils txtProgressBar
-#' @export Koina
+#' @exportClass Koina
 #'
 #' @examples
 #' library(koinar)
@@ -277,23 +277,6 @@ Koina <- setRefClass(
       return(aggregate_batches(results))
     },
     aggregate_batches = function(list_of_list_of_arrays) {
-      #' Aggregate Batches of Arrays
-      #'
-      #' Takes a list of lists containing arrays and aggregates them by name across all batches. 
-      #' For matrices, they are concatenated along rows. Vectors are treated as 1-column matrices.
-      #' 
-      #' @param list_of_list_of_arrays A list of lists, where each inner list represents a "batch"
-      #'        containing named arrays (either vectors or matrices) to be aggregated.
-      #'
-      #' @return A list of aggregated arrays, where each named element is either a matrix 
-      #'         (for originally matrix-type elements) or a 1-column matrix (for vector-type elements),
-      #'         aggregating corresponding elements across all batches.
-      #'
-      #' @examples
-      #' # Assuming batch1 and batch2 are lists containing named matrices/vectors
-      #' aggregate_batches(list(batch1, batch2))
-      #'
-      #' @export
       aggregated_results <- list()
       
       # Extract names from the first batch as a reference for aggregation

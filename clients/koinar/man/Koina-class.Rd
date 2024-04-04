@@ -5,16 +5,8 @@
 \alias{Koina-class}
 \alias{Koina}
 \title{koina class}
-\arguments{
-\item{list_of_list_of_arrays}{A list of lists, where each inner list represents a "batch"
-containing named arrays (either vectors or matrices) to be aggregated.}
-}
 \value{
 an instance of the Koina class
-
-A list of aggregated arrays, where each named element is either a matrix 
-        (for originally matrix-type elements) or a 1-column matrix (for vector-type elements),
-        aggregating corresponding elements across all batches.
 }
 \description{
 koina class
@@ -63,14 +55,6 @@ input <- list(
 )
 
 prediction_results <- koina_instance$predict(input)
-Aggregate Batches of Arrays
-
-Takes a list of lists containing arrays and aggregates them by name across all batches. 
-For matrices, they are concatenated along rows. Vectors are treated as 1-column matrices.
-
-# Assuming batch1 and batch2 are lists containing named matrices/vectors
-aggregate_batches(list(batch1, batch2))
-
 }
 \seealso{
 \url{https://koina.wilhelmlab.org/docs}
