@@ -35,6 +35,11 @@ koina class
 \item{\code{type_convert}}{list.}
 }}
 
+\section{Methods}{
+
+\describe{
+\item{\code{predict(input_data)}}{predict using the model}
+}}
 
 \examples{
 library(koina)

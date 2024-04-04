@@ -24,6 +24,8 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils txtProgressBar
 #' @export Koina
+#' 
+#' @method predict Koina
 #'
 #' @examples
 #' library(koina)
@@ -263,6 +265,7 @@ Koina <- setRefClass(
       return(outputs_list)
     },
     predict = function(input_data) {
+      "predict using the model"
       total_samples <- dim(input_data[[1]])[1]
       num_batches <- ceiling(total_samples / .self$batch_size)
       
