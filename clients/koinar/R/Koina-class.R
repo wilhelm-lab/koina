@@ -22,7 +22,7 @@
 #' @importFrom httr GET status_code content
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils txtProgressBar
-#' @exportClass Koina
+#' @export Koina
 #'
 #' @examples
 #' library(koinar)
@@ -207,7 +207,7 @@ Koina <- setRefClass(
         body = json_data,
         encode = "json",
         httr::add_headers(`Content-Type` = "application/json"),
-        timeout(60)
+        httr::timeout(60)
       )
       
       # Check response and return
@@ -249,7 +249,16 @@ Koina <- setRefClass(
       
       return(outputs_list)
     },
-    predict = function(input_data) {
+    predict = function(input_data, pred_as_df=TRUE) {
+      # Check if input_data is a dataframe and convert to a list of 1d arrays if true
+      if (is.data.frame(input_data)) {
+        # Converting each column of the dataframe into a separate 2d column array and store in a list
+        input_data <- lapply(input_data, function(column) {
+          # Convert to matrix with a single column (n x 1)
+          array(column, dim = c(length(column), 1))
+        })
+      }
+      
       total_samples <- dim(input_data[[1]])[1]
       num_batches <- ceiling(total_samples / .self$batch_size)
       
@@ -275,7 +284,14 @@ Koina <- setRefClass(
       }
       
       close(pb)
-      return(aggregate_batches(results))
+      
+      results = aggregate_batches(results)
+
+      if (pred_as_df){
+        return(format_predictions(results, data.frame(input_data)))
+      }else{
+        return(results)
+      }
     },
     aggregate_batches = function(list_of_list_of_arrays) {
       aggregated_results <- list()
@@ -299,8 +315,18 @@ Koina <- setRefClass(
           aggregated_results[[name]] <- matrix(concatenated_vector, ncol = 1)
         }
       }
-
       return(aggregated_results)
+    },
+    format_predictions = function(predictions, input_df) {
+      # Use lapply to flatten each 2D array in the list to a 1D vector
+      flat_list <- lapply(predictions, function(array) as.vector(t(array)))
+      
+      # Combine all flattened vectors into a dataframe
+      df <- as.data.frame(do.call(cbind, flat_list))
+      
+      df = cbind(input_df[rep(1:nrow(input_df), each = dim(predictions$intensities)[2]), ], df)
+      df= df[df$intensities > 0,]
+      return(df)
     }
   )
 )
