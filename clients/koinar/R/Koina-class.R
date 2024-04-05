@@ -206,7 +206,8 @@ Koina <- setRefClass(
         url = endpoint,
         body = json_data,
         encode = "json",
-        httr::add_headers(`Content-Type` = "application/json")
+        httr::add_headers(`Content-Type` = "application/json"),
+        timeout(60)
       )
       
       # Check response and return
