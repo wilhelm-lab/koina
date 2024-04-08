@@ -6,7 +6,12 @@
 install.packages(c("roxygen2", "BiocManager", "httr", "jsonlite", "rmarkdown", "testthat", "pdflatex"))
 BiocManager::install(c('BiocStyle', 'BiocCheck'))
 ```
-Build vignette with Knit
+
+Dependencies to build vignette with Knit
+```
+apt-get install texlive-latex-base texlive-fonts-extra
+```
+
 
 ### Documentation
 Use roxygen2 to render the documentation 
