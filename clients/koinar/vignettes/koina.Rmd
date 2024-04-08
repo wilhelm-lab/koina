@@ -11,7 +11,7 @@ author:
     - Swiss Institute of Bioinformatics (SIB), Quartier Sorge - Batiment Amphipole, CH-1015 Lausanne, Switzerland
 package: koinar
 abstract: |
-  some text `r BiocStyle::Biocpkg('koina')`
+  How to use KoinaR `r BiocStyle::Biocpkg('koina')`
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -30,8 +30,45 @@ knitr::opts_chunk$set(fig.wide = TRUE, fig.retina = 3, error=FALSE, eval=TRUE)
 ```
 
 # Introduction
+Koina is a community driven endeavour to make AI models for life science research accessible. It is a service that tries to reduce the barrier of entry for using machine learning models in life science research by removing the need to set up and maintain the infrastructure required to run the models. The project is open-source and adheres to FAIR principles.
 
-bla bala xxx bla [@prosit2019]
+Here we take a look at KoiaR the R package to simplify interfacing with Koina. 
+
+## Basic usage
+```{r, eval=TRUE}
+# Create a client tied to a specific server & model
+# Here we use the model published by Gessulat et al [@prosit2019]
+# And the public server available at koina.wilhelmlab.org
+# All available models can be found at https://koina.wilhelmlab.org/docs
+prosit2019 <- koinar::Koina$new(
+  model_name = "Prosit_2019_intensity",
+  server_url = "koina.wilhelmlab.org:443"
+)
+
+# Create example inputs
+# Here we look at two different peptide sequences with charge 1 and 2 respectively
+input <- data.frame(
+  peptide_sequences = c("LGGNEQVTR", "GAGSSEPVTGLDAK"),
+  collision_energies = c(25, 25),
+  precursor_charges = c(1, 2)
+)
+
+# Fetch the predictions by calling `$predict` of the model you want to use
+# A progress bar shows you how much of the predictions are already done
+# In this case this should complete instantly
+prediction_results <- prosit2019$predict(input)
+
+# Display the predictions
+# The output varies depending on the chosen model
+# For the intenstiy model we get a data.frame with 5 columns 
+# The three inputs we provided: peptide_sequences, collision_energies, precursor_charges 
+# and for each predicted fragment ion: annotation, mz, intensities
+head(prediction_results)
+```
+
+
+## Reproducing Fig.1d from Gessulat et al. [@prosit2019]
+
 ```{r Fig1, echo=FALSE, out.width="100%", eval=TRUE, fig.cap="Screenshot of Fig.1d [@prosit2019] https://www.nature.com/articles/s41592-019-0426-7"}
   knitr::include_graphics("https://user-images.githubusercontent.com/4901987/237583247-a948ceb3-b525-4c30-b701-218346a30cf6.jpg")
 ```
@@ -40,55 +77,40 @@ bla bala xxx bla [@prosit2019]
  koina_instance <- koinar::Koina$new(
    model_name = "Prosit_2019_intensity",
    server_url = "koina.wilhelmlab.org:443",
-   ssl = TRUE
  )
 
- input <- list(
-   peptide_sequences = array(c("LKEATIQLDELNQK"),
-     dim = c(1, 1)),
-   collision_energies = array(c(25), dim = c(1, 1)),
-   precursor_charges = array(c(1), dim = c(1, 1))
+ input <- data.frame(
+   peptide_sequences = c("LKEATIQLDELNQK"),
+   collision_energies = c(35),
+   precursor_charges = c(3)
  )
  
  prediction_results <- koina_instance$predict(input)
  
- plot(prediction_results$intensities ~ prediction_results$mz, type = 'h', ylim = c(0,1))
+ plot(prediction_results$intensities ~ prediction_results$mz, type = 'h')
 
  ## only top highest intensities
- (prediction_results$intensities |> order(decreasing = TRUE))[1:10] -> idx
- axis(3, at = prediction_results$mz[idx], labels = prediction_results$annotation[idx])
+ # (prediction_results$intensities |> order(decreasing = TRUE))[1:10] -> idx
+ axis(3, at = prediction_results$mz, labels = prediction_results$annotation)
 ```
 
 
-
 # Requirements
+KoinaR requires only `httr` for sending requests to the server.
 
 # Install
-
-
-```{r installRawrr, eval=FALSE}
+```{r, eval=FALSE}
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
 BiocManager::install("koinar")
 ```
 
-# Usage
-
-## R command line
-
-### Input
-
-### Output
-
-## Launching the shiny application
-
 # FAQ
 
 # References {-}
 
 # Session information {-}
-
 ```{r sessioninfo, eval=TRUE}
 sessionInfo()
 ```
