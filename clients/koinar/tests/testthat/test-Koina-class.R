@@ -130,5 +130,5 @@ test_that("Check dataframe output", {
   df_input = data.frame(large_input_data)
   predictions = koina_instance$predict(df_input)
   
-  expect_equal(nrow(predictions), 26*1234)
+  expect_equal(nrow(predictions), 19*1234)
 })

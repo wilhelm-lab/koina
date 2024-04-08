@@ -249,7 +249,7 @@ Koina <- setRefClass(
       
       return(outputs_list)
     },
-    predict = function(input_data, pred_as_df=TRUE) {
+    predict = function(input_data, pred_as_df=TRUE, min_intensity=1e-4) {
       # Check if input_data is a dataframe and convert to a list of 1d arrays if true
       if (is.data.frame(input_data)) {
         # Converting each column of the dataframe into a separate 2d column array and store in a list
@@ -288,7 +288,7 @@ Koina <- setRefClass(
       results = aggregate_batches(results)
 
       if (pred_as_df){
-        return(format_predictions(results, data.frame(input_data)))
+        return(format_predictions(results, data.frame(input_data), min_intensity))
       }else{
         return(results)
       }
@@ -317,15 +317,11 @@ Koina <- setRefClass(
       }
       return(aggregated_results)
     },
-    format_predictions = function(predictions, input_df) {
+    format_predictions = function(predictions, input_df, min_intensity=1e-4) {
       # Use lapply to flatten each 2D array in the list to a 1D vector
-      flat_list <- lapply(predictions, function(array) as.vector(t(array)))
-      
-      # Combine all flattened vectors into a dataframe
-      df <- as.data.frame(do.call(cbind, flat_list))
-      
+      df <- data.frame(lapply(predictions, function(array) as.vector(t(array))))
       df = cbind(input_df[rep(1:nrow(input_df), each = dim(predictions$intensities)[2]), ], df)
-      df= df[df$intensities > 0,]
+      df= df[df$intensities > 0.1,]
       return(df)
     }
   )
