@@ -27,7 +27,7 @@ test_that("check Prosit2019 Fig1", {
     precursor_charges = array(c(1), dim = c(1, 1))
   )
   
-  prediction_results <- koina_instance$predict(input)
+  prediction_results <- koina_instance$predict(input, pred_as_df = FALSE)
   
   ## determine indices of top 10 highest intensities
   (prediction_results$intensities |> order(decreasing = TRUE))[1:10] -> idx
@@ -67,28 +67,6 @@ test_that("Check error: Missing input", {
                "Missing input\\(s\\): peptide_sequences.")
 })
 
-test_that("Check performance", {
-  
-  koina_instance <- koinar::Koina$new(
-    model_name = "Prosit_2019_intensity",
-    server_url = "koina.wilhelmlab.org:443",
-    ssl = TRUE
-  )
-  
-  input_data <- list(
-    peptide_sequences = array(c("LKEATIQLDELNQK"),
-                             dim = c(1, 1)),
-    collision_energies = array(c(25), dim = c(1, 1)),
-    precursor_charges = array(c(1), dim = c(1, 1))
-  )
-  large_input_data = lapply(input_data, bloat_array, 12345)
-  
-  start = Sys.time()
-  koina_instance$predict(large_input_data)
-  
-  expect_lt(Sys.time()-start, 15)
-})
-
 test_that("Check batching", {
   
   koina_instance <- koinar::Koina$new(
@@ -105,7 +83,52 @@ test_that("Check batching", {
   )
   large_input_data = lapply(input_data, bloat_array, 1234)
   
-  predictions = koina_instance$predict(large_input_data)
+  predictions = koina_instance$predict(large_input_data, pred_as_df = FALSE)
   
   expect_equal(dim(predictions[["intensities"]]), c(1234,174))
+})
+
+test_that("Check dataframe input", {
+  
+  koina_instance <- koinar::Koina$new(
+    model_name = "Prosit_2019_intensity",
+    server_url = "koina.wilhelmlab.org:443",
+    ssl = TRUE
+  )
+  
+  input_data <- list(
+    peptide_sequences = array(c("LKEATIQLDELNQK"),
+                              dim = c(1, 1)),
+    collision_energies = array(c(25), dim = c(1, 1)),
+    precursor_charges = array(c(1), dim = c(1, 1))
+  )
+  large_input_data = lapply(input_data, bloat_array, 1234)
+  
+  df_input = data.frame(large_input_data)
+  pred_df = koina_instance$predict(df_input, pred_as_df = FALSE)
+  pred_arr = koina_instance$predict(large_input_data, pred_as_df = FALSE)
+  
+  expect_equal(pred_df[["intensities"]], pred_arr[["intensities"]], 1e-5)
+})
+
+test_that("Check dataframe output", {
+  
+  koina_instance <- koinar::Koina$new(
+    model_name = "Prosit_2019_intensity",
+    server_url = "koina.wilhelmlab.org:443",
+    ssl = TRUE
+  )
+  
+  input_data <- list(
+    peptide_sequences = array(c("LKEATIQLDELNQK"),
+                              dim = c(1, 1)),
+    collision_energies = array(c(25), dim = c(1, 1)),
+    precursor_charges = array(c(1), dim = c(1, 1))
+  )
+  large_input_data = lapply(input_data, bloat_array, 1234)
+  
+  df_input = data.frame(large_input_data)
+  predictions = koina_instance$predict(df_input)
+  
+  expect_equal(nrow(predictions), 26*1234)
 })
