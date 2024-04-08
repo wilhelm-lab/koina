@@ -8,7 +8,7 @@ Authors@R: c(person(given = "Ludwig", family = "Lautenbacher",
   person(given = "Christian", family = "Panse", email = "cp@fgcz.ethz.ch", role = c("aut"),
     comment = c(ORCID = "0000-0003-1975-3064")))
 Depends:
-  R (>= 4.2)
+  R (>= 4.3)
 Imports:
   httr,
   jsonlite,
@@ -19,11 +19,11 @@ Suggests:
   knitr,
   testthat
 Description: A client to simplify fetching predictions from the Koina web 
-  service.Koina is a community driven endeavour to make AI models for life 
+  service. Koina is a community driven endeavour to make AI models for life 
   science research more accessible. It is a service that tries to reduce the 
   barrier of entry for using machine learning models in life science research 
   by removing the need to set up and maintain the infrastructure required to 
-  run the models. The project is open-source and adheres to FAIR principles.
+  run ML models. The project is open-source and adheres to FAIR principles.
   More information can be found at https://koina.wilhelmlab.org/docs. 
 License: Apache License 2.0
 URL: https://github.com/wilhelm-lab/koina
