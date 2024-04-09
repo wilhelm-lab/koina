@@ -10,7 +10,6 @@ bloat_array <- function(arr, n) {
 
 
 test_that("check Prosit2019 Fig1", {
-  
   ## input
   peptide <- "LKEATIQLDELNQK"
   peptide_n <- nchar(peptide) - 1
@@ -18,17 +17,13 @@ test_that("check Prosit2019 Fig1", {
   ## indices of top 10 highest intensities
   ground_truth <- c(31, 13, 25, 52, 34, 43, 37, 46, 40, 58)
   
-  koina_instance <- koinar::Koina$new(
-    model_name = "Prosit_2019_intensity",
-    server_url = "koina.wilhelmlab.org:443",
-    ssl = TRUE
-  )
+  koina_instance <- koinar::Koina$new(model_name = "Prosit_2019_intensity",
+                                      server_url = "koina.wilhelmlab.org:443",
+                                      ssl = TRUE)
   
-  koina_instance_fgcz <- koinar::Koina$new(
-    model_name = "Prosit_2019_intensity",
-    server_url = "dlomix.fgcz.uzh.ch:443",
-    ssl = TRUE
-  )
+  koina_instance_fgcz <- koinar::Koina$new(model_name = "Prosit_2019_intensity",
+                                           server_url = "dlomix.fgcz.uzh.ch:443",
+                                           ssl = TRUE)
   
   input <- list(
     peptide_sequences = array(c(peptide),
@@ -37,14 +32,16 @@ test_that("check Prosit2019 Fig1", {
     precursor_charges = array(c(1), dim = c(1, 1))
   )
   
-  prediction_results <- koina_instance$predict(input, pred_as_df = FALSE, min_intensity = 0)
+  prediction_results <-
+    koina_instance$predict(input, pred_as_df = FALSE, min_intensity = 0)
   
   ## determine indices of top 10 highest intensities
   (prediction_results$intensities |> order(decreasing = TRUE))[seq(1, 10)] -> idx
   
   testthat::expect_equal(idx, ground_truth)
   
-  prediction_results_fgcz <- koina_instance_fgcz$predict(input, pred_as_df = FALSE, min_intensity = 0)
+  prediction_results_fgcz <-
+    koina_instance_fgcz$predict(input, pred_as_df = FALSE, min_intensity = 0)
   ## determine indices of top 10 highest intensities
   (prediction_results_fgcz$intensities |> order(decreasing = TRUE))[seq(1, 10)] -> idx_fgcz
   
@@ -61,44 +58,40 @@ test_that("check Prosit2019 Fig1", {
 })
 
 test_that("Check error: Server unavailable", {
-  expect_error(koinar::Koina$new(
-    model_name = "Prosit_2019_intensity",
-    server_url = "google.com",
-  ), "Server is not ready. Response status code: 404")
+  expect_error(
+    koinar::Koina$new(model_name = "Prosit_2019_intensity",
+                      server_url = "google.com",),
+    "Server is not ready. Response status code: 404"
+  )
 })
 
 test_that("Check error: Model unavailable", {
-  expect_error(koinar::Koina$new(
-    model_name = "not_a_valid_model_name"
-  ), "ValueError: The specified model is not available at the server. ")
+  expect_error(
+    koinar::Koina$new(model_name = "not_a_valid_model_name"),
+    "ValueError: The specified model is not available at the server. "
+  )
 })
 
 test_that("Check error: Missing input", {
-  
-  koina_instance <- koinar::Koina$new(
-    model_name = "Prosit_2019_intensity",
-    server_url = "koina.wilhelmlab.org:443",
-    ssl = TRUE
-  )
+  koina_instance <- koinar::Koina$new(model_name = "Prosit_2019_intensity",
+                                      server_url = "koina.wilhelmlab.org:443",
+                                      ssl = TRUE)
   
   input <- list(
     peptide_sequence = array(c("LKEATIQLDELNQK"),
-                              dim = c(1, 1)),
+                             dim = c(1, 1)),
     collision_energies = array(c(25), dim = c(1, 1)),
     precursor_charges = array(c(1), dim = c(1, 1))
   )
   
-  expect_error(koina_instance$predict(input), 
+  expect_error(koina_instance$predict(input),
                "Missing input\\(s\\): peptide_sequences.")
 })
 
 test_that("Check batching", {
-  
-  koina_instance <- koinar::Koina$new(
-    model_name = "Prosit_2019_intensity",
-    server_url = "koina.wilhelmlab.org:443",
-    ssl = TRUE
-  )
+  koina_instance <- koinar::Koina$new(model_name = "Prosit_2019_intensity",
+                                      server_url = "koina.wilhelmlab.org:443",
+                                      ssl = TRUE)
   
   input_data <- list(
     peptide_sequences = array(c("LKEATIQLDELNQK"),
@@ -110,16 +103,13 @@ test_that("Check batching", {
   
   predictions = koina_instance$predict(large_input_data, pred_as_df = FALSE)
   
-  expect_equal(dim(predictions[["intensities"]]), c(1234,174))
+  expect_equal(dim(predictions[["intensities"]]), c(1234, 174))
 })
 
 test_that("Check dataframe input", {
-  
-  koina_instance <- koinar::Koina$new(
-    model_name = "Prosit_2019_intensity",
-    server_url = "koina.wilhelmlab.org:443",
-    ssl = TRUE
-  )
+  koina_instance <- koinar::Koina$new(model_name = "Prosit_2019_intensity",
+                                      server_url = "koina.wilhelmlab.org:443",
+                                      ssl = TRUE)
   
   input_data <- list(
     peptide_sequences = array(c("LKEATIQLDELNQK"),
@@ -137,12 +127,9 @@ test_that("Check dataframe input", {
 })
 
 test_that("Check dataframe output", {
-  
-  koina_instance <- koinar::Koina$new(
-    model_name = "Prosit_2019_intensity",
-    server_url = "koina.wilhelmlab.org:443",
-    ssl = TRUE
-  )
+  koina_instance <- koinar::Koina$new(model_name = "Prosit_2019_intensity",
+                                      server_url = "koina.wilhelmlab.org:443",
+                                      ssl = TRUE)
   
   input_data <- list(
     peptide_sequences = array(c("LKEATIQLDELNQK"),
@@ -155,5 +142,5 @@ test_that("Check dataframe output", {
   df_input = data.frame(large_input_data)
   predictions = koina_instance$predict(df_input)
   
-  expect_equal(nrow(predictions), 19*1234)
+  expect_equal(nrow(predictions), 19 * 1234)
 })
