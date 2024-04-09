@@ -249,7 +249,7 @@ Koina <- setRefClass(
       
       return(outputs_list)
     },
-    predict = function(input_data, pred_as_df=TRUE, min_intensity=1e-4) {
+    predict = function(input_data, pred_as_df=TRUE, min_intensity=1e-5) {
       # Check if input_data is a dataframe and convert to a list of 1d arrays if true
       if (is.data.frame(input_data)) {
         # Converting each column of the dataframe into a separate 2d column array and store in a list
