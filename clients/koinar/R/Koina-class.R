@@ -57,15 +57,15 @@ Koina <- setRefClass(
   ),
   methods = list(
     initialize = function(model_name, server_url = "koina.wilhelmlab.org:443", ssl = TRUE, targets = NULL, disable_progress_bar = FALSE) {
-      .self$model_inputs <<- list()
-      .self$model_outputs <<- list()
-      .self$response_dict <<- list()
+      .self$model_inputs <- list()
+      .self$model_outputs <- list()
+      .self$response_dict <- list()
       
-      .self$model_name <<- model_name
-      .self$url <<- server_url
-      .self$ssl <<- ssl
+      .self$model_name <- model_name
+      .self$url <- server_url
+      .self$ssl <- ssl
       
-      .self$type_convert <<- list(
+      .self$type_convert <- list(
         FP32 = "float32",
         BYTES = "character",
         INT16 = "integer",
@@ -121,7 +121,7 @@ Koina <- setRefClass(
       
       # Retrieve inputs from the model's metadata and store them
       if (!is.null(content$inputs)) {
-        .self$model_inputs <<- setNames(
+        .self$model_inputs <- setNames(
           lapply(content$inputs, function(i) list(shape = i$shape, datatype = i$datatype)),
           sapply(content$inputs, function(i) i$name)
         )
@@ -143,7 +143,7 @@ Koina <- setRefClass(
       
       # Extract and store outputs from the model's metadata
       if (!is.null(content$outputs)) {
-        .self$model_outputs <<- setNames(
+        .self$model_outputs <- setNames(
           lapply(content$outputs, function(out) list(datatype = out$datatype)),
           sapply(content$outputs, function(out) out$name)
         )
@@ -164,7 +164,7 @@ Koina <- setRefClass(
       content <- httr::content(response, "parsed")
       
       if (!is.null(content$max_batch_size)) {
-        .self$batch_size <<- content$max_batch_size
+        .self$batch_size <- content$max_batch_size
       } else {
         stop("InferenceServerException: Unable to retrieve max batch size from the server response.")
       }
