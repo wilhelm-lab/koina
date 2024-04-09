@@ -106,9 +106,8 @@ text(prediction_results$mz, prediction_results$intensities,
      las = 2, cex = 1, pos =3)
 
 ```
+
 ## Example 2: Biognosys iRT fragment ions prediction
-
-
 
 ```{r defineBiognosysIrtPeptides}
 iRTpeptides <- c("LGGNEQVTR", "YILAGVENSK", "GTFIIDPGGVIR", "GTFIIDPAAVIR",
@@ -136,14 +135,15 @@ AlphaPept$predict(input) -> rv.AlphaPept
 rv.AlphaPept$model <- "AlphaPept_ms2_generic"
 ```
 
-
-```{r lattice::xyplot, out.width="100%", fig.cap="iRT peptides fragment ins prediction using  AlphaPept and Prosit2019", fig.height=15, fig.retina=3}
+```{r xyplot, out.width="100%", fig.cap="iRT peptides fragment ins prediction using  AlphaPept and Prosit2019", fig.height=15, fig.retina=3}
 lattice::xyplot(intensities ~ mz | model * peptide_sequences ,
                 group = grepl('y', annotation),
                 data = rbind(rv.AlphaPept[,names(rv.prosit2019)],
                              rv.prosit2019),
                 type = 'h')
 ```
+
+
 # Install
 ```{r, eval=FALSE}
 if (!require("BiocManager", quietly = TRUE))
