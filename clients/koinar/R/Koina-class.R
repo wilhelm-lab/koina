@@ -123,7 +123,7 @@ Koina <- setRefClass(
       if (!is.null(content$inputs)) {
         .self$model_inputs <- setNames(
           lapply(content$inputs, function(i) list(shape = i$shape, datatype = i$datatype)),
-          sapply(content$inputs, function(i) i$name)
+          vapply(content$inputs, function(i) i$name, c(''))
         )
       } else {
         stop("InferenceServerException: Unable to retrieve model inputs from the server response.")
@@ -145,7 +145,7 @@ Koina <- setRefClass(
       if (!is.null(content$outputs)) {
         .self$model_outputs <- setNames(
           lapply(content$outputs, function(out) list(datatype = out$datatype)),
-          sapply(content$outputs, function(out) out$name)
+          vapply(content$outputs, function(out) out$name, c(''))
         )
       } else {
         stop("InferenceServerException: Unable to retrieve model outputs from the server response.")
