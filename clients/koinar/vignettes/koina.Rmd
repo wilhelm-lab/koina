@@ -1,9 +1,9 @@
 ---
-title: "On using the R lang client for koina"
+title: "Using R lang client for koina"
 author:
 - name: Ludwig Lautenbacher
   affiliation:
-    - Technical University of Munich
+    - Computational Mass Spectrometry, Technical University of Munich (TUM), Freising, Germany
   email: ludwig.lautenbacher@tum.de
 - name: Christian Panse
   affiliation:
@@ -11,7 +11,7 @@ author:
     - Swiss Institute of Bioinformatics (SIB), Quartier Sorge - Batiment Amphipole, CH-1015 Lausanne, Switzerland
 package: koinar
 abstract: |
-  How to use KoinaR `r BiocStyle::Biocpkg('koina')`
+  How to use `r BiocStyle::Biocpkg('KoinaR')` to fetch predictions from [Koina](https://koina.wilhelmlab.org/)
 output:
   BiocStyle::html_document:
     toc_float: true
@@ -30,9 +30,9 @@ knitr::opts_chunk$set(fig.wide = TRUE, fig.retina = 3, error=FALSE, eval=TRUE)
 ```
 
 # Introduction
-Koina is a community driven endeavour to make AI models for life science research accessible. It is a service that tries to reduce the barrier of entry for using machine learning models in life science research by removing the need to set up and maintain the infrastructure required to run the models. The project is open-source and adheres to FAIR principles.
+Koina is a community driven endeavor to make AI models for life science research accessible. It is a service that tries to reduce the barrier of entry for using machine learning models in life science research by removing the need to set up and maintain the infrastructure required to run the models. The project is open-source and adheres to FAIR principles.
 
-Here we take a look at KoiaR the R package to simplify interfacing with Koina. 
+Here we take a look at KoinaR the R package to simplify interfacing with Koina. 
 
 ## Basic usage
 ```{r, eval=TRUE}
@@ -69,34 +69,30 @@ head(prediction_results)
 
 ## Reproducing Fig.1d from Gessulat et al. [@prosit2019]
 
+
 ```{r Fig1, echo=FALSE, out.width="100%", eval=TRUE, fig.cap="Screenshot of Fig.1d [@prosit2019] https://www.nature.com/articles/s41592-019-0426-7"}
   knitr::include_graphics("https://user-images.githubusercontent.com/4901987/237583247-a948ceb3-b525-4c30-b701-218346a30cf6.jpg")
 ```
 
 ```{r Fig2, out.width="100%", fig.cap="Reproducing Fig1"}
- koina_instance <- koinar::Koina$new(
-   model_name = "Prosit_2019_intensity",
-   server_url = "koina.wilhelmlab.org:443",
- )
+koina_instance <- koinar::Koina$new(
+ model_name = "Prosit_2019_intensity",
+ server_url = "koina.wilhelmlab.org:443",
+)
 
- input <- data.frame(
-   peptide_sequences = c("LKEATIQLDELNQK"),
-   collision_energies = c(35),
-   precursor_charges = c(3)
- )
- 
- prediction_results <- koina_instance$predict(input)
- 
- plot(prediction_results$intensities ~ prediction_results$mz, type = 'h')
+# Use the peptide_sequence collision_energy and precursor_charge as in the figure
+input <- data.frame(
+ peptide_sequences = c("LKEATIQLDELNQK"),
+ collision_energies = c(35),
+ precursor_charges = c(3)
+)
 
- ## only top highest intensities
- # (prediction_results$intensities |> order(decreasing = TRUE))[1:10] -> idx
- axis(3, at = prediction_results$mz, labels = prediction_results$annotation)
+prediction_results <- koina_instance$predict(input)
+
+# Plot the spectrum
+plot(prediction_results$intensities ~ prediction_results$mz, type = 'h')
+axis(3, at = prediction_results$mz, labels = prediction_results$annotation)
 ```
-
-
-# Requirements
-KoinaR requires only `httr` for sending requests to the server.
 
 # Install
 ```{r, eval=FALSE}
@@ -105,8 +101,6 @@ if (!require("BiocManager", quietly = TRUE))
 
 BiocManager::install("koinar")
 ```
-
-# FAQ
 
 # References {-}
 
