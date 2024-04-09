@@ -285,7 +285,7 @@ Koina <- setRefClass(
       
       close(pb)
       
-      results = aggregate_batches(results)
+      results <- aggregate_batches(results)
 
       if (pred_as_df){
         return(format_predictions(results, data.frame(input_data), min_intensity))
@@ -320,8 +320,8 @@ Koina <- setRefClass(
     format_predictions = function(predictions, input_df, min_intensity=1e-4) {
       # Use lapply to flatten each 2D array in the list to a 1D vector
       df <- data.frame(lapply(predictions, function(array) as.vector(t(array))))
-      df = cbind(input_df[rep(1:nrow(input_df), each = dim(predictions$intensities)[2]), ], df)
-      df= df[df$intensities > 0.1,]
+      df <- cbind(input_df[rep(1:nrow(input_df), each = dim(predictions$intensities)[2]), ], df)
+      df <- df[df$intensities > 0.1,]
       return(df)
     }
   )
