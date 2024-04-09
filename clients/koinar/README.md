@@ -1,33 +1,40 @@
 # KoinaR
 
 ## Contribute
-### dev dependencies
+### Setup dependencies
+I recommend using the `rocker/rstudio` docker container for development.
+
+```bash
+docker run \
+  -p 8888:8787 \
+  -d \
+  --name rstudio_server \
+  -v $HOME:/workspace \
+  -e PASSWORD=password \
+  -e USERID=$(id -u) \
+  -e GROUPID=$(id -g) \
+  rocker/rstudio:latest
 ```
+
+```R
 install.packages(c("roxygen2", "BiocManager", "httr", "jsonlite", "rmarkdown", "testthat", "pdflatex"))
 BiocManager::install(c('BiocStyle', 'BiocCheck'))
 ```
 
 Dependencies to build vignette with Knit
-```
+```bash
 apt-get install texlive-latex-base texlive-fonts-extra
 ```
 
 
-### Documentation
-Use roxygen2 to render the documentation 
+### Build documentation
+Use roxygen2 to create documentation based on inline comments. 
 `roxygen2::roxygenise()`.
 
-### Tests
+### Run tests
 We use testthat to run tests. In the `build` tab in Rstudio click on `Test`. 
-Make sure you installed the package beforehand
+Make sure you installed the package beforehand by clicking `Install` in the build tab.
 
-### Verify CodeStyle
+### Verify code style
 Verify code style according to bioconductor guidelines.
 `BiocCheck::BiocCheck()`
-
-
-
-R CMD build
-R CMD check
-
-TODO Adjust output
