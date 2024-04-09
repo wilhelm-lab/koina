@@ -35,7 +35,8 @@ Koina is a community driven endeavor to make AI models for life science research
 Here we take a look at KoinaR the R package to simplify interfacing with Koina. 
 
 ## Basic usage
-```{r, eval=TRUE}
+
+```{r create, eval=TRUE}
 # Create a client tied to a specific server & model
 # Here we use the model published by Gessulat et al [@prosit2019]
 # And the public server available at koina.wilhelmlab.org
@@ -44,7 +45,12 @@ prosit2019 <- koinar::Koina$new(
   model_name = "Prosit_2019_intensity",
   server_url = "koina.wilhelmlab.org:443"
 )
+prosit2019
+```
 
+
+
+```{r input}
 # Create example inputs
 # Here we look at two different peptide sequences with charge 1 and 2 respectively
 input <- data.frame(
@@ -67,33 +73,77 @@ head(prediction_results)
 ```
 
 
-## Reproducing Fig.1d from Gessulat et al. [@prosit2019]
-
+## Example 1: Reproducing Fig.1d from [@prosit2019]
 
 ```{r Fig1, echo=FALSE, out.width="100%", eval=TRUE, fig.cap="Screenshot of Fig.1d [@prosit2019] https://www.nature.com/articles/s41592-019-0426-7"}
   knitr::include_graphics("https://user-images.githubusercontent.com/4901987/237583247-a948ceb3-b525-4c30-b701-218346a30cf6.jpg")
 ```
 
-```{r Fig2, out.width="100%", fig.cap="Reproducing Fig1"}
-koina_instance <- koinar::Koina$new(
- model_name = "Prosit_2019_intensity",
- server_url = "koina.wilhelmlab.org:443",
-)
+```{r Fig2, out.width="100%", fig.cap="LKEATIQLDELNQK CE35 3+; Reproducing Fig1", fig.height=8, fig.retina=3}
+prosit2019
 
-# Use the peptide_sequence collision_energy and precursor_charge as in the figure
+## Use the peptide_sequence collision_energy and
+## precursor_charge as in the figure
 input <- data.frame(
  peptide_sequences = c("LKEATIQLDELNQK"),
  collision_energies = c(35),
  precursor_charges = c(3)
 )
 
-prediction_results <- koina_instance$predict(input)
+prediction_results <- prosit2019$predict(input)
 
 # Plot the spectrum
-plot(prediction_results$intensities ~ prediction_results$mz, type = 'h')
-axis(3, at = prediction_results$mz, labels = prediction_results$annotation)
+plot(prediction_results$intensities ~ prediction_results$mz, type = 'n',
+     ylim = c(0, 1.1))
+yIdx <- grepl("y", prediction_results$annotation)
+points(prediction_results$mz[yIdx], prediction_results$intensities[yIdx],
+       col = "red", type = 'h', lwd = 2)
+points(prediction_results$mz[!yIdx], prediction_results$intensities[!yIdx],
+       col = "blue", type = 'h', lwd = 2)
+
+text(prediction_results$mz, prediction_results$intensities,
+     labels = prediction_results$annotation,
+     las = 2, cex = 1, pos =3)
+
+```
+## Example 2: Biognosys iRT fragment ions prediction
+
+
+
+```{r defineBiognosysIrtPeptides}
+iRTpeptides <- c("LGGNEQVTR", "YILAGVENSK", "GTFIIDPGGVIR", "GTFIIDPAAVIR",
+                 "GAGSSEPVTGLDAK", "TPVISGGPYEYR", "VEATFGVDESNAK",
+                 "TPVITGAPYEYR", "DGLDAASYYAPVR", "ADVTPADFSEWSK",
+                 "LFLQFGAQGSPFLK")
+
+input <- data.frame(
+ peptide_sequences = iRTpeptides,
+ collision_energies = 35,
+ precursor_charges = 2
+)
 ```
 
+```{r AlphaPept}
+prosit2019$predict((input)) -> rv.prosit2019
+rv.prosit2019$model <- "Prosit_2019_intensity"
+
+AlphaPept <- koinar::Koina$new(
+  model_name = "AlphaPept_ms2_generic",
+  server_url = "koina.wilhelmlab.org:443"
+)
+input$instrument_types = "QE"
+AlphaPept$predict(input) -> rv.AlphaPept
+rv.AlphaPept$model <- "AlphaPept_ms2_generic"
+```
+
+
+```{r lattice::xyplot, out.width="100%", fig.cap="iRT peptides fragment ins prediction using  AlphaPept and Prosit2019", fig.height=15, fig.retina=3}
+lattice::xyplot(intensities ~ mz | model * peptide_sequences ,
+                group = grepl('y', annotation),
+                data = rbind(rv.AlphaPept[,names(rv.prosit2019)],
+                             rv.prosit2019),
+                type = 'h')
+```
 # Install
 ```{r, eval=FALSE}
 if (!require("BiocManager", quietly = TRUE))
