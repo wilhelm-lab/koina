@@ -17,7 +17,7 @@ docker run \
 ```
 
 ```R
-install.packages(c("roxygen2", "BiocManager", "httr", "jsonlite", "rmarkdown", "testthat", "pdflatex"))
+install.packages(c("roxygen2", "BiocManager", "httr", "jsonlite", "rmarkdown", "testthat", "pdflatex", "protViz"))
 BiocManager::install(c('BiocStyle', 'BiocCheck'))
 ```
 
