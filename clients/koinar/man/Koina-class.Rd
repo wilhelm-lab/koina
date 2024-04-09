@@ -38,23 +38,19 @@ koina class
 
 \examples{
 library(koinar)
-## Example instantiation of the Koina class
-koina_instance <- Koina$new(
+prosit2019 <- koinar::Koina$new(
   model_name = "Prosit_2019_intensity",
-  server_url = "koina.wilhelmlab.org:443",
-  ssl = TRUE
+  server_url = "koina.wilhelmlab.org:443"
 )
 
-## Example input data for predict_batch
-## TODO(cp): detect dim e.g., use length of peptide 
-input <- list(
-  peptide_sequences = array(c("LGGNEQVTR", "GAGSSEPVTGLDAK"),
-    dim = c(2, 1)),
-  collision_energies = array(c(25, 25), dim = c(2, 1)),
-  precursor_charges = array(c(1, 2), dim = c(2, 1))
+input <- data.frame(
+  peptide_sequences = c("LGGNEQVTR", "GAGSSEPVTGLDAK"),
+  collision_energies = c(25, 25),
+  precursor_charges = c(1, 2)
 )
 
-prediction_results <- koina_instance$predict(input)
+# Fetch the predictions by calling `$predict` of the model you want to use
+prediction_results <- prosit2019$predict(input)
 }
 \seealso{
 \url{https://koina.wilhelmlab.org/docs}
