@@ -313,8 +313,9 @@ Koina <- setRefClass(
       total_samples <- dim(input_data[[1]])[1]
       num_batches <- ceiling(total_samples / .self$batch_size)
       
-      # Initialize progress bar
-      pb <- txtProgressBar(min = 0, max = num_batches, style = 3)
+      #  Initialize progress bar
+      if (interactive())
+        pb <- txtProgressBar(min = 0, max = num_batches, style = 3)
       
       results <- list()
       
@@ -332,10 +333,12 @@ Koina <- setRefClass(
         results <- c(results, list(.self$predict_batch(batch_data)))
         
         # Update progress bar
-        setTxtProgressBar(pb, batch_number)
+	if (interactive())
+          setTxtProgressBar(pb, batch_number)
       }
       
-      close(pb)
+      if (interactive())
+        close(pb)
       
       results <- aggregate_batches(results)
       
