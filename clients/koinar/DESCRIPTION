@@ -2,7 +2,7 @@ Package: koinar
 Type: Package
 Title: koina - Community driven open-source service facilitating access to
   machine learning models for life science research  
-Version: 0.0.1
+Version: 0.0.2
 Authors@R: c(person(given = "Ludwig", family = "Lautenbacher",
     email = "ludwig.lautenbacher@tum.de", role = c("aut", "cre"), comment=c(ORCID="0000-0002-1540-5911")),
   person(given = "Christian", family = "Panse", email = "cp@fgcz.ethz.ch", role = c("aut"),
