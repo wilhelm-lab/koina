@@ -14,17 +14,17 @@ koina class
 \section{Fields}{
 
 \describe{
-\item{\code{model_inputs}}{list.}
+\item{\code{model_inputs}}{list TODO.}
 
-\item{\code{model_outputs}}{list.}
+\item{\code{model_outputs}}{list TODO.}
 
-\item{\code{batch_size}}{numeric.}
+\item{\code{batch_size}}{numeric TODO.}
 
-\item{\code{response_dict}}{list.}
+\item{\code{response_dict}}{list TODO.}
 
-\item{\code{model_name}}{character, e.g., \code{Prosit_2019_intensity}.}
+\item{\code{model_name}}{character, e.g., \code{"AlphaPept_ms2_generic"} or \code{"Prosit_2019_intensity"}.}
 
-\item{\code{url}}{character.}
+\item{\code{url}}{url, default is set to \code{"koina.wilhelmlab.org:443"}.}
 
 \item{\code{ssl}}{logical.}
 
@@ -32,13 +32,13 @@ koina class
 
 \item{\code{client}}{ANY.}
 
-\item{\code{type_convert}}{list.}
+\item{\code{type_convert}}{list TODO.}
 }}
 
 \section{Methods}{
 
 \describe{
-\item{\code{predict(input_data)}}{predict using the model}
+\item{\code{predict(input_data, pred_as_df = TRUE, min_intensity = 1e-05)}}{predict using the defined model TODO}
 }}
 
 \examples{

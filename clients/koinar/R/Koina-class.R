@@ -2,16 +2,16 @@
 
 #' koina class
 #'
-#' @field model_inputs list.
-#' @field model_outputs list.
-#' @field batch_size numeric.
-#' @field response_dict list.
-#' @field model_name character.
-#' @field url character.
+#' @field model_inputs list TODO.
+#' @field model_outputs list TODO.
+#' @field batch_size numeric TODO.
+#' @field response_dict list TODO.
+#' @field model_name character, e.g., \code{"AlphaPept_ms2_generic"} or \code{"Prosit_2019_intensity"}.
+#' @field url url, default is set to \code{"koina.wilhelmlab.org:443"}.
 #' @field ssl logical.
 #' @field disable_progress_bar logical.
 #' @field client ANY.
-#' @field type_convert list.
+#' @field type_convert list TODO.
 #' @author Ludwig Lautenbacher, 2024
 #'
 #' @seealso \url{https://koina.wilhelmlab.org/docs}
@@ -23,6 +23,8 @@
 #' @importFrom jsonlite fromJSON
 #' @importFrom utils txtProgressBar
 #' @export Koina
+#'
+#'@method predict Koina
 #'
 #' @examples
 #' library(koinar)
@@ -301,6 +303,7 @@ Koina <- setRefClass(
     predict = function(input_data,
                        pred_as_df = TRUE,
                        min_intensity = 1e-5) {
+      "predict using the defined model TODO"
       # Check if input_data is a dataframe and convert to a list of 1d arrays if true
       if (is.data.frame(input_data)) {
         # Converting each column of the dataframe into a separate 2d column array and store in a list
