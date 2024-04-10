@@ -14,13 +14,13 @@ koina class
 \section{Fields}{
 
 \describe{
-\item{\code{model_inputs}}{list TODO.}
+\item{\code{model_inputs}}{list TODO(Ludwig).}
 
-\item{\code{model_outputs}}{list TODO.}
+\item{\code{model_outputs}}{list TODO(Ludwig).}
 
-\item{\code{batch_size}}{numeric TODO.}
+\item{\code{batch_size}}{numeric TODO(Ludwig).}
 
-\item{\code{response_dict}}{list TODO.}
+\item{\code{response_dict}}{list TODO(Ludwig).}
 
 \item{\code{model_name}}{character, e.g., \code{"AlphaPept_ms2_generic"} or \code{"Prosit_2019_intensity"}.}
 
@@ -32,13 +32,13 @@ koina class
 
 \item{\code{client}}{ANY.}
 
-\item{\code{type_convert}}{list TODO.}
+\item{\code{type_convert}}{list TODO(Ludwig).}
 }}
 
 \section{Methods}{
 
 \describe{
-\item{\code{predict(input_data, pred_as_df = TRUE, min_intensity = 1e-05)}}{predict using the defined model TODO}
+\item{\code{predict(input_data, pred_as_df = TRUE, min_intensity = 1e-05)}}{predict using the defined model TODO(Ludwig}
 }}
 
 \examples{

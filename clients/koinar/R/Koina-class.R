@@ -2,16 +2,16 @@
 
 #' koina class
 #'
-#' @field model_inputs list TODO.
-#' @field model_outputs list TODO.
-#' @field batch_size numeric TODO.
-#' @field response_dict list TODO.
+#' @field model_inputs list TODO(Ludwig).
+#' @field model_outputs list TODO(Ludwig).
+#' @field batch_size numeric TODO(Ludwig).
+#' @field response_dict list TODO(Ludwig).
 #' @field model_name character, e.g., \code{"AlphaPept_ms2_generic"} or \code{"Prosit_2019_intensity"}.
 #' @field url url, default is set to \code{"koina.wilhelmlab.org:443"}.
 #' @field ssl logical.
 #' @field disable_progress_bar logical.
 #' @field client ANY.
-#' @field type_convert list TODO.
+#' @field type_convert list TODO(Ludwig).
 #' @author Ludwig Lautenbacher, 2024
 #'
 #' @seealso \url{https://koina.wilhelmlab.org/docs}
@@ -303,7 +303,7 @@ Koina <- setRefClass(
     predict = function(input_data,
                        pred_as_df = TRUE,
                        min_intensity = 1e-5) {
-      "predict using the defined model TODO"
+      "predict using the defined model TODO(Ludwig"
       # Check if input_data is a dataframe and convert to a list of 1d arrays if true
       if (is.data.frame(input_data)) {
         # Converting each column of the dataframe into a separate 2d column array and store in a list
