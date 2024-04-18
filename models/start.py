@@ -117,7 +117,7 @@ if __name__ == "__main__":
 
     usi_proxy = subprocess.Popen(["/models/usi_proxy"])
 
-    time.sleep(1) # Allow for startup time of the proxy
+    time.sleep(1)  # Allow for startup time of the proxy
     if usi_proxy.poll() is None:
         # .poll() returns None if the process is still running
         # that means the usi proxy likely started successfully
