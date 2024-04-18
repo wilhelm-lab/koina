@@ -1,6 +1,6 @@
 FROM nvcr.io/nvidia/tritonserver:23.05-py3 AS serving-develop
 RUN pip install requests ms2pip psm-utils pandas pyteomics==4.6.2
-HEALTHCHECK --start-period=1m --interval=15s --retries=12 CMD curl localhost:8501/v2/health/ready
+HEALTHCHECK --start-period=10m --interval=15s --retries=1 CMD curl --fail localhost:8501/v2/health/ready
 CMD [ "/models/start.py" ]
 
 FROM serving-develop AS serving-prod

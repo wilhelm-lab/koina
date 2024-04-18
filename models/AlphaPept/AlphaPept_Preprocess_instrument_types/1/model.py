@@ -28,6 +28,11 @@ class TritonPythonModel:
             for k, v in {"qe": 0, "lumos": 1, "timstof": 2, "sciextof": 3}.items():
                 instrument_types_encoding[instrument_types == k] = v
 
+            if np.any(instrument_types_encoding == -1):
+                raise ValueError(
+                    f"Unknown instrument type(s) found in input: {np.unique(instrument_types[instrument_types_encoding == -1])}"
+                )
+
             t = pb_utils.Tensor(
                 "instrument_types_encoding",
                 instrument_types_encoding.astype(self.output_dtype),
