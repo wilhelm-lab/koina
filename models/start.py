@@ -117,14 +117,18 @@ if __name__ == "__main__":
 
     usi_proxy = subprocess.Popen(["/models/usi_proxy"])
 
-    time.sleep(1)
+    time.sleep(1) # Allow for startup time of the proxy
     if usi_proxy.poll() is None:
         # .poll() returns None if the process is still running
         # that means the usi proxy likely started successfully
-        subprocess.Popen(triton_cmd + ["--http-port=8503"])
+        triton = subprocess.Popen(triton_cmd + ["--http-port=8503"])
         while True:
             time.sleep(15)
-            if usi_proxy.poll() is not None:
+            if triton.poll() is not None:
+                print("Triton exited, killing USI Proxy")
+                usi_proxy.kill()
+                os.exit(1)
+            elif usi_proxy.poll() is not None:
                 print("USI Proxy died, restarting")
                 usi_proxy = subprocess.Popen(["/models/usi_proxy"])
     else:
