@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3 -u
 # MAX_SESSION_SHARE_COUNT=100
 import os
 from glob import glob
