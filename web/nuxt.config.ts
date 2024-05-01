@@ -1,8 +1,14 @@
+import wasm from "vite-plugin-wasm-esm";
+
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true
+    },
+    experimental: {
+      wasm: true
     }
   },
   modules: [
@@ -11,5 +17,8 @@ export default defineNuxtConfig({
   ],
   eslint: {
     lintOnStart: false
-  }
+  },
+  vite: {
+    plugins: [wasm(["biowclib-mz"])],
+  },
 })
