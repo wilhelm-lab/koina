@@ -38,6 +38,8 @@ import {
 const rapidoc: any = ref(null);
 
 onMounted(() => {
+  document.body.classList.add("overflow-hidden");
+
   if (rapidoc.value && process.client) {
     // This is a bit hacky, but there seems to be no other way to get the request body in after-try event.
     let lock = false;
@@ -119,6 +121,10 @@ onMounted(() => {
       }
     });
   }
+});
+
+onBeforeUnmount(() => {
+  document.body.classList.remove("overflow-hidden");
 });
 
 </script>
