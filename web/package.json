@@ -27,7 +27,7 @@
     "vue-eslint-parser": "^9.3.0"
   },
   "dependencies": {
-    "biowc-spectrum": "^0.0.2",
+    "biowc-spectrum": "^0.0.3",
     "biowclib-mz": "^0.0.2",
     "lodash": "^4.17.21",
     "rapidoc": "^9.3.4"
