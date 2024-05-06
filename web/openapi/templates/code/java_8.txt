@@ -1,0 +1,55 @@
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+import javax.net.ssl.HttpsURLConnection;
+
+public class KoinaRequest {
+
+    public static void sendPostRequest() {
+        String requestUrl =  "https://{{ url }}/v2/models/{{ name }}/infer";
+        StringBuilder jsonInputStringBuilder = new StringBuilder();
+        jsonInputStringBuilder.append("{\"id\": \"0\", \"inputs\": [");{% for input in note.examples.inputs %}
+        jsonInputStringBuilder.append("{\"name\": \"{{ input.name }}\", \"shape\": [{{input.shape[1:-1]}}], \"datatype\": \"{{input.httpdtype}}\", \"data\": [{{input.data[1:-1].replace('"', '\\"')}}]}{% if not loop.last %},{% endif %}");{% endfor %}
+        jsonInputStringBuilder.append("]}");
+        String jsonInputString = jsonInputStringBuilder.toString();
+        try {
+            URL url = new URL(requestUrl);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            connection.setDoOutput(true);
+
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+            if (responseCode == HttpsURLConnection.HTTP_OK) { // success
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+
+                // print result
+                System.out.println("Response: " + response.toString());
+            } else {
+                System.out.println("Request failed.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        sendPostRequest();
+    }
+}
