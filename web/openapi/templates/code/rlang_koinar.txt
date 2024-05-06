@@ -1,0 +1,11 @@
+
+model <- koinar::Koina$new(model_name = "{{ name }}",
+                           server_url = "{{ url }}",
+                           ssl = TRUE)
+
+input_data <- list({% for input in note.examples.inputs %}
+    list("{{ input.name }}"= c({{input.data[1:-1]}})){% if not loop.last %},{% endif %}{% endfor %})
+)
+
+df_input = data.frame(input_data)
+predictions = model$predict(df_input)
