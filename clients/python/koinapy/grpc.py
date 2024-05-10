@@ -29,7 +29,6 @@ class Koina:
         server_url: str = "koina.wilhelmlab.org:443",
         ssl: bool = True,
         targets: Optional[List[str]] = None,
-        disable_progress_bar: bool = False,
     ):
         """
         Initialize a KoinaModel instance with the specified parameters.
@@ -54,7 +53,6 @@ class Koina:
         self.model_name = model_name
         self.url = server_url
         self.ssl = ssl
-        self.disable_progress_bar = disable_progress_bar
         self.client = InferenceServerClient(url=server_url, ssl=ssl)
 
         self.type_convert = {
@@ -469,7 +467,7 @@ class Koina:
     def predict(
         self,
         data: Union[Dict[str, np.ndarray], pd.DataFrame],
-        _async: bool = True,
+        mode="semi_async",
         debug=False,
     ) -> Dict[str, np.ndarray]:
         """
@@ -506,13 +504,36 @@ class Koina:
                 input_field: data[input_field].to_numpy().reshape(-1, 1)
                 for input_field in self.model_inputs.keys()
             }
-        if _async:
+        if mode == "semi_async":
+            return self.__predict_semi_async(data, debug=debug)
+        elif mode == "async":
             return self.__predict_async(data, debug=debug)
-        else:
+        elif mode == "sync":
             return self.__predict_sequential(data)
+        else:
+            raise ValueError(f"mode must be one of 'semi_async', 'async' or 'sync'")
+
+    def __predict_semi_async(self, data, debug=False, disable_progress_bar=False):
+        results = []
+        data_subsets = list(self.__slice_dict(data, self.batchsize * 10))
+        pbar = tqdm(
+            total=len(data_subsets) * 10,
+            desc=f"{self.model_name}:",
+            disable=disable_progress_bar,
+        )
+        for data_batch in data_subsets:
+            results.append(
+                self.__predict_async(data_batch, debug=debug, pbar_input=pbar)
+            )
+        pbar.close()
+        return self.__merge_list_dict_array(results)
 
     def __predict_async(
-        self, data: Dict[str, np.ndarray], debug=False
+        self,
+        data: Dict[str, np.ndarray],
+        debug=False,
+        disable_progress_bar=False,
+        pbar_input=None,
     ) -> Dict[str, np.ndarray]:
         """
         Perform asynchronous inference on the given data using the Koina model.
@@ -541,28 +562,34 @@ class Koina:
             next(tasks[i])
 
         n_tasks = i + 1
-        with tqdm(
-            total=n_tasks, desc="Getting predictions", disable=self.disable_progress_bar
-        ) as pbar:
-            unfinished_tasks = [i for i in range(n_tasks)]
-            while pbar.n < n_tasks:
-                time.sleep(0.5)
-                new_unfinished_tasks = []
-                for j in unfinished_tasks:
-                    result = infer_results.get(j)
-                    if result is None:
+        if pbar_input is None:
+            pbar = tqdm(
+                total=n_tasks, desc=f"{self.model_name}:", disable=disable_progress_bar
+            )
+        else:
+            pbar = pbar_input
+        unfinished_tasks = [i for i in range(n_tasks)]
+        while len(unfinished_tasks) > 0:
+            time.sleep(0.5)
+            new_unfinished_tasks = []
+            for j in unfinished_tasks:
+                result = infer_results.get(j)
+                if result is None:
+                    new_unfinished_tasks.append(j)
+                elif isinstance(result, dict):
+                    pbar.n += 1
+                else:  # unexpected result / exception -> try again
+                    try:
+                        next(tasks[j])
                         new_unfinished_tasks.append(j)
-                    elif isinstance(result, dict):
+                    except StopIteration:
                         pbar.n += 1
-                    else:  # unexpected result / exception -> try again
-                        try:
-                            next(tasks[j])
-                            new_unfinished_tasks.append(j)
-                        except StopIteration:
-                            pbar.n += 1
 
-                unfinished_tasks = new_unfinished_tasks
-                pbar.refresh()
+            unfinished_tasks = new_unfinished_tasks
+            pbar.refresh()
+
+        if pbar_input is None:
+            pbar.close()
 
         return self.__handle_results(infer_results, debug)
 
