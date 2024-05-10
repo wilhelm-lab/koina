@@ -9,3 +9,4 @@ dist
 .DS_Store
 .fleet
 .idea
+public/openapi.yml

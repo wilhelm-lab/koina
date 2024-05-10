@@ -140,6 +140,21 @@ def main(http_url, grpc_url, tmpl_url):
         models[-1]["rlang_code"] = generate_example_code(
             models[-1], grpc_url, code_template="web/openapi/templates/code/rlang.txt"
         )
+        models[-1]["rlang_koinar_code"] = generate_example_code(
+            models[-1],
+            grpc_url,
+            code_template="web/openapi/templates/code/rlang_koinar.txt",
+        )
+        models[-1]["java_15_code"] = generate_example_code(
+            models[-1],
+            grpc_url,
+            code_template="web/openapi/templates/code/java_15.txt",
+        )
+        models[-1]["java_8_code"] = generate_example_code(
+            models[-1],
+            grpc_url,
+            code_template="web/openapi/templates/code/java_8.txt",
+        )
 
     logging.info(f"Template URL: {tmpl_url}")
     create_openapi_yaml(models, tmpl_url)

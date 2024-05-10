@@ -70,6 +70,18 @@ paths:
           label: 'R-lang (http)'
           source: |
           {% filter indent(width=4) %}{{ model.rlang_code }}{% endfilter %}
+        - lang: Shell
+          label: 'R-lang (koinar)'
+          source: |
+          {% filter indent(width=4) %}{{ model.rlang_koinar_code }}{% endfilter %}
+        - lang: java
+          label: 'java (Version > 15)'
+          source: |
+          {% filter indent(width=4) %}{{ model.java_15_code }}{% endfilter %}
+        - lang: java
+          label: 'java (Version > 8)'
+          source: |
+          {% filter indent(width=4) %}{{ model.java_8_code }}{% endfilter %}
 
       operationId: {{model.name}}
       requestBody:
