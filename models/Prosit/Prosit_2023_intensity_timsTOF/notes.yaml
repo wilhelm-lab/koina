@@ -8,9 +8,9 @@ description: |
   The TOF Prosit 2023 model demonstrates consistent performance across different precursor charges, peptide lengths, and collision energies, with minimal bias towards C- and N-terminal amino acids. Both the tryptic and non-tryptic timsTOF data are available via PRIDE, with the identifiers PXD019086 and PXD043844, respectively.
 
 citation: |
-  Fragment ion intensity prediction improves the identification rate of non-tryptic peptides in TimsTOF
-  Charlotte Adams, Wassim Gabriel, Kris Laukens, Mathias Wilhelm, Wout Bittremieux, Kurt Boonen
-  bioRxiv 2023.07.17.549401; doi: https://doi.org/10.1101/2023.07.17.549401
+  Fragment ion intensity prediction improves the identification rate of non-tryptic peptides in timsTOF.
+  Adams, C., Gabriel, W., Laukens, K. et al.
+  Nat Commun 15, 3956 (2024). https://doi.org/10.1038/s41467-024-48322-0
 tag: "Intensity"
 tag_url: "https://www.wilhelmlab.org/"
 examples:

@@ -2,6 +2,8 @@ import time
 import warnings
 from functools import partial
 from typing import Dict, Generator, KeysView, List, Optional, Union
+from math import ceil
+
 
 import numpy as np
 import pandas as pd
@@ -517,7 +519,7 @@ class Koina:
         results = []
         data_subsets = list(self.__slice_dict(data, self.batchsize * 10))
         pbar = tqdm(
-            total=len(data_subsets) * 10,
+            total=ceil(next(iter(data.values())).shape[0] / self.batchsize),
             desc=f"{self.model_name}:",
             disable=disable_progress_bar,
         )
