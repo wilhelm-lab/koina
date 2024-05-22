@@ -291,7 +291,7 @@ class Koina:
         """
         predictions: Dict[str, np.ndarray] = {}
         for data_batch in tqdm(
-            self.__slice_dict(data, self.batchsize), desc="Getting predictions"
+            self.__slice_dict(data, self.batchsize), desc=f"{self.model_name}:"
         ):
             pred_batch = self.__predict_batch(data_batch)
             if predictions:
