@@ -20,7 +20,7 @@ def lib_test_inference(model_name, server_grpc, atol=1e-6):
     data = {Path(f).stem.split("-")[-1]: np.load(f) for f in files}
 
     client = Koina(model_name, server_url=server_grpc, ssl=False)
-    preds = client.predict(data)
+    preds = client.predict(data, df_output=False)
 
     for k in preds.keys():
         try:

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "koinapy"
-version = "0.0.5"
+version = "0.0.6"
 description = "Python client to communicate with Koina."
 authors = ["Ludwig Lautenbacher <Ludwig.Lautenbacher@tum.de>"]
 license = "Apache 2.0"

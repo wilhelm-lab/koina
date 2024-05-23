@@ -468,9 +468,11 @@ class Koina:
 
     def predict(
         self,
-        data: Union[Dict[str, np.ndarray], pd.DataFrame],
+        inputs: Union[Dict[str, np.ndarray], pd.DataFrame],
         mode="semi_async",
         debug=False,
+        df_output=True,
+        min_intensity=1e-4,
     ) -> Dict[str, np.ndarray]:
         """
         Perform inference on the given data using the Koina model.
@@ -501,19 +503,40 @@ class Koina:
             }
             predictions = model.predict(input_data)
         """
-        if isinstance(data, pd.DataFrame):
-            data = {
-                input_field: data[input_field].to_numpy().reshape(-1, 1)
+        if isinstance(inputs, pd.DataFrame):
+            dict_inputs = {
+                input_field: inputs[input_field].to_numpy().reshape(-1, 1)
                 for input_field in self.model_inputs.keys()
             }
+        else:
+            dict_inputs = inputs
+
         if mode == "semi_async":
-            return self.__predict_semi_async(data, debug=debug)
+            predictions = self.__predict_semi_async(dict_inputs, debug=debug)
         elif mode == "async":
-            return self.__predict_async(data, debug=debug)
+            predictions = self.__predict_async(dict_inputs, debug=debug)
         elif mode == "sync":
-            return self.__predict_sequential(data)
+            predictions = self.__predict_sequential(dict_inputs)
         else:
             raise ValueError(f"mode must be one of 'semi_async', 'async' or 'sync'")
+
+        if df_output and isinstance(inputs, pd.DataFrame):
+            return self.__construct_df(inputs, predictions, min_intensity=min_intensity)
+        else:
+            return predictions
+
+    def __construct_df(self, inputs, predictions, min_intensity=1e-4):
+        output_shape_dim1 = list(predictions.values())[0].shape[1]
+
+        tmp = inputs.apply(lambda x: np.repeat(x, output_shape_dim1))
+
+        for k, v in predictions.items():
+            tmp[k] = v.flatten()
+
+        if "intensities" in predictions:
+            tmp = tmp[tmp["intensities"] > min_intensity]
+
+        return tmp
 
     def __predict_semi_async(self, data, debug=False, disable_progress_bar=False):
         results = []
