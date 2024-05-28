@@ -2,7 +2,7 @@
   <div>
     <TheHero />
 
-    <div class="py-16 px-2 max-w-5xl mx-auto">
+    <div class="py-16 px-4 max-w-5xl mx-auto">
       <h2 id="get-started" class="text-3xl mb-4">What is Koina?</h2>
       <p>
         Koina is a community driven endeavour to make AI models for life science
@@ -35,7 +35,7 @@
     </div>
 
     <div class="bg-neutral-100">
-      <div class="py-16 px-2 max-w-5xl mx-auto">
+      <div class="py-16 px-4 max-w-5xl mx-auto">
         <h2 id="get-involved" class="text-3xl mb-4">Get involved</h2>
         <p>
           There are two ways to get involved with Koina. You can either host an
@@ -60,7 +60,7 @@
       </div>
     </div>
 
-    <div class="py-16 px-2 max-w-5xl mx-auto">
+    <div class="py-16 px-4 max-w-5xl mx-auto">
       <h2 class="text-3xl mb-4">Organizations hosting Koina</h2>
       <div class="flex justify-around flex-wrap">
         <a href="https://www1.ls.tum.de/en/compms/home/" class="mb-2">

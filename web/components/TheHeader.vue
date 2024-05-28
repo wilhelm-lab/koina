@@ -10,6 +10,20 @@ function toggleNavbar() {
 function closeNavbar() {
   showMenu.value = false;
 }
+
+function handleOutsideClick(event: MouseEvent) {
+  if (showMenu.value && !(event.target as HTMLElement | null)?.closest('nav')) {
+    showMenu.value = false;
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('click', handleOutsideClick);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('click', handleOutsideClick);
+});
 </script>
 
 <template>
@@ -49,6 +63,7 @@ function closeNavbar() {
         </li>
         <li>
           <nuxt-link to="https://github.com/wilhelm-lab/koina">
+            GitHub
           </nuxt-link>
         </li>
       </ul>
