@@ -1,24 +1,22 @@
-import wasm from "vite-plugin-wasm-esm";
-
+import wasm from 'vite-plugin-wasm-esm'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   nitro: {
     prerender: {
-      crawlLinks: true
+      crawlLinks: true,
     },
     experimental: {
-      wasm: true
-    }
+      wasm: true,
+    },
   },
-  modules: [
-    '@nuxtjs/eslint-module',
-    '@nuxtjs/tailwindcss'
-  ],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint'],
   eslint: {
-    lintOnStart: false
+    config: {
+      stylistic: true,
+    },
   },
   vite: {
-    plugins: [wasm(["biowclib-mz"])],
+    plugins: [wasm(['biowclib-mz'])],
   },
 })
