@@ -10,7 +10,7 @@ export default defineNuxtConfig({
       wasm: true,
     },
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint', '@vueuse/nuxt'],
   eslint: {
     config: {
       stylistic: true,

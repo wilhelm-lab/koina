@@ -19,15 +19,19 @@
       </div>
     </template>
   </rapi-doc>
+
+  <Teleport
+    v-if="spectraResults.length"
+    :to="teleportTarget"
+  >
+    <SpectraResults :spectras="spectraResults" />
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import 'rapidoc'
 
-import 'biowc-spectrum'
-
-import type { BiowcSpectrum } from 'biowc-spectrum'
 import type {
   KoinaSpectrumAnnotations,
   KoinaSpectrumIntensities,
@@ -39,6 +43,9 @@ import {
 } from '@/utils/transform-spectrum'
 
 const rapidoc: any = ref(null)
+
+const spectraResults = ref<Spectrum[]>([])
+const teleportTarget = ref<HTMLElement | null>(null)
 
 onMounted(() => {
   document.body.classList.add('overflow-hidden')
@@ -55,6 +62,7 @@ onMounted(() => {
       }
 
       lock = true
+      spectraResults.value = []
 
       const requestBody = JSON.parse(e.detail.request.body)
 
@@ -81,38 +89,14 @@ onMounted(() => {
         const intensities
           = e.detail.responseBody.outputs.find((output: any) => output.name === 'intensities') as KoinaSpectrumIntensities
 
-        const spectra = koinaToSpectra(annotations, mzs, intensities, peptideSequences, precursorCharges)
-
         const modelPath = e.detail.request.url.match(/.*?(\/[^/]*?\/infer)$/)![1]
         const apiRequestEl = rapidoc.value.shadowRoot.querySelector(`api-request[path="${modelPath}"]`)
 
-        const biowcSpectrumElements = spectra.map((spectrum) => {
-          const biowcSpectrumEl = document.createElement('biowc-spectrum') as BiowcSpectrum
-          biowcSpectrumEl.spectrum = {
-            attributes: [],
-            intensities: spectrum.intensities,
-            mzs: spectrum.mz,
-          }
-          biowcSpectrumEl.pepSeq = spectrum.peptideSequence
-          biowcSpectrumEl.charge = spectrum.precursorCharge
-          biowcSpectrumEl.normalizeIntensity = true
-          biowcSpectrumEl.matchedIons = spectrumToMatchedFragmentPeaks(spectrum)
-          biowcSpectrumEl.hideErrorPlot = true
-          biowcSpectrumEl.style.display = 'block'
-          biowcSpectrumEl.style.marginTop = '2rem'
+        const teleportTargetEl = document.createElement('div')
+        apiRequestEl.insertAdjacentElement('afterend', teleportTargetEl)
+        teleportTarget.value = teleportTargetEl
 
-          return biowcSpectrumEl
-        })
-
-        const previousBiowcSpectrumElements = apiRequestEl.parentElement!.querySelectorAll('biowc-spectrum') as NodeListOf<BiowcSpectrum>
-
-        previousBiowcSpectrumElements.forEach((biowcSpectrumEl) => {
-          biowcSpectrumEl.remove()
-        })
-
-        biowcSpectrumElements.reverse().forEach((biowcSpectrumEl) => {
-          apiRequestEl.insertAdjacentElement('afterend', biowcSpectrumEl)
-        })
+        spectraResults.value = koinaToSpectra(annotations, mzs, intensities, peptideSequences, precursorCharges)
       }
       finally {
         peptideSequences = null
