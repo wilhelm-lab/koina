@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { Bars3Icon } from '@heroicons/vue/24/solid'
+import { Bars3Icon } from "@heroicons/vue/24/solid";
 
-const showMenu = ref(false)
+const showMenu = ref(false);
 
 function toggleNavbar() {
-  showMenu.value = !showMenu.value
+  showMenu.value = !showMenu.value;
 }
 
 function closeNavbar() {
-  showMenu.value = false
+  showMenu.value = false;
 }
 
 function handleOutsideClick(event: MouseEvent) {
-  if (showMenu.value && !(event.target as HTMLElement | null)?.closest('nav')) {
-    showMenu.value = false
+  if (showMenu.value && !(event.target as HTMLElement | null)?.closest("nav")) {
+    showMenu.value = false;
   }
 }
 
 onMounted(() => {
-  window.addEventListener('click', handleOutsideClick)
-})
+  window.addEventListener("click", handleOutsideClick);
+});
 
 onBeforeUnmount(() => {
-  window.removeEventListener('click', handleOutsideClick)
-})
+  window.removeEventListener("click", handleOutsideClick);
+});
 </script>
 
 <template>
@@ -34,10 +34,7 @@ onBeforeUnmount(() => {
       to="/"
       class="flex justify-center items-center text-3xl font-bold"
     >
-      <img
-        src="~/assets/img/koina-logo.svg"
-        class="h-12"
-      >
+      <img src="~/assets/img/koina-logo.svg" class="h-12" />
       <span class="ml-2"> Koina </span>
     </nuxt-link>
 
@@ -51,21 +48,20 @@ onBeforeUnmount(() => {
       </button>
 
       <ul
-        :class="[{
-          hidden: !showMenu,
-          flex: showMenu,
-        }, 'lg:flex items-end flex-col lg:flex-row gap-4 px-6 lg:px-0 py-4 lg:py-0 absolute lg:static right-[-0.5rem] md:right-[-1rem] z-10 bg-white w-[100vw] lg:w-auto']"
+        :class="[
+          {
+            hidden: !showMenu,
+            flex: showMenu,
+          },
+          'lg:flex items-end flex-col lg:flex-row gap-12 px-6 lg:px-0 py-4 lg:py-0 absolute lg:static right-[-0.5rem] md:right-[-1rem] z-10 bg-white w-[100vw] lg:w-auto',
+        ]"
         @click="closeNavbar()"
       >
         <li>
-          <nuxt-link to="/docs">
-            Documentation
-          </nuxt-link>
+          <nuxt-link to="/docs"> Documentation </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/compare-spectra">
-            Compare Spectra
-          </nuxt-link>
+          <nuxt-link to="/compare-spectra"> Compare Spectra </nuxt-link>
         </li>
         <li>
           <a href="mailto:Ludwig.Lautenbacher@tum.de"> Contact </a>
