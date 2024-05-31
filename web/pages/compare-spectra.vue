@@ -128,6 +128,7 @@ const mirrorProxiSpectrum = computed(() => {
       .mirrorPepSeq="mirrorSpectrum.peptideSequence"
       .charge="referenceSpectrum.precursorCharge"
       .mirrorCharge="mirrorSpectrum.precursorCharge"
+      .normalizeIntensity="true"
       .hideErrorPlot="true"
     >
     </biowc-spectrum>
