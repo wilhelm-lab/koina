@@ -6,8 +6,8 @@ import {
   AccordionContent,
   AccordionItem,
 } from "@/components/ui/accordion";
-import type { KoinaSpectrum } from "@/utils/transform-spectrum";
-import { spectrumToMatchedFragmentPeaks } from "@/utils/transform-spectrum";
+import type { KoinaSpectrum } from "@/utils/spectrum";
+import { koinaSpectrumToMatchedFragmentPeaks } from "@/utils/spectrum";
 import "biowc-spectrum";
 
 const props = defineProps<{
@@ -19,7 +19,7 @@ const keyedSpectras = computed(() => {
     return {
       ...spectrum,
       key: `${index}`,
-      matchedIons: spectrumToMatchedFragmentPeaks(spectrum),
+      matchedIons: koinaSpectrumToMatchedFragmentPeaks(spectrum),
     };
   });
 });
@@ -44,7 +44,7 @@ const setOpenKey = (key: string) => {
 <template>
   <h3>Result Spectra</h3>
   <!-- using inline styles here so the styles stil still work if they get teleported into rapidoc shadow DOM -->
-  <Accordion type="single" collapsible>
+  <Accordion type="multiple" collapsible>
     <AccordionItem
       v-for="spectrum in keyedSpectras"
       :key="spectrum.key"

@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import TheHeader from "~/components/partials/TheHeader.vue";
+import TheFooter from "~/components/partials/TheFooter.vue";
+
+definePageMeta({
+  layout: false,
+});
+</script>
+
 <template>
   <div class="overflow-hidden">
     <TheHeader />
@@ -16,14 +25,8 @@
   </div>
 </template>
 
-<script setup lang="ts">
-definePageMeta({
-  layout: false,
-})
-</script>
-
 <style>
 .openapidoc-container {
-  height: calc(100vh - 70px);
+  height: calc(100vh - 82px);
 }
 </style>
