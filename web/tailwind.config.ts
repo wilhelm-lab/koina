@@ -18,11 +18,7 @@ const customColors = {
   'secondary-dark': secondary.darken(0.2).string(),
 }
 
-const safeColors = [
-  ...Object.keys(customColors),
-  'white',
-  'black',
-]
+const safeColors = [...Object.keys(customColors), 'white', 'black']
 
 const safeColorClasses = [
   ...safeColors.map(color => `text-${color}`),
@@ -34,9 +30,7 @@ const safeColorClasses = [
 ]
 
 export default <Partial<Config>>{
-  safelist: [
-    ...safeColorClasses,
-  ],
+  safelist: [...safeColorClasses],
   theme: {
     extend: {
       container: {
