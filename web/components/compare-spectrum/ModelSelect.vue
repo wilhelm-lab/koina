@@ -19,6 +19,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
+import type { HTMLAttributes } from "vue";
+
+const props = defineProps<{ class?: HTMLAttributes["class"] }>();
+
 const open = ref(false);
 const model = defineModel<string>();
 </script>
@@ -30,7 +34,7 @@ const model = defineModel<string>();
         variant="outline"
         role="combobox"
         :aria-expanded="open"
-        class="w-full justify-between"
+        :class="cn('w-full justify-between', props.class)"
       >
         {{ model || "Select model..." }}
         <ChevronsUpDown class="ml-2 h-4 w-4 shrink-0 opacity-50" />
