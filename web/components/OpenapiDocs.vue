@@ -13,11 +13,9 @@
     font-size="largest"
     schema-style="table"
   >
-    <template #footer>
-      <div>
-        <slot name="footer" />
-      </div>
-    </template>
+    <div slot="footer">
+      <slot name="footer"></slot>
+    </div>
   </rapi-doc>
 
   <Teleport v-if="spectraResults.length" :to="teleportTarget">

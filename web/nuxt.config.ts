@@ -1,4 +1,4 @@
-import wasm from 'vite-plugin-wasm-esm'
+import wasm from "vite-plugin-wasm-esm";
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -10,13 +10,20 @@ export default defineNuxtConfig({
       wasm: true,
     },
   },
-  modules: ['@nuxtjs/tailwindcss', '@nuxt/eslint', '@vueuse/nuxt'],
+  modules: ["@nuxtjs/tailwindcss", "@nuxt/eslint", "@vueuse/nuxt"],
   eslint: {
     config: {
       stylistic: true,
     },
   },
   vite: {
-    plugins: [wasm(['biowclib-mz'])],
+    plugins: [wasm(["biowclib-mz"])],
   },
-})
+  vue: {
+    compilerOptions: {
+      isCustomElement: (tag) => {
+        return tag.startsWith("biowc-") || tag == "rapi-doc";
+      },
+    },
+  },
+});

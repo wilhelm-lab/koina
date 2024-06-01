@@ -141,8 +141,7 @@ async function submit() {
       .mirrorCharge="mirrorSpectrum.precursorCharge"
       .normalizeIntensity="true"
       .hideErrorPlot="true"
-    >
-    </biowc-spectrum>
+    />
 
     <div v-if="loading">Loading...</div>
 
