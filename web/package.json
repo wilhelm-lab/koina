@@ -21,6 +21,7 @@
     "nuxt": "^3.11.2",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
+    "vite-plugin-top-level-await": "^1.4.1",
     "vite-plugin-wasm-esm": "^1.0.1",
     "vue-eslint-parser": "^8.3.0"
   },
