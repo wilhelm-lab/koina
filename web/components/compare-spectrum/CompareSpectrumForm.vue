@@ -150,7 +150,7 @@ watch(
         <div>
           <Label
             >Prediction Model
-            <ModelSelect v-model="model.model!.name" />
+            <ModelSelect v-model="model.model!.name" class="mt-1" />
           </Label>
         </div>
         <div class="flex flex-col">
