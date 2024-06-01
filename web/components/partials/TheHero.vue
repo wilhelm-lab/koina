@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import BaseButton from "~/components/ui/BaseButton.vue";
+</script>
+
 <template>
   <div
     class="py-16 flex items-center justify-center w-full bg-primary-dark-3 bg-cover bg-center bg-hero-pattern"
