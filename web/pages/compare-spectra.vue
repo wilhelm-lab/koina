@@ -71,37 +71,48 @@ async function fetchSpectrumForConfig(config: SpectrumFormModel): Promise<
 }
 
 const loading = ref(false);
+const error = ref<string | undefined>();
+
+const referenceProxiSpectrum = ref<ProxiSpectrum | undefined>();
+const mirrorProxiSpectrum = ref<ProxiSpectrum | undefined>();
 
 async function submit() {
   loading.value = true;
+  error.value = undefined;
 
-  const referenceResult = await fetchSpectrumForConfig(referenceConfig.value);
-  if (referenceResult) {
-    const { spectrum: rSpec, matchedPeaks: rMatchedPeaks } = referenceResult;
-    referenceSpectrum.value = rSpec;
-    referenceMatchedPeaks.value = rMatchedPeaks;
+  try {
+    const referenceResult = await fetchSpectrumForConfig(referenceConfig.value);
+    if (referenceResult) {
+      const { spectrum: rSpec, matchedPeaks: rMatchedPeaks } = referenceResult;
+      referenceSpectrum.value = rSpec;
+      referenceMatchedPeaks.value = rMatchedPeaks;
+    }
+
+    const mirrorResult = await fetchSpectrumForConfig(mirrorConfig.value);
+    if (mirrorResult) {
+      const { spectrum: mSpec, matchedPeaks: mMatchedPeaks } = mirrorResult;
+      mirrorSpectrum.value = mSpec;
+      mirrorMatchedPeaks.value = mMatchedPeaks;
+    }
+
+    if (referenceSpectrum.value) {
+      referenceProxiSpectrum.value = koinaSpectrumToProxiSpectrum(
+        referenceSpectrum.value,
+      );
+    }
+
+    if (mirrorSpectrum.value) {
+      mirrorProxiSpectrum.value = koinaSpectrumToProxiSpectrum(
+        mirrorSpectrum.value,
+      );
+    }
+  } catch (e: any) {
+    console.error(e);
+    error.value = `An error occurred: ${(e as Error).message}`;
+  } finally {
+    loading.value = false;
   }
-
-  const mirrorResult = await fetchSpectrumForConfig(mirrorConfig.value);
-  if (mirrorResult) {
-    const { spectrum: mSpec, matchedPeaks: mMatchedPeaks } = mirrorResult;
-    mirrorSpectrum.value = mSpec;
-    mirrorMatchedPeaks.value = mMatchedPeaks;
-  }
-
-  await nextTick();
-  loading.value = false;
 }
-
-const referenceProxiSpectrum = computed(() => {
-  if (!referenceSpectrum.value) return;
-  return koinaSpectrumToProxiSpectrum(referenceSpectrum.value);
-});
-
-const mirrorProxiSpectrum = computed(() => {
-  if (!mirrorSpectrum.value) return;
-  return koinaSpectrumToProxiSpectrum(mirrorSpectrum.value);
-});
 </script>
 
 <template>
@@ -119,7 +130,7 @@ const mirrorProxiSpectrum = computed(() => {
     <Button class="mt-2" @click="submit()"> Compare Spectra </Button>
 
     <biowc-spectrum
-      v-if="referenceSpectrum && mirrorSpectrum"
+      v-if="referenceSpectrum && mirrorSpectrum && !loading && !error"
       .spectrum="referenceProxiSpectrum"
       .matchedIons="referenceMatchedPeaks"
       .mirrorSpectrum="mirrorProxiSpectrum"
@@ -134,5 +145,7 @@ const mirrorProxiSpectrum = computed(() => {
     </biowc-spectrum>
 
     <div v-if="loading">Loading...</div>
+
+    <div class="text-red-500">{{ error }}</div>
   </div>
 </template>

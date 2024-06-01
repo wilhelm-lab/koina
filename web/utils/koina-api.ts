@@ -137,6 +137,10 @@ export async function fetchKoinaPrediction(
     },
   );
 
+  if (!response.ok) {
+    throw new Error("Failed to fetch Koina prediction");
+  }
+
   return response.json();
 }
 
@@ -153,20 +157,27 @@ export async function fetchModelTritonConfig(
     },
   );
 
+  if (!response.ok) {
+    throw new Error("Failed to fetch Koina model config");
+  }
+
   return response.json();
 }
 
 export async function fetchKoinaProxiSpectrum(
   peptideSequence: string,
-  collisionEnergy: number,
   precursorCharge: number,
+  collisionEnergy?: number,
   instrumentType?: string,
 ): Promise<ProxiSpectrum> {
   const params = new URLSearchParams({
     peptide_sequences: peptideSequence,
-    collision_energies: collisionEnergy.toString(),
     precursor_charges: precursorCharge.toString(),
   });
+
+  if (collisionEnergy) {
+    params.append("collision_energies", collisionEnergy.toString());
+  }
 
   if (instrumentType) {
     params.append("instrument_types", instrumentType);
@@ -181,6 +192,10 @@ export async function fetchKoinaProxiSpectrum(
       },
     },
   );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch Koina ProxiSpectrum");
+  }
 
   return response.json();
 }
