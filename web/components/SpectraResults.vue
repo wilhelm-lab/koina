@@ -24,12 +24,6 @@ const keyedSpectras = computed(() => {
   });
 });
 
-console.log("keyedSpectras", keyedSpectras);
-
-watch(keyedSpectras, (newSpectras) => {
-  console.log("newSpectras", newSpectras);
-});
-
 const openKey = ref("");
 
 const setOpenKey = (key: string) => {
