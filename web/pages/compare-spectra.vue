@@ -63,6 +63,8 @@ async function fetchSpectrumForConfig(config: SpectrumFormModel): Promise<
         config.model?.inputs || [],
       )[0];
 
+      spectrum.peptideSequence = peptideSequence;
+
       const matchedPeaks = annotateKoinaSpectrum(spectrum, peptideSequence);
 
       return { spectrum, matchedPeaks };
