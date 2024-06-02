@@ -1,6 +1,8 @@
 // TODO: peptide_sequences_1 and peptide_sequences_2 from Prosit_2023_intensity_XL_CMS2
 //       are not yet supported by the current implementation.
 
+// TODO: make everything gnereic over the Koina inputs
+
 import type { ProxiSpectrum } from "./fetch-proxi-spectrum";
 
 export interface KoinaData {
@@ -59,6 +61,13 @@ export interface KoinaSpectrumInstrumentTypes extends KoinaData {
   shape: number[];
 }
 
+export interface KoinaFragmentationTypes extends KoinaData {
+  data: string[];
+  datatype: "BYTES";
+  name: "fragmentation_types";
+  shape: number[];
+}
+
 export const EMPTY_KOINA_DATA: Record<string, KoinaData> = {
   annotation: {
     name: "annotation",
@@ -102,6 +111,12 @@ export const EMPTY_KOINA_DATA: Record<string, KoinaData> = {
     datatype: "BYTES",
     shape: [],
   } as KoinaSpectrumInstrumentTypes,
+  fragmentation_types: {
+    name: "fragmentation_types",
+    data: [],
+    datatype: "BYTES",
+    shape: [],
+  } as KoinaFragmentationTypes,
 };
 
 export interface KoinaModelConfigInput {
@@ -137,11 +152,13 @@ export async function fetchKoinaPrediction(
     },
   );
 
+  const responseBody = await response.json();
+
   if (!response.ok) {
-    throw new Error("Failed to fetch Koina prediction");
+    throw new Error(`Failed to fetch Koina prediction: ${responseBody.error}`);
   }
 
-  return response.json();
+  return responseBody;
 }
 
 export async function fetchModelTritonConfig(
@@ -169,6 +186,7 @@ export async function fetchKoinaProxiSpectrum(
   precursorCharge: number,
   collisionEnergy?: number,
   instrumentType?: string,
+  fragmentationType?: string,
 ): Promise<ProxiSpectrum> {
   const params = new URLSearchParams({
     peptide_sequences: peptideSequence,
@@ -181,6 +199,10 @@ export async function fetchKoinaProxiSpectrum(
 
   if (instrumentType) {
     params.append("instrument_types", instrumentType);
+  }
+
+  if (fragmentationType) {
+    params.append("fragmentation_types", fragmentationType);
   }
 
   const response = await fetch(

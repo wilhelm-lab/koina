@@ -17,12 +17,9 @@ const model = defineModel<AlphaPeptInstrumentType>();
 <template>
   <Label>
     Instrument Type
-    <Select>
-      <SelectTrigger>
-        <SelectValue
-          v-model="model"
-          placeholder="Select an instrument type..."
-        />
+    <Select :default-value="AlphaPeptInstrumentType.QE" v-model="model">
+      <SelectTrigger class="mt-1">
+        <SelectValue placeholder="Select an instrument type..." />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
