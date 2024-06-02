@@ -131,7 +131,8 @@ export function koinaSpectrumToMatchedFragmentPeaks(
 ): MatchedFragmentPeak[] {
   const matchedFragmentPeaks: MatchedFragmentPeak[] = [];
 
-  const seqLen = spectrum.peptideSequence.length;
+  // Strip out modifications for length calculation
+  const seqLen = spectrum.peptideSequence.replace(/-?\[.+?\]-?/g, "").length;
 
   for (const [i, annotation] of spectrum.annotation.entries()) {
     const annotationSplit = annotation.match(
