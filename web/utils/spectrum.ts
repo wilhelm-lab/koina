@@ -21,6 +21,7 @@ export interface KoinaSpectrum {
   precursorCharge: number;
   collisionEnergy?: number;
   instrumentType?: string;
+  fragmentationType?: string;
 }
 
 export function koinaResponseToSpectra(
@@ -56,6 +57,11 @@ export function koinaResponseToSpectra(
   const instrumentTypes = findKoinaData<KoinaSpectrumInstrumentTypes>(
     inputs,
     "instrument_types",
+  );
+
+  const fragmentationTypes = findKoinaData<KoinaFragmentationTypes>(
+    inputs,
+    "fragmentation_types",
   );
 
   if (
@@ -113,6 +119,7 @@ export function koinaResponseToSpectra(
       precursorCharge: precursorCharges.data[i],
       collisionEnergy: collisionEnergies?.data[i],
       instrumentType: instrumentTypes?.data[i],
+      fragmentationType: fragmentationTypes?.data[i],
     });
   }
 
@@ -124,7 +131,8 @@ export function koinaSpectrumToMatchedFragmentPeaks(
 ): MatchedFragmentPeak[] {
   const matchedFragmentPeaks: MatchedFragmentPeak[] = [];
 
-  const seqLen = spectrum.peptideSequence.length;
+  // Strip out modifications for length calculation
+  const seqLen = spectrum.peptideSequence.replace(/-?\[.+?\]-?/g, "").length;
 
   for (const [i, annotation] of spectrum.annotation.entries()) {
     const annotationSplit = annotation.match(
@@ -187,6 +195,11 @@ export function proxiSpectrumsToKoinaSpectrums(
     "instrument_types",
   );
 
+  const fragmentationTypes = findKoinaData<KoinaFragmentationTypes>(
+    inputs,
+    "fragmentation_types",
+  );
+
   if (spectrums.length !== peptideSequences.shape[0]) {
     throw new Error("Shape mismatch");
   }
@@ -202,6 +215,7 @@ export function proxiSpectrumsToKoinaSpectrums(
       precursorCharge: precursorCharges.data[i],
       collisionEnergy: collisionEnergies?.data[i],
       instrumentType: instrumentTypes?.data[i],
+      fragmentationType: fragmentationTypes?.data[i],
     });
   }
 

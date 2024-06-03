@@ -20,3 +20,8 @@ export enum AlphaPeptInstrumentType {
   TIMSTOF = "TIMSTOF",
   SCIEXTOF = "SCIEXTOF",
 }
+
+export enum FragmentationType {
+  HCD = "HCD",
+  CID = "CID",
+}

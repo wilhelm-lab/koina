@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import {
   AlphaPeptInstrumentType,
+  FragmentationType,
   SpectrumConfigSource,
   type SpectrumFormModel,
 } from "~/utils/types";
@@ -20,6 +21,7 @@ import PeptideSequenceInput from "./inputs/PeptideSequenceInput.vue";
 import PrecursorChargeInput from "./inputs/PrecursorChargeInput.vue";
 import CollisionEnergyInput from "./inputs/CollisionEnergyInput.vue";
 import InstrumentTypeSelect from "./inputs/InstrumentTypeSelect.vue";
+import FragmentationTypeInput from "./inputs/FragmentationTypeInput.vue";
 
 const model = defineModel<SpectrumFormModel>();
 
@@ -72,6 +74,7 @@ const peptideSequence = ref<string>("");
 const precursorCharge = ref<number>(2);
 const collisionEnergy = ref<number>(25);
 const instrumentType = ref<AlphaPeptInstrumentType>(AlphaPeptInstrumentType.QE);
+const fragmentationType = ref<FragmentationType>(FragmentationType.HCD);
 
 watch(peptideSequence, (newPeptideSequence) => {
   updateModelInput("peptide_sequences", newPeptideSequence);
@@ -89,6 +92,10 @@ watch(instrumentType, (newInstrumentType) => {
   updateModelInput("instrument_types", newInstrumentType);
 });
 
+watch(fragmentationType, (newFragmentationType) => {
+  updateModelInput("fragmentation_types", newFragmentationType);
+});
+
 const modelConfigInputNames = computed(() => {
   return modelConfig.value?.input.map((input) => input.name);
 });
@@ -100,6 +107,7 @@ watch(
     updateModelInput("precursor_charges", precursorCharge.value);
     updateModelInput("collision_energies", collisionEnergy.value);
     updateModelInput("instrument_types", instrumentType.value);
+    updateModelInput("fragmentation_types", fragmentationType.value);
 
     if (model.value?.model?.inputs)
       model.value.model.inputs =
@@ -107,7 +115,7 @@ watch(
           modelConfigInputNames.value?.includes(input.name),
         ) || [];
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 </script>
 
@@ -173,6 +181,11 @@ watch(
             class="mb-2"
             v-if="modelConfigInputNames?.includes('instrument_types')"
             v-model="instrumentType"
+          />
+          <FragmentationTypeInput
+            class="mb-2"
+            v-if="modelConfigInputNames?.includes('fragmentation_types')"
+            v-model="fragmentationType"
           />
         </div>
       </div>
