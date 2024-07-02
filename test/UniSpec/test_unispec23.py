@@ -58,7 +58,7 @@ def test_inference():
     """
     INPUT = np.load("test/UniSpec/test_input_tensor.npy")
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
-    in_INPUT = grpcclient.InferInput('input_tensor', INPUT.shape, "FP32")
+    in_INPUT = grpcclient.InferInput("input_tensor", INPUT.shape, "FP32")
     in_INPUT.set_data_from_numpy(INPUT)
     result = triton_client.infer(
         MODEL_NAME,

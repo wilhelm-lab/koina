@@ -9,51 +9,58 @@ import re
 MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
 mdicum = {
-    1: 'Acetyl',
-    4: 'Carbamidomethyl',
-    28: 'Gln->pyro-Glu',
-    27: 'Glu->pyro-Glu',
-    35: 'Oxidation',
-    21: 'Phospho',
-    26: 'Pyro-carbamidomethyl',
-    #4: 'CAM'
+    1: "Acetyl",
+    4: "Carbamidomethyl",
+    28: "Gln->pyro-Glu",
+    27: "Glu->pyro-Glu",
+    35: "Oxidation",
+    21: "Phospho",
+    26: "Pyro-carbamidomethyl",
+    # 4: 'CAM'
 }
-rev_mdicum = {n:m for m,n in mdicum.items()}
+rev_mdicum = {n: m for m, n in mdicum.items()}
+
 
 def str2dat(label):
-    seq,other = label.split('/')
-    [charge, mods, ev, nce] = other.split('_')
-    return (seq,mods,int(charge),float(ev[:-2]),float(nce[3:]))
+    seq, other = label.split("/")
+    [charge, mods, ev, nce] = other.split("_")
+    return (seq, mods, int(charge), float(ev[:-2]), float(nce[3:]))
+
 
 def label2modseq(labels):
     modseqs = []
     charges = []
     nces = []
     for label in labels:
-        
+
         seq, mod, charge, ev, nce = str2dat(label)
         charges.append(int(charge))
         nces.append(float(nce))
 
         mseq = seq
-        Mstart = mod.find('(') if mod != '0' else 1
+        Mstart = mod.find("(") if mod != "0" else 1
         modamt = int(mod[0:Mstart])
         if modamt > 0:
-            hold = [re.sub('[()]', '', n) for n in mod[Mstart:].split(")(")]
+            hold = [re.sub("[()]", "", n) for n in mod[Mstart:].split(")(")]
             hold.reverse()
             for n in hold:
-                [pos, aa, modtyp] = n.split(',')
+                [pos, aa, modtyp] = n.split(",")
                 pos = int(pos)
                 assert seq[pos] == aa
                 assert "Carbamidomethyl" in rev_mdicum.keys(), print(rev_mdicum.keys())
-                mseq = list(mseq)[:pos+1] + list("[UNIMOD:%d]"%rev_mdicum[modtyp]) + list(mseq)[pos+1:]
+                mseq = (
+                    list(mseq)[: pos + 1]
+                    + list("[UNIMOD:%d]" % rev_mdicum[modtyp])
+                    + list(mseq)[pos + 1 :]
+                )
                 mseq = "".join(mseq)
         modseqs.append(mseq)
-    Modseqs = np.array(modseqs)[:,None].astype(np.object_)
-    Charges = np.array(charges)[:,None].astype(np.int32)
-    Nces = np.array(nces)[:,None].astype(np.float32)
+    Modseqs = np.array(modseqs)[:, None].astype(np.object_)
+    Charges = np.array(charges)[:, None].astype(np.int32)
+    Nces = np.array(nces)[:, None].astype(np.float32)
 
     return Modseqs, Charges, Nces
+
 
 def test_available_http():
     req = requests.get(f"{SERVER_HTTP}/v2/models/{MODEL_NAME}", timeout=1)
@@ -66,16 +73,18 @@ def test_available_grpc():
 
 
 def test_inference():
-    
-    #labels = open("test/UniSpec/labels_input2.txt").read().split("\n")
-    #SEQUENCES, charge, ces = label2modseq(labels)
-    SEQUENCES = np.array(open("test_input_modseqs.txt").read().split("\n"), dtype=np.object_)[:,None]
-    charge = np.loadtxt("test_input_charges.txt")[:,None].astype(np.int32)
-    ces = np.loadtxt("test_input_nces.txt")[:,None].astype(np.float32)
-    instr = np.array(50*['Lumos'])[:,None].astype(np.object_)
+
+    # labels = open("test/UniSpec/labels_input2.txt").read().split("\n")
+    # SEQUENCES, charge, ces = label2modseq(labels)
+    SEQUENCES = np.array(
+        open("test_input_modseqs.txt").read().split("\n"), dtype=np.object_
+    )[:, None]
+    charge = np.loadtxt("test_input_charges.txt")[:, None].astype(np.int32)
+    ces = np.loadtxt("test_input_nces.txt")[:, None].astype(np.float32)
+    instr = np.array(50 * ["Lumos"])[:, None].astype(np.object_)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
-    
+
     in_pep_seq = grpcclient.InferInput("peptide_sequences", SEQUENCES.shape, "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
@@ -87,21 +96,21 @@ def test_inference():
 
     in_instr = grpcclient.InferInput("instrument_types", instr.shape, "BYTES")
     in_instr.set_data_from_numpy(instr)
-    
+
     result = triton_client.infer(
         MODEL_NAME,
         inputs=[in_pep_seq, in_charge, in_ces, in_instr],
         outputs=[
             grpcclient.InferRequestedOutput("intensities"),
             grpcclient.InferRequestedOutput("mz"),
-            grpcclient.InferRequestedOutput("annotation")
+            grpcclient.InferRequestedOutput("annotation"),
         ],
     )
 
     intensities = result.as_numpy("intensities")
     mz = result.as_numpy("mz")
     ann = result.as_numpy("annotation")
-    
+
     # Assert expected ions are in each prediction
     ions = np.load("test/UniSpec/test_output_top200_convertedions2.npy")
     for i in range(50):
@@ -112,12 +121,12 @@ def test_inference():
     # Because of residuals in mz, the argsort comes out a little different between koina
     # and my github repo implementation. Thus intensities and anns would return false in
     # np.allclose
-    #assert np.allclose(
+    # assert np.allclose(
     #    intensities,
     #    np.load("test/UniSpec/test_output_top200_int2.npy"),
     #    rtol=0,
     #    atol=1e-4,
-    #)
+    # )
 
     # Assert masses are consistent
     assert np.allclose(
