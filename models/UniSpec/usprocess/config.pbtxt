@@ -1,0 +1,40 @@
+max_batch_size: 1000
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [1]
+  },
+  {
+    name: 'precursor_charges',
+    data_type: TYPE_INT32,
+    dims: [1],
+  },
+  {
+    name: 'collision_energies',
+    data_type: TYPE_FP32,
+    dims: [1],
+  },
+  {
+    name: 'instrument_types',
+    data_type: TYPE_STRING,
+    dims: [1],
+  }
+]
+output [
+  {
+   name: 'intensities',
+   data_type: TYPE_FP32,
+   dims: [-1]
+  },
+  {
+   name: 'mz',
+   data_type: TYPE_FP32,
+   dims: [-1]
+  },
+  {
+    name: 'annotation',
+    data_type: TYPE_STRING,
+    dims: [-1]
+  }
+]

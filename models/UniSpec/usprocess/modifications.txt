@@ -1,0 +1,7 @@
+Acetyl
+Carbamidomethyl
+Gln->pyro-Glu
+Glu->pyro-Glu
+Oxidation
+Phospho
+Pyro-carbamidomethyl
