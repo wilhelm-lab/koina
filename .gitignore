@@ -21,3 +21,4 @@
 
 # Hide symlink in models/repo
 models/repo/*
+node_modules
