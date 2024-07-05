@@ -1,5 +1,6 @@
 [MASTER]
 ignore-patterns=.nox
+ignore=./web/node_modules
 
 [MESSAGES CONTROL]
 disable=E0401
