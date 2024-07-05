@@ -7,6 +7,7 @@ from pathlib import Path, PosixPath
 import time
 from typing import List, Set
 from itertools import chain
+import hashlib
 
 import requests
 import zipfile
@@ -68,20 +69,31 @@ def recursive_dependency_symlink(pattern: str):
         symlink_model(d)
 
 
+def md5sum(file_path):
+    hash_md5 = hashlib.md5()
+    with open(file_path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+
 def find_and_download():
     for path_zen in glob(f"repo/**/.zenodo", recursive=True):
         path_zen = Path(path_zen)
         with open(path_zen) as f:
-            url_zip = f.read()
-        path_zip = Path(f"{path_zen.parent}/tmp.zip")
-        if not path_zip.is_file():
-            print(f"Downloading {path_zen}")
+            url_zip = f.readline()
+            checksum_algorithm, checksum = f.readline().strip().split(":")
+        path_zip = Path(f"{path_zen.parent}/zenodo.zip")
+        if not path_zip.is_file() or md5sum(path_zip) != checksum:
+            print(
+                f"MD5 mismatch or file not found. Downloading {url_zip} to {path_zip}"
+            )
             with open(path_zip, "wb") as f:
                 f.write(requests.get(url_zip).content)
             with zipfile.ZipFile(path_zip, "r") as f:
                 f.extractall(path_zen.parent)
         else:
-            print(f"Skipping. {path_zip} exists")
+            print(f"Skipping. {path_zip} checksum matches {checksum}")
 
 
 if __name__ == "__main__":
