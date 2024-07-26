@@ -8,60 +8,6 @@ import re
 # To ensure MODEL_NAME == test_<filename>.py
 MODEL_NAME = Path(__file__).stem.replace("test_", "")
 
-mdicum = {
-    1: "Acetyl",
-    4: "Carbamidomethyl",
-    28: "Gln->pyro-Glu",
-    27: "Glu->pyro-Glu",
-    35: "Oxidation",
-    21: "Phospho",
-    26: "Pyro-carbamidomethyl",
-    # 4: 'CAM'
-}
-rev_mdicum = {n: m for m, n in mdicum.items()}
-
-
-def str2dat(label):
-    seq, other = label.split("/")
-    [charge, mods, ev, nce] = other.split("_")
-    return (seq, mods, int(charge), float(ev[:-2]), float(nce[3:]))
-
-
-def label2modseq(labels):
-    modseqs = []
-    charges = []
-    nces = []
-    for label in labels:
-
-        seq, mod, charge, ev, nce = str2dat(label)
-        charges.append(int(charge))
-        nces.append(float(nce))
-
-        mseq = seq
-        Mstart = mod.find("(") if mod != "0" else 1
-        modamt = int(mod[0:Mstart])
-        if modamt > 0:
-            hold = [re.sub("[()]", "", n) for n in mod[Mstart:].split(")(")]
-            hold.reverse()
-            for n in hold:
-                [pos, aa, modtyp] = n.split(",")
-                pos = int(pos)
-                assert seq[pos] == aa
-                assert "Carbamidomethyl" in rev_mdicum.keys(), print(rev_mdicum.keys())
-                mseq = (
-                    list(mseq)[: pos + 1]
-                    + list("[UNIMOD:%d]" % rev_mdicum[modtyp])
-                    + list(mseq)[pos + 1 :]
-                )
-                mseq = "".join(mseq)
-        modseqs.append(mseq)
-    Modseqs = np.array(modseqs)[:, None].astype(np.object_)
-    Charges = np.array(charges)[:, None].astype(np.int32)
-    Nces = np.array(nces)[:, None].astype(np.float32)
-
-    return Modseqs, Charges, Nces
-
-
 def test_available_http():
     req = requests.get(f"{SERVER_HTTP}/v2/models/{MODEL_NAME}", timeout=1)
     assert req.status_code == 200
@@ -74,8 +20,6 @@ def test_available_grpc():
 
 def test_inference():
 
-    # labels = open("test/UniSpec/labels_input2.txt").read().split("\n")
-    # SEQUENCES, charge, ces = label2modseq(labels)
     SEQUENCES = np.array(
         open("test/UniSpec/arr-UniSpec_usprocess_modseqs.txt").read().split("\n"), dtype=np.object_
     )[:, None]

@@ -24,7 +24,7 @@ RUN echo 'export PYENV_ROOT="/home/devuser/.pyenv"' >> /home/devuser/.bashrc
 RUN echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> /home/devuser/.bashrc
 RUN echo 'eval "$(pyenv init -)"' >> /home/devuser/.bashrc
 RUN chmod -R 777 /home/devuser/
-RUN source /home/devuser/.bashrc && pyenv install 3.8 3.9 3.10
+RUN source /home/devuser/.bashrc && pyenv install 3.10
 RUN chmod 777 /home/devuser/.pyenv/shims
 # Setup node with nvm
 ARG NVM_DIR="/home/devuser/.nvm"

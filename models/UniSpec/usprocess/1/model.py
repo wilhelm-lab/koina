@@ -439,7 +439,8 @@ class TritonPythonModel:
         pred /= pred.max(1, keepdims=True)
         rdinds = np.argsort(pred, axis=-1)[:, -top:]
         tile = np.tile(np.arange(pred.shape[0])[:, None], [1, top])
-        pions = np.array(list(self.dictionary.keys()))[rdinds]  # for m in rdinds])
+        pions = np.array(list(self.dictionary.keys()), dtype=np.object_)[rdinds]
+        
         pints = pred[tile, rdinds]
         pmass = np.array(
             [
@@ -450,10 +451,6 @@ class TritonPythonModel:
                 for n in range(pred.shape[0])
             ]
         )
-        sort = np.argsort(pmass, axis=1)
-        pmass = pmass[tile, sort]
-        pints = pints[tile, sort]
-        pions = pions[tile, sort]
 
         if rm_fake:
             filt = np.array(
@@ -463,9 +460,12 @@ class TritonPythonModel:
                 ]
             )
             pints[filt == False] = -1
-
+        
         self.convert_internal_batch(pions, pepinfo)
-
+        sort = np.argsort(pions, axis=1)
+        pmass = pmass[tile, sort]
+        pints = pints[tile, sort]
+        pions = pions[tile, sort]
         return (pmass, pints, pions)
 
     def execute(self, requests):
