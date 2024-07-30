@@ -1,0 +1,33 @@
+max_batch_size: 1000
+platform: "tensorflow_savedmodel"
+
+input [
+	{
+	  name: 'input_1',
+	  data_type: TYPE_FP32,
+	  dims: [60,6],
+	},
+	{
+	  name: 'input_2',
+	  data_type: TYPE_FP32,
+	  dims: [30,6],
+	},
+	{
+	  name: 'input_3',
+	  data_type: TYPE_FP32,
+	  dims: [60],
+	},
+	{
+	  name: 'input_4',
+	  data_type: TYPE_FP32,
+	  dims: [60,20],
+	}
+]
+
+output [
+  {
+   name: 'dense_8',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+]

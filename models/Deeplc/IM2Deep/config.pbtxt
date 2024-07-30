@@ -1,0 +1,179 @@
+max_batch_size: 1000
+platform: "ensemble"
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+   name: 'precursor_charges',
+   data_type: TYPE_INT32,
+   dims: [-1]
+  }
+]
+output [
+  {
+   name: 'ccs',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+
+]
+
+ensemble_scheduling {
+  step [
+     {
+      model_name: "Deeplc_Preprocess_unmod"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "stripped_peptide"
+        value: "stripped_peptide"
+      }
+    },
+    {
+      model_name: "IM2Deep_Preprocess_AC"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "single_ac"
+        value: "single_ac"
+      }
+    },
+	{
+      model_name: "IM2Deep_Preprocess_ccs_feat"
+      model_version: 1
+      input_map {
+        key: "stripped_peptide"
+        value: "stripped_peptide"
+      },
+      output_map {
+        key: "ccs_feat"
+        value: "ccs_feat"
+      }
+    },
+	{
+      model_name: "Deeplc_Preprocess_onehot"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "stripped_peptide"
+      },
+      output_map {
+        key: "peptides_in:0"
+        value: "peptides_in:0"
+      }
+    },
+	{
+      model_name: "Deeplc_Preprocess_peptide_length"
+      model_version: 1
+      input_map {
+        key: "stripped_peptide"
+        value: "stripped_peptide"
+      },
+      output_map {
+        key: "peptide_length"
+        value: "peptide_length"
+      }
+    },
+	{
+      model_name: "Deeplc_Preprocess_di_amino"
+      model_version: 1
+      input_map {
+        key: "single_ac"
+        value: "single_ac"
+      },
+      output_map {
+        key: "diamino_ac"
+        value: "diamino_ac"
+      }
+    },
+	{
+      model_name: "Deeplc_Preprocess_peptide_ac"
+      model_version: 1
+      input_map {
+        key: "single_ac"
+        value: "single_ac"
+      },
+      output_map {
+        key: "peptide_ac"
+        value: "peptide_ac"
+      }
+    },
+	{
+      model_name: "Deeplc_Preprocess_pos_ac"
+      model_version: 1
+      input_map {
+        key: "single_ac"
+        value: "single_ac"
+      },
+	  input_map {
+        key: "peptide_length"
+        value: "peptide_length"
+      },
+      output_map {
+        key: "pos_ac"
+        value: "pos_ac"
+      }
+    },
+	{
+      model_name: "IM2Deep_Preprocess_general_features"
+      model_version: 1
+      input_map {
+        key: "peptide_length"
+        value: "peptide_length"
+      },
+	  input_map {
+        key: "pos_ac"
+        value: "pos_ac"
+      },
+	  input_map {
+        key: "sum_ac"
+        value: "peptide_ac"
+      },
+	  input_map {
+        key: "ccs_feat"
+        value: "ccs_feat"
+      },
+	  input_map {
+        key: "precursor_charges"
+        value: "precursor_charges"
+      },
+      output_map {
+        key: "general_features"
+        value: "general_features"
+      }
+    },
+	{
+      model_name: "IM2Deep_full_hc_peprec_CCS_v4_cb975cfdd4105f97efa0b3afffe075cc"
+      model_version: 1
+      input_map {
+        key: "input_1"
+        value: "single_ac"
+      },
+	  input_map {
+        key: "input_2"
+        value: "diamino_ac"
+      },
+	  input_map {
+        key: "input_3"
+        value: "general_features"
+      },
+	  input_map {
+        key: "input_4"
+        value: "peptides_in:0"
+      },
+      output_map {
+        key: "dense_8"
+        value: "ccs"
+      }
+    }
+  ]
+}
