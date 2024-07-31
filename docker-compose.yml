@@ -8,10 +8,7 @@ services:
     user: "${UID}:${GID}"
     userns_mode: "host"
     volumes:
-      - type: bind
-        source: ./models
-        target: /models
-      #- ./models:/models:z
+      - ./models:/models:z
     deploy:
       resources:
         reservations:
