@@ -21,4 +21,3 @@ def test_available_grpc():
 
 def test_inference():
     lib_test_inference(MODEL_NAME, SERVER_GRPC)
-

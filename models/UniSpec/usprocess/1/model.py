@@ -440,7 +440,7 @@ class TritonPythonModel:
         rdinds = np.argsort(pred, axis=-1)[:, -top:]
         tile = np.tile(np.arange(pred.shape[0])[:, None], [1, top])
         pions = np.array(list(self.dictionary.keys()), dtype=np.object_)[rdinds]
-        
+
         pints = pred[tile, rdinds]
         pmass = np.array(
             [
@@ -460,7 +460,7 @@ class TritonPythonModel:
                 ]
             )
             pints[filt == False] = -1
-        
+
         self.convert_internal_batch(pions, pepinfo)
         sort = np.argsort(pions, axis=1)
         pmass = pmass[tile, sort]
