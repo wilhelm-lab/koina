@@ -1,5 +1,5 @@
 #!/bin/bash
-source /home/devuser/.bashrc
+source ~/.bashrc
 cd /workspace/koina/
 python ./web/openapi/openapi_gen.py
 cd web
