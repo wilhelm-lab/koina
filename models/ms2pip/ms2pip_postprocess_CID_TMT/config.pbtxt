@@ -1,4 +1,4 @@
-name: "ms2pip_postprocess_single_model"
+name: "ms2pip_postprocess_CID_TMT"
 backend: "python"
 input[
  {

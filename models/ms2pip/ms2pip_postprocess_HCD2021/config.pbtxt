@@ -1,0 +1,22 @@
+name: "ms2pip_postprocess_HCD2021"
+backend: "python"
+input[
+ {
+   name: 'raw_intensities',
+   data_type: TYPE_FP32,
+   dims: [ -1 ],
+ }
+]
+output [
+ {
+   name: 'norm_intensities',
+   data_type: TYPE_FP32,
+   dims: [-1]
+ }
+]
+instance_group [
+    {
+      count: 1
+      kind: KIND_CPU
+    }
+]

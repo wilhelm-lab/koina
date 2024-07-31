@@ -6,12 +6,12 @@ CMD [ "/models/start.py" ]
 FROM serving-develop AS serving-prod
 COPY ./models  /models
 
-FROM nvcr.io/nvidia/tritonserver:22.09-py3-sdk AS util
+FROM nvcr.io/nvidia/tritonserver:24.07-py3-sdk AS util
 RUN add-apt-repository ppa:git-core/ppa
 RUN apt-get update
-RUN apt-get install -y git vim curl ripgrep zlib1g zlib1g-dev libssl-dev libbz2-dev libsqlite3-dev libncursesw5 libffi-dev libreadline-dev locales
+RUN apt-get install -y git vim curl ripgrep zlib1g zlib1g-dev libssl-dev libbz2-dev libsqlite3-dev libncursesw5 libffi-dev libreadline-dev locales pipx
 RUN locale-gen en_US.UTF-8
-RUN pip install -U pip  nox poetry nox-poetry packaging jinja2
+RUN pip install pip jinja2 packaging
 # Setup user
 ARG UID=1000
 ARG GID=1000
@@ -24,7 +24,7 @@ RUN echo 'export PYENV_ROOT="/home/devuser/.pyenv"' >> /home/devuser/.bashrc
 RUN echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> /home/devuser/.bashrc
 RUN echo 'eval "$(pyenv init -)"' >> /home/devuser/.bashrc
 RUN chmod -R 777 /home/devuser/
-RUN source /home/devuser/.bashrc && pyenv install 3.8 3.9 3.10
+RUN source /home/devuser/.bashrc && pyenv install 3.8 3.9 3.10 3.11 3.12
 RUN chmod 777 /home/devuser/.pyenv/shims
 # Setup node with nvm
 ARG NVM_DIR="/home/devuser/.nvm"

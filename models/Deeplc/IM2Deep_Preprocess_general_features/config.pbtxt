@@ -1,0 +1,42 @@
+max_batch_size: 1000
+input[
+ {
+   name: 'peptide_length',
+   data_type: TYPE_FP32,
+   dims: [1]
+ },
+ {
+   name: 'pos_ac',
+   data_type: TYPE_FP32,
+   dims: [48]
+ },
+ {
+   name: 'sum_ac',
+   data_type: TYPE_FP32,
+   dims: [6]
+ },
+ {
+   name: 'ccs_feat',
+   data_type: TYPE_FP32,
+   dims: [4]
+ },
+ {
+   name: 'precursor_charges',
+   data_type: TYPE_INT32,
+   dims: [1]
+ }
+]
+output [
+ {
+   name: 'general_features',
+   data_type: TYPE_FP32,
+   dims: [60]
+ }
+]
+
+instance_group [
+    {
+      count: 1
+      kind: KIND_CPU
+    }
+]

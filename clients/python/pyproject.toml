@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "koinapy"
-version = "0.0.6"
+version = "0.0.7"
 description = "Python client to communicate with Koina."
 authors = ["Ludwig Lautenbacher <Ludwig.Lautenbacher@tum.de>"]
 license = "Apache 2.0"
@@ -10,12 +10,13 @@ documentation = "https://koina.wilhelmlab.org/docs"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.11"
+python = ">=3.8,<3.13"
 tqdm = "*"
 pandas = "*"
 tritonclient = [
     {extras = ["grpc"], version = "!=2.41", python=">=3.8,<=3.11"},
-    {extras = ["grpc"], version = ">=2.23", python=">=3.8,<=3.11"}
+    {extras = ["grpc"], version = ">=2.23", python=">=3.8,<3.11"},
+    {extras = ["grpc"], version = ">=2.42", python=">=3.11"}
 ]
 
 [tool.poetry.group.develop.dependencies]

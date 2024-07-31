@@ -9,6 +9,7 @@
 
 # Xgboost model
 **xgboost.json
+models/**/*.json
 
 # Hide private models
 **privatemodelrepo

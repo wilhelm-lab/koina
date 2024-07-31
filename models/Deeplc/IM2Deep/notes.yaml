@@ -1,0 +1,29 @@
+description: |
+  IM2Deep, is a deep learning-based peptide collisional cross section (CCS) predictor that uses a similar architecture to the retention time predictor, DeepLC. 
+  As a result, IM2Deep is able to predict CCS values for both unmodified as well as modified peptides, even if those modifications were not seen during training.
+
+  Find out more about this model on <a href="https://github.com/compomics/IM2Deep">GitHub</a>.
+
+citation: | 
+  TIMS2Rescore: A DDA-PASEF optimized data-driven rescoring pipeline based on MS2Rescore
+  Arthur Declercq, Robbe Devreese, Jonas Scheid, Caroline Jachmann, et al. 
+  bioRxiv 2024.05.29.596400; doi: https://doi.org/10.1101/2024.05.29.596400
+
+tag: "Collisional cross section"
+tag_url: "https://www.wilhelmlab.org/"
+examples:
+  inputs:
+    [
+      {
+        "name": "peptide_sequences",
+        "httpdtype": "BYTES",
+        "data": '["AAAAAKAKM[UNIMOD:35]"]',
+        "shape": "[1,1]"
+      },
+      {
+        "name": "precursor_charges",
+        "httpdtype": "INT32",
+        "data": '[2]',
+        "shape": "[1,1]"
+      }
+    ]

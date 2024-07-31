@@ -14,7 +14,7 @@ output [
     dims: [ 1 ]
   }
 ]
-instance_group [{ kind: KIND_AUTO }]
+instance_group [{ kind: KIND_CPU }]
 parameters [
   {
     key: "model_type"
