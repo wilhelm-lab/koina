@@ -18,9 +18,9 @@ class TritonPythonModel:
 
             peptides = 2 ** peptide_in.as_numpy() - 0.001
 
-            peptides[np.isclose(peptides, -0.0008653608091400463, rtol=0, atol=1e-6)] = (
-                np.nan
-            )  # y ion placeholder predictions
+            peptides[
+                np.isclose(peptides, -0.0008653608091400463, rtol=0, atol=1e-6)
+            ] = np.nan  # y ion placeholder predictions
             peptides[np.isclose(peptides, 0.0006883561449106779, rtol=0, atol=1e-6)] = (
                 np.nan
             )  # b ion placeholder predictions
