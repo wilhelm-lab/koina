@@ -29,11 +29,11 @@ description: |
   ELITE: Elite
   VELOS: Velos
   NONE: Use CE value as direct input into the model
-
   "
 citation: |
   "Lapin, J., Yan X., Dong, Q. (2024) UniSpec: Deep Learning for Predicting the Full Range of Peptide Fragment Ion Series to Enhance the Proteomics Data Analysis Workflow"
   "Anal Chem. https://doi.org/10.1021/acs.analchem.3c02321"
+tag: "Intensity"
 example:
   inputs:
     [
