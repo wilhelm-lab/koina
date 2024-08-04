@@ -162,9 +162,7 @@ class TritonPythonModel:
             peptide_in_1 = [x[0].decode("utf-8") for x in peptide_in_1]
             peptide_in_2 = [x[0].decode("utf-8") for x in peptide_in_2]
 
-            peptide_2_sequence = [
-                s.replace("[UNIMOD:1898]", "") for s in peptide_in_2
-            ]
+            peptide_2_sequence = [s.replace("[UNIMOD:1898]", "") for s in peptide_in_2]
             peptide_in_2_mass = [compute_peptide_mass(s) for s in peptide_2_sequence]
 
             crosslinker_position = [find_crosslinker_position(x) for x in peptide_in_1]
@@ -177,10 +175,15 @@ class TritonPythonModel:
             mask = create_masking(precursor_charges_in, peptide_length)
             masked_peaks = apply_masking(peaks_in, mask)
 
-            fragmentmz = [initialize_peaks(seq, chg, mass, pos) for seq, chg, mass, pos in zip(peptide_in_1, charge, peptide_in_2_mass, crosslinker_position)]
+            fragmentmz = [
+                initialize_peaks(seq, chg, mass, pos)
+                for seq, chg, mass, pos in zip(
+                    peptide_in_1, charge, peptide_in_2_mass, crosslinker_position
+                )
+            ]
             fragmentmz = np.array(fragmentmz)
             fragmentmz = fragmentmz.astype("float32")
-            
+
             fragmentmz[np.isnan(masked_peaks)] = -1
             masked_peaks[np.isnan(masked_peaks)] = -1
 

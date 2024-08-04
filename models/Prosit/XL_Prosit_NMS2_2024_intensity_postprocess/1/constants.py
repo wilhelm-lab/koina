@@ -44,7 +44,10 @@ AA_ALPHABET = {
     "Y": 20,
 }
 
-TERMINAL_ALPHABET = {"[]-": 30, "-[]": 31}  # unmodified n terminus  # unmodified c terminus
+TERMINAL_ALPHABET = {
+    "[]-": 30,
+    "-[]": 31,
+}  # unmodified n terminus  # unmodified c terminus
 
 ALPHABET_MODS = {
     "M[UNIMOD:35]": 21,
@@ -233,7 +236,14 @@ META_DATA_ONLY_COLUMNS = [
     "REVERSE",
 ]
 META_DATA_COLUMNS = SHARED_DATA_COLUMNS + META_DATA_ONLY_COLUMNS
-MZML_ONLY_DATA_COLUMNS = ["INTENSITIES", "MZ", "MZ_RANGE", "RETENTION_TIME", "MASS_ANALYZER", "FRAGMENTATION"]
+MZML_ONLY_DATA_COLUMNS = [
+    "INTENSITIES",
+    "MZ",
+    "MZ_RANGE",
+    "RETENTION_TIME",
+    "MASS_ANALYZER",
+    "FRAGMENTATION",
+]
 MZML_DATA_COLUMNS = SHARED_DATA_COLUMNS + MZML_ONLY_DATA_COLUMNS
 
 TMT_MODS = {
@@ -275,7 +285,9 @@ FRAGMENTATION_ENCODING = {"HCD": 2, "CID": 1}
 
 IONS = ["y", "b"]  # limited to single character unicode string when array is created
 CHARGES = [1, 2, 3]  # limited to uint8 (0-255) when array is created
-POSITIONS = [x for x in range(1, 30)]  # fragment numbers 1-29 -- limited to uint8 (0-255) when array is created
+POSITIONS = [
+    x for x in range(1, 30)
+]  # fragment numbers 1-29 -- limited to uint8 (0-255) when array is created
 
 ANNOTATION_FRAGMENT_TYPE = []
 ANNOTATION_FRAGMENT_CHARGE = []
@@ -287,7 +299,11 @@ for pos in POSITIONS:
             ANNOTATION_FRAGMENT_CHARGE.append(charge)
             ANNOTATION_FRAGMENT_NUMBER.append(pos)
 
-ANNOTATION = [ANNOTATION_FRAGMENT_TYPE, ANNOTATION_FRAGMENT_CHARGE, ANNOTATION_FRAGMENT_NUMBER]
+ANNOTATION = [
+    ANNOTATION_FRAGMENT_TYPE,
+    ANNOTATION_FRAGMENT_CHARGE,
+    ANNOTATION_FRAGMENT_NUMBER,
+]
 
 
 ########################
