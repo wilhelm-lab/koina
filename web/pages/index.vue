@@ -10,29 +10,33 @@ import BaseButton from "~/components/ui/BaseButton.vue";
     <div class="py-16 px-4 max-w-5xl mx-auto">
       <h2 id="get-started" class="text-3xl mb-4">What is Koina?</h2>
       <p>
-        Koina is a community driven endeavour to make AI models for life science
-        research accessible. It is a service that tries to reduce the barrier of
-        entry for using machine learning models in life science research by
-        removing the need to set up and maintain the infrastructure required to
-        run the models. The project is open-source and adheres to
-        <a href="https://www.go-fair.org/fair-principles/">FAIR principles</a>.
+        Koina is a model repository enabling the remote execution of models. 
+        Predictions are generated as a response to HTTP/S requests, the standard protocol used for nearly all web traffic. 
+        As such, HTTP/S requests can be easily generated in any programming language without requiring specialized hardware. 
+        This design also enables users to share centralized hardware to utilize it more efficiently. 
+        It also allows for easy horizontal scaling depending on the demand of the user base.  
       </p>
+
       <p>
-        Koina is built on top of
-        <a
-          href="https://github.com/triton-inference-server/server/tree/v2.29.0"
-        >
-          Triton Inference Server</a
-        >
-        and enables hosting virtually any kind machine learning model. The
-        models can be accessed via a
-        <a href="https://en.wikipedia.org/wiki/Representational_state_transfer"
-          >REST API</a
-        >
-        or <a href="https://grpc.io/">gRPC</a> and provides an
-        <a href="https://swagger.io/specification/v3/">OpenAPI document</a> for
-        documentation and making integration easy.
+        To minimize the barrier of entry and “democratize” access to ML models, we provide a public network of Koina instances at <a href="koina.wilhelmlab.org">koina.wilhelmlab.org</a>. 
+        The computational workload is automatically distributed to processing nodes hosted at different research institutions and spin-offs across Europe. 
+        Each processing node provides computational resources to the service network, always aiming at just-in-time results delivery.
       </p>
+
+
+      <p>
+        In the spirit of open and collaborative science, we envision that this public Koina-Network can be scaled to meet the community’s needs 
+        by various research groups or institutions dedicating hardware. 
+        This can also vastly improve latency if servers are available geographically nearby. 
+        Alternatively, if data security is a concern, private instances within a local network can be easily deployed using the provided <a href="https://github.com/wilhelm-lab/koina/pkgs/container/koina">docker image</a>.
+      </p>
+
+      <p>
+        Koina is a community driven project. 
+        It is fuly <a href="https://github.com/wilhelm-lab/koina">open-source</a>.
+        We welcome all contributions and feedback! Feel free to reach out to <a href="mailto:Ludwig.Lautenbacher@tum.de">us</a> or open an issue on our <a href="https://github.com/wilhelm-lab/koina/issues/new">GitHub repository</a>.
+      </p>
+      
       <p>
         Check out the <a href="/docs">documentation</a> to learn more about how
         to use Koina.
@@ -41,25 +45,26 @@ import BaseButton from "~/components/ui/BaseButton.vue";
 
     <div class="bg-neutral-100">
       <div class="py-16 px-4 max-w-5xl mx-auto">
-        <h2 id="get-involved" class="text-3xl mb-4">Get involved</h2>
+        <h2 id="get-involved" class="text-3xl mb-4">Get involved!</h2>
         <p>
-          There are two ways to get involved with Koina. You can either host an
+          There are two main ways to get involved with Koina. You can either host an
           instance of Koina to make more open resources available to the
           community or you can add your own model to Koina. If you want to make
           your Koina instance available via
           <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>,
+          please contact us via 
           <a href="mailto:Ludwig.Lautenbacher@tum.de"
-            >please contact us via E-Mail</a
+            >E-Mail</a
           >.
         </p>
         <p class="mb-8">
           For more information on how to host an instance of Koina or add your
           own model, check out the links below.
         </p>
-        <BaseButton to="/docs#overview--hosting-your-own-server">
+        <BaseButton to="https://github.com/wilhelm-lab/koina?tab=readme-ov-file#hosting-your-own-server">
           Host Koina
         </BaseButton>
-        <BaseButton to="/docs#overview--adding-your-own-model" class="ml-4">
+        <BaseButton to="https://github.com/wilhelm-lab/koina?tab=readme-ov-file#adding-your-own-model" class="ml-4">
           Add your model
         </BaseButton>
       </div>
