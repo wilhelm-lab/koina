@@ -1,5 +1,6 @@
 #from test.server_config import SERVER_GRPC, SERVER_HTTP
 import tritonclient.grpc as grpcclient
+import tritonclient.http as httpclient
 from pathlib import Path
 import requests
 import numpy as np
@@ -25,32 +26,31 @@ def test_inference():
         "CCCCCCC"
     ]
 
+    bareserver = "localhost:8501"
     SERVER_HTTP = "http://localhost:8501"
     MODEL_NAME = "3dmolms"
 
     url = f"{SERVER_HTTP}/v2/models/{MODEL_NAME}/infer"
-    
-    params = {
-        "id": "1",
-        "inputs": [
-            {
-            "name": "charge_raw",
-            "shape": [
-                -1,
-                1
-            ],
-            "datatype": "INT32",
-            "data": [
-                [1]
-                ]
-            }
-        ]
-    }
 
-    r = requests.post(url, data=params)
+    triton_client = httpclient.InferenceServerClient(url=bareserver)
 
-    print(r.text)
-    
+    # Check if the server is live
+    if not triton_client.is_server_live():
+        print("Triton server is not live!")
+        exit(1)
+
+    input_data = np.array([[20]], dtype=np.int32)  # Replace with appropriate input
+    input = httpclient.InferInput("charge_raw", input_data.shape, "INT32")
+    input.set_data_from_numpy(input_data)
+
+    output = httpclient.InferRequestedOutput("charge_norm")
+
+    response = triton_client.infer(MODEL_NAME, inputs=[input], outputs=[output])
+
+    output_data = response.as_numpy("charge_norm")
+
+    print(output_data)
+
 
 def main():
     test_inference()
