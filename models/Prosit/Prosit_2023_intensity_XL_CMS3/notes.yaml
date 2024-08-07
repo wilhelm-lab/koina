@@ -2,9 +2,10 @@ description: |
   The XL_Prosit_CMS3 2023 model was trained using 37,938 sets of modifed linear peptides (MS3 spectra), those contain Alkene and Thiol as modidifcations  
   This model achieved a SA (a measure of accuracy) of at least 0.83
 
-  
+citation: |
+  unpublished
+
 tag: "Intensity"
-tag_url: "https://koina.wilhelmlab.org/"
 examples:
   inputs:
     [
