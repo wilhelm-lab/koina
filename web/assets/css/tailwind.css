@@ -13,6 +13,12 @@
 
   p {
     @apply mb-4;
-   text-align: justify;
+    text-align: justify;
   }
+}
+
+rapi-doc::part(section-main-content) {
+  max-width: 120ch;
+  margin-right: auto;
+  margin-left: auto;
 }
