@@ -15,6 +15,7 @@ import numpy as np
 
 def test_available_grpc():
     SERVER_GRPC = "localhost:8502"
+    MODEL_NAME = "3dmolms"
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
     assert triton_client.is_model_ready(MODEL_NAME)
