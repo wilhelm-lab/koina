@@ -14,7 +14,7 @@ import numpy as np
 
 
 def test_available_grpc():
-    SERVER_GRPC = "localhost:8502"
+    SERVER_GRPC = "localhost:8500"
     MODEL_NAME = "3dmolms"
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
@@ -25,7 +25,7 @@ def test_inference():
         "CCCCCCC"
     ]
 
-    SERVER_HTTP = "http://localhost:8502"
+    SERVER_HTTP = "http://localhost:8501"
     MODEL_NAME = "3dmolms"
 
     url = f"{SERVER_HTTP}/v2/models/{MODEL_NAME}/infer"
@@ -39,9 +39,9 @@ def test_inference():
                 -1,
                 1
             ],
-            "datatype": "FP32",
+            "datatype": "INT32",
             "data": [
-                [1.0]
+                [1]
                 ]
             }
         ]
@@ -49,11 +49,12 @@ def test_inference():
 
     r = requests.post(url, data=params)
 
-    print(r.json())
+    print(r.text)
     
 
 def main():
     test_inference()
+    #test_available_grpc()
 
 if __name__ == "__main__":
     main()
