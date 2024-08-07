@@ -11,6 +11,7 @@ services:
       - ./models:/models:z
     ports:
       - "8501:8501"
+      - "8500:8500"
     shm_size: 8GB
 
   develop:
