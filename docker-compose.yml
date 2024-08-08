@@ -14,18 +14,18 @@ services:
       - "8500:8500"
     shm_size: 8GB
 
-  develop:
-    build:
-      context: .
-      target: util
-      args:
-        UID: ${UID}
-        GID: ${GID}
-    user: "${UID}:${GID}"
-    userns_mode: "host"
-    command: [ "./entrypoint.sh"]
-    working_dir: /workspace/koina
-    volumes:
-      - .:/workspace/koina/:z
-    env_file:
-      - .env
+  # develop:
+  #   build:
+  #     context: .
+  #     target: util
+  #     args:
+  #       UID: ${UID}
+  #       GID: ${GID}
+  #   user: "${UID}:${GID}"
+  #   userns_mode: "host"
+  #   command: [ "./entrypoint.sh"]
+  #   working_dir: /workspace/koina
+  #   volumes:
+  #     - .:/workspace/koina/:z
+  #   env_file:
+  #     - .env
