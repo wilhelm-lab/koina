@@ -1,11 +1,8 @@
-import psm_utils
-from psm_utils import Peptidoform
-from psm_utils.io.peptide_record import proforma_to_peprec
+import re
 from ms2pip.cython_modules import ms2pip_pyx
 from ms2pip.ms2pipC import apply_mods
 from ms2pip.peptides import AMINO_ACID_IDS, Modifications
 import numpy as np
-import re
 
 
 def remove_mods(seq, regex=r"\[.*?\]|\-"):

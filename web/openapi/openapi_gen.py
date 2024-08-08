@@ -1,14 +1,11 @@
 #!/usr/bin/python3
+from itertools import zip_longest
 import logging
-import os
-import json
 import time
 from pathlib import Path
-import html
 import yaml
 import requests
 from jinja2 import Environment, FileSystemLoader
-from itertools import zip_longest
 
 nptype_convert = {
     "FP32": "np.float32",
@@ -23,26 +20,12 @@ def load_yaml(path):
         return yaml.load(yaml_file, Loader=yaml.FullLoader)
 
 
-# def generate_example_code(model, grpc_url):
-#     """
-#     Generates the GRPC examples codes based on the notes
-#     """
-#     python_code_template = "web/openapi/templates/code/python_koinapy.txt"
-#     logging.info(f"Using grpc url:\t{grpc_url}")
-#     logging.info(f"Using template to create python code:\t\t{python_code_template}")
-#     environment = Environment(loader=FileSystemLoader("./"))
-#     template = environment.get_template(python_code_template)
-#     context = model
-#     context["url"] = grpc_url
-#     return template.render(context).replace("\n", "\n        ")
-
-
 def generate_example_code(model, grpc_url, code_template):
     """
     Generates the GRPC examples codes based on the notes
     """
-    logging.info(f"Using grpc url:\t{grpc_url}")
-    logging.info(f"Using template to create python code:\t\t{code_template}")
+    logging.info("Using grpc url:\t %s", grpc_url)
+    logging.info("Using template to create python code:\t\t %s", code_template)
     environment = Environment(loader=FileSystemLoader("./"))
     template = environment.get_template(code_template)
     context = model
@@ -62,10 +45,10 @@ def sleep_until_service_starts(http_server):
                 serving_started = True
                 logging.info("Serving started continuing the program")
                 return
-            logging.info(f"Waiting for serving to start: {url}")
+            logging.info("Waiting for serving to start: %s ", url)
             time.sleep(wait_time)
         except requests.exceptions.ConnectionError:
-            logging.info(f"Waiting for serving to start: {url}")
+            logging.info("Waiting for serving to start: %s ", url)
             time.sleep(wait_time)
 
 
@@ -73,7 +56,7 @@ def get_config(http_url, name):
     # TODO throw an error when the an unknown model is requested
     # {'error': "Request for unknown model: 'Deeplc_hela_hf' is not found"}
     url = http_url + f"/v2/models/{name}/config"
-    logging.info(f"Getting config from:\t\t{url}")
+    logging.info("Getting config from:\t\t %s", url)
     r = requests.get(url, timeout=1)
     return r.json()
 
@@ -82,7 +65,7 @@ def create_openapi_yaml(models, tmpl_url):
     # Create the Swagger.yaml based on the template
 
     openapi_template_file = "web/openapi/templates/openapi.yml"
-    logging.info(f"Using template file:\t\t{openapi_template_file}")
+    logging.info("Using template file:\t\t %s", openapi_template_file)
 
     environment = Environment(loader=FileSystemLoader("./"))
     template = environment.get_template(openapi_template_file)
@@ -109,7 +92,7 @@ def main(http_url, grpc_url, tmpl_url):
 
     models = []
     for name, model_path in model_dict.items():
-        logging.info(f"Start working on model:\t{name}")
+        logging.info("Start working on model:\t %s", name)
         models.append(
             {
                 "name": name,
@@ -125,7 +108,7 @@ def main(http_url, grpc_url, tmpl_url):
                 "\n", "<br>"
             )
         except KeyError:
-            logging.warning(f"Model {name} does not contain a citation")
+            logging.warning("Model %s does not contain a citation", name)
         add_np_and_openapi_dtype(models[-1]["note"])
         copy_outputs_to_note(models[-1])
         verify_inputs(models[-1])
@@ -156,7 +139,7 @@ def main(http_url, grpc_url, tmpl_url):
             code_template="web/openapi/templates/code/java_8.txt",
         )
 
-    logging.info(f"Template URL: {tmpl_url}")
+    logging.info("Template URL: %s", tmpl_url)
     create_openapi_yaml(models, tmpl_url)
 
 
@@ -171,10 +154,10 @@ def verify_inputs(model_dict):
         try:
             assert x["name"] == y["name"]
             assert x["httpdtype"] == tritondtype_to_httpdtype(y["data_type"])
-        except AssertionError:
+        except AssertionError as ex:
             raise AssertionError(
                 f"Inputs inconsistent for {model_dict['name']} {x} != {y}"
-            )
+            ) from ex
 
 
 def httpdtype_to_npdtype(dtype):

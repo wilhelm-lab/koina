@@ -1,22 +1,12 @@
+import json
 import triton_python_backend_utils as pb_utils
 import numpy as np
-from sequence_conversion import character_to_array, ALPHABET_MOD
-import json
-
-
-def internal_without_mods(sequences):
-    """
-    Function to remove any mod identifiers and return the plain AA sequence.
-    :param sequences: List[str] of sequences
-    :return: List[str] of modified sequences
-    """
-    regex = r"\[.*?\]|\-"
-    return [re.sub(regex, "", seq) for seq in sequences]
+from sequence_conversion import character_to_array
 
 
 class TritonPythonModel:
     def initialize(self, args):
-        self.model_config = model_config = json.loads(args["model_config"])
+        self.model_config = json.loads(args["model_config"])
         output0_config = pb_utils.get_output_config_by_name(
             self.model_config, "peptides_in:0"
         )
