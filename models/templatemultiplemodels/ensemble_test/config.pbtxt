@@ -1,0 +1,46 @@
+name: "ensemble_test"
+max_batch_size: 1000
+platform: "ensemble"
+input[
+ {
+   name: 'charge_in',
+   data_type: TYPE_INT32,
+   dims: [1]
+ }
+]
+output [
+ {
+   name: 'charge_out',
+   data_type: TYPE_INT32,
+   dims: [1]
+ }
+]
+
+ensemble_scheduling {
+  step [
+    {
+      model_name: "model1",
+      model_version: 1,
+      input_map {
+        key: "charge_in_model1",
+        value: "charge_in"
+      },
+      output_map {
+        key: "charge_out_model1",
+        value: "intermediate_out"
+      }
+    },
+    {
+      model_name: "model2",
+      model_version: 1,
+      input_map {
+        key: "charge_in_model2",
+        value: "intermediate_out"
+      },
+      output_map {
+        key: "charge_out_model2",
+        value: "charge_out"
+      }
+    }
+  ]
+}
