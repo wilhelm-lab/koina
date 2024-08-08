@@ -1,0 +1,31 @@
+name: "edit_distance"
+backend: "python"
+max_batch_size: 8
+
+input [
+  {
+    name: "INPUT_NAME"
+    data_type: TYPE_FP32
+    dims: [ 1, 224, 224, 3 ]
+  }
+  {
+    name: "mz_array1"
+    data_type: TYPE_FP32
+    dims: [ 1, 224, 224, 3 ]
+  }
+  {mz_array1, intensity_array1, neutral_loss_1, mz_array2, intensity_array2, neutral_loss_2, precursor_info}
+]
+
+output [
+  {
+    name: "OUTPUT_NAME"
+    data_type: TYPE_FP32
+    dims: [ 1, 1000 ]
+  }
+]
+
+instance_group [
+  {
+    kind: KIND_CPU
+  }
+]
