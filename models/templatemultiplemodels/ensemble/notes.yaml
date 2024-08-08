@@ -1,0 +1,14 @@
+description: |
+  Find out more about this model
+tag: "Intensity"
+tag_url: "https://gnps2.org/"
+examples:
+  inputs:
+    [
+      {
+          "name": "charge_in",
+          "httpdtype": "INT32",
+          "data": '[1]',
+          "shape": "[-1,1]"
+      },
+    ]

@@ -1,0 +1,17 @@
+max_batch_size: 1000
+input[
+ {
+   name: 'charge_in',
+   data_type: TYPE_INT32,
+   dims: [1]
+ }
+]
+output [
+ {
+   name: 'charge_out',
+   data_type: TYPE_INT32,
+   dims: [1]
+ }
+]
+instance_group [{ kind: KIND_AUTO }]
+
