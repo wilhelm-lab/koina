@@ -9,7 +9,7 @@ input[
 output [
  {
    name: 'charge_norm',
-   data_type: TYPE_FP32,
+   data_type: TYPE_INT32,
    dims: [1]
  }
 ]
