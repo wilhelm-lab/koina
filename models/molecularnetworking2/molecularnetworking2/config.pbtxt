@@ -1,16 +1,48 @@
 max_batch_size: 1000
-input[
- {
-   name: 'charge_raw',
-   data_type: TYPE_INT32,
-   dims: [1]
- }
+input [
+  {
+    name: "mz_array1" 
+    data_type: TYPE_FP32 
+    dims: [1, 100]
+  },
+  {
+    name: "intensity_array1" 
+    data_type: TYPE_FP32 
+    dims: [1, 100]
+  },
+  {
+    name: "neutral_loss_1" 
+    data_type: TYPE_FP32 
+    dims: [1, 100]
+  },
+  {
+    name: "mz_array2" 
+    data_type: TYPE_FP32 
+    dims: [1, 100]
+  },
+  {
+    name: "intensity_array2" 
+    data_type: TYPE_FP32 
+    dims: [1, 100]
+  },
+  {
+    name: "neutral_loss_2" 
+    data_type: TYPE_FP32 
+    dims: [1, 100]
+  },
+  {
+    name: "precursor_info" 
+    data_type: TYPE_FP32 
+    dims: [1, 3]
+  }
 ]
+
 output [
- {
-   name: 'charge_norm',
-   data_type: TYPE_INT32,
-   dims: [1]
- }
+  {
+    name: "prediction"
+    data_type: TYPE_FP32 
+    dims: [1, 3]
+  }
 ]
+
 instance_group [{ kind: KIND_AUTO }]

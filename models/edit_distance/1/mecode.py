@@ -201,10 +201,25 @@ def predict_single_modification_site(mz_array1, intensity_array1, mz_array2, int
             precursor_info.to(device)
         )
 
+        # print config.pbtxt
+        def print_config(name, tensor):
+            print(f'name: "{name}" \n data_type: {tensor.dtype} \n dims: {tensor.shape} \n')
+
+        print_config("mz_array1", mz_array1)
+        print_config("intensity_array1", intensity_array1)
+        print_config("neutral_loss_1", neutral_loss_1)
+        print_config("mz_array2", mz_array2)
+        print_config("intensity_array2", intensity_array2)
+        print_config("neutral_loss_2", neutral_loss_2)
+        print_config("precursor_info", precursor_info)
+
+
         with torch.no_grad():
             output = model(mz_array1, intensity_array1, neutral_loss_1, mz_array2, intensity_array2, neutral_loss_2, precursor_info)
             prediction = torch.argmax(output, axis=1).item()
 
+
+        print_config("output", output)
         return int(prediction == 1)
     except Exception as e:
         raise ValueError(f"Error during inference: {e}")

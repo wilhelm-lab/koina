@@ -18,7 +18,7 @@ class TritonPythonModel:
             raw = pb_utils.get_input_tensor_by_name(request, "charge_raw")
             import sys
             print("XXXXXXXXXXXXXXXXX", raw, file=sys.stderr, flush=True)
-            norm = raw.as_numpy() * 0.15
+            norm = raw.as_numpy() * 0.1
             ce_tensor = pb_utils.Tensor("charge_norm", norm.astype(self.output_dtype))
             responses.append(pb_utils.InferenceResponse(output_tensors=[ce_tensor]))
 
