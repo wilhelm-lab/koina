@@ -9,7 +9,6 @@ citation: |
   Nat Commun 13, 7238 (2022). https://doi.org/10.1038/s41467-022-34904-3
   
 tag: "Intensity"
-tag_url: "https://www.wilhelmlab.org/"
 examples:
   inputs:
     [

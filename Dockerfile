@@ -39,4 +39,10 @@ RUN source /home/devuser/.bashrc && nvm install 20
 # Setup CI scripts
 COPY ./koina_*.sh /usr/local/bin/
 HEALTHCHECK --start-period=30s --interval=15s --retries=12 CMD [ "ls", "/tmp/done_setup" ]
-USER devuser
+# Install pipx dependencies
+ARG PIPX_HOME=/home/devuser/.local/pipx/venvs
+ARG PIPX_BIN_DIR=/home/devuser/.local/bin
+RUN pipx install poetry 
+RUN pipx install nox 
+RUN pipx inject nox nox-poetry
+RUN chmod -R 777 /home/devuser/.local

@@ -1,5 +1,4 @@
 import numpy as np
-import triton_python_backend_utils as pb_utils
 
 SEQ_LEN = 30
 ALPHABET_UNMOD = {
@@ -24,7 +23,6 @@ ALPHABET_UNMOD = {
     "Y": 20,
     "C": 24,
 }
-MAX_CHARGE = 6
 ALPHABET_MOD = {
     "M[UNIMOD:35]": 21,
     "C[UNIMOD:4]": 2,

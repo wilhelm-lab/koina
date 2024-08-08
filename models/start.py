@@ -139,7 +139,7 @@ if __name__ == "__main__":
             if triton.poll() is not None:
                 print("Triton exited, killing USI Proxy")
                 usi_proxy.kill()
-                os.exit(1)
+                os._exit(1)
             elif usi_proxy.poll() is not None:
                 print("USI Proxy died, restarting")
                 usi_proxy = subprocess.Popen(["/models/usi_proxy"])
