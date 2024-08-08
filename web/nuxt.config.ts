@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true,
+      failOnError: false,
     },
     experimental: {
       wasm: true,
