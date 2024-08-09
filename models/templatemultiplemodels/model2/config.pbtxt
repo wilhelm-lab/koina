@@ -1,15 +1,15 @@
 max_batch_size: 1000
 input[
  {
-   name: 'charge_in_model2',
-   data_type: TYPE_INT32,
+   name: 'in_model2',
+   data_type: TYPE_FP32,
    dims: [1]
  }
 ]
 output [
  {
-   name: 'charge_out_model2',
-   data_type: TYPE_INT32,
+   name: 'out_model2',
+   data_type: TYPE_FP32,
    dims: [1]
  }
 ]
