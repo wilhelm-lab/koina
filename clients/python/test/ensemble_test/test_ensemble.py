@@ -39,20 +39,48 @@ def test_inference():
         print("Triton server is not live!")
         exit(1)
 
-    input_data = np.array([[20]], dtype=np.int32)  # Replace with appropriate input
-    input = httpclient.InferInput("charge_in", input_data.shape, "INT32")
+    input_data = np.array([[1.0]], dtype=np.float32)  # Replace with appropriate input
+    input = httpclient.InferInput("in", input_data.shape, "FP32")
     input.set_data_from_numpy(input_data)
 
-    output = httpclient.InferRequestedOutput("charge_out")
+    output = httpclient.InferRequestedOutput("out")
 
     response = triton_client.infer(MODEL_NAME, inputs=[input], outputs=[output])
 
-    output_data = response.as_numpy("charge_out")
+    output_data = response.as_numpy("out")
+
+    # This should be around 16, as it should be 2 x 2 x 4 (though the torch model is not exact in 4x)
 
     print(output_data)
 
+def test_inference_torch():
+    bareserver = "localhost:8501"
+    SERVER_HTTP = "http://localhost:8501"
+    MODEL_NAME = "modeltorch"
+
+    url = f"{SERVER_HTTP}/v2/models/{MODEL_NAME}/infer"
+
+    triton_client = httpclient.InferenceServerClient(url=bareserver)
+
+    # Check if the server is live
+    if not triton_client.is_server_live():
+        print("Triton server is not live!")
+        exit(1)
+
+    input_data = np.array([[2.0]], dtype=np.float32)  # Replace with appropriate input
+    input = httpclient.InferInput("modeltorch_in", input_data.shape, "FP32")
+    input.set_data_from_numpy(input_data)
+
+    output = httpclient.InferRequestedOutput("modeltorch_out")
+
+    response = triton_client.infer(MODEL_NAME, inputs=[input], outputs=[output])
+
+    output_data = response.as_numpy("modeltorch_out")
+
+    print(output_data)
 
 def main():
+    #test_inference_torch()
     test_inference()
     #test_available_grpc()
 
