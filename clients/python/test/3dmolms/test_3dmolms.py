@@ -55,7 +55,8 @@ def test_inference():
 
 def test_interference_realmodel():
     bareserver = "localhost:8501"
-    SERVER_HTTP = "http://localhost:8501"
+    #SERVER_HTTP = "http://localhost:8501"
+    SERVER_HTTP = "http://ucr-lemon.duckdns.org:8501"
     MODEL_NAME = "3dmolms_torch"
 
     url = f"{SERVER_HTTP}/v2/models/{MODEL_NAME}/infer"
