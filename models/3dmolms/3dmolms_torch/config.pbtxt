@@ -14,13 +14,13 @@ input [
   },
   {
     name: "idx_base"
-    data_type: TYPE_INT64
-    dims: [1, 1]
+    data_type: TYPE_INT32
+    dims: [-1, 1, 1]
   }
 ]
 output [
   {
-    name: "modeltorch_out"
+    name: "3dmolms_out"
     data_type: TYPE_FP32
     dims: [7500]
   }
