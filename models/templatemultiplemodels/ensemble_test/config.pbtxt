@@ -1,17 +1,17 @@
 name: "ensemble_test"
-max_batch_size: 1000
+max_batch_size: 256
 platform: "ensemble"
 input[
  {
-   name: 'charge_in',
-   data_type: TYPE_INT32,
+   name: 'in',
+   data_type: TYPE_FP32,
    dims: [1]
  }
 ]
 output [
  {
-   name: 'charge_out',
-   data_type: TYPE_INT32,
+   name: 'out',
+   data_type: TYPE_FP32,
    dims: [1]
  }
 ]
@@ -22,24 +22,36 @@ ensemble_scheduling {
       model_name: "model1",
       model_version: 1,
       input_map {
-        key: "charge_in_model1",
-        value: "charge_in"
+        key: "in_model1",
+        value: "in"
       },
       output_map {
-        key: "charge_out_model1",
+        key: "out_model1",
         value: "intermediate_out"
+      }
+    },
+    {
+      model_name: "modeltorch",
+      model_version: 1,
+      input_map {
+        key: "modeltorch_in",
+        value: "intermediate_out"
+      },
+      output_map {
+        key: "modeltorch_out",
+        value: "torch_out"
       }
     },
     {
       model_name: "model2",
       model_version: 1,
       input_map {
-        key: "charge_in_model2",
-        value: "intermediate_out"
+        key: "in_model2",
+        value: "torch_out"
       },
       output_map {
-        key: "charge_out_model2",
-        value: "charge_out"
+        key: "out_model2",
+        value: "out"
       }
     }
   ]
