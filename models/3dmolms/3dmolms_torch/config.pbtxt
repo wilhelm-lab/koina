@@ -3,16 +3,26 @@ backend: "pytorch"
 max_batch_size : 256
 input [
   {
-    name: "modeltorch_in"
+    name: "x"
     data_type: TYPE_FP32
-    dims: [1]
+    dims: [21, 300]
+  },
+  {
+    name: "env"
+    data_type: TYPE_FP32
+    dims: [6]
+  },
+  {
+    name: "idx_base"
+    data_type: TYPE_INT64
+    dims: [1, 1]
   }
 ]
 output [
   {
     name: "modeltorch_out"
     data_type: TYPE_FP32
-    dims: [1]
+    dims: [7500]
   }
 ]
 instance_group [{ kind: KIND_AUTO }]
