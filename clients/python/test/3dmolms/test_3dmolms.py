@@ -71,7 +71,7 @@ def test_interference_realmodel():
     # Prepare input data
     x_data = np.random.rand(1, 21, 300).astype(np.float32)  # Example input for 'x'
     env_data = np.random.rand(1, 6).astype(np.float32)  # Example input for 'env'
-    idx_base_data = np.array([[[0]]], dtype=np.int32)  # Example input for 'idx_base' with dynamic dimensions
+    idx_base_data = np.array([[[[0]]]], dtype=np.int32)  # Example input for 'idx_base' with dynamic dimensions
 
     # Create Triton inputs
     x_input = httpclient.InferInput("x", x_data.shape, "FP32")
