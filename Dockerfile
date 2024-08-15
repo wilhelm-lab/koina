@@ -1,5 +1,5 @@
 FROM nvcr.io/nvidia/tritonserver:23.05-py3 AS serving-develop
-RUN pip install requests ms2pip psm-utils pandas pyteomics==4.6.2
+RUN pip install requests ms2pip psm-utils pandas pyteomics==4.6.2 rdkit
 HEALTHCHECK --start-period=10m --interval=15s --retries=1 CMD curl --fail localhost:8501/v2/health/ready
 CMD [ "/models/start.py" ]
 
@@ -11,7 +11,7 @@ RUN add-apt-repository ppa:git-core/ppa
 RUN apt-get update
 RUN apt-get install -y git vim curl ripgrep zlib1g zlib1g-dev libssl-dev libbz2-dev libsqlite3-dev libncursesw5 libffi-dev libreadline-dev locales
 RUN locale-gen en_US.UTF-8
-RUN pip install -U pip  nox poetry nox-poetry packaging jinja2
+RUN pip install -U pip  nox poetry nox-poetry packaging jinja2 rdkit
 # Setup user
 ARG UID=1000
 ARG GID=1000

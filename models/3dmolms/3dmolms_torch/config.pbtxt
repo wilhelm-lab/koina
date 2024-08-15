@@ -1,4 +1,3 @@
-name: "3dmolms_torch"
 backend: "pytorch"
 max_batch_size : 256
 input [

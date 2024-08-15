@@ -1,0 +1,93 @@
+name: "3dmolms_ensemble"
+max_batch_size: 256
+platform: "ensemble"
+input[
+ {
+   name: 'SMILES',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ },
+ {
+  name: 'precursor_type'
+  data_type: TYPE_STRING,
+  dims: [-1]
+ },
+ {
+   name: 'collision_energy',
+   data_type: TYPE_FP32,
+   dims: [1]
+ }
+]
+output [
+ {
+   name: 'me_out',
+   data_type: TYPE_FP32,
+   dims: [-1, 2]
+ }
+]
+
+
+ensemble_scheduling {
+  step [
+    {
+      model_name: "3dmolms_preprocess",
+      model_version: 1,
+      input_map {
+        key: "SMILES_in",
+        value: "SMILES"
+      },
+      input_map {
+        key: "precursor_type_in",
+        value: "precursor_type"
+      },
+      input_map {
+        key: "collision_energy_in",
+        value: "collision_energy"
+      },
+      output_map {
+        key: "SMILES_out",
+        value: "intermediate_x"
+      },
+      output_map {
+        key: "precursor_type_out",
+        value: "intermediate_env"
+      },
+      output_map {
+        key: "idx_base_out",
+        value: "intermediate_idx_base"
+      }
+    },
+    {
+      model_name: "3dmolms_torch",
+      model_version: 1,
+      input_map {
+        key: "x",
+        value: "intermediate_x"
+      },
+        input_map {
+        key: "env",
+        value: "intermediate_env"
+      },
+        input_map {
+        key: "idx_base",
+        value: "intermediate_idx_base"
+      },
+      output_map {
+        key: "3dmolms_out",
+        value: "3dmolms_out"
+      }
+    },
+    {
+      model_name: "3dmolms_postprocess",
+      model_version: 1,
+      input_map{
+        key: "3dmolms_out",
+        value: "3dmolms_out"
+      },
+      output_map{
+        key: "cleaned_out",
+        value: "me_out"
+      }
+    }
+  ]
+}

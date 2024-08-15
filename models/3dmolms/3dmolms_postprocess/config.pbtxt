@@ -1,0 +1,16 @@
+max_batch_size: 1000
+input [
+  {
+    name: "3dmolms_out"
+    data_type: TYPE_FP32
+    dims: [7500]
+  }
+]
+output [
+  {
+    name: "cleaned_out"
+    data_type: TYPE_FP32
+    dims: [-1, 2]
+  }
+]
+instance_group [{ kind: KIND_AUTO }]

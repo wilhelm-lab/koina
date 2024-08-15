@@ -1,9 +1,6 @@
-#from test.server_config import SERVER_GRPC, SERVER_HTTP
-import tritonclient.grpc as grpcclient
-import tritonclient.http as httpclient
-import requests
-
-import yaml
+import json
+import triton_python_backend_utils as pb_utils
+import os
 import numpy as np
 from rdkit import Chem
 # ignore the warning
@@ -12,13 +9,9 @@ RDLogger.DisableLog('rdApp.*')
 from rdkit.Chem import AllChem
 from rdkit.Chem.Descriptors import ExactMolWt
 
-
-
-# ================== utils ==================
-
 def load_config(config_path):
     with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
+        config = json.load(file)
     return config
 
 def pre_process(smiles, precursor_type, collision_energy, config): 
@@ -26,6 +19,7 @@ def pre_process(smiles, precursor_type, collision_energy, config):
     # Convert the SMILES string to a 3D molecular structure
     x_data = get_x_array(smiles, precursor_type, collision_energy, config)
     x_data = np.transpose(x_data, (1, 0))
+    print('done converting smiles to a 3d molecular structure')
         
     # 2. env_data: precursor type + normalised collision energy
     # Check if precursor_type is valid
@@ -146,59 +140,62 @@ def precursor_calculator(precursor_type, mass):
         return mass/2 + 1.007276 
     else:
         raise ValueError('Unsupported precursor type: {}'.format(precursor_type))
-
-
-
-# ================== test ==================
-
-def test_interference_realmodel(): 
-    bareserver = "localhost:8501"
-    SERVER_HTTP = "http://localhost:8501"
-    # bareserver = "ucr-lemon.duckdns.org:8501"
-    # SERVER_HTTP = "http://ucr-lemon.duckdns.org:8501"
-    MODEL_NAME = "3dmolms_torch"
-
-    url = f"{SERVER_HTTP}/v2/models/{MODEL_NAME}/infer"
-
-    triton_client = httpclient.InferenceServerClient(url=bareserver)
-
-    # Check if the server is live
-    if not triton_client.is_server_live():
-        print("Triton server is not live!")
-        exit(1)
-
-    # Prepare input data
-    smiles = 'C/C(=C\CNc1nc[nH]c2ncnc1-2)CO'
-    precursor_type = '[M+H]+'
-    collision_energy = 20
-    config = load_config("./3dmolms_config.yml")
-    x_data, env_data, idx_base_data = pre_process(smiles, precursor_type, collision_energy, config)
     
-    # Create Triton inputs
-    x_input = httpclient.InferInput("x", x_data.shape, "FP32")
-    x_input.set_data_from_numpy(x_data)
+class TritonPythonModel:
+    def __init__(self):
+        super().__init__()
+        self.output_dtype = []
+        file_path = os.path.dirname(os.path.realpath(__file__))
+        self.config = load_config(os.path.join(file_path, '3dmolms_config.json'))
 
-    env_input = httpclient.InferInput("env", env_data.shape, "FP32")
-    env_input.set_data_from_numpy(env_data)
-
-    idx_base_input = httpclient.InferInput("idx_base", idx_base_data.shape, "INT32")
-    idx_base_input.set_data_from_numpy(idx_base_data)
-
-    # Define the output
-    output = httpclient.InferRequestedOutput("3dmolms_out")
-
-    # Perform inference
-    response = triton_client.infer(MODEL_NAME, inputs=[x_input, env_input, idx_base_input], outputs=[output])
-
-    # Get the output data
-    output_data = response.as_numpy("3dmolms_out")
-    print(output_data)
-    print(output_data.shape)
+    def initialize(self, args):
+        model_config = json.loads(args["model_config"])
+        print("HERE IN PREPROCESS INIT")
+        output_SMILES_out_config = pb_utils.get_output_config_by_name(model_config, "SMILES_out")
+        self.output_SMILES_out_dtype = pb_utils.triton_string_to_numpy(output_SMILES_out_config["data_type"])
+        output_precursor_type_out_config = pb_utils.get_output_config_by_name(model_config, "precursor_type_out")
+        self.output_precursor_type_out_dtype = pb_utils.triton_string_to_numpy(output_precursor_type_out_config["data_type"])
+        idx_base_out_config = pb_utils.get_output_config_by_name(model_config, "idx_base_out")
+        self.output_idx_base_out_dtype = pb_utils.triton_string_to_numpy(idx_base_out_config["data_type"])
 
 
+    def execute(self, requests):
+        responses = []
 
-def main():
-    test_interference_realmodel()
+        for request in requests:
+            # Extract input tensors by their names
+            SMILES_in = pb_utils.get_input_tensor_by_name(request, "SMILES_in")
+            precursor_type_in = pb_utils.get_input_tensor_by_name(request, "precursor_type_in")
+            collision_energy_in = pb_utils.get_input_tensor_by_name(request, "collision_energy_in")
 
-if __name__ == "__main__":
-    main()
+            SMILES_in = SMILES_in.as_numpy().tolist()
+            precursor_type_in = precursor_type_in.as_numpy().tolist()
+            collision_energy_in = collision_energy_in.as_numpy().tolist()
+
+            print("SMILES_in", SMILES_in)
+            print("precursor_type_in", precursor_type_in)
+            print("collision_energy_in", collision_energy_in)
+            
+            SMILES_in = [x[0].decode("utf-8") for x in SMILES_in]
+            SMILES_in = SMILES_in[0]
+
+            precursor_type_in = [x[0].decode("utf-8") for x in precursor_type_in]
+            precursor_type_in = precursor_type_in[0]
+
+            collision_energy_in = collision_energy_in[0][0]
+
+            x_data, env_data, idx_base_data = pre_process(SMILES_in, precursor_type_in, collision_energy_in, self.config)
+
+            # Create output tensors
+            SMILES_out = pb_utils.Tensor("SMILES_out", x_data.astype(self.output_SMILES_out_dtype))
+            precursor_type_out = pb_utils.Tensor("precursor_type_out", env_data.astype(self.output_precursor_type_out_dtype))
+            idx_base_out = pb_utils.Tensor("idx_base_out", idx_base_data.astype(self.output_idx_base_out_dtype))
+
+            responses.append(pb_utils.InferenceResponse(output_tensors=[SMILES_out, precursor_type_out, idx_base_out]))
+            # raise ValueError("size of x_data: {} size of env_data: {} size of idx_base_data: {}".format(x_data.shape, env_data.shape, idx_base_data.shape))
+
+        return responses
+
+    def finalize(self):
+        """Clean up resources."""
+        pass

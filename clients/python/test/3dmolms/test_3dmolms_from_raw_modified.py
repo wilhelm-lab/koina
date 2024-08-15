@@ -3,7 +3,7 @@ import tritonclient.grpc as grpcclient
 import tritonclient.http as httpclient
 import requests
 
-import yaml
+import json
 import numpy as np
 from rdkit import Chem
 # ignore the warning
@@ -18,7 +18,7 @@ from rdkit.Chem.Descriptors import ExactMolWt
 
 def load_config(config_path):
     with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
+        config = json.load(file)
     return config
 
 def pre_process(smiles, precursor_type, collision_energy, config): 
@@ -26,6 +26,7 @@ def pre_process(smiles, precursor_type, collision_energy, config):
     # Convert the SMILES string to a 3D molecular structure
     x_data = get_x_array(smiles, precursor_type, collision_energy, config)
     x_data = np.transpose(x_data, (1, 0))
+    print('done converting smiles to a 3d molecular structure')
         
     # 2. env_data: precursor type + normalised collision energy
     # Check if precursor_type is valid
@@ -168,10 +169,10 @@ def test_interference_realmodel():
         exit(1)
 
     # Prepare input data
-    smiles = 'C/C(=C\CNc1nc[nH]c2ncnc1-2)CO'
+    smiles = 'C/C(=C\\CNc1nc[nH]c2ncnc1-2)CO'
     precursor_type = '[M+H]+'
     collision_energy = 20
-    config = load_config("./3dmolms_config.yml")
+    config = load_config("./3dmolms_config.json")
     x_data, env_data, idx_base_data = pre_process(smiles, precursor_type, collision_energy, config)
     
     # Create Triton inputs
@@ -192,7 +193,20 @@ def test_interference_realmodel():
 
     # Get the output data
     output_data = response.as_numpy("3dmolms_out")
-    print(output_data)
+    # print(output_data)
+    print(max(output_data[0]))
+    print(min(output_data[0]))
+
+    # how many data points are less than 0.1
+    print(sum(output_data[0] < 0.1))
+    print(sum(output_data[0] >= 0.1))
+    
+    # show distribution of output_data
+    import matplotlib.pyplot as plt
+    plt.hist(output_data[0], bins=200)
+# save the plot
+    plt.savefig('output_data.png')
+
     print(output_data.shape)
 
 
