@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  serving:
+    deploy:
+      resources:
+        reservations:
+          devices: []
+    environment:
+      VIRTUAL_HOST: lemon.wanglab.science
+      VIRTUAL_PORT: 8501
+      LETSENCRYPT_HOST: lemon.wanglab.science
+      LETSENCRYPT_EMAIL: mwang87@gmail.com
+
+networks:
+  nginx-net:
+    external:
+      name: nginx-net
