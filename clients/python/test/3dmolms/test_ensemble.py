@@ -26,11 +26,9 @@ def test_inference():
         "CCCCCCC"
     ]
 
-    bareserver = "localhost:8501"
-    SERVER_HTTP = "http://localhost:8501"
+    #bareserver = "localhost:8501" # Local test
+    bareserver = "ucr-lemon.duckdns.org:8501" # production test
     MODEL_NAME = "3dmolms_ensemble"
-
-    url = f"{SERVER_HTTP}/v2/models/{MODEL_NAME}/infer"
 
     triton_client = httpclient.InferenceServerClient(url=bareserver)
 

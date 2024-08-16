@@ -7,6 +7,9 @@ start-cpu-dev:
 start-cpu:
 	docker compose -f docker-compose.yml -f docker-compose-cpu.yml up -d
 
+start-cpu-ucr:
+	docker compose -f docker-compose.yml -f docker-compose-cpu-ucr.yml up -d
+
 build:
 	docker compose -f docker-compose.yml -f docker-compose-gpu.yml build
 
