@@ -89,7 +89,7 @@ class TritonPythonModel:
         chlim = [1, 8]
         self.chrng = chlim[-1] - chlim[0] + 1
 
-        P = "UniSpec/usprocess/"
+        P = "UniSpec/UniSpec/"
         self.dic = {b: a for a, b in enumerate("ARNDCQEGHILKMFPSTWYVX")}
         self.revdic = {b: a for a, b in self.dic.items()}
         self.mdic = {
