@@ -63,6 +63,7 @@ def test_inference():
     # This should be around 16, as it should be 2 x 2 x 4 (though the torch model is not exact in 4x)
 
     print(len(output_data))
+    print(output_data)
 
 
 def main():
