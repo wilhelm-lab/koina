@@ -608,7 +608,7 @@ class Koina:
                         # explicitly delete the erroneous array element before calling
                         # next to avoid race condition when rechecking the result for this
                         # task in the next loop cycle, which would call next multiple times
-                        # if the inference is slower than the loop, leading to multiple 
+                        # if the inference is slower than the loop, leading to multiple
                         # retries for the same task, despite the first retry already being
                         # executed but not yet done.
                         del infer_results[j]
@@ -622,7 +622,6 @@ class Koina:
                         # the error for this task stays in the results and can be forwarded
                         # afterwards if debug == True
                         infer_results[j] = result
-                        
 
             unfinished_tasks = new_unfinished_tasks
             pbar.refresh()
