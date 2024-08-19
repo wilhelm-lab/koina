@@ -4,6 +4,7 @@ description: |
  <table><tr><th>Unimod-ID</th><th>Modification</th></tr><tr><td>1</td><td>Acetyl</td></tr><tr><td>4</td><td>Carbamidomethyl</td></tr><tr><td>28</td><td>Gln->pyro-Glu</td></tr><tr><td>27</td><td>Glu->pyro-Glu</td></tr><tr><td>35</td><td>Oxidation</td></tr><tr><td>21</td><td>Phospho</td></tr><tr><td>26</td><td>Pyro-carbamidomethyl</td></tr></table>
  The PyTorch model was trained on collision energy data in units of eV.  The Koina version is set up for the user to submit collision energy in NCE  and the instrument type. It will convert this NCE value to the corresponding eV value depending on the instrument type.
  <table><tr><th>Code</th><th>Name</th></tr><tr><td>QE</td><td>Q Exactive</td></tr><tr><td>QEHFX</td><td>Q Exactive HF-X</td></tr><tr><td>LUMOS</td><td>Orbitrap Fusion Lumos</td></tr><tr><td>ELITE</td><td>Orbitrap Elite</td></tr><tr><td>VELOS</td><td>Orbitrap Velos</td></tr><tr><td>NONE</td><td>Use input without adjustment</td></tr></table>
+ Note, instruments QE, QEHFX, and ELITE only work for charges 2-5; VELOS only works for charges 2-4. If you must predict charges outside these ranges for these instruments, just set the instrument to NONE. This  means the collision energy you enter is used directly as input to the model, i.e. no NCE->eV conversion.
 
 citation: |
   UniSpec: Deep Learning for Predicting the Full Range of Peptide Fragment Ion Series to Enhance the Proteomics Data Analysis Workflow
