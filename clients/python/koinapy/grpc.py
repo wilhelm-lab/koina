@@ -427,9 +427,9 @@ class Koina:
             int, Union[Dict[str, np.ndarray], InferenceServerException]
         ],
         request_id: int,
-        timeout: int = 10000,
-        retries: int = 0,
-    ):
+        timeout: int = 60000,
+        retries: int = 2,
+    ) -> Generator[None, None, None]:
         """
         Perform asynchronous batch inference on the given data using the Koina model.
 
@@ -443,19 +443,20 @@ class Koina:
         :param request_id: An identifier for the inference request, used to track the order of completion.
         :param timeout: The maximum time (in seconds) to wait for the inference to complete. Defaults to 10 seconds.
         :param retries: The maximum number of requests in case of failure
-        :yield: None, this is to separate async clien infer from checking the result
+        :yield: None, this is to separate async client infer from checking the result
         """
         batch_outputs = self.__get_batch_outputs(self.model_outputs.keys())
         batch_inputs = self.__get_batch_inputs(data)
 
         for i in range(retries + 1):
-            # need to yield first, before doing sth, but only after first time
+            # yield immediately but after the first loop, to immediately start
+            # the first inference but halt before any following retry.
             if i > 0:
+                yield
+                # immediately stop the generator to explicitely prevent following
+                # retries if the inference was already successful. Just to make sure.
                 if isinstance(infer_results.get(request_id), InferResult):
                     break
-                if i != retries:
-                    del infer_results[request_id]
-
             self.client.async_infer(
                 model_name=self.model_name,
                 request_id=str(request_id),
@@ -464,7 +465,6 @@ class Koina:
                 outputs=batch_outputs,
                 client_timeout=timeout,
             )
-            yield
 
     def predict(
         self,
@@ -481,7 +481,7 @@ class Koina:
         choose to perform inference asynchronously (in parallel) or sequentially, depending on the value of the '_async'
         parameter. If asynchronous inference is selected, the method will return when all inference tasks are complete.
         Note: Ensure that the model and server are properly configured and that the input data matches the model's
-        nput requirements.
+        input requirements.
 
         :param data: A dictionary or dataframe containing input data for inference. For the dictionary, keys are input names,
             and values are numpy arrays. In case of a dataframe, the input fields for the requested model must be present
@@ -581,7 +581,7 @@ class Koina:
         for i, data_batch in enumerate(self.__slice_dict(data, self.batchsize)):
             tasks.append(
                 self.__async_predict_batch(
-                    data_batch, infer_results, request_id=i, retries=0
+                    data_batch, infer_results, request_id=i, retries=2
                 )
             )
             next(tasks[i])
@@ -605,10 +605,23 @@ class Koina:
                     pbar.n += 1
                 else:  # unexpected result / exception -> try again
                     try:
+                        # explicitly delete the erroneous array element before calling
+                        # next to avoid race condition when rechecking the result for this
+                        # task in the next loop cycle, which would call next multiple times
+                        # if the inference is slower than the loop, leading to multiple
+                        # retries for the same task, despite the first retry already being
+                        # executed but not yet done.
+                        del infer_results[j]
                         next(tasks[j])
                         new_unfinished_tasks.append(j)
                     except StopIteration:
                         pbar.n += 1
+                        # explicitly readd the erroneous array element from the last attempt
+                        # back into the infer_results dictionary when the final retry was
+                        # executed and the StopIteration is called as a result. This ensures
+                        # the error for this task stays in the results and can be forwarded
+                        # afterwards if debug == True
+                        infer_results[j] = result
 
             unfinished_tasks = new_unfinished_tasks
             pbar.refresh()
