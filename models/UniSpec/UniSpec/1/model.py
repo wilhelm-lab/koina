@@ -19,7 +19,7 @@ def NCE2eV(nce, mz, charge, instrument="lumos"):
         "ELITE",
         "NONE",
     ], instrument
-    
+
     # NONE should be used when directly inputting eV
     if instrument.lower() == "none":
         return nce
