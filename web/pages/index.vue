@@ -84,7 +84,7 @@ import BaseButton from "~/components/ui/BaseButton.vue";
           />
         </a>
         <a href="https://www.msaid.de/" class="ml-2 mb-2">
-          <img src="~/assets/img/msaid-logo.webp" alt="TUM logo" class="h-16" />
+          <img src="~/assets/img/msaid-logo.png" alt="TUM logo" class="h-16" />
         </a>
       </div>
     </div>
