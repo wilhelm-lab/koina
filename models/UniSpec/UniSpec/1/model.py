@@ -19,11 +19,12 @@ def NCE2eV(nce, mz, charge, instrument="lumos"):
         "ELITE",
         "NONE",
     ], instrument
-
+    
+    # NONE should be used when directly inputting eV
     if instrument.lower() == "none":
         return nce
 
-    if instrument.lower() == ("qe" or "qehfx" or "elite"):
+    if instrument.lower() in ["qe", "qehfx", "elite"]:
         if charge == 2:
             cf = 0.9
         elif charge == 3:
@@ -34,7 +35,7 @@ def NCE2eV(nce, mz, charge, instrument="lumos"):
             cf = 0.75
         else:
             RuntimeError("Charge not supported")
-    if instrument.lower() == ("qe" or "qehfx"):
+    if instrument.lower() in ["qe", "qehfx"]:
         ev = nce * mz / 500 * cf
     elif instrument.lower() == "elite":
         ev = nce * mz * 500 * cf
