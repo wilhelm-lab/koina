@@ -7,13 +7,6 @@ import yaml
 import requests
 from jinja2 import Environment, FileSystemLoader
 
-nptype_convert = {
-    "FP32": "np.float32",
-    "BYTES": "np.object_",
-    "INT32": "np.int32",
-    "INT64": "np.int64",
-}
-
 
 def load_yaml(path):
     with open(path, "r", encoding="UTF-8") as yaml_file:
@@ -80,15 +73,7 @@ def create_openapi_yaml(models, tmpl_url):
 def main(http_url, grpc_url, tmpl_url):
     model_dict = {x.parent.name: x for x in Path("models").rglob("notes.yaml")}
 
-    # there is a slight delay before service turns healthy
-    # therefore sleep just a few seconds
     sleep_until_service_starts(http_url)
-
-    # models = get_configs(model_dict.keys())
-    # logging.info(f"Models: {models}")
-
-    # Remove the type prefix because the python code doesn't use the same type notations
-    # models = remove_type_prefix(models)
 
     models = []
     for name, model_path in model_dict.items():
