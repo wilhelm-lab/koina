@@ -1,0 +1,17 @@
+description: | 
+  A prosit model trained to predict indexed retention time of citrunillated and deamidated peptides. The model is also capable of predicting
+  unmodified peptides. This model is incorporated into citrunillation rescoring pipeline to validate and improve PTM localization.
+
+citation: |
+  Not available yet.
+tag: "Retention Time"
+examples:
+  inputs:
+    [
+      {
+        "name": "peptide_sequences",
+        "httpdtype": "BYTES",
+        "data": '["AAAAAKAR[UNIMOD:7]K"]',
+        "shape": "[1,1]"
+      }
+    ]
