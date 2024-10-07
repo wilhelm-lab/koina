@@ -1,5 +1,4 @@
 import numpy as np
-import triton_python_backend_utils as pb_utils
 
 SEQ_LEN = 30
 ALPHABET_UNMOD = {
@@ -21,16 +20,16 @@ ALPHABET_UNMOD = {
     "T": 17,
     "V": 18,
     "W": 19,
-    "Y": 20
+    "Y": 20,
 }
 
-MAX_CHARGE = 6
 ALPHABET_MOD = {
     "M[UNIMOD:35]": 21,
-    "R[UNIMOD:7]":22,
+    "R[UNIMOD:7]": 22,
     "C[UNIMOD:4]": 2,
-    "Q[UNIMOD:7]":4,
-    "N[UNIMOD:7]":3}
+    "Q[UNIMOD:7]": 4,
+    "N[UNIMOD:7]": 3,
+}
 
 # ALPHABET contains all amino acid and ptm abbreviations and
 ALPHABET = {**ALPHABET_UNMOD, **ALPHABET_MOD}
@@ -64,7 +63,6 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
 
 def character_to_array(character):
     array = np.zeros((1, SEQ_LEN), dtype=np.uint8)
-    logger = pb_utils.Logger
     generator_sequence_numeric = parse_modstrings(
         [character], alphabet=ALPHABET, translate=True, filter=True
     )

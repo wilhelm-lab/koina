@@ -3,17 +3,6 @@ import numpy as np
 from sequence_conversion import character_to_array, ALPHABET_MOD
 import json
 
-
-def internal_without_mods(sequences):
-    """
-    Function to remove any mod identifiers and return the plain AA sequence.
-    :param sequences: List[str] of sequences
-    :return: List[str] of modified sequences
-    """
-    regex = r"\[.*?\]|\-"
-    return [re.sub(regex, "", seq) for seq in sequences]
-
-
 class TritonPythonModel:
     def initialize(self, args):
         self.model_config = model_config = json.loads(args["model_config"])
