@@ -1,7 +1,15 @@
 description: |
-  A prosit model trained to predict fragment ion intensites of citrunillated and deamidated peptides. The model is also capable of predicting
-  unmodified peptides. This model is incorporated into citrunillation rescoring pipeline to validate and improve PTM localization.
+  A deep learning model  based on the architecture of Prosit, specifically trained to predict fragment ion intensities of citrullinated and deamidated peptides, 
+  as well as unmodified peptides. The model leverages the same neural network framework as Prosit but has been extended to accommodate post-translational modifications (PTMs), 
+  particularly citrullination and deamidation.
 
+  The training dataset consisted of synthetic peptides from the ProteomeTools project, including a total of 17.5 million spectra. 
+  These were divided into training (~12.2M spectra), validation (~3.5M spectra), and test sets (~1.7M spectra). 
+  The complete dataset is publicly accessible here: https://zenodo.org/records/13856705.
+
+  When evaluated on the test set, the model achieved a spectral angle of 0.85 (R = 0.97) for citrullinated peptides and a spectral angle of 0.92 (R = 0.99) for unmodified peptides, 
+  indicating high predictive accuracy for both modified and unmodified peptides.
+  
 citation: |
   Not available yet.
 tag: "Intensity"
