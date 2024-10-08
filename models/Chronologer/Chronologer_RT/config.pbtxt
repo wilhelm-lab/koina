@@ -1,0 +1,45 @@
+max_batch_size: 1000
+platform: "ensemble"
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  }
+]
+output [
+  {
+   name: 'rt',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+]
+
+ensemble_scheduling {
+  step [
+    {
+      model_name: "Chronologer_Preprocess"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "encoded_seq:0"
+        value: "encoded_seq"
+      }
+    },
+    {
+      model_name: "Chronologer_RT_core"
+      model_version: 1
+      input_map {
+        key: "aa_indices__0"
+        value: "encoded_seq"
+      },
+      output_map {
+        key: "output__0"
+        value: "rt"
+      }
+    }
+  ]
+}
