@@ -52,7 +52,7 @@ docker run \
   --name watchtower \
   -v /var/run/docker.sock:/var/run/docker.sock \
   --restart unless-stopped \
-  containrrr/watchtower -i 30
+  containrrr/watchtower -i 30 --rolling-restart
 ```
 
 ## Adding your own model
