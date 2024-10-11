@@ -16,20 +16,12 @@ class TritonPythonModel:
     def execute(self, requests):
         responses = []
         for request in requests:
-            raw = pb_utils.get_input_tensor_by_name(request, "3dmolms_out")
-            norm = raw.as_numpy()
-            norm = norm[0]
+            raw = pb_utils.get_input_tensor_by_name(request, "3dmolms_out").as_numpy()
+            norm = (raw / raw.max(axis=1)) ** 2
 
-            # comvert it to mz and intensity pairs
-            result = []
-            bucket_size = 0.2
-            threshold = 0.1
-            for i in range(len(norm)):
-                if norm[i] > threshold:
-                    result.append([i * bucket_size, norm[i]])
-            # convert to a -1 x 2 numpy array
-            norm = np.array(result, dtype=np.float32)
-            ce_tensor = pb_utils.Tensor("cleaned_out", norm.astype(self.output_dtype))
+            ce_tensor = pb_utils.Tensor(
+                "cleaned_out", norm.astype(self.output_dtype).reshape(-1, 7500)
+            )
             responses.append(pb_utils.InferenceResponse(output_tensors=[ce_tensor]))
 
         return responses

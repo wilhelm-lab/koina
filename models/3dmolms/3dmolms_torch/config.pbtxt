@@ -1,5 +1,5 @@
 backend: "pytorch"
-max_batch_size : 256
+max_batch_size : 1
 input [
   {
     name: "x"
@@ -14,7 +14,7 @@ input [
   {
     name: "idx_base"
     data_type: TYPE_INT32
-    dims: [-1, 1, 1]
+    dims: [1, 1, 1]
   }
 ]
 output [

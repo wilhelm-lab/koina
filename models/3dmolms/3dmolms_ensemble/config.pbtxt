@@ -1,16 +1,16 @@
 name: "3dmolms_ensemble"
-max_batch_size: 256
+max_batch_size: 1
 platform: "ensemble"
 input[
  {
    name: 'SMILES',
    data_type: TYPE_STRING,
-   dims: [-1]
+   dims: [1]
  },
  {
   name: 'precursor_type'
   data_type: TYPE_STRING,
-  dims: [-1]
+  dims: [1]
  },
  {
    name: 'collision_energy',
@@ -22,7 +22,7 @@ output [
  {
    name: 'me_out',
    data_type: TYPE_FP32,
-   dims: [-1, 2]
+   dims: [7500]
  }
 ]
 
