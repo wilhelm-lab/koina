@@ -3,24 +3,29 @@ max_batch_size: 1
 platform: "ensemble"
 input[
  {
-   name: 'SMILES',
+   name: 'smiles',
    data_type: TYPE_STRING,
    dims: [1]
  },
  {
-  name: 'precursor_type'
+  name: 'precursor_types'
   data_type: TYPE_STRING,
   dims: [1]
  },
  {
-   name: 'collision_energy',
+   name: 'collision_energies',
    data_type: TYPE_FP32,
    dims: [1]
  }
 ]
 output [
  {
-   name: 'me_out',
+   name: 'intensities',
+   data_type: TYPE_FP32,
+   dims: [7500]
+ },
+ {
+   name: 'mz',
    data_type: TYPE_FP32,
    dims: [7500]
  }
@@ -34,15 +39,15 @@ ensemble_scheduling {
       model_version: 1,
       input_map {
         key: "SMILES_in",
-        value: "SMILES"
+        value: "smiles"
       },
       input_map {
         key: "precursor_type_in",
-        value: "precursor_type"
+        value: "precursor_types"
       },
       input_map {
         key: "collision_energy_in",
-        value: "collision_energy"
+        value: "collision_energies"
       },
       output_map {
         key: "SMILES_out",
@@ -85,8 +90,12 @@ ensemble_scheduling {
         value: "3dmolms_out"
       },
       output_map{
-        key: "cleaned_out",
-        value: "me_out"
+        key: "int",
+        value: "intensities"
+      },
+      output_map{
+        key: "mz",
+        value: "mz"
       }
     }
   ]

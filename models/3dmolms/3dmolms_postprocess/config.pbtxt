@@ -8,7 +8,12 @@ input [
 ]
 output [
   {
-    name: "cleaned_out"
+    name: "int"
+    data_type: TYPE_FP32
+    dims: [7500]
+  },
+  {
+    name: "mz"
     data_type: TYPE_FP32
     dims: [7500]
   }
