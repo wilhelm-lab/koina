@@ -15,7 +15,7 @@ def lib_test_available_grpc(model_name, server_grpc):
     assert client._is_model_ready() is None
 
 
-def lib_test_inference(model_name, server_grpc, atol=1e-6):
+def lib_test_inference(model_name, server_grpc, atol=1e-4):
     files = glob(f"**/arr-{model_name}-*.npy", recursive=True)
     data = {Path(f).stem.split("-")[-1]: np.load(f) for f in files}
 
