@@ -1,0 +1,21 @@
+max_batch_size: 1000
+input [
+  {
+    name: "3dmolms_out"
+    data_type: TYPE_FP32
+    dims: [7500]
+  }
+]
+output [
+  {
+    name: "int"
+    data_type: TYPE_FP32
+    dims: [7500]
+  },
+  {
+    name: "mz"
+    data_type: TYPE_FP32
+    dims: [7500]
+  }
+]
+instance_group [{ kind: KIND_AUTO }]
