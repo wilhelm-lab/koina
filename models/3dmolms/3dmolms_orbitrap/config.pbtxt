@@ -1,4 +1,4 @@
-name: "3dmolms_ensemble"
+name: "3dmolms_orbitrap"
 max_batch_size: 1
 platform: "ensemble"
 input[
@@ -63,7 +63,7 @@ ensemble_scheduling {
       }
     },
     {
-      model_name: "3dmolms_torch",
+      model_name: "3dmolms_orbitrap_core",
       model_version: 1,
       input_map {
         key: "x",

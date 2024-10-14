@@ -20,4 +20,4 @@ def test_available_grpc():
 
 
 def test_inference():
-    lib_test_inference(MODEL_NAME, SERVER_GRPC, 1e-3)
+    lib_test_inference(MODEL_NAME, SERVER_GRPC, atol=1e-4)
