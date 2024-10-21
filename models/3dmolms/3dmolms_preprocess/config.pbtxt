@@ -1,0 +1,36 @@
+max_batch_size: 1000
+input[
+ {
+   name: 'SMILES_in',
+   data_type: TYPE_STRING,
+   dims: [1]
+ },
+ {
+  name: 'precursor_type_in'
+  data_type: TYPE_STRING,
+  dims: [1]
+ },
+ {
+   name: 'collision_energy_in',
+   data_type: TYPE_FP32,
+   dims: [1]
+ }
+]
+output [
+  {
+    name: "SMILES_out"
+    data_type: TYPE_FP32
+    dims: [21, 300]
+  },
+  {
+    name: "precursor_type_out"
+    data_type: TYPE_FP32
+    dims: [6]
+  },
+  {
+    name: "idx_base_out"
+    data_type: TYPE_INT32
+    dims: [1, 1, 1]
+  }
+]
+instance_group [{ kind: KIND_AUTO }]
