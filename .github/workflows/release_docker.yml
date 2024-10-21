@@ -76,7 +76,7 @@ jobs:
         run: docker compose --env-file .env.ci exec develop koina_build_ui.sh
 
       - name: Copy folder content recursively to remote
-        uses: garygrossgarten/github-action-scp@release
+        uses: garygrossgarten/github-action-scp@v0.8.0
         with:
           local: web/.output/public
           remote: /var/www/koina/
