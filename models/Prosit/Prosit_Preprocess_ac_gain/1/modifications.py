@@ -118,7 +118,7 @@ class Unimod:
                     unimod_string = unimod_string.replace("]", "")
 
                     keys_getter = itemgetter(*keys_to_lookup)
-                    if unimod_string =='UNIMOD:5634':
+                    if unimod_string == "UNIMOD:5634":
                         mod = '''"5634"'''
                     else:
                         mod = keys_getter(self.unimod_db_dict[unimod_string])

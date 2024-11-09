@@ -13,14 +13,12 @@ dict_ptm_atom_count_loss = {
     "S_21": "H O",
     "T_21": "H O",
     "Y_21": "H O",
-    
     "M_35": "H(3) C S",
-    
     "K_737": "H(2) N",
     "_737": "H(2) N",
     "_1": "H(2) N",
-    "K_2016": "H(2) N",  
-    "_2016": "H(2) N",   
+    "K_2016": "H(2) N",
+    "_2016": "H(2) N",
     "K_214": "H(2) N",
     "_214": "H(2) N",
     "K_730": "H(2) N",
@@ -47,7 +45,7 @@ def atom_count_str_list(atom_count, atom_count_list):
     return atom_count_list
 
 
-def get_ac(seq,logger):
+def get_ac(seq, logger):
     seq = unimod.lookup_sequence_m(
         ProformaParser.parse_sequence(seq), keys_to_lookup=["record_id"]
     )
@@ -57,15 +55,15 @@ def get_ac(seq,logger):
         current_ac = [1, 1, 1, 1, 1, 1]
         if aa[1] != "-" and aa[1] != "":
             current_ac = atom_count_str_list(
-                dict_ptm_atom_count_loss[aa[0]+ '_' + aa[1][1:-1]], current_ac
+                dict_ptm_atom_count_loss[aa[0] + "_" + aa[1][1:-1]], current_ac
             )
         aa_ac_list.append(current_ac)
     aa_ac_placeholder[: len(aa_ac_list),] = aa_ac_list
     return aa_ac_placeholder
 
 
-def get_ac_all(sequences,logger):
-    aa_ac = [get_ac(seq,logger) for seq in sequences]
+def get_ac_all(sequences, logger):
+    aa_ac = [get_ac(seq, logger) for seq in sequences]
     return aa_ac
 
 
@@ -86,7 +84,7 @@ class TritonPythonModel:
             peptides_ = peptide_in.as_numpy().tolist()
             peptide_in_list = [x[0].decode("utf-8") for x in peptides_]
 
-            fill = np.array(get_ac_all(peptide_in_list,logger))
+            fill = np.array(get_ac_all(peptide_in_list, logger))
             t = pb_utils.Tensor("ac_loss", fill.astype(self.output_dtype))
             responses.append(pb_utils.InferenceResponse(output_tensors=[t]))
         return responses
