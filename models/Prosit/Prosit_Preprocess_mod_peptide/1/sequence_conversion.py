@@ -2,9 +2,30 @@ import numpy as np
 import triton_python_backend_utils as pb_utils
 
 SEQ_LEN = 32
-ALPHABET_UNMOD = {"A": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7, "I": 8, "K": 9, "L": 10, "M": 11,     # amino acids
-            "N": 12, "P": 13, "Q": 14, "R": 15, "S": 16, "T": 17, "V": 18, "W": 19, "Y": 20, 
-            "[]-": 21, "-[]": 22}
+ALPHABET_UNMOD = {
+    "A": 1,
+    "C": 2,
+    "D": 3,
+    "E": 4,
+    "F": 5,
+    "G": 6,
+    "H": 7,
+    "I": 8,
+    "K": 9,
+    "L": 10,
+    "M": 11,  # amino acids
+    "N": 12,
+    "P": 13,
+    "Q": 14,
+    "R": 15,
+    "S": 16,
+    "T": 17,
+    "V": 18,
+    "W": 19,
+    "Y": 20,
+    "[]-": 21,
+    "-[]": 22,
+}
 
 # ALPHABET contains all amino acid
 ALPHABET = {**ALPHABET_UNMOD}
@@ -39,7 +60,7 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
 def character_to_array(character):
     array = np.zeros((1, SEQ_LEN), dtype=np.uint8)
     logger = pb_utils.Logger
-    character = '[]-' + character + '-[]'
+    character = "[]-" + character + "-[]"
     generator_sequence_numeric = parse_modstrings(
         [character], alphabet=ALPHABET, translate=True, filter=True
     )
