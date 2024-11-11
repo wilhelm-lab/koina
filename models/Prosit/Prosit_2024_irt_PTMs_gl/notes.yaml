@@ -1,0 +1,14 @@
+description: | 
+  PTM-Model for ProSIMSIt
+tag: "Retention Time"
+tag_url: "https://www.proteomicsdb.org/"
+examples:
+  inputs:
+    [
+      {
+          "name": "peptide_sequences",
+          "httpdtype": "BYTES",
+          "shape": "[2,1]",
+          "data": '["[UNIMOD:737]-AAAAAKAK[UNIMOD:737]", "[UNIMOD:737]-AAAAY[UNIMOD:21]AR"]'
+      }
+    ]

@@ -1,0 +1,32 @@
+description: | 
+  PTM-Model for ProSIMSIt
+tag: "Intensity"
+tag_url: "https://www.proteomicsdb.org/"
+examples:
+  inputs:
+    [
+      {
+          "name": "peptide_sequences",
+          "httpdtype": "BYTES",
+          "shape": "[2,1]",
+          "data": '["[UNIMOD:737]-AAAAAKAK[UNIMOD:737]", "[UNIMOD:737]-AAAAY[UNIMOD:21]AR"]'
+      },
+      {
+          "name": "precursor_charges",
+          "httpdtype": "INT32",
+          "shape": "[2,1]",
+          "data": '[1,2]'
+      },
+      {
+          "name": "collision_energies",
+          "httpdtype": "FP32",
+          "shape": "[2,1]",
+          "data": '[25, 25]'
+      },
+      {
+        "name": "fragmentation_types",
+        "httpdtype": "BYTES",
+        "shape": "[2,1]",
+        "data": '["HCD", "CID"]'
+      }
+    ]

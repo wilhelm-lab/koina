@@ -1,0 +1,21 @@
+max_batch_size: 1000
+input[
+ {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+output [
+ {
+   name: 'ac_loss',
+   data_type: TYPE_INT64,
+   dims: [32,6]
+ }
+]
+instance_group [
+    {
+      count: 2
+      kind: KIND_CPU
+    }
+]
