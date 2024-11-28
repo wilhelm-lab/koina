@@ -1,5 +1,5 @@
 platform: "pytorch_libtorch"
-max_batch_size: 1000
+max_batch_size: 18
 input[
   {
    name: 'aa_indices__0',
