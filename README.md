@@ -2,7 +2,7 @@
 
 ## Accessing a public server
 ### cURL
-Here is an example HTTP request using only cURL sending a POST request to with a JSON body.
+Here is an example HTTP request using only cURL sending a POST request to with a JSON body. You can find examples for all available models at https://koina.wilhelmlab.org/. 
 
 ```bash
 curl "https://koina.wilhelmlab.org/v2/models/Prosit_2019_intensity/infer" \
@@ -16,11 +16,84 @@ curl "https://koina.wilhelmlab.org/v2/models/Prosit_2019_intensity/infer" \
   ]
 }'
 ```
+
+The output of an HTTP request is always a JSON object. The `outputs` key contains the outputs the model provides. In this case, there are three outputs: `annotation,` `mz`, and `intensities`. For other models, the keys change.
+
+```json
+{
+    "id": "LGGNEQVTR_GAGSSEPVTGLDAK",
+    "model_name": "Prosit_2019_intensity",
+    "model_version": "1",
+    "parameters": {
+        "sequence_id": 0,
+        "sequence_start": false,
+        "sequence_end": false
+    },
+    "outputs": [
+        {
+            "name": "annotation",
+            "datatype": "BYTES",
+            "shape": [
+                2,
+                174
+            ],
+            "data": [
+                "y1+1",
+                "y1+2",
+                "y1+3",
+                "b1+1",
+                ...
+                "y29+3",
+                "b29+1",
+                "b29+2",
+                "b29+3"
+            ]
+        },
+        {
+            "name": "mz",
+            "datatype": "FP32",
+            "shape": [
+                2,
+                174
+            ],
+            "data": [
+                175.11895751953125,
+                -1.0,
+                -1.0,
+                114.09133911132812,
+                ...
+                -1.0,
+                -1.0,
+                -1.0,
+                -1.0
+            ]
+        },
+        {
+            "name": "intensities",
+            "datatype": "FP32",
+            "shape": [
+                2,
+                174
+            ],
+            "data": [
+                0.2463880330324173,
+                -1.0,
+                -1.0,
+                0.006869315169751644,
+                ...
+                -1.0,
+                -1.0,
+                -1.0,
+                -1.0
+            ]
+        }
+    ]
+}
+```
+
+
 ### Python
 For examples of how to access models using Python, you can check out [our OpenAPI documentation ](https://koina.wilhelmlab.org/docs/#overview).
-
-### R
-TODO
 
 ## Hosting your own server
 
@@ -37,7 +110,7 @@ When using this docker image, you need to accept the terms in the [NVIDIA Deep L
 ```bash
 docker run \
     --gpus '"device=0"' \
-    --shm-size 8G \
+    --shm-size 8G I am running a few minutes late; my previous meeting is running over. 
     --name koina \
     -p 8500-8502:8500-8502 \
     -d \
