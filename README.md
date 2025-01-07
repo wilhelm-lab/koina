@@ -110,7 +110,7 @@ When using this docker image, you need to accept the terms in the [NVIDIA Deep L
 ```bash
 docker run \
     --gpus '"device=0"' \
-    --shm-size 8G I am running a few minutes late; my previous meeting is running over. 
+    --shm-size 8G \
     --name koina \
     -p 8500-8502:8500-8502 \
     -d \
