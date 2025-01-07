@@ -15,25 +15,25 @@ examples:
       {
         "name": "peptide_sequences",
         "httpdtype": "BYTES",
-        "data": '["AAAAAKAKM[UNIMOD:35]"]',
-        "shape": "[1,1]"
+        "data": '["AAAAAKAKM[UNIMOD:35]", "AAAAAKAKM"]',
+        "shape": "[2,1]"
       },
       {
         "name": "precursor_charges",
         "httpdtype": "INT32",
-        "data": '[2]',
-        "shape": "[1,1]"
+        "data": '[2, 2]',
+        "shape": "[2,1]"
       },
       {
         "name": "collision_energies",
         "httpdtype": "FP32",
-        "data": '[25]',
-        "shape": "[1,1]"
+        "data": '[25, 25]',
+        "shape": "[2,1]"
       },
       {
         "name": "instrument_types",
         "httpdtype": "BYTES",
-        "data": '["QE"]',
-        "shape": "[1,1]"
+        "data": '["QE", "QE"]',
+        "shape": "[2,1]"
       }
     ]

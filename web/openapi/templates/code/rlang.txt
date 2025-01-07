@@ -25,3 +25,8 @@ if (httr::http_status(response)$category == "Success") {
 } else {
   cat("Request failed with status code:", httr::http_status(response)$code, "\n")
 }
+
+for(x in predictions$outputs){
+  print(x$name)
+  print(unlist(x$data))
+}
