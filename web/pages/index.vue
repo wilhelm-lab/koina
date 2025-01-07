@@ -18,7 +18,7 @@ import BaseButton from "~/components/ui/BaseButton.vue";
       </p>
 
       <p>
-        To minimize the barrier of entry and “democratize” access to ML models, we provide a public network of Koina instances at <a href="koina.wilhelmlab.org">koina.wilhelmlab.org</a>. 
+        To minimize the barrier of entry and “democratize” access to ML models, we provide a public network of Koina instances at <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>. 
         The computational workload is automatically distributed to processing nodes hosted at different research institutions and spin-offs across Europe. 
         Each processing node provides computational resources to the service network, always aiming at just-in-time results delivery.
       </p>
@@ -84,7 +84,7 @@ import BaseButton from "~/components/ui/BaseButton.vue";
           />
         </a>
         <a href="https://www.msaid.de/" class="ml-2 mb-2">
-          <img src="~/assets/img/msaid-logo.webp" alt="TUM logo" class="h-16" />
+          <img src="~/assets/img/msaid-logo.png" alt="TUM logo" class="h-16" />
         </a>
       </div>
     </div>

@@ -1,0 +1,89 @@
+max_batch_size: 1000
+platform: "ensemble"
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  }
+]
+output [
+  {
+   name: 'irt',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+]
+
+ensemble_scheduling {
+  step [
+	{
+      model_name: "Prosit_Preprocess_unmod"
+      model_version: 1
+       input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "stripped_peptide"
+        value: "stripped_peptide"
+      }
+    },
+    {
+      model_name: "Prosit_Preprocess_ac_gain"
+      model_version: 1
+       input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "ac_gain"
+        value: "ac_gain"
+      }
+    },
+	{
+      model_name: "Prosit_Preprocess_ac_loss"
+      model_version: 1
+       input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "ac_loss"
+        value: "ac_loss"
+      }
+    },
+    {
+      model_name: "Prosit_Preprocess_mod_peptide"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "stripped_peptide"
+      },
+      output_map {
+        key: "peptides_in:0"
+        value: "peptides_in:0"
+      }
+    },
+    {
+      model_name: "Prosit_2024_irt_PTMs_gl_core"
+      model_version: 1
+      input_map {
+        key: "mod_loss"
+        value: "ac_loss"
+      },
+	  input_map {
+        key: "mod_gain"
+        value: "ac_gain"
+      },
+	  input_map {
+        key: "modified_sequence"
+        value: "peptides_in:0"
+      },
+      output_map {
+        key: "output_1"
+        value: "irt"
+      }
+    }
+  ]
+}

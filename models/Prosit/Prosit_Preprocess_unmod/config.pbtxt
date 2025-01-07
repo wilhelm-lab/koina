@@ -1,0 +1,22 @@
+max_batch_size: 1000
+input[
+ {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+output [
+ {
+   name: 'stripped_peptide',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+
+instance_group [
+    {
+      count: 2
+      kind: KIND_CPU
+    }
+]

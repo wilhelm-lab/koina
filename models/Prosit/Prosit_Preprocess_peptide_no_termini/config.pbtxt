@@ -1,0 +1,15 @@
+max_batch_size: 1000
+input[
+ {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+output [
+ {
+   name: 'peptides_in:0',
+   data_type: TYPE_INT64,
+   dims: [30]
+ }
+]

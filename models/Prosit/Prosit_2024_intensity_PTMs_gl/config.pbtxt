@@ -1,0 +1,212 @@
+max_batch_size: 1000
+platform: "ensemble"
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+    name: 'precursor_charges',
+    data_type: TYPE_INT32,
+    dims: [1],
+  },
+  {
+    name: 'collision_energies',
+    data_type: TYPE_FP32,
+    dims: [1],
+  },
+  {
+    name: 'fragmentation_types',
+    data_type: TYPE_STRING,
+    dims: [1],
+  }
+]
+output [
+  {
+   name: 'intensities',
+   data_type: TYPE_FP32,
+   dims: [174]
+  },
+ {
+   name: 'mz',
+   data_type: TYPE_FP32,
+   dims: [174]
+ },
+ {
+   name: 'annotation',
+   data_type: TYPE_STRING,
+   dims: [174]
+ }
+]
+
+ensemble_scheduling {
+  step [
+    {
+      model_name: "Prosit_Preprocess_charge_cit"
+      model_version: 1
+      input_map {
+        key: "precursor_charges"
+        value: "precursor_charges"
+      },
+      output_map {
+        key: "precursor_charges_in:0"
+        value: "precursor_charges_in_preprocessed:0"
+      }
+    },
+	{
+      model_name: "Prosit_Preprocess_charge"
+      model_version: 1
+      input_map {
+        key: "precursor_charges"
+        value: "precursor_charges"
+      },
+      output_map {
+        key: "precursor_charges_in:0"
+        value: "precursor_charges_in_preprocessed_FP"
+      }
+    },
+	{
+      model_name: "Prosit_Preprocess_unmod"
+      model_version: 1
+       input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "stripped_peptide"
+        value: "stripped_peptide"
+      }
+    },
+	{
+      model_name: "Prosit_Preprocess_ac_gain"
+      model_version: 1
+       input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "ac_gain"
+        value: "ac_gain"
+      }
+    },
+	{
+      model_name: "Prosit_Preprocess_ac_loss"
+      model_version: 1
+       input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "ac_loss"
+        value: "ac_loss"
+      }
+    },
+    {
+      model_name: "Prosit_Preprocess_mod_peptide"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "stripped_peptide"
+      },
+      output_map {
+        key: "peptides_in:0"
+        value: "peptides_in:0"
+      }
+    },
+    {
+      model_name: "Prosit_Preprocess_collision_energy"
+      model_version: 1
+      input_map {
+        key: "raw_collision_energy"
+        value: "collision_energies"
+      },
+      output_map {
+        key: "norm_collision_energy"
+        value: "norm_collision_energy"
+      }
+    },
+	 {
+      model_name: "Prosit_Preprocess_fragmentation_types_PTMs"
+      model_version: 1
+      input_map {
+        key: "fragmentation_types"
+        value: "fragmentation_types"
+      },
+      output_map {
+        key: "fragmentation_types_encoding"
+        value: "fragmentation_types_encoding"
+      }
+    },
+    {
+      model_name: "Prosit_2024_intensity_PTMs_gl_core"
+      model_version: 1
+      input_map {
+        key: "modified_sequence"
+        value: "peptides_in:0"
+      },
+	  input_map {
+        key: "mod_loss"
+        value: "ac_loss"
+      },
+	  input_map {
+        key: "mod_gain"
+        value: "ac_gain"
+      },
+      input_map {
+        key: "collision_energy_aligned_normed"
+        value: "norm_collision_energy"
+      },
+	  input_map {
+        key: "method_nbr"
+        value: "fragmentation_types_encoding"
+      },
+	  
+      input_map {
+        key: "precursor_charge_onehot"
+        value: "precursor_charges_in_preprocessed:0"
+      }
+      output_map {
+        key: "output_1"
+        value: "output_1"
+      }
+    },
+   
+    {
+      model_name: "Prosit_2019_intensity_postprocess"
+      model_version: 1
+      input_map {
+        key: "peptides_in:0"
+        value: "peptide_sequences"
+      },
+      input_map{
+        key: "precursor_charges_in:0"
+        value: "precursor_charges_in_preprocessed_FP"
+      }
+      input_map{
+        key: "peaks_in:0",
+        value: "output_1"
+      }
+      output_map {
+        key: "intensities"
+        value: "intensities"
+      }
+      output_map {
+        key: "mz"
+        value: "mz"
+      }
+    },
+    {
+      model_name: "Prosit_Helper_annotation"
+      model_version: 1
+      input_map {
+        key: "precursor_charges"
+        value: "precursor_charges"
+      },
+      output_map {
+        key: "annotation"
+        value: "annotation"
+      }
+    }
+  ]
+}
