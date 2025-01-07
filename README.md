@@ -56,5 +56,4 @@ docker run \
 ```
 
 ## Adding your own model
-
 You can find a detailed description under [docs/](docs/README.md). If you run into any issues please open an issue on GitHub.
