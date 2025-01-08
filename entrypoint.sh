@@ -1,7 +1,7 @@
 #!/bin/sh
 pipx ensurepath
 source ~/.bashrc
-poetry install --with develop -C ./clients/python/
+poetry install -C./clients/python/ --with develop 
 cd web
 npm install
 touch /tmp/done_setup # For healthcheck
