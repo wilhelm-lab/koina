@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "koinapy"
-version = "0.0.8"
+version = "0.0.9"
 description = "Python client to communicate with Koina."
-authors = ["Ludwig Lautenbacher <Ludwig.Lautenbacher@tum.de>"]
+authors = ["Koina Developers"]
 license = "Apache 2.0"
 homepage = "https://koina.wilhelmlab.org/"
 repository = "https://github.com/wilhelm-lab/koina"
-documentation = "https://koina.wilhelmlab.org/docs"
+documentation = "https://koina.wilhelmlab.org"
 readme = "README.md"
 
 [tool.poetry.dependencies]

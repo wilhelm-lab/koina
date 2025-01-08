@@ -1,0 +1,29 @@
+platform: "pytorch_libtorch"
+max_batch_size: 18
+input[
+  {
+   name: 'aa_indices__0',
+   data_type: TYPE_INT64,
+   dims: [-1]
+  }
+]
+output [
+ {
+   name: 'output__0',
+   data_type: TYPE_FP32,
+   dims: [1]
+ }
+]
+model_repository_agents
+{
+  agents [
+    {
+      name: "checksum",
+      parameters
+      {
+        key: "MD5:./1/model.pt",
+        value: "37abf1b505f7a2df87b0e10e3dd489f6"
+      }
+    }
+  ]
+}
