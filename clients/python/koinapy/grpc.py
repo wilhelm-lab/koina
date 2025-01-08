@@ -551,6 +551,35 @@ class Koina:
             return predictions
 
     def __construct_df(self, inputs, predictions, min_intensity=1e-4):
+        """
+        Constructs a DataFrame by combining input features with predictions.
+
+        This method takes in a DataFrame of input features and a dictionary of predictions,
+        then creates a new DataFrame where each input feature is repeated according to the
+        dimensionality of the predictions. The function also includes a filtering step to only
+        retain rows where the 'intensities' column has values greater than a specified minimum.
+
+        Parameters:
+        inputs (pd.DataFrame): A DataFrame containing input features.
+        predictions (dict): A dictionary where keys correspond to feature names and values are
+                            numpy arrays of predicted values. Each array should have a shape where
+                            the second dimension equals the number of predictions per input.
+        min_intensity (float, optional): The minimum value for filtering the 'intensities'
+                                        column in the resulting DataFrame. Default is 1e-4.
+
+        Returns:
+        pd.DataFrame: A new DataFrame that includes the repeated input features and the
+                    flattened predictions. Rows are filtered based on the 'intensities'
+                    column if present.
+
+        Raises:
+        ValueError: If the shape of any prediction array does not match what is expected.
+
+        Example:
+            inputs = pd.DataFrame({'feature1': [1, 2], 'feature2': [3, 4]})
+            predictions = {'pred1': np.random.rand(2, 3), 'intensities': np.random.rand(2, 3)}
+            df = __construct_df(inputs, predictions)
+        """
         output_shape_dim1 = list(predictions.values())[0].shape[1]
 
         tmp = inputs.apply(lambda x: np.repeat(x, output_shape_dim1))
@@ -564,6 +593,51 @@ class Koina:
         return tmp
 
     def __predict_semi_async(self, data, debug=False, disable_progress_bar=False):
+        """
+        Predict results using semi-asynchronous processing on the given data.
+
+        This method divides the input data into smaller subsets and processes
+        them asynchronously to improve performance. It utilizes a progress
+        bar to provide feedback on the processing status, which can be
+        disabled via the `disable_progress_bar` parameter.
+
+        Parameters
+        ----------
+        data : dict
+            A dictionary where values are arrays containing the data to be
+            processed. The keys represent different features, and the values
+            are expected to be structured in a way that they can be sliced
+            into batches.
+
+        debug : bool, optional
+            A flag indicating whether to enable debugging mode. Default is
+            False.
+
+        disable_progress_bar : bool, optional
+            A flag to disable the progress bar display. Default is False.
+
+        Returns
+        -------
+        dict
+            A merged dictionary containing the results of the predictions
+            from all processed subsets.
+
+        Notes
+        -----
+        - The input data is sliced into batches of size determined by the
+          instance's `batchsize` attribute multiplied by 10.
+        - The `__predict_async` method is called for each batch, and the
+          results are accumulated and returned as a single merged output.
+
+        Raises
+        ------
+        Any exceptions raised during the execution of `__predict_async`
+        will propagate to the caller.
+
+        Examples
+        --------
+            predictions = model.__predict_semi_async(data_dict, debug=True)
+        """
         results = []
         data_subsets = list(self.__slice_dict(data, self.batchsize * 10))
         pbar = tqdm(
