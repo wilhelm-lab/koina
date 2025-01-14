@@ -100,7 +100,7 @@ To simplify the development of Koina, we set up a development environment using 
 
 After cloning the repo, open the `.env` file and change the `GID` and `UID` to what you see when you run `id -u` and `id -g`, respectively. This avoids permission issues when you create files inside the devcontainer. In the `.env`, you can also specify which GPU should be used by setting `GPU_DEVICE` to the id you can see using `nvidia-smi`. `COMPOSE_PROJECT_NAME` is used to help you differentiate if there are multiple Koina development projects running, which one is which. `MODEL_PATTERN` is a pattern to select which models are loaded when starting the server; you can provide both patterns and exact model names like `Prosit_*` or `Prosit_2019_intensity`. 
 
-The development environment is split into two parts: the Koina server and the devcontainer. To start the containers, run `docker compose up -d`. This will pull the base Docker images, set up the local environment, and then start the container. Because the base images we are using are big and the container we are building includes a lot of required tools, this will take a while the first time you are running it. The first time, you can expect 10-15 minutes depending on your connection speed. After the first time, it should take only seconds due to Docker caching the results.
+The development environment is split into two parts: the Koina server and the devcontainer. To start the containers, run `docker compose up -d --build`. This will pull the base Docker images, set up the local environment, and then start the container. Because the base images we are using are big and the container we are building includes a lot of required tools, this will take a while the first time you are running it. The first time, you can expect 10-15 minutes depending on your connection speed. After the first time, it should take only seconds due to Docker caching the results.
 
 At the end, you should see this:
 ```
@@ -199,3 +199,5 @@ def test_available_grpc():
 def test_inference():
     lib_test_inference(MODEL_NAME, SERVER_GRPC)
 ```
+
+To run the tests use `koina_test.sh` (located at the top level of the repo). If you only want to run specific tests, you can run `poetry run pytest test/<filename>`.
