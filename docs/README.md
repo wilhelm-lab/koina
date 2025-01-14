@@ -199,3 +199,5 @@ def test_available_grpc():
 def test_inference():
     lib_test_inference(MODEL_NAME, SERVER_GRPC)
 ```
+
+To run the tests use `koina_test.sh` (located at the top level of the repo). If you only want to run specific tests, you can run `poetry run pytest test/<filename>`.
