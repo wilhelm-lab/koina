@@ -1,0 +1,29 @@
+max_batch_size: 1000
+name: "Altimeter_2024_eval_splines"
+backend: "onnxruntime"
+
+input [
+  {
+   name: 'coefficients',
+   data_type: TYPE_FP32,
+   dims: [4, 344]
+  },
+  {
+   name: 'knots',
+   data_type: TYPE_FP32,
+   dims: [8]
+  },
+  {
+   name: 'inpce',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+]
+
+output [
+  {
+   name: 'intensities',
+   data_type: TYPE_FP32,
+   dims: [-1]
+  }
+]

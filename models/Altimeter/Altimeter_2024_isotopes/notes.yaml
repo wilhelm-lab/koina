@@ -1,0 +1,38 @@
+description: |
+  <img src="images/Altimeter/altimeter_architecture_isotopes.svg" alt="Altimeter isotopes architecture" width="600px"> 
+  Altimeter predicts HCD MS2 spectra for peptides. This particular model computes fragment isotope intensities by re-isotoping the total abundance spectra from Altimeter_2024_intensities given the isolation efficiencies of an isolation window. Fragment isotope distributions are quickly approximated using the sulfur-specific spline method described in https://doi.org/10.1021/acsomega.8b01649. Intensities are normalized by the base peak for each spectrum The fragments are sorted by their intensities and the top 1000 fragments are returned.
+  
+  Input limits:<ul><li>Length: 6-40 amino acids (6-30 recommended).</li><li>Charge: 1-7 (1-4 recommended).</li><li>PTMs: Variable oxidation of methionines and static carbamidomethylation of cysteines.</li><li>NCEs: 20-40.</li><li>Isolated precursor isotopes: M0-M4. Given as 5 numbers between 0-1 representing the isolation efficiency of the corresponding precursor isotope.</li></ul>
+
+citation: |
+  BioRxiv coming soon.
+
+tag: "Intensity"
+examples:
+  inputs:
+    [
+      {
+          "name": "peptide_sequences",
+          "httpdtype": "BYTES",
+          "shape": "[2,1]",
+          "data": '["AAAAAKAK", "AC[UNIMOD:4]DEFGHIKLM[UNIMOD:35]NPQRSTVWY"]'
+      },
+      {
+          "name": "precursor_charges",
+          "httpdtype": "INT32",
+          "shape": "[2,1]",
+          "data": '[1,2]'
+      },
+      {
+          "name": "collision_energies",
+          "httpdtype": "FP32",
+          "shape": "[2,1]",
+          "data": '[25, 25]'
+      },
+      {
+          "name": "isotope_isolation_efficiencies",
+          "httpdtype": "FP32",
+          "shape": "[2,5]",
+          "data": '[1.0, 0.8, 0.1, 0.0, 0.0, 1.0, 0.8, 0.1, 0.0, 0.0]'
+      }
+    ]

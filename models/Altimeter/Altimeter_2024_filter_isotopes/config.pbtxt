@@ -1,0 +1,72 @@
+max_batch_size: 1000
+
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [1]
+  },
+  {
+    name: 'precursor_charges',
+    data_type: TYPE_INT32,
+    dims: [1],
+  },
+  {
+   name: 'coefficients',
+   data_type: TYPE_FP32,
+   dims: [4, 344]
+  },
+  {
+   name: 'knots',
+   data_type: TYPE_FP32,
+   dims: [8]
+  },
+  {
+   name: 'AUC',
+   data_type: TYPE_FP32,
+   dims: [344]
+  }
+]
+
+output [
+  {
+   name: 'coefficients_filtered',
+   data_type: TYPE_FP32,
+   dims: [4, 344]
+  },
+  {
+   name: 'knots_filtered',
+   data_type: TYPE_FP32,
+   dims: [8]
+  },
+  {
+   name: 'annotations_filtered',
+   data_type: TYPE_STRING,
+   dims: [344]
+  },
+  {
+   name: 'mz_filtered',
+   data_type: TYPE_FP32,
+   dims: [344]
+  },
+  {
+   name: 'precursor_masses',
+   data_type: TYPE_INT32,
+   dims: [1]
+  },
+  {
+   name: 'fragment_masses',
+   data_type: TYPE_INT32,
+   dims: [344]
+  },
+  {
+   name: 'precursor_sulfurs',
+   data_type: TYPE_INT32,
+   dims: [1]
+  },
+  {
+   name: 'fragment_sulfurs',
+   data_type: TYPE_INT32,
+   dims: [344]
+  }
+]
