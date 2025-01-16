@@ -1,4 +1,4 @@
-max_batch_size: 18
+max_batch_size: 1000
 platform: "ensemble"
 input [
   {
@@ -43,3 +43,4 @@ ensemble_scheduling {
     }
   ]
 }
+instance_group [{ kind: KIND_CPU }]
