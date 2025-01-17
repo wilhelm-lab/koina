@@ -33,7 +33,6 @@ def test_inference():
     charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.int32)
     ces = np.array([[30] for _ in range(len(SEQUENCES))], dtype=np.float32)
     frag = np.array([["HCD"] for _ in range(len(SEQUENCES))], dtype=np.object_)
-    # frag = np.load("test/Prosit/arr_Prosit_2020_intensityTMT_frag.npy").reshape([5,1])
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
