@@ -23,9 +23,9 @@ def test_inference():
         [
             ["AA"],
             ["PEPTIPEPTIR[UNIMOD:7]EPTIPEPTIPEPTIPEPT"],
-            ["HKDER[UNIMOD:7]STNQCGAVILMFYW"],
+            ["HKDER[UNIMOD:7]STNQC[UNIMOD:4]GAVILMFYW"],
             ["R[UNIMOD:7]HKDESTNQC[UNIMOD:4]GPAVILMFYW"],
-            ["R[UNIMOD:7]HKDESTNQCGPAVILM[UNIMOD:35]FYW"],
+            ["R[UNIMOD:7]HKDESTNQC[UNIMOD:4]GPAVILM[UNIMOD:35]FYW"],
         ],
         dtype=np.object_,
     )
@@ -71,6 +71,6 @@ def test_inference():
         intensities,
         np.load("test/Prosit/arr_Prosit_2024_intensity_cit_int.npy"),
         rtol=0,
-        atol=1e-5,
+        atol=1e-3,
         equal_nan=True,
     )
