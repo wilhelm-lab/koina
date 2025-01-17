@@ -1,15 +1,5 @@
 description: |
- Unispec is a model trained to predict full HCD mass spectra intensities, containing nearly 8000 different ion types in its output space, including a, b, y ion series, precursors peaks, immonium ions, and other fragmentation, 21 neutral losses, up to 5 isotopes, and internal ions. The Koina version automatically outputs the 200 highest intensities from the prediction while setting any unfeasible ions (given the sequence, charge, and modifications) to have -1 intensity. 
- Peptide sequences are submitted as modified sequences, with modifications immediately following the 1-letter AA where they are located. Modifications are represented with the word UNIMOD followed by a colon and the modification's Unimod ID, e.g., AGM[UNIMOD:35]MGAK. The model was trained for 7 modifications, listed below with their Unimod IDs. The maximum length for peptides can be up to 40 amino acids and a maximum charge of 8.
- <table><tr><th>Unimod-ID</th><th>Modification</th></tr><tr><td>1</td><td>Acetyl</td></tr><tr><td>4</td><td>Carbamidomethyl</td></tr><tr><td>28</td><td>Gln->pyro-Glu</td></tr><tr><td>27</td><td>Glu->pyro-Glu</td></tr><tr><td>35</td><td>Oxidation</td></tr><tr><td>21</td><td>Phospho</td></tr><tr><td>26</td><td>Pyro-carbamidomethyl</td></tr></table>
- The PyTorch model was trained on collision energy data in units of eV.  The Koina version is set up for the user to submit collision energy in NCE  and the instrument type. It will convert this NCE value to the corresponding eV value depending on the instrument type.
- <table><tr><th>Code</th><th>Name</th></tr><tr><td>QE</td><td>Q Exactive</td></tr><tr><td>QEHFX</td><td>Q Exactive HF-X</td></tr><tr><td>LUMOS</td><td>Orbitrap Fusion Lumos</td></tr><tr><td>ELITE</td><td>Orbitrap Elite</td></tr><tr><td>VELOS</td><td>Orbitrap Velos</td></tr><tr><td>NONE</td><td>Use input without adjustment</td></tr></table>
- Note, instruments QE, QEHFX, and ELITE only work for charges 2-5; VELOS only works for charges 2-4. If you must predict charges outside these ranges for these instruments, just set the instrument to NONE. This  means the collision energy you enter is used directly as input to the model, i.e. no NCE->eV conversion.
-
-citation: |
-  UniSpec: Deep Learning for Predicting the Full Range of Peptide Fragment Ion Series to Enhance the Proteomics Data Analysis Workflow
-  Lapin, J., Yan X., Dong, Q. (2024) 
-  Anal Chem. https://doi.org/10.1021/acs.analchem.3c02321
+  MultiFrag is a Prosit model trained jointly on 4 different types of fragmentation spectra -> HCD, ECD, EID, and UVPD. The model outputs 813 ion types, which include ion series a, a+proton, b, c, c+proton, x, x+proton, y, z, z+proton, upto length 29 and product charge +3. The model can be run on peptide lengths up through 30, and precursor charges up through 6. The allowed modifications are N-terminal acetylation ([UNIMOD:1]) and Oxidation ([UNIMOD:35]). Carbamidomethylation is fixed on Cysteine. You must always include its Unimod code, in a peptide sequence with cysteine -> C[UNIMOD:4]. The fragmentation methods are also included as input to the model, input as all-caps strings ("HCD", "ECD", "EID", "UVPD"). MultiFrag outputs all 813 ion intensities, their string annotations, and the ions' m/z's, with impossible ions (too long or too high product charge) having m/z=-1.0.
 tag: "Intensity"
 examples:
   inputs:
@@ -18,24 +8,19 @@ examples:
         "name": "peptide_sequences",
         "httpdtype": "BYTES",
         "shape": "[2,1]",
-        "data": '["YYHTLFTHSLPK", "AGC[UNIMOD:4]FS[UNIMOD:27]PK"]'
+        "data": '["NATTRQVETELFPC[UNIMOD:4]L", "M[UNIMOD:35]IDLSGNPVLR"]'
       },
       {
         "name": "precursor_charges",
         "httpdtype": "INT32",
         "shape": "[2,1]",
-        "data": '[1,2]'
+        "data": "[2, 2]"
       },
       {
-        "name": "collision_energies",
-        "httpdtype": "FP32",
-        "shape": "[2,1]",
-        "data": '[25, 25]'
-      },
-      {
-        "name": "instrument_types",
+        "name": "fragmentation_methods",
         "httpdtype": "BYTES",
         "shape": "[2,1]",
-        "data": '["LUMOS", "QE"]'
+        "data": '["UVPD", "HCD"]'
       }
     ]
+

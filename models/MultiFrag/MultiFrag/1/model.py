@@ -35,9 +35,6 @@ def tokenize_modified_sequence(modseq):
 
     return tokenized
 
-def integerize_sequence(seq, dictionary):
-    return [dictionary[aa] for aa in seq]
-
 def create_dictionary(dictionary_path):
     amod_dic = {
         line.split()[0]:m for m, line in enumerate(open(dictionary_path))
@@ -61,20 +58,7 @@ class TritonPythonModel:
         num_tokens = len(open(os.path.join(P, "token_dictionary.txt")).read().strip().split("\n")) + 1
         final_units = len(ion_dict)
         max_charge = load_config['charge'][-1]
-        
-        #Model = PrositModel
-        
-        # Reconstitute eval ready model
-        #self.model = Model(
-        #    tokens=num_tokens,
-        #    final_units=final_units,
-        #    max_charge=max_charge,
-        #    kwargs=model_config
-        #)
-        #self.model.to(device)
-        #self.model.load_state_dict(th.load(model_path, map_location=device, weights_only=True))
-        #self.model.eval()
-        
+                
         self.token_dict = create_dictionary(os.path.join(P, "token_dictionary.txt"))
         self.token_dict['C'] = self.token_dict['C[UNIMOD:4]']
         self.max_length = load_config['pep_length'][-1]
@@ -84,46 +68,7 @@ class TritonPythonModel:
         self.method_dicr = {n:m for m,n in self.method_dic.items()}
 
         self.scale = Scale()
-        self.mass = {
-            line.split()[0]: float(line.split()[1]) for line in open(os.path.join(P, "masses.txt"))
-        }
-        """
-        self.dic = {b: a for a, b in enumerate("ARNDCQEGHILKMFPSTWYVX")}
-        self.revdic = {b: a for a, b in self.dic.items()}
-        self.mdic = {
-            b: a + len(self.dic)
-            for a, b in enumerate(
-                [""] + open(P + "modifications.txt").read().split("\n")
-            )
-        }
-        # unimod mappings
-        self.mdicum = {
-            1: "Acetyl",
-            4: "Carbamidomethyl",
-            28: "Gln->pyro-Glu",
-            27: "Glu->pyro-Glu",
-            35: "Oxidation",
-            21: "Phospho",
-            26: "Pyro-carbamidomethyl",
-            # 4: 'CAM'
-        }
-        self.rev_mdicum = {n: m for m, n in self.mdicum.items()}
-        self.um2ch = lambda num: self.mdic[self.mdicum[num]]
 
-        self.revmdic = {b: a for a, b in self.mdic.items()}
-        self.mass = {
-            line.split()[0]: float(line.split()[1]) for line in open(P + "masses.txt")
-        }
-        self.dictionary = {
-            line.split()[0]: int(line.split()[1]) for line in open(P + "dictionary.txt")
-        }
-        self.revdictionary = {b: a for a, b in self.dictionary.items()}
-        self.dicsz = len(self.dictionary)
-
-        self.seq_channels = len(self.dic) + len(self.mdic)
-        self.channels = len(self.dic) + len(self.mdic) + self.chrng + 1
-        self.seq_len = 40
-        """
     def initialize(self, args):
         model_config = json.loads(args["model_config"])
 
@@ -165,12 +110,6 @@ class TritonPythonModel:
                 .flatten()
             ).astype('U46')
             
-            # "any number" o|r "[UNIMOD:" o|r "]"
-            #unmodified_sequences = [
-            #    re.sub(r"[+-]?\d+(?:\.\d+)?|\[UNIMOD:|\]", '', seq)
-            #    for seq in peptide_in
-            #]
-            
             # Process the peptide sequences
             ts = [[self.token_dict[y] for y in tokenize_modified_sequence(x)] for x in peptide_in]
             # Get the peptide lengths
@@ -197,8 +136,6 @@ class TritonPythonModel:
             # Create the other outputs
             mzs = self.batch_mz(peptide_in, peptide_lengths, charge_in)
             anns = np.tile(self.ion_dict.index.to_numpy()[None], [len(charge_in), 1])
-            #mz_test = np.load("/cmnfs/home/j.lapin/Documents/koina/clients/python/test/MultiFrag/arr-MultiFrag-mz.npy")
-            #assert False, (mzs - mz_test).abs()
 
             output_tensors = [
                 pb_utils.Tensor("intensity", ints.astype(self.output_dtype)),
