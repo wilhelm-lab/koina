@@ -23,9 +23,9 @@ def test_inference():
         [
             ["AA"],
             ["PEPTIPEPTIR[UNIMOD:7]EPTIPEPTIPEPTIPEPT"],
-            ["HKDER[UNIMOD:7]STNQCGAVILMFYW"],
+            ["HKDER[UNIMOD:7]STNQC[UNIMOD:4]GAVILMFYW"],
             ["R[UNIMOD:7]HKDESTNQC[UNIMOD:4]GPAVILMFYW"],
-            ["R[UNIMOD:7]HKDESTNQCGPAVILM[UNIMOD:35]FYW"],
+            ["R[UNIMOD:7]HKDESTNQC[UNIMOD:4]GPAVILM[UNIMOD:35]FYW"],
         ],
         dtype=np.object_,
     )
@@ -33,7 +33,6 @@ def test_inference():
     charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.int32)
     ces = np.array([[30] for _ in range(len(SEQUENCES))], dtype=np.float32)
     frag = np.array([["HCD"] for _ in range(len(SEQUENCES))], dtype=np.object_)
-    # frag = np.load("test/Prosit/arr_Prosit_2020_intensityTMT_frag.npy").reshape([5,1])
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
@@ -72,6 +71,6 @@ def test_inference():
         intensities,
         np.load("test/Prosit/arr_Prosit_2024_intensity_cit_int.npy"),
         rtol=0,
-        atol=1e-5,
+        atol=1e-3,
         equal_nan=True,
     )

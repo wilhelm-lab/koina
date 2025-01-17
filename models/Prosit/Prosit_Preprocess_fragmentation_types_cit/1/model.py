@@ -24,7 +24,7 @@ class TritonPythonModel:
             ).as_numpy()
 
             fragmentation_types_encoding = np.zeros(fragmentation_types.shape)
-            for k, v in {"HCD": 1, "CID": 2}.items():
+            for k, v in {"HCD": 2, "CID": 1}.items():
                 fragmentation_types_encoding[fragmentation_types == str.encode(k)] = v
 
             t = pb_utils.Tensor(

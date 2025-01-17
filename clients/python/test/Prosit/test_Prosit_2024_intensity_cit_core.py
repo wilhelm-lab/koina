@@ -32,7 +32,7 @@ def test_inference():
     in_charge = grpcclient.InferInput("precursor_charge_onehot", charge.shape, "INT64")
     in_charge.set_data_from_numpy(charge.astype(np.int64))
 
-    in_ces = grpcclient.InferInput("aligned_collision_energy", ces.shape, "FP32")
+    in_ces = grpcclient.InferInput("collision_energy_aligned_normed", ces.shape, "FP32")
     in_ces.set_data_from_numpy(ces)
 
     in_frag = grpcclient.InferInput("method_nbr", frag.shape, "INT64")
