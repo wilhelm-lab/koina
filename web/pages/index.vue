@@ -1,9 +1,46 @@
 <script setup lang="ts">
 import TheHero from "~/components/partials/TheHero.vue";
 import BaseButton from "~/components/ui/BaseButton.vue";
+import type { TourStep } from "nuxt-tour/props";
+import { VTour } from "#components";
+import { onMounted, ref } from 'vue';
+
+// Store the tour component in a ref
+const tour = ref<InstanceType<typeof VTour> | null>(null);
+// define the steps for the tour
+const steps: TourStep[] = [
+  {
+    target: "#logo",
+    title: "Autostart",
+    subText: "The tour will automatically start when the page loads",
+    body: "This is the easier way of starting your tour. Simply pass the prop <strong>autoStart</strong> to the tour component",
+  },
+  {
+    target: "#logo",
+    subText: "Weird things can happen",
+    body: "Expect this type of thing when no target is specified. Always try to pass a target lol.",
+  },
+];
+
+const { $listen, $off } = useNuxtApp()
+
+function resetTour() {
+  tour.value?.resetTour();
+}
+
+onMounted(() => {
+  tour.value?.startTour();
+  $listen('startTour', resetTour)
+});
+
+onUnmounted(() => {
+  $off('startTour', resetTour)
+});
+
 </script>
 
 <template>
+  <VTour ref="tour" name="index-tour" :steps="steps" />
   <div>
     <TheHero />
 

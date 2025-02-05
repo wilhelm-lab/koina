@@ -12,6 +12,7 @@
     info-description-headings-in-navbar="true"
     font-size="largest"
     schema-style="table"
+    @vue:mounted="emitRapiDocUpdated"
   >
     <div slot="footer">
       <slot name="footer"></slot>
@@ -34,6 +35,12 @@ const rapidoc: any = ref(null);
 
 const spectraResults = ref<KoinaSpectrum[]>([]);
 const teleportTarget = ref<HTMLElement | null>(null);
+
+const { $event } = useNuxtApp()
+
+function emitRapiDocUpdated() {
+  $event('rapi-doc-mounted');
+}
 
 onMounted(() => {
   document.body.classList.add("overflow-hidden");

@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { Bars3Icon } from "@heroicons/vue/24/solid";
+// import { defineEmits } from 'vue';
 
 const showMenu = ref(false);
 
@@ -15,6 +17,11 @@ function handleOutsideClick(event: MouseEvent) {
   if (showMenu.value && !(event.target as HTMLElement | null)?.closest("nav")) {
     showMenu.value = false;
   }
+}
+
+const { $event } = useNuxtApp()
+function startTour() {
+  $event('startTour');
 }
 
 onMounted(() => {
@@ -34,7 +41,7 @@ onBeforeUnmount(() => {
       to="/"
       class="flex justify-center items-center text-3xl font-bold"
     >
-      <img src="~/assets/img/koina-logo.svg" class="h-12" />
+      <img id="logo" src="~/assets/img/koina-logo.svg" class="h-12" />
       <span class="ml-2"> Koina </span>
     </nuxt-link>
 
@@ -70,6 +77,9 @@ onBeforeUnmount(() => {
           <nuxt-link to="https://github.com/wilhelm-lab/koina">
             GitHub
           </nuxt-link>
+        </li>
+        <li>
+          <div @click="startTour" style="cursor:pointer">Help</div>
         </li>
       </ul>
     </nav>

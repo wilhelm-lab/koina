@@ -35,6 +35,8 @@
     "clsx": "^2.1.1",
     "lodash": "^4.17.21",
     "lucide-vue-next": "^0.379.0",
+    "mitt": "^3.0.1",
+    "nuxt-tour": "file:../nuxt-tour",
     "radix-vue": "^1.8.2",
     "rapidoc": "^9.3.4",
     "tailwind-merge": "^2.3.0",
