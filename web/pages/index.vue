@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import TheHero from "~/components/partials/TheHero.vue";
 import BaseButton from "~/components/ui/BaseButton.vue";
-import type { TourStep } from "nuxt-tour/props";
 import { VTour } from "#components";
+import type { TourStep } from "#nuxt-tour/props";
 import { onMounted, ref } from 'vue';
 
 // Store the tour component in a ref
