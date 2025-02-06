@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { Bars3Icon } from "@heroicons/vue/24/solid";
-// import { defineEmits } from 'vue';
+import { BsFillQuestionCircleFill } from 'vue-icons-plus/bs'
+import { IoMail, IoLogoGithub } from 'vue-icons-plus/io';
 
 const showMenu = ref(false);
 
@@ -71,15 +72,15 @@ onBeforeUnmount(() => {
           <nuxt-link to="/compare-spectra"> Compare Spectra </nuxt-link>
         </li>
         <li>
-          <a href="mailto:Ludwig.Lautenbacher@tum.de"> Contact </a>
+          <a id="contact-button" href="mailto:Ludwig.Lautenbacher@tum.de"> <IoMail/> </a>
         </li>
         <li>
           <nuxt-link to="https://github.com/wilhelm-lab/koina">
-            GitHub
+            <IoLogoGithub />
           </nuxt-link>
         </li>
         <li>
-          <div @click="startTour" style="cursor:pointer">Help</div>
+          <div @click="startTour" style="cursor:pointer"><BsFillQuestionCircleFill /></div>
         </li>
       </ul>
     </nav>

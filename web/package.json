@@ -39,8 +39,10 @@
     "nuxt-tour": "github:LLautenbacher/nuxt-tour#git_install",
     "radix-vue": "^1.8.2",
     "rapidoc": "^9.3.4",
+    "shadow-dom-selector": "^5.0.1",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
-    "ts-results": "^3.3.0"
+    "ts-results": "^3.3.0",
+    "vue-icons-plus": "^0.1.8"
   }
 }

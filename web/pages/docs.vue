@@ -3,36 +3,104 @@ import TheHeader from "~/components/partials/TheHeader.vue";
 import TheFooter from "~/components/partials/TheFooter.vue";
 import { VTour } from "#components";
 import type { TourStep } from "#nuxt-tour/props";
+import { querySelector } from 'shadow-dom-selector';
+
 
 definePageMeta({
   layout: false,
 });
 
+
+function centerOnElement(element: HTMLElement) {
+  element.scrollIntoView({ block: 'center', inline: 'center' });
+}
+
 // Store the tour component in a ref
 const tour = ref<InstanceType<typeof VTour> | null>(null);
 // define the steps for the tour
-const htmlTarget1 = ref<HTMLElement | null>(null);
-const htmlTarget2 = ref<HTMLElement | null>(null);
-const htmlTarget3 = ref<HTMLElement | null>(null);
-
-let rapiDoc: any = null;
-
 const steps = computed<TourStep[]>(() => {
   return [
     {
-      target: htmlTarget1.value,
-      title: "HTML Elements",
-      body: "You can also provide the HTML element as a target",
+      target: 'rapi-doc$ #the-main-body > nav',
+      title: "Overview of models",
+      body: "Here you see an overview of all models currently implemented in Koina. You can click on a model to jump to its documentation. They are grouped by the property the model is predicting.",
+      onNext: () => { // We need this hack because the normal scroll function doens't work probably because of the shadow DOM
+        centerOnElement(steps.value[1].target as HTMLElement)
+      }
     },
     {
-      target: htmlTarget2.value,
-      title: "HTML Elements",
-      body: "This allows for greater flexibility in targeting elements",
+      target: 'rapi-doc$ #the-main-body > nav > div',
+      title: "Search models",
+      body: "You can filter models by their name.",
+      onNext: () => {
+        centerOnElement(steps.value[2].target as HTMLElement)
+      }
     },
     {
-      target: htmlTarget3.value,
-      title: "HTML Elements",
-      body: "To make sure the DOM is fully rendered assign the element only in the onMounted hook",
+      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > h2',
+      title: "Model documentation",
+      body: "The documentation of models is all structured in the same way",
+      onNext: () => {
+        centerOnElement(steps.value[3].target as HTMLElement)
+      }
+    },
+    {
+      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.m-markdown > p:nth-child(1)',
+      title: "Model summary",
+      body: "There is a general summary that describes what the model is doing how it was trained and what it can be used for.",
+      onNext: () => {
+        centerOnElement(steps.value[4].target as HTMLElement)
+      }
+    },
+    {
+      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.m-markdown > p:nth-child(3)',
+      title: "Citation",
+      body: "If you use a model in your research please make sure to cite the authors of the model as well as Koina.",
+      onNext: () => {
+        centerOnElement(steps.value[5].target as HTMLElement)
+      }
+    },
+    {
+      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > section',
+      title: "Code samples",
+      body: "Koina aims to be as user-friendly as possible. Here you can find code samples in different programming languages.",
+      onNext: () => {
+        centerOnElement(steps.value[6].target as HTMLElement)
+      }
+    },
+    {
+      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.expanded-req-resp-container > api-request',
+      title: "Interactive example ",
+      body: "You can also use a model directly in your browser. This is a great way to test a model before you implement it in your own code.",
+      onNext: () => {
+        centerOnElement(steps.value[7].target as HTMLElement)
+      }
+    },
+    {
+      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.expanded-req-resp-container > api-request$ div > div:nth-child(2) > div.request-body-container > div.tab-panel.col > div:nth-child(2) > div > div > textarea',
+      title: "The request body",
+      body: "The request body is where you input your data. Feel free to adjust the values to see how the model responds.",
+      onNext: () => {
+        centerOnElement(steps.value[8].target as HTMLElement)
+      }
+    },
+    {
+      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.expanded-req-resp-container > api-request$ div > div:nth-child(2) > div:nth-child(2) > button.m-btn.primary.thin-border',
+      title: "Try button",
+      body: "Click the try button to send a request directly from your browser",
+      onNext: () => {
+        centerOnElement(steps.value[9].target as HTMLElement)
+      }
+    },
+    {
+      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.expanded-req-resp-container > api-request$ div > div:nth-child(2) > div:nth-child(2) > button.m-btn.primary.thin-border',
+      title: "The Response",
+      body: "The response will pop up directly below the try button. It's content will depend on the model you are using.",
+    },
+    {
+      target: '#contact-button',
+      title: "Reach out",
+      body: "If you have any further questions or suggestions don't hesitate to reach out via email or on our GitHub repository.",
     },
   ];
 });
@@ -41,47 +109,45 @@ function sleep(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const { $listen, $off } = useNuxtApp()
-
 function resetTour() {
   tour.value?.resetTour();
 }
 
-async function updateTargets() {
+async function updateTargets(event: unknown, sleepTime: number = 2000) {
   await nextTick();
-  rapiDoc = document.querySelector('rapi-doc');
-  if (rapiDoc && rapiDoc.shadowRoot) {
-    await nextTick();
-    const navElement = rapiDoc.shadowRoot.querySelector('#the-main-body > nav');
-    if (navElement) {
-      htmlTarget1.value = navElement;
-      htmlTarget2.value = navElement;
-      htmlTarget3.value = navElement;    
+  let allElementsReplaced = true;
+  steps.value.forEach((step, index) => {
+    const element = typeof step.target === 'string' ? querySelector(step.target) : step.target;
+    if (element) {
+      steps.value[index].target = element as HTMLElement;
+    } else {
+      allElementsReplaced = false;
     }
-    else {
-      await sleep(2000); // Pauses for 2 seconds
-      updateTargets();
-    }
+  });
+
+  if (!allElementsReplaced) {
+    await sleep(sleepTime); // Pauses for 2 seconds
+    updateTargets(sleepTime*2);
+  } else {
+    tour.value?.startTour();
   }
-  else {
-    await sleep(2000); // Pauses for 2 seconds
-    updateTargets();
-  }
-  tour.value?.startTour();
 }
 
-onMounted( () => {
+const { $listen, $off } = useNuxtApp()
+
+onMounted(() => {
   $listen('startTour', resetTour)
-  $listen('rapi-doc-mounted', updateTargets)
+  $listen('rapi-doc-mounted', () => updateTargets(2000))
 });
 
 onUnmounted(() => {
   $off('startTour', resetTour)
-  $off('rapi-doc-mounted', updateTargets)
+  $off('rapi-doc-mounted', () => updateTargets(2000))
 });
 </script>
 
 <template>
+  <!-- <VTour highlight trapFocus backdrop ref="tour" name="index-tour" :steps="steps" /> -->
   <VTour ref="tour" name="index-tour" :steps="steps" />
   <div class="overflow-hidden">
     <TheHeader />
