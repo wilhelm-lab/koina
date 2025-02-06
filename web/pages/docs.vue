@@ -113,24 +113,29 @@ function resetTour() {
   tour.value?.resetTour();
 }
 
-async function updateTargets(event: unknown, sleepTime: number = 2000) {
+async function updateTargets(sleepTime: number = 2000) {
   await nextTick();
-  let allElementsReplaced = true;
-  steps.value.forEach((step, index) => {
-    const element = typeof step.target === 'string' ? querySelector(step.target) : step.target;
-    if (element) {
-      steps.value[index].target = element as HTMLElement;
-    } else {
-      allElementsReplaced = false;
-    }
-  });
+  let allElementsReplaced = false;
 
-  if (!allElementsReplaced) {
-    await sleep(sleepTime); // Pauses for 2 seconds
-    updateTargets(sleepTime*2);
-  } else {
-    tour.value?.startTour();
+  while (!allElementsReplaced) {
+    console.log('updateTargets', sleepTime);
+    allElementsReplaced = true;
+    steps.value.forEach((step, index) => {
+      const element = typeof step.target === 'string' ? querySelector(step.target) : step.target;
+      if (element) {
+        steps.value[index].target = element as HTMLElement;
+      } else {
+        allElementsReplaced = false;
+      }
+    });
+
+    if (!allElementsReplaced) {
+      await sleep(sleepTime); // Pauses for the specified sleep time
+      sleepTime *= 2; // Double the sleep time for the next iteration
+    }
   }
+
+  tour.value?.startTour();
 }
 
 const { $listen, $off } = useNuxtApp()
