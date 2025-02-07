@@ -37,7 +37,7 @@ const steps = computed<TourStep[]>(() => {
       }
     },
     {
-      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > h2',
+      target: 'rapi-doc$ [part="section-operation-summary"]',
       title: "Model documentation",
       body: "The documentation of models is all structured in the same way",
       onNext: () => {
@@ -45,7 +45,7 @@ const steps = computed<TourStep[]>(() => {
       }
     },
     {
-      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.m-markdown > p:nth-child(1)',
+      target: 'rapi-doc$ .m-markdown #summary',
       title: "Model summary",
       body: "There is a general summary that describes what the model is doing how it was trained and what it can be used for.",
       onNext: () => {
@@ -53,7 +53,7 @@ const steps = computed<TourStep[]>(() => {
       }
     },
     {
-      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.m-markdown > p:nth-child(3)',
+      target: 'rapi-doc$ .m-markdown #citaton',
       title: "Citation",
       body: "If you use a model in your research please make sure to cite the authors of the model as well as Koina.",
       onNext: () => {
@@ -61,7 +61,7 @@ const steps = computed<TourStep[]>(() => {
       }
     },
     {
-      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > section',
+      target: 'rapi-doc$ .table-title',
       title: "Code samples",
       body: "Koina aims to be as user-friendly as possible. Here you can find code samples in different programming languages.",
       onNext: () => {
@@ -69,7 +69,7 @@ const steps = computed<TourStep[]>(() => {
       }
     },
     {
-      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.expanded-req-resp-container > api-request',
+      target: 'rapi-doc$ api-request$ .request-body-container',
       title: "Interactive example ",
       body: "You can also use a model directly in your browser. This is a great way to test a model before you implement it in your own code.",
       onNext: () => {
@@ -77,7 +77,7 @@ const steps = computed<TourStep[]>(() => {
       }
     },
     {
-      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.expanded-req-resp-container > api-request$ div > div:nth-child(2) > div.request-body-container > div.tab-panel.col > div:nth-child(2) > div > div > textarea',
+      target: 'rapi-doc$ api-request$ .request-body-param-user-input',
       title: "The request body",
       body: "The request body is where you input your data. Feel free to adjust the values to see how the model responds.",
       onNext: () => {
@@ -85,15 +85,15 @@ const steps = computed<TourStep[]>(() => {
       }
     },
     {
-      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.expanded-req-resp-container > api-request$ div > div:nth-child(2) > div:nth-child(2) > button.m-btn.primary.thin-border',
+      target: 'rapi-doc$ api-request$ button.m-btn.primary.thin-border',
       title: "Try button",
       body: "Click the try button to send a request directly from your browser",
-      onNext: () => {
+      onNext: async () => {
         centerOnElement(steps.value[9].target as HTMLElement)
       }
     },
     {
-      target: 'rapi-doc$ #post-\\/Prosit_2019_intensity\\/infer > div.expanded-req-resp-container > api-request$ div > div:nth-child(2) > div:nth-child(2) > button.m-btn.primary.thin-border',
+      target: 'rapi-doc$ api-request$ button.m-btn.primary.thin-border',
       title: "The Response",
       body: "The response will pop up directly below the try button. It's content will depend on the model you are using.",
     },
@@ -118,7 +118,6 @@ async function updateTargets(sleepTime: number = 2000) {
   let allElementsReplaced = false;
 
   while (!allElementsReplaced) {
-    console.log('updateTargets', sleepTime);
     allElementsReplaced = true;
     steps.value.forEach((step, index) => {
       const element = typeof step.target === 'string' ? querySelector(step.target) : step.target;

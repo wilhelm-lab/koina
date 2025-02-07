@@ -16,9 +16,3 @@
     text-align: justify;
   }
 }
-
-rapi-doc::part(section-main-content) {
-  max-width: 120ch;
-  margin-right: auto;
-  margin-left: auto;
-}

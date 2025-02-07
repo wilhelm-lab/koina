@@ -3,7 +3,7 @@
     ref="rapidoc"
     spec-url="/openapi.yml"
     show-header="false"
-    render-style="read"
+    render-style="focused"
     theme="light"
     primary-color="#001bc8"
     allow-authentication="false"
