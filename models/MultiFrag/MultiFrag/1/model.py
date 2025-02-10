@@ -148,7 +148,7 @@ class TritonPythonModel:
         return responses
 
     def predict_batch(self, intseq, charge, method):
-        dummy_energy = np.zeros( ( len(charge), 1 ) , dtype=np.float32)
+        dummy_energy = np.ones( ( len(charge), 1 ) , dtype=np.float32)
         assert charge.shape == dummy_energy.shape == method.shape, charge.shape
         tensor_inputs = [
             pb_utils.Tensor("intseq", intseq),
