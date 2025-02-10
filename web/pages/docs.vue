@@ -11,8 +11,9 @@ definePageMeta({
 });
 
 
-function centerOnElement(element: HTMLElement) {
-  element.scrollIntoView({ block: 'center', inline: 'center' });
+async function centerOnElement(element: HTMLElement) {
+  await sleep(2000)
+  return element.scrollIntoView({ block: 'center', inline: 'center' });
 }
 
 // Store the tour component in a ref
@@ -32,7 +33,15 @@ const steps = computed<TourStep[]>(() => {
       target: 'rapi-doc$ #the-main-body > nav > div',
       title: "Search models",
       body: "You can filter models by their name.",
-      onNext: () => {
+      onNext: async () => {
+        // This is janky but the nuxt internal navigation dosn't reload the dom
+        // And I don't think a lot of people are ever going to see this
+        console.log(window.location.href.slice(-5))
+        if (window.location.href.slice(-5) == '/docs') {
+          console.log('reloading')
+          window.location.href += '#post-/Prosit_2019_intensity/infer'
+          await sleep(2000)
+        }
         centerOnElement(steps.value[2].target as HTMLElement)
       }
     },
@@ -110,14 +119,15 @@ function sleep(ms: number) {
 }
 
 function resetTour() {
+  updateTargets();
   tour.value?.resetTour();
 }
 
-async function updateTargets(sleepTime: number = 2000) {
+async function updateTargets(sleepTime: number = 500) {
   await nextTick();
   let allElementsReplaced = false;
 
-  while (!allElementsReplaced) {
+  while (!allElementsReplaced && sleepTime < 100000) {
     allElementsReplaced = true;
     steps.value.forEach((step, index) => {
       const element = typeof step.target === 'string' ? querySelector(step.target) : step.target;
@@ -141,17 +151,16 @@ const { $listen, $off } = useNuxtApp()
 
 onMounted(() => {
   $listen('startTour', resetTour)
-  $listen('rapi-doc-mounted', () => updateTargets(2000))
+  $listen('rapi-doc-mounted', () => updateTargets())
 });
 
 onUnmounted(() => {
   $off('startTour', resetTour)
-  $off('rapi-doc-mounted', () => updateTargets(2000))
+  $off('rapi-doc-mounted', () => updateTargets())
 });
 </script>
 
 <template>
-  <!-- <VTour highlight trapFocus backdrop ref="tour" name="index-tour" :steps="steps" /> -->
   <VTour ref="tour" name="index-tour" :steps="steps" />
   <div class="overflow-hidden">
     <TheHeader />
