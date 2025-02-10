@@ -10,15 +10,29 @@ const tour = ref<InstanceType<typeof VTour> | null>(null);
 // define the steps for the tour
 const steps: TourStep[] = [
   {
-    target: "#logo",
-    title: "Autostart",
-    subText: "The tour will automatically start when the page loads",
-    body: "This is the easier way of starting your tour. Simply pass the prop <strong>autoStart</strong> to the tour component",
+    target: "#content-get-predictions-to-you",
+    title: "What is the goal of Koina?",
+    body: "The main goal of Koina is to make proteomics ML models easy to use no matter where you need them.",
   },
   {
-    target: "#logo",
-    subText: "Weird things can happen",
-    body: "Expect this type of thing when no target is specified. Always try to pass a target lol.",
+    target: "#content-easy-to-do",
+    title: "How easy is it actually?",
+    body: "If you can run code in any programming language, you can directly use Koina. If you don't want that, there are already a lot of tools out there that use Koina to make using ML in your data analysis even easier to do (Fragpipe, Skyline, EncyclopeDIA, Oktoberfest).",
+  },
+  {
+    target: "#btn-docu",
+    title: "Enough talk, show me how it works!",
+    body: "Check out the documentation to learn about how to direclty use Koina.",
+  },
+  {
+    target: "#btn-comp-spec",
+    title: "Enough talk, show me how it works!",
+    body: "We also offer an option to compare fragment ion predictions of different models with experimental spectra.",
+  },
+  {
+    target: "#get-involved",
+    title: "Consider how you can support Koina",
+    body: "Koina is open-source and free to use. If you find Koina useful the easiest way to support us is to cite us in the research we helped you with. If you want to do more, you can host your own Koina instance or add your own model to Koina.",
   },
 ];
 
@@ -46,7 +60,7 @@ onUnmounted(() => {
 
     <div class="py-16 px-4 max-w-5xl mx-auto">
       <h2 id="get-started" class="text-3xl mb-4">What is Koina?</h2>
-      <p>
+      <p id="content-get-predictions-to-you">
         Koina is a model repository enabling the remote execution of models. 
         Predictions are generated as a response to HTTP/S requests, the standard protocol used for nearly all web traffic. 
         As such, HTTP/S requests can be easily generated in any programming language without requiring specialized hardware. 
@@ -54,7 +68,7 @@ onUnmounted(() => {
         It also allows for easy horizontal scaling depending on the demand of the user base.  
       </p>
 
-      <p>
+      <p id="content-easy-to-do">
         To minimize the barrier of entry and “democratize” access to ML models, we provide a public network of Koina instances at <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>. 
         The computational workload is automatically distributed to processing nodes hosted at different research institutions and spin-offs across Europe. 
         Each processing node provides computational resources to the service network, always aiming at just-in-time results delivery.

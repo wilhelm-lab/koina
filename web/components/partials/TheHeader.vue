@@ -66,10 +66,10 @@ onBeforeUnmount(() => {
         @click="closeNavbar()"
       >
         <li>
-          <nuxt-link to="/docs"> Documentation </nuxt-link>
+          <nuxt-link id="btn-docu" to="/docs"> Documentation </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/compare-spectra"> Compare Spectra </nuxt-link>
+          <nuxt-link id="btn-comp-spec" to="/compare-spectra"> Compare Spectra </nuxt-link>
         </li>
         <li>
           <a id="contact-button" href="mailto:Ludwig.Lautenbacher@tum.de"> <IoMail/> </a>
