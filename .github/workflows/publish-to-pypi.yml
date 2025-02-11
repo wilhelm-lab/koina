@@ -1,4 +1,5 @@
 name: Publish Python client package to PyPI
+permissions: write-all
 
 on:
   pull_request:
