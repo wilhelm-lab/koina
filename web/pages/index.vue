@@ -10,6 +10,10 @@ const tour = ref<InstanceType<typeof VTour> | null>(null);
 // define the steps for the tour
 const steps: TourStep[] = [
   {
+    target: "#logo",
+    title: "Do you want a brief overview of Koina?",
+  },
+  {
     target: "#content-get-predictions-to-you",
     title: "What is the goal of Koina?",
     body: "The main goal of Koina is to make proteomics ML models easy to use.",
