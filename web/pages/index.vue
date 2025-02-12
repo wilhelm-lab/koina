@@ -1,15 +1,66 @@
 <script setup lang="ts">
 import TheHero from "~/components/partials/TheHero.vue";
 import BaseButton from "~/components/ui/BaseButton.vue";
+import { VTour } from "#components";
+import type { TourStep } from "#nuxt-tour/props";
+import { onMounted, ref } from 'vue';
+
+// Store the tour component in a ref
+const tour = ref<InstanceType<typeof VTour> | null>(null);
+// define the steps for the tour
+const steps: TourStep[] = [
+  {
+    target: "#content-get-predictions-to-you",
+    title: "What is the goal of Koina?",
+    body: "The main goal of Koina is to make proteomics ML models easy to use.",
+  },
+  {
+    target: "#content-easy-to-do",
+    title: "Is it actually easy?",
+    body: "If you can run code in any programming language, you can directly use Koina. If you don't want that, there are already a lot of tools that use Koina to make using ML in your data analysis even easier to do (Fragpipe, Skyline, EncyclopeDIA, Oktoberfest).",
+  },
+  {
+    target: "#btn-docu",
+    title: "How does it work?",
+    body: "Check out the documentation to learn about how to directly use Koina.",
+  },
+  {
+    target: "#btn-comp-spec",
+    title: "How does it work?",
+    body: "We also offer an option to compare fragment ion predictions of different models and experimental spectra.",
+  },
+  {
+    target: "#get-involved",
+    title: "Consider how you can support Koina",
+    body: "Koina is open-source and free to use. If Koina is useful in your research please cite us as well as the model you used. If you want to do more, you can host your own Koina instance or add your own model to Koina! You can find more information on how to do that in our GitHub repository.",
+  },
+];
+
+const { $listen, $off } = useNuxtApp()
+
+function resetTour() {
+  tour.value?.resetTour();
+}
+
+onMounted(() => {
+  tour.value?.startTour();
+  $listen('startTour', resetTour)
+});
+
+onUnmounted(() => {
+  $off('startTour', resetTour)
+});
+
 </script>
 
 <template>
+  <VTour ref="tour" name="index-tour" :steps="steps" />
   <div>
     <TheHero />
 
     <div class="py-16 px-4 max-w-5xl mx-auto">
       <h2 id="get-started" class="text-3xl mb-4">What is Koina?</h2>
-      <p>
+      <p id="content-get-predictions-to-you">
         Koina is a model repository enabling the remote execution of models. 
         Predictions are generated as a response to HTTP/S requests, the standard protocol used for nearly all web traffic. 
         As such, HTTP/S requests can be easily generated in any programming language without requiring specialized hardware. 
@@ -17,7 +68,7 @@ import BaseButton from "~/components/ui/BaseButton.vue";
         It also allows for easy horizontal scaling depending on the demand of the user base.  
       </p>
 
-      <p>
+      <p id="content-easy-to-do">
         To minimize the barrier of entry and “democratize” access to ML models, we provide a public network of Koina instances at <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>. 
         The computational workload is automatically distributed to processing nodes hosted at different research institutions and spin-offs across Europe. 
         Each processing node provides computational resources to the service network, always aiming at just-in-time results delivery.
