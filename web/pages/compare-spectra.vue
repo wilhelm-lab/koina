@@ -10,6 +10,52 @@ import { koinaSpectrumToMatchedFragmentPeaks } from "~/utils/spectrum";
 import "biowc-spectrum";
 import { pepSeqFromUsi } from "~/utils/usi";
 import type { MatchedFragmentPeak } from "biowclib-mz";
+import { VTour } from "#components";
+import type { TourStep } from "#nuxt-tour/props";
+import { onMounted, ref } from 'vue';
+
+
+// Store the tour component in a ref
+const tour = ref<InstanceType<typeof VTour> | null>(null);
+// define the steps for the tour
+const steps: TourStep[] = [
+  {
+    target: "#reference",
+    title: "How do I compare spectra?",
+    body: "Pick your spectrum source, either a Koina model or a universal spectrum explorer.",
+  },
+  {
+    target: "#reference",
+    title: "How do I compare spectra?",
+    body: "Then just enter the required inputs.",
+  },
+  {
+    target: "#mirror",
+    title: "How do I compare spectra?",
+    body: "The same applies to for the bottom spectrum.",
+  },
+  {
+    target: "#btn-comp-spec",
+    title: "How do I compare spectra?",
+    body: "Then just click on 'Compare Spectra' to predict or fetch the spectra via their USI.",
+  },
+];
+
+function resetTour() {
+  tour.value?.resetTour();
+}
+
+const { $listen, $off } = useNuxtApp()
+
+onMounted(() => {
+  tour.value?.startTour();
+  $listen('startTour', resetTour)
+});
+
+onUnmounted(() => {
+  $off('startTour', resetTour)
+});
+
 
 const referenceConfig = ref<SpectrumFormModel>({
   source: SpectrumConfigSource.PREDICTION,
@@ -118,6 +164,7 @@ async function submit() {
 </script>
 
 <template>
+  <VTour trapFocus ref="tour" name="index-tour" :steps="steps" />
   <div class="py-4 px-4 max-w-5xl mx-auto">
     <h1 class="text-2xl">Compare Spectra</h1>
 
@@ -129,7 +176,7 @@ async function submit() {
       <template #title> Mirror Spectrum </template>
     </CompareSpectrumForm>
 
-    <Button class="mt-2" @click="submit()"> Compare Spectra </Button>
+    <Button id="btn-comp-spec" class="mt-2" @click="submit()"> Compare Spectra </Button>
 
     <biowc-spectrum
       v-if="referenceSpectrum && mirrorSpectrum && !loading && !error"
