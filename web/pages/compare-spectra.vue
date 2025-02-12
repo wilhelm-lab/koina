@@ -22,20 +22,25 @@ const steps: TourStep[] = [
   {
     target: "#reference",
     title: "How do I compare spectra?",
-    body: "Pick your spectrum source, either a Koina model or a universal spectrum explorer.",
+    body: "Pick your spectrum source, either a Koina model or a universal spectrum identifier.",
+  },
+  {
+    target: "#reference",
+    title: "What is a universal spectrum identifier?",
+    body: "In short it is an ID that can identify a spectrum across all public datasets uploaded on ProteomeXChange. You can find out more here: https://proteomecentral.proteomexchange.org/usi/",
   },
   {
     target: "#reference",
     title: "How do I compare spectra?",
-    body: "Then just enter the required inputs.",
+    body: "After you picked your source, just enter the required inputs.",
   },
   {
     target: "#mirror",
     title: "How do I compare spectra?",
-    body: "The same applies to for the bottom spectrum.",
+    body: "Do the same for the bottom spectrum.",
   },
   {
-    target: "#btn-comp-spec",
+    target: "#btn-comp-spectra-submit",
     title: "How do I compare spectra?",
     body: "Then just click on 'Compare Spectra' to predict or fetch the spectra via their USI.",
   },
@@ -176,7 +181,7 @@ async function submit() {
       <template #title> Mirror Spectrum </template>
     </CompareSpectrumForm>
 
-    <Button id="btn-comp-spec" class="mt-2" @click="submit()"> Compare Spectra </Button>
+    <Button id="btn-comp-spectra-submit" class="mt-2" @click="submit()"> Compare Spectra </Button>
 
     <biowc-spectrum
       v-if="referenceSpectrum && mirrorSpectrum && !loading && !error"

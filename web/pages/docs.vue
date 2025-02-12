@@ -23,8 +23,8 @@ const steps = computed<TourStep[]>(() => {
   return [
     {
       target: 'rapi-doc$ #the-main-body > nav',
-      title: "Overview of models",
-      body: "Here you see an overview of all models currently implemented in Koina. You can click on a model to jump to its documentation. They are grouped by the property the model is predicting.",
+      title: "Available models",
+      body: "Here you see all models currently implemented in Koina. You can click on a model to open its documentation. Models are grouped by the property the model is predicting e.g. fragment ion intensity, retention time, etc.",
       onNext: () => { // We need this hack because the normal scroll function doens't work probably because of the shadow DOM
         centerOnElement(steps.value[1].target as HTMLElement)
       }
@@ -48,7 +48,7 @@ const steps = computed<TourStep[]>(() => {
     {
       target: 'rapi-doc$ [part="section-operation-summary"]',
       title: "Model documentation",
-      body: "The documentation of models is all structured in the same way",
+      body: "The documentation of all models is structured in the same way",
       onNext: () => {
         centerOnElement(steps.value[3].target as HTMLElement)
       }
@@ -56,7 +56,7 @@ const steps = computed<TourStep[]>(() => {
     {
       target: 'rapi-doc$ .m-markdown #summary',
       title: "Model summary",
-      body: "There is a general summary that describes what the model is doing how it was trained and what it can be used for.",
+      body: "There is a general summary that describes what the model is doing, how it was trained and what it can be used for.",
       onNext: () => {
         centerOnElement(steps.value[4].target as HTMLElement)
       }
@@ -72,7 +72,7 @@ const steps = computed<TourStep[]>(() => {
     {
       target: 'rapi-doc$ .table-title',
       title: "Code samples",
-      body: "Koina aims to be as user-friendly as possible. Here you can find code samples in different programming languages.",
+      body: "Koina aims to be as user-friendly as possible. We provide ready to use code samples for different programming languages.",
       onNext: () => {
         centerOnElement(steps.value[6].target as HTMLElement)
       }
@@ -87,8 +87,8 @@ const steps = computed<TourStep[]>(() => {
     },
     {
       target: 'rapi-doc$ api-request$ .request-body-param-user-input',
-      title: "The request body",
-      body: "The request body is where you input your data. Feel free to adjust the values to see how the model responds.",
+      title: "Request body",
+      body: "The request body is where you input your data. You can adjust the values to see how the model responds.",
       onNext: () => {
         centerOnElement(steps.value[8].target as HTMLElement)
       }

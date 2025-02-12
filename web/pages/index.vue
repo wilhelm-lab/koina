@@ -12,27 +12,27 @@ const steps: TourStep[] = [
   {
     target: "#content-get-predictions-to-you",
     title: "What is the goal of Koina?",
-    body: "The main goal of Koina is to make proteomics ML models easy to use no matter where you need them.",
+    body: "The main goal of Koina is to make proteomics ML models easy to use.",
   },
   {
     target: "#content-easy-to-do",
-    title: "How easy is it actually?",
-    body: "If you can run code in any programming language, you can directly use Koina. If you don't want that, there are already a lot of tools out there that use Koina to make using ML in your data analysis even easier to do (Fragpipe, Skyline, EncyclopeDIA, Oktoberfest).",
+    title: "Is it actually easy?",
+    body: "If you can run code in any programming language, you can directly use Koina. If you don't want that, there are already a lot of tools that use Koina to make using ML in your data analysis even easier to do (Fragpipe, Skyline, EncyclopeDIA, Oktoberfest).",
   },
   {
     target: "#btn-docu",
-    title: "Enough talk, show me how it works!",
-    body: "Check out the documentation to learn about how to direclty use Koina.",
+    title: "How does it work?",
+    body: "Check out the documentation to learn about how to directly use Koina.",
   },
   {
     target: "#btn-comp-spec",
-    title: "Enough talk, show me how it works!",
-    body: "We also offer an option to compare fragment ion predictions of different models with experimental spectra.",
+    title: "How does it work?",
+    body: "We also offer an option to compare fragment ion predictions of different models and experimental spectra.",
   },
   {
     target: "#get-involved",
     title: "Consider how you can support Koina",
-    body: "Koina is open-source and free to use. If you find Koina useful the easiest way to support us is to cite us in the research we helped you with. If you want to do more, you can host your own Koina instance or add your own model to Koina.",
+    body: "Koina is open-source and free to use. If Koina is useful in your research please cite us as well as the model you used. If you want to do more, you can host your own Koina instance or add your own model to Koina! You can find more information on how to do that in our GitHub repository.",
   },
 ];
 
