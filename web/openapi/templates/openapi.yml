@@ -33,11 +33,11 @@ paths:
         - {{model.note.tag}}
       summary: {{model.name}}
       description: |
-        **Summary**
+        ### Summary
 
         {{model.note.description }}
 
-        **Citaton**
+        ### Citation
 
         {{model.note.citation }}
 
