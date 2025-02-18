@@ -1,0 +1,11 @@
+log_wandb: True
+project: shabaz
+log: False
+svwts: True
+epochs: 30
+lr: 0.0001
+warmup_steps: 20000
+batch_size: 100
+model_type: prosit
+loss_function: masked_spectral_distance
+eval_function: pearson # pearson
