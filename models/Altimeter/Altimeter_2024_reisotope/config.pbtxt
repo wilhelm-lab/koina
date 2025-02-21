@@ -1,0 +1,62 @@
+max_batch_size: 1000
+
+input [
+  {
+   name: 'precursor_masses',
+   data_type: TYPE_INT32,
+   dims: [1]
+  },
+  {
+   name: 'fragment_masses',
+   data_type: TYPE_INT32,
+   dims: [380]
+  },
+  {
+   name: 'precursor_sulfurs',
+   data_type: TYPE_INT32,
+   dims: [1]
+  },
+  {
+   name: 'fragment_sulfurs',
+   data_type: TYPE_INT32,
+   dims: [380]
+  },
+  {
+   name: 'intensities',
+   data_type: TYPE_FP32,
+   dims: [380]
+  },
+  {
+   name: 'isotope_isolation_efficiencies',
+   data_type: TYPE_FP32,
+   dims: [5]
+  },
+  {
+   name: 'annotations',
+   data_type: TYPE_STRING,
+   dims: [380]
+  },
+  {
+   name: 'mz',
+   data_type: TYPE_FP32,
+   dims: [380]
+  }
+]
+
+output [
+  {
+   name: 'intensities_iso',
+   data_type: TYPE_FP32,
+   dims: [1900]
+  },
+  {
+   name: 'annotations',
+   data_type: TYPE_STRING,
+   dims: [1900]
+  },
+  {
+   name: 'mz',
+   data_type: TYPE_FP32,
+   dims: [1900]
+  }
+]
