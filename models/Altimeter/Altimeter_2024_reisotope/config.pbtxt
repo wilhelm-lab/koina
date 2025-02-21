@@ -9,7 +9,7 @@ input [
   {
    name: 'fragment_masses',
    data_type: TYPE_INT32,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'precursor_sulfurs',
@@ -19,12 +19,12 @@ input [
   {
    name: 'fragment_sulfurs',
    data_type: TYPE_INT32,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'intensities',
    data_type: TYPE_FP32,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'isotope_isolation_efficiencies',
@@ -34,12 +34,12 @@ input [
   {
    name: 'annotations',
    data_type: TYPE_STRING,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'mz',
    data_type: TYPE_FP32,
-   dims: [344]
+   dims: [380]
   }
 ]
 
@@ -47,16 +47,16 @@ output [
   {
    name: 'intensities_iso',
    data_type: TYPE_FP32,
-   dims: [1720]
+   dims: [1900]
   },
   {
    name: 'annotations',
    data_type: TYPE_STRING,
-   dims: [1720]
+   dims: [1900]
   },
   {
    name: 'mz',
    data_type: TYPE_FP32,
-   dims: [1720]
+   dims: [1900]
   }
 ]

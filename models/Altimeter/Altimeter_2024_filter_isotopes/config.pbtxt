@@ -14,7 +14,7 @@ input [
   {
    name: 'coefficients',
    data_type: TYPE_FP32,
-   dims: [4, 344]
+   dims: [4, 380]
   },
   {
    name: 'knots',
@@ -24,7 +24,7 @@ input [
   {
    name: 'AUC',
    data_type: TYPE_FP32,
-   dims: [344]
+   dims: [380]
   }
 ]
 
@@ -32,7 +32,7 @@ output [
   {
    name: 'coefficients_filtered',
    data_type: TYPE_FP32,
-   dims: [4, 344]
+   dims: [4, 380]
   },
   {
    name: 'knots_filtered',
@@ -42,12 +42,12 @@ output [
   {
    name: 'annotations_filtered',
    data_type: TYPE_STRING,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'mz_filtered',
    data_type: TYPE_FP32,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'precursor_masses',
@@ -57,7 +57,7 @@ output [
   {
    name: 'fragment_masses',
    data_type: TYPE_INT32,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'precursor_sulfurs',
@@ -67,6 +67,6 @@ output [
   {
    name: 'fragment_sulfurs',
    data_type: TYPE_INT32,
-   dims: [344]
+   dims: [380]
   }
 ]

@@ -7,7 +7,7 @@ from collections import defaultdict
 class TritonPythonModel:
     def initialize(self, args):
         super().__init__()
-        base_path = "altimeter/Altimeter_2024_core/"
+        base_path = "Altimeter/Altimeter_2024_core/"
         with open(base_path + "config.json", "r") as j:
             model_config = json.loads(j.read())
 
@@ -30,8 +30,7 @@ class TritonPythonModel:
 
         responses = []
         for request in requests:
-            print(eval(request.parameters()), flush=True)
-
+            
             peptides_in = (
                 pb_utils.get_input_tensor_by_name(request, "peptide_sequences")
                 .as_numpy()

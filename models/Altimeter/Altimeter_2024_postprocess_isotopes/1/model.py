@@ -33,12 +33,12 @@ class TritonPythonModel:
                     intensities[i][intensities[i] > 0] /= intensities[i][0]
 
             intf = pb_utils.Tensor(
-                "intensities_filtered", intensities[:, 0:max_frags].flatten()
+                "intensities_filtered", intensities[:, 0:max_frags]
             )
             af = pb_utils.Tensor(
-                "annotations_filtered", annotations[:, 0:max_frags].flatten()
+                "annotations_filtered", annotations[:, 0:max_frags]
             )
-            mf = pb_utils.Tensor("mz_filtered", mzs[:, 0:max_frags].flatten())
+            mf = pb_utils.Tensor("mz_filtered", mzs[:, 0:max_frags])
             responses.append(pb_utils.InferenceResponse(output_tensors=[intf, af, mf]))
 
         return responses

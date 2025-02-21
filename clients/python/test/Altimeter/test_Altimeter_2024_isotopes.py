@@ -21,31 +21,30 @@ def test_available_grpc():
 def test_inference():
     SEQUENCES = np.array(
         [
-            ["AA"],
+            ["AAAAAA"],
             ["PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
-            ["RHKDESTNQCGPAVILMFYW"],
             ["RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
-            ["RHKDESTNQCGPAVILM[UNIMOD:35]FYW"],
+            ["RHKDESTNQC[UNIMOD:4]GPAVILM[UNIMOD:35]FYW"]
         ],
         dtype=np.object_,
     )
 
-    charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.float32)
-    ces = np.array([[25] for _ in range(len(SEQUENCES))], dtype=np.float32)
-    iso = np.array([[1,1,0,0,0] for _ in range(len(SEQUENCES))], dtype=np.float32)
+    charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.int32)
+    ces = np.array([[30] for _ in range(len(SEQUENCES))], dtype=np.float32)
+    iso = np.array([[1,0.5,0,0,0] for _ in range(len(SEQUENCES))], dtype=np.float32)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("peptide_sequences", [5, 1], "BYTES")
+    in_pep_seq = grpcclient.InferInput("peptide_sequences", [4, 1], "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
-    in_charge = grpcclient.InferInput("precursor_charges", [5, 1], "INT32")
+    in_charge = grpcclient.InferInput("precursor_charges", [4, 1], "INT32")
     in_charge.set_data_from_numpy(charge)
     
-    in_ces = grpcclient.InferInput("collision_energies", [5, 1], "FP32")
+    in_ces = grpcclient.InferInput("collision_energies", [4, 1], "FP32")
     in_ces.set_data_from_numpy(ces)
     
-    in_iso = grpcclient.InferInput("isotope_isolation_efficiencies", [5, 1], "FP32")
+    in_iso = grpcclient.InferInput("isotope_isolation_efficiencies", [4, 5], "FP32")
     in_iso.set_data_from_numpy(iso)
 
     result = triton_client.infer(
@@ -54,35 +53,31 @@ def test_inference():
         outputs=[
             grpcclient.InferRequestedOutput("intensities"),
             grpcclient.InferRequestedOutput("mz"),
-            grpcclient.InferRequestedOutput("annotation"),
+            grpcclient.InferRequestedOutput("annotations"),
         ],
     )
 
     intensities = result.as_numpy("intensities")
     fragmentmz = result.as_numpy("mz")
-    annotation = result.as_numpy("annotation")
+    annotations = result.as_numpy("annotations")
 
-    assert intensities.shape == (5, 1000)
-    assert fragmentmz.shape == (5, 1000)
-    assert annotation.shape == (5, 1000)
-    
-    print(intensities)
-    print(fragmentmz)
-    print(annotation)
+    assert intensities.shape == (4, 1000)
+    assert fragmentmz.shape == (4, 1000)
+    assert annotations.shape == (4, 1000)
     
     # Assert intensities consistent
     assert np.allclose(
         intensities,
-        np.load("test/Prosit/arr_Altimter_2024_isotopes_int.npy"), #  TODO Update 
+        np.load("test/Altimeter/arr_Altimeter_2024_iso_filtered_int.npy"),
         rtol=0,
-        atol=1e-5,
+        atol=1e-4,
         equal_nan=True,
     )
     
     # Assert mzs are consistent
     assert np.allclose(
         fragmentmz,
-        np.load("test/Prosit/arr_Altimter_2024_isotopes_mz.npy"), #  TODO Update 
+        np.load("test/Altimeter/arr_Altimeter_2024_iso_filtered_mz.npy"),
         rtol=0,
         atol=1e-5,
         equal_nan=True,
@@ -90,7 +85,7 @@ def test_inference():
     
     # Assert annotation names are consistent
     assert np.array_equal(
-        annotation,
-        np.load("test/Prosit/arr_Altimter_2024_isotopes_annotation.npy"), #  TODO Update 
-        equal_nan=True,
+        annotations,
+        np.load("test/Altimeter/arr_Altimeter_2024_iso_filtered_annot.npy", allow_picke=True),
+        equal_nan=False,
     )

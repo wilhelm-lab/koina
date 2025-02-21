@@ -18,7 +18,7 @@ PROTON_MASS_U = _nist_mass["H+"][0][0]
 class TritonPythonModel:
     def initialize(self, args):
         super().__init__()
-        base_path = "altimeter/Altimeter_2024_core/"
+        base_path = "Altimeter/Altimeter_2024_core/"
         with open(base_path + "config.json", "r") as j:
             model_config = json.loads(j.read())
         self.parseIonDictionary(base_path + "ion_dictionary.txt")
@@ -116,7 +116,7 @@ class TritonPythonModel:
 
             annotations = np.tile(
                 self.ion_names.astype(dtype="S23"), knots.shape[0]
-            ).reshape((-1, 344))
+            ).reshape((-1, self.dicsz))
             mzs = -np.ones_like(annotations, dtype=np.float32)
             by_NLs = ["", "H2O", "NH3"] if return_NL else [""]
 
@@ -234,7 +234,7 @@ class TritonPythonModel:
         if return_y:
             mono_mass_base = self.nl2mass["H2O"]
             for i, aa in enumerate(reversed(seq[1:])):
-                mono_mass_base += std_aa_mass[aa] + self.unimodID2mass[mods[i]]
+                mono_mass_base += std_aa_mass[aa] + self.unimodID2mass[mods[len(seq)-i-1]]
                 if i >= min_length - 1:
                     self.getIonSeries(
                         mono_mass_base,
@@ -261,20 +261,18 @@ class TritonPythonModel:
             for aa in unique_AAs:
                 if aa in self.aa2nl2imm_annotations:
                     for nl in self.aa2nl2imm_annotations[aa]:
-                        if len(by_NLs) > 1 or nl == "":
-                            annot = self.aa2nl2imm_annotations[aa][nl]
-                            if annot.mono_mass < min_mz or annot.mono_mass > max_mz:
-                                continue
-                            self.populateValidIon(
-                                annot.index, annot.mono_mass, mzs, filt
-                            )
-            for pos, mod in mods.items():
-                for nl in self.aa2nl2mod_imm_annotations[mod]:
-                    if len(by_NLs) > 1 or nl == "":
-                        annot = self.aa2nl2mod_imm_annotations[mod][nl]
+                        annot = self.aa2nl2imm_annotations[aa][nl]
                         if annot.mono_mass < min_mz or annot.mono_mass > max_mz:
                             continue
-                        self.populateValidIon(annot.index, annot.mono_mass, mzs, filt)
+                        self.populateValidIon(
+                            annot.index, annot.mono_mass, mzs, filt
+                        )
+            for pos, mod in mods.items():
+                for nl in self.aa2nl2mod_imm_annotations[mod]:
+                    annot = self.aa2nl2mod_imm_annotations[mod][nl]
+                    if annot.mono_mass < min_mz or annot.mono_mass > max_mz:
+                        continue
+                    self.populateValidIon(annot.index, annot.mono_mass, mzs, filt)
 
         return ~filt
 

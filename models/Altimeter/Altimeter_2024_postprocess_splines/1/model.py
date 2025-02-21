@@ -1,6 +1,5 @@
 import triton_python_backend_utils as pb_utils
 import numpy as np
-import time
 
 
 class TritonPythonModel:
@@ -8,7 +7,6 @@ class TritonPythonModel:
         super().__init__()
 
     def execute(self, requests):
-        t0 = time.time()
         responses = []
         for request in requests:
             params = eval(request.parameters())
@@ -44,9 +42,6 @@ class TritonPythonModel:
             responses.append(
                 pb_utils.InferenceResponse(output_tensors=[cf, kf, af, mf])
             )
-
-        t1 = time.time()
-        print("postprocess splines:", t1 - t0, flush=True)
         return responses
 
     def finalize(self):

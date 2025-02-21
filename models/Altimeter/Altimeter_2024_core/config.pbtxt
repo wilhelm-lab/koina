@@ -1,6 +1,6 @@
 max_batch_size: 1000
 name: "Altimeter_2024_core"
-backend: "onnxruntime"
+backend: "pytorch"
 input [
   {
    name: 'inp',
@@ -18,7 +18,7 @@ output [
   {
    name: 'coefficients',
    data_type: TYPE_FP32,
-   dims: [4, 344]
+   dims: [4, 380]
   },
   {
    name: 'knots',
@@ -28,6 +28,6 @@ output [
   {
    name: 'AUCs',
    data_type: TYPE_FP32,
-   dims: [344]
+   dims: [380]
  }
 ]

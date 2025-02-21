@@ -21,23 +21,22 @@ def test_available_grpc():
 def test_inference():
     SEQUENCES = np.array(
         [
-            ["AA"],
+            ["AAAAAA"],
             ["PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
-            ["RHKDESTNQCGPAVILMFYW"],
             ["RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
-            ["RHKDESTNQCGPAVILM[UNIMOD:35]FYW"],
+            ["RHKDESTNQC[UNIMOD:4]GPAVILM[UNIMOD:35]FYW"]
         ],
         dtype=np.object_,
     )
 
-    charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.float32)
+    charge = np.array([[3] for _ in range(len(SEQUENCES))], dtype=np.int32)
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("peptide_sequences", [5, 1], "BYTES")
+    in_pep_seq = grpcclient.InferInput("peptide_sequences", [4, 1], "BYTES")
     in_pep_seq.set_data_from_numpy(SEQUENCES)
 
-    in_charge = grpcclient.InferInput("precursor_charges", [5, 1], "INT32")
+    in_charge = grpcclient.InferInput("precursor_charges", [4, 1], "INT32")
     in_charge.set_data_from_numpy(charge)
 
     result = triton_client.infer(
@@ -47,28 +46,23 @@ def test_inference():
             grpcclient.InferRequestedOutput("knots"),
             grpcclient.InferRequestedOutput("coefficients"),
             grpcclient.InferRequestedOutput("mz"),
-            grpcclient.InferRequestedOutput("annotation"),
+            grpcclient.InferRequestedOutput("annotations"),
         ],
     )
 
     knots = result.as_numpy("knots")
     coefficients = result.as_numpy("coefficients")
     fragmentmz = result.as_numpy("mz")
-    annotation = result.as_numpy("annotation")
+    annotations = result.as_numpy("annotations")
 
-    assert knots.shape == (8)
-    assert coefficients.shape == (5, 4, 200)
-    assert fragmentmz.shape == (5, 200)
-    assert annotation.shape == (5, 200)
+    assert knots.shape == (8,)
+    assert coefficients.shape == (4, 4, 200)
+    assert fragmentmz.shape == (4, 200)
+    assert annotations.shape == (4, 200)
     
-    print(knots)
-    print(coefficients)
-    print(fragmentmz)
-    print(annotation)
-
     # Assert knots consistent
     assert np.allclose(knots, 
-                       np.array([6, 13,21.7466, 24.7378, 32.5236, 39.1529, 48, 55]), # TODO Update  
+                       np.load("test/Altimeter/arr_Altimeter_2024_spline_filtered_knots.npy"),
                        rtol=0,
                        atol=1e-5,
                        equal_nan=True)
@@ -76,7 +70,7 @@ def test_inference():
     # Assert coefficients consistent
     assert np.allclose(
         coefficients,
-        np.load("test/Prosit/arr_Altimter_2024_splines_coef.npy"), #  TODO Update 
+        np.load("test/Altimeter/arr_Altimeter_2024_spline_filtered_coefs.npy"),
         rtol=0,
         atol=1e-5,
         equal_nan=True,
@@ -85,7 +79,7 @@ def test_inference():
     # Assert mzs are consistent
     assert np.allclose(
         fragmentmz,
-        np.load("test/Prosit/arr_Altimter_2024_splines_mz.npy"), #  TODO Update 
+        np.load("test/Altimeter/arr_Altimeter_2024_spline_filtered_mz.npy"),
         rtol=0,
         atol=1e-5,
         equal_nan=True,
@@ -93,7 +87,7 @@ def test_inference():
     
     # Assert annotation names are consistent
     assert np.array_equal(
-        annotation,
-        np.load("test/Prosit/arr_Altimter_2024_splines_annotation.npy"), #  TODO Update 
-        equal_nan=True,
+        annotations,
+        np.load("test/Altimeter/arr_Altimeter_2024_spline_filtered_annot.npy", allow_picke=True),
+        equal_nan=False,
     )

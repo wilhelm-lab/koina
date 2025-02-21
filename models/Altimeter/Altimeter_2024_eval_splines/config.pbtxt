@@ -6,7 +6,7 @@ input [
   {
    name: 'coefficients',
    data_type: TYPE_FP32,
-   dims: [4, 344]
+   dims: [4, 380]
   },
   {
    name: 'knots',

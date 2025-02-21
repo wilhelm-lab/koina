@@ -10,7 +10,7 @@ vectorized_decode = np.vectorize(lambda_decode)
 
 class TritonPythonModel:
     def initialize(self, args):
-        base_path = "model_repository/altimeter/"
+        base_path = "Altimeter/Altimeter_2024_reisotope/"
         self.isotopeSplineDB = IsotopeSplineDB(base_path + "IsotopeSplines_10kDa_21isotopes.xml")
         self.charge2isoStep = [C13C12_MASSDIFF_U / z for z in range(1,10)]
         self.charge2isoStep.insert(0,0)
@@ -90,11 +90,17 @@ class TritonPythonModel:
                         
                         if return_iso:
                             charge = self.getChargeFromAnnot(annotations[peptide_i][frag_i][0])
-                            annotations[peptide_i][frag_i][1] += "+i"
-                            mzs[peptide_i][frag_i][1] += self.charge2isoStep[charge]
-                            for iso in range(2,5):
-                                annotations[peptide_i][frag_i][iso] += "+" + str(iso) + "i"
-                                mzs[peptide_i][frag_i][iso] = mzs[peptide_i][frag_i][iso-1] + self.charge2isoStep[charge]
+                            for iso in range(1,5):
+                                if intensities_iso[peptide_i][frag_i][iso] > 0:
+                                    if iso == 1:
+                                        annotations[peptide_i][frag_i][iso] += "+i"
+                                    else:
+                                        annotations[peptide_i][frag_i][iso] += "+" + str(iso) + "i"
+                                    mzs[peptide_i][frag_i][iso] = mzs[peptide_i][frag_i][iso-1] + self.charge2isoStep[charge]
+                                else:
+                                    annotations[peptide_i][frag_i][iso] = ""
+                                    intensities_iso[peptide_i][frag_i][iso] = -1
+                                    mzs[peptide_i][frag_i][iso] = -1
                         else:
                              for iso in range(1,5):
                                 annotations[peptide_i][frag_i][iso] = ""

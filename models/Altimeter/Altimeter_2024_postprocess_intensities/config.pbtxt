@@ -4,17 +4,17 @@ input [
   {
    name: 'intensities',
    data_type: TYPE_FP32,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'annotations',
    data_type: TYPE_STRING,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'mz',
    data_type: TYPE_FP32,
-   dims: [344]
+   dims: [380]
   }
 ]
 
@@ -22,16 +22,16 @@ output [
   {
    name: 'intensities_filtered',
    data_type: TYPE_FP32,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'annotations_filtered',
    data_type: TYPE_STRING,
-   dims: [344]
+   dims: [380]
   },
   {
    name: 'mz_filtered',
    data_type: TYPE_FP32,
-   dims: [344]
+   dims: [380]
   }
 ]

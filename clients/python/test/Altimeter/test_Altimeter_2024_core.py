@@ -19,15 +19,15 @@ def test_available_grpc():
 
 
 def test_inference():
-    seq = np.load("test/Prosit/arr_Altimeter_2024_core_seq.npy")
-    charge = np.load("test/Prosit/arr_Altimeter_2024_core_charge.npy")
+    seq = np.load("test/Altimeter/arr_Altimeter_2024_seq.npy")
+    charge = np.load("test/Altimeter/arr_Altimeter_2024_charge.npy")
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
-    in_pep_seq = grpcclient.InferInput("inp", seq.shape, "INT32")
+    in_pep_seq = grpcclient.InferInput("inp", seq.shape, "FP32")
     in_pep_seq.set_data_from_numpy(seq)
 
-    in_charge = grpcclient.InferInput("inpch", charge.shape, "INT32")
+    in_charge = grpcclient.InferInput("inpch", charge.shape, "FP32")
     in_charge.set_data_from_numpy(charge)
 
     result = triton_client.infer(
@@ -44,27 +44,27 @@ def test_inference():
     knots = result.as_numpy("knots")
     AUCs = result.as_numpy("AUCs")
 
-    assert coefficients.shape == (5, 4, 200)
-    assert knots.shape == (8)
-    assert AUCs.shape == (5, 200)
+    assert coefficients.shape == (4, 4, 380)
+    assert knots.shape == (4, 8)
+    assert AUCs.shape == (4, 380)
 
     assert np.allclose(
         coefficients,
-        np.load("test/Prosit/arr_Altimter_2024_core_coef_raw.npy"),
+        np.load("test/Altimeter/arr_Altimeter_2024_coefs.npy"),
         rtol=0,
         atol=1e-5,
     )
     
     assert np.allclose(
         knots,
-        np.load("test/Prosit/arr_Altimter_2024_core_knots_raw.npy"),
+        np.load("test/Altimeter/arr_Altimeter_2024_knots.npy"),
         rtol=0,
         atol=1e-5,
     )
     
     assert np.allclose(
         AUCs,
-        np.load("test/Prosit/arr_Altimter_2024_core_AUCs_raw.npy"),
+        np.load("test/Altimeter/arr_Altimeter_2024_AUCs.npy"),
         rtol=0,
         atol=1e-5,
     )
