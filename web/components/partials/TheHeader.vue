@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { Bars3Icon } from "@heroicons/vue/24/solid";
+import { BsFillQuestionCircleFill } from 'vue-icons-plus/bs'
+import { IoMail, IoLogoGithub } from 'vue-icons-plus/io';
 
 const showMenu = ref(false);
 
@@ -15,6 +18,11 @@ function handleOutsideClick(event: MouseEvent) {
   if (showMenu.value && !(event.target as HTMLElement | null)?.closest("nav")) {
     showMenu.value = false;
   }
+}
+
+const { $event } = useNuxtApp()
+function startTour() {
+  $event('startTour');
 }
 
 onMounted(() => {
@@ -34,7 +42,7 @@ onBeforeUnmount(() => {
       to="/"
       class="flex justify-center items-center text-3xl font-bold"
     >
-      <img src="~/assets/img/koina-logo.svg" class="h-12" />
+      <img id="logo" src="~/assets/img/koina-logo.svg" class="h-12" />
       <span class="ml-2"> Koina </span>
     </nuxt-link>
 
@@ -58,18 +66,21 @@ onBeforeUnmount(() => {
         @click="closeNavbar()"
       >
         <li>
-          <nuxt-link to="/docs"> Documentation </nuxt-link>
+          <nuxt-link id="btn-docu" to="/docs"> Documentation </nuxt-link>
         </li>
         <li>
-          <nuxt-link to="/compare-spectra"> Compare Spectra </nuxt-link>
+          <nuxt-link id="btn-comp-spec" to="/compare-spectra"> Compare Spectra </nuxt-link>
         </li>
         <li>
-          <a href="mailto:Ludwig.Lautenbacher@tum.de"> Contact </a>
+          <a id="contact-button" href="mailto:Ludwig.Lautenbacher@tum.de"> <IoMail/> </a>
         </li>
         <li>
           <nuxt-link to="https://github.com/wilhelm-lab/koina">
-            GitHub
+            <IoLogoGithub />
           </nuxt-link>
+        </li>
+        <li>
+          <div @click="startTour" style="cursor:pointer"><BsFillQuestionCircleFill /></div>
         </li>
       </ul>
     </nav>
