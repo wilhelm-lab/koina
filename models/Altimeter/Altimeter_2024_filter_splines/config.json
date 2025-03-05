@@ -1,0 +1,40 @@
+{
+    "AAs": "ARNDCQEGHILKMFPSTWYVX",
+    "seq_len": 40,
+    "min_charge": 1,
+    "max_charge": 7,
+    "mod2unimodID": {
+        "Carbamidomethyl": 4,
+        "Oxidation": 35
+    },
+    "unimodID2mass": {
+        "0": 0,
+        "4": 57.021464,
+        "35": 15.994915
+    },
+    "immonium2composition": {
+        "IA" : "C2H5N",
+        "IC" : "C2H5NS",
+        "IC(Carbamidomethyl)" : "C4H8N2OS",
+        "ID" : "C3H5NO2",
+        "IE" : "C4H7NO2", 
+        "IF" : "C8H9N",
+        "IG" : "CH3N",
+        "IH" : "C5H7N3",
+        "II" : "C5H11N",
+        "IK" : "C5H12N2",
+        "IL" : "C5H11N",
+        "IM" : "C4H9NS",
+        "IM(Oxidation)" : "C4H9NOS",
+        "IN" : "C3H6N2O",
+        "IP" : "C4H7N",
+        "IQ" : "C4H8N2O",
+        "IR" : "C5H12N4",
+        "IS" : "C2H5NO",
+        "IT" : "C3H7NO",
+        "IV" : "C4H9N",
+        "IW" : "C10H10N2",
+        "IY" : "C8H9NO"
+    },
+    "NLs": ["", "H2O", "NH3"]
+}
