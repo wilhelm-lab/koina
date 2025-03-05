@@ -17,7 +17,7 @@ PROTON_MASS_U = _nist_mass["H+"][0][0]
 class TritonPythonModel:
     def initialize(self, args):
         super().__init__()
-        base_path = "Altimeter/Altimeter_2024_core/"
+        base_path = "Altimeter/Altimeter_2024_filter_isotopes/"
         with open(base_path + "config.json", "r") as j:
             model_config = json.loads(j.read())
         self.parseIonDictionary(base_path + "/ion_dictionary.txt")

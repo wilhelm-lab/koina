@@ -7,7 +7,7 @@ from collections import defaultdict
 class TritonPythonModel:
     def initialize(self, args):
         super().__init__()
-        base_path = "Altimeter/Altimeter_2024_core/"
+        base_path = "Altimeter/Altimeter_2024_preprocess_sequence/"
         with open(base_path + "config.json", "r") as j:
             model_config = json.loads(j.read())
 
