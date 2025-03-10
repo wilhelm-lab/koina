@@ -1,5 +1,4 @@
 import numpy as np
-import triton_python_backend_utils as pb_utils
 
 SEQ_LEN = (
     31  # initalize array with 31 because we verify N-term TMT before we delete it.
@@ -84,11 +83,11 @@ def character_to_array(character):
     enum_gen_seq_num = enumerate(generator_sequence_numeric)
     for i, sequence_numeric in enum_gen_seq_num:
         if len(sequence_numeric) > SEQ_LEN:
-            pass  # don't overwrite 0 in the array that is how we can differentiate
+            raise ValueError(f"Max sequence length of {SEQ_LEN -1} exceeded.")
         else:
             array[i, 0 : len(sequence_numeric)] = sequence_numeric
 
-    # Check if first AA is
+    # Check if first AA is TMT N-term
     if np.all(array[:, 0] == 23):
         array = np.delete(array, 0, axis=1)
     else:
