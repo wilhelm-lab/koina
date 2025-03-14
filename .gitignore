@@ -15,7 +15,8 @@ models/**/*.json
 **privatemodelrepo
 
 # Hide logs
-**.log
+*.log
+docs/perf_analyzer/log/**
 
 # Hide zipfiles
 **.zip
