@@ -1,0 +1,63 @@
+#!/usr/bin/bash
+
+: ${URL:='serving:8501'}
+: ${CONCURRENCY:=10:100:10}
+: ${N:=1}
+: ${MODELS:='models.txt'}
+: ${INPUT_LOCATION:='/workspace/koina/docs/perf_analyzer/inputs'}
+: ${MAX_RETRIES:=3} # Number of retries for each command
+
+logfolder=log/$(date '+%Y%m%d-%H%M%S')
+mkdir -p $logfolder
+echo "Logging to $logfolder"
+echo "URL: $URL" > $logfolder/params.txt
+echo "CONCURRENCY: $CONCURRENCY" >> $logfolder/params.txt
+echo "N: $N" >> $logfolder/params.txt
+echo "MODELS: $MODELS" >> $logfolder/params.txt
+cat $MODELS >> $logfolder/params.txt
+echo '' >> $logfolder/params.txt
+echo "INPUT_LOCATION: $INPUT_LOCATION" >> $logfolder/params.txt
+echo "Starting benchmark"
+
+# Function to run perf_analyzer with retries
+run_perf_analyzer() {
+    local model=$1
+    local retries=0
+    while [ $retries -lt $MAX_RETRIES ]; do
+        /workspace/install/bin/perf_analyzer -u $URL \
+            -m $model \
+            -x 1 \
+            --concurrency-range $CONCURRENCY \
+            -b 1000 \
+            --input-data $INPUT_LOCATION/$model.json \
+            --shape 'peptide_sequences:1' \
+            --shape 'precursor_charges:1' \
+            --measurement-mode "count_windows" \
+            --measurement-request-count 16 \
+            --percentile 50 \
+            > $logfolder/$model.log 2>&1
+
+        if [ $? -eq 0 ]; then
+            echo "Command succeeded for model: $model"
+            break
+        else
+            retries=$((retries + 1))
+            echo "Command failed for model: $model, retry $retries/$MAX_RETRIES"
+        fi
+    done
+    if [ $retries -eq $MAX_RETRIES ]; then
+        echo "Command failed for model: $model after $MAX_RETRIES retries"
+    fi
+}
+
+(
+    for p in $(cat $MODELS); do
+        ((i=i%N)); ((i++==0)) && wait
+        run_perf_analyzer $p &
+    done
+)
+
+      # -i grpc \
+      # --ssl-grpc-use-ssl true \
+      #       --measurement-mode "count_windows" \
+      # --measurement-request-count 16 \
