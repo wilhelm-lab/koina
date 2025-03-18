@@ -7,3 +7,12 @@ URL=koina4.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inp
 URL=koina4.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/random_len/ MODELS=models.txt CONCURRENCY=20:100:20 N=1 ./runBenchmark
 URL=koina8.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/random_len/ MODELS=models.txt CONCURRENCY=2:10:2 N=1 ./runBenchmark
 URL=koina8.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/random_len/ MODELS=models.txt CONCURRENCY=20:100:20 N=1 ./runBenchmark
+
+URL=koina1.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/len15/ MODELS=models.txt CONCURRENCY=2:10:2 N=1 ./runBenchmark
+URL=koina1.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/len15/ MODELS=models.txt CONCURRENCY=20:100:20 N=1 ./runBenchmark
+URL=koina2.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/len15/ MODELS=models.txt CONCURRENCY=2:10:2 N=1 ./runBenchmark
+URL=koina2.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/len15/ MODELS=models.txt CONCURRENCY=20:100:20 N=1 ./runBenchmark
+URL=koina4.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/len15/ MODELS=models.txt CONCURRENCY=2:10:2 N=1 ./runBenchmark
+URL=koina4.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/len15/ MODELS=models.txt CONCURRENCY=20:100:20 N=1 ./runBenchmark
+URL=koina8.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/len15/ MODELS=models.txt CONCURRENCY=2:10:2 N=1 ./runBenchmark
+URL=koina8.wilhelmlab.org INPUT_LOCATION=/workspace/koina/docs/perf_analyzer/inputs/len15/ MODELS=models.txt CONCURRENCY=20:100:20 N=1 ./runBenchmark
