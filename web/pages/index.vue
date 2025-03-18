@@ -65,33 +65,33 @@ onUnmounted(() => {
     <div class="py-16 px-4 max-w-5xl mx-auto">
       <h2 id="get-started" class="text-3xl mb-4">What is Koina?</h2>
       <p id="content-get-predictions-to-you">
-        Koina is a model repository enabling the remote execution of models. 
-        Predictions are generated as a response to HTTP/S requests, the standard protocol used for nearly all web traffic. 
-        As such, HTTP/S requests can be easily generated in any programming language without requiring specialized hardware. 
-        This design also enables users to share centralized hardware to utilize it more efficiently. 
-        It also allows for easy horizontal scaling depending on the demand of the user base.  
+        Koina is a model repository enabling the remote execution of models.
+        Predictions are generated as a response to HTTP/S requests, the standard protocol used for nearly all web traffic.
+        As such, HTTP/S requests can be easily generated in any programming language without requiring specialized hardware.
+        This design also enables users to share centralized hardware to utilize it more efficiently.
+        It also allows for easy horizontal scaling depending on the demand of the user base.
       </p>
 
       <p id="content-easy-to-do">
-        To minimize the barrier of entry and “democratize” access to ML models, we provide a public network of Koina instances at <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>. 
-        The computational workload is automatically distributed to processing nodes hosted at different research institutions and spin-offs across Europe. 
+        To minimize the barrier of entry and “democratize” access to ML models, we provide a public network of Koina instances at <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>.
+        The computational workload is automatically distributed to processing nodes hosted at different research institutions and spin-offs across Europe.
         Each processing node provides computational resources to the service network, always aiming at just-in-time results delivery.
       </p>
 
 
       <p>
-        In the spirit of open and collaborative science, we envision that this public Koina-Network can be scaled to meet the community’s needs 
-        by various research groups or institutions dedicating hardware. 
-        This can also vastly improve latency if servers are available geographically nearby. 
+        In the spirit of open and collaborative science, we envision that this public Koina-Network can be scaled to meet the community’s needs
+        by various research groups or institutions dedicating hardware.
+        This can also vastly improve latency if servers are available geographically nearby.
         Alternatively, if data security is a concern, private instances within a local network can be easily deployed using the provided <a href="https://github.com/wilhelm-lab/koina/pkgs/container/koina">docker image</a>.
       </p>
 
       <p>
-        Koina is a community driven project. 
-        It is fuly <a href="https://github.com/wilhelm-lab/koina">open-source</a>.
+        Koina is a community driven project.
+        It is fully <a href="https://github.com/wilhelm-lab/koina">open-source</a>.
         We welcome all contributions and feedback! Feel free to reach out to <a href="mailto:Ludwig.Lautenbacher@tum.de">us</a> or open an issue on our <a href="https://github.com/wilhelm-lab/koina/issues/new">GitHub repository</a>.
       </p>
-      
+
       <p>
         Check out the <a href="/docs">documentation</a> to learn more about how
         to use Koina.
@@ -104,10 +104,10 @@ onUnmounted(() => {
         <p>
           There are two main ways to get involved with Koina. You can either host an
           instance of Koina to make more open resources available to the
-          community or you can add your own model to Koina. If you want to make
+          community, or you can add your own model to Koina. If you want to make
           your Koina instance available via
           <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>,
-          please contact us via 
+          please contact us via
           <a href="mailto:Ludwig.Lautenbacher@tum.de"
             >E-Mail</a
           >.
