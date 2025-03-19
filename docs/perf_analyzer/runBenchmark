@@ -25,10 +25,12 @@ run_perf_analyzer() {
     local retries=0
     while [ $retries -lt $MAX_RETRIES ]; do
         /workspace/install/bin/perf_analyzer -u $URL \
+            -v \
             -m $model \
             -x 1 \
             --concurrency-range $CONCURRENCY \
             -b 1000 \
+            -s 100 \
             --input-data $INPUT_LOCATION/$model.json \
             --shape 'peptide_sequences:1' \
             --shape 'precursor_charges:1' \
