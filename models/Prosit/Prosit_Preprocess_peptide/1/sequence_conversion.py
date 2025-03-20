@@ -63,14 +63,13 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
 
 def character_to_array(character):
     array = np.zeros((1, SEQ_LEN), dtype=np.uint8)
-
     generator_sequence_numeric = parse_modstrings(
         [character], alphabet=ALPHABET, translate=True, filter=False
     )
     enum_gen_seq_num = enumerate(generator_sequence_numeric)
     for i, sequence_numeric in enum_gen_seq_num:
         if len(sequence_numeric) > SEQ_LEN:
-            pass  # don't overwrite 0 in the array that is how we can differentiate
+            raise ValueError(f"Max sequence length of {SEQ_LEN} exceeded.")
         else:
             array[i, 0 : len(sequence_numeric)] = sequence_numeric
     return array
