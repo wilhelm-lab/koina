@@ -1,0 +1,48 @@
+name: "pfly_2024"
+platform: "ensemble"
+max_batch_size: 128
+
+input [
+  {
+    name: "peptide_sequences"
+    data_type: TYPE_STRING
+    dims: [1]
+  }
+]
+
+output [
+  {
+    name: "output_1"
+    data_type: TYPE_FP32
+    dims: [4]
+  }
+]
+
+ensemble_scheduling {
+  step [
+    {
+      model_name: "pfly_2024_preprocessing"
+      model_version: -1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      }
+      output_map {
+        key: "encoded_sequences"
+        value: "encoded_sequences"
+      }
+    },
+    {
+      model_name: "pfly_2024_fine_tuned"
+      model_version: -1
+      input_map {
+        key: "input_1"
+        value: "encoded_sequences"
+      }
+      output_map {
+        key: "output_1"
+        value: "output_1"
+      }
+    }
+  ]
+}
