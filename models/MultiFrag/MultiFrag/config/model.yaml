@@ -4,7 +4,7 @@ d: 64
 h: 8
 ffn_mult: 1
 dropout: 0
-num_methods: 4
+num_methods: 5
 alphabet: False
 rotation_matrix: False
 prenorm: False

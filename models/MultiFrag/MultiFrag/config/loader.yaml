@@ -3,9 +3,9 @@ dataset_path:
   val: /cmnfs/data/proteomics/shabaz_exotic/processed/parquet/allinone/*val*parquet
   test: /cmnfs/data/proteomics/shabaz_exotic/processed/parquet/allinone/*test*parquet
 tokenizer: mine
-sequence_dictionary_path: /cmnfs/data/proteomics/shabaz_exotic/processed/merged_search/allinone/token_dictionary.txt
-ion_counts_path: /cmnfs/data/proteomics/shabaz_exotic/processed/merged_search/allinone/ion_counts.tab
-method_list: [ECD,EID,UVPD,HCD]
+sequence_dictionary_path: /cmnfs/proj/shabaz/model/2025-02-06_12-16-20/token_dictionary.txt
+ion_counts_path: /cmnfs/proj/shabaz/model/2025-02-06_12-16-20/ion_counts.tab
+method_list: [ECD,EID,UVPD,HCD,ETciD]
 pep_length: [6, 30]
 charge: [1, 6]
 batch_size: 100

@@ -30,6 +30,6 @@ output [
   {
    name: 'intensities',
    data_type: TYPE_FP32,
-   dims: [ 813 ]
+   dims: [ 815 ]
   }
 ]

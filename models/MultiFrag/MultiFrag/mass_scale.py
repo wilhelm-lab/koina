@@ -111,7 +111,7 @@ class Scale:
                 'RP128N':156.1225,'RP128C':156.1287,'RP129N':157.1258,'RP129C':157.1322,
                 'RP130N':158.1291,'RP130C':158.1356,'RP131':159.1325,
                 # Modifications
-                'Acetyl':42.010565,'Carbamidomethyl':57.021464,'Oxidation':15.994915,
+                'Acetyl':42.010565,'Carbamidomethyl':57.021464,'Oxidation':15.994915,'Deamidation': 0.984016,
                 'Gln->pyro-Glu':-17.026549, 'Glu->pyro-Glu':-18.010565,'Phospho':79.966331,
                 'Pyro-carbamidomethyl':39.994915,'CAM':57.021464,'TMT6plex':231.17747,'nAcetyl':203.079373,
                 # Single atoms
@@ -143,6 +143,7 @@ class Scale:
     	}
         self.mass['1'] = self.mass['Acetyl']
         self.mass['4'] = self.mass['Carbamidomethyl']
+        self.mass['7'] = self.mass['Deamidation']
         self.mass['35'] = self.mass['Oxidation']
 
     def calcmass(self, modseq, precursor_charge, ion, delta=0.0):
@@ -453,7 +454,7 @@ def my_annotation_function(psms, theor_dict, threshold_ppm=20, p_window=0):
     ion_counts = {}
     scale = Scale()
     df = {
-        'ions': [], 'mz': [], 'int': [],  
+        'mz': [], 'int': [],  
         'matched_inds': [], 'matched_ions': [], 'matched_ppm': [],
     }
     for seq, modseq, charge, raw_mz, raw_int, mass in zip(
@@ -489,7 +490,7 @@ def my_annotation_function(psms, theor_dict, threshold_ppm=20, p_window=0):
         matched_ions = ions.index.to_numpy()[exclusion_mask][TP[0]]
         
         # Collect results
-        df['ions'].append(matched_ions)
+        #df['ions'].append(matched_ions)
         df['mz'].append(raw_mz_)
         df['int'].append(raw_int_)
         df['matched_inds'].append(TP[1])

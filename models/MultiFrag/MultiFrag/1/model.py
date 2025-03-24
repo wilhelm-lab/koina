@@ -79,7 +79,7 @@ class TritonPythonModel:
         )
 
     def batch_mz(self, peptides, lengths, charges):
-        mz = np.zeros((len(peptides), 813)).astype(np.float32)
+        mz = np.zeros((len(peptides), 815)).astype(np.float32)
         for m, (seq, length, charge) in enumerate(zip(peptides, lengths, charges)):
             mzs = np.array(
                 [self.scale.calcmass(seq, charge, ion) for ion in self.ion_dict.index]
