@@ -5,7 +5,7 @@ description: |
   This model achieved a SA (a measure of accuracy) of at least 0.83, which is a significant improvement compared to the HCD Prosit 2020 model's performance on cross-linked peptides, where the accuracy was SA ≥ 0.58
 
   
-tag: "Intensity"
+tag: "Cross-linking fragment intensity"
 tag_url: "https://koina.wilhelmlab.org/"
 examples:
   inputs:

@@ -5,7 +5,7 @@ description: |
 citation: |
   unpublished
 
-tag: "Intensity"
+tag: "Cross-linking fragment intensity"
 examples:
   inputs:
     [

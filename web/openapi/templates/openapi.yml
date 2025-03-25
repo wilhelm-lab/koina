@@ -29,6 +29,7 @@ tags: # Define order of Tags
   - name: Intensity
   - name: Retention Time
   - name: Collisional cross section
+  - name: Cross-linking fragment intensity
   - name: Metabolomics fragment intensity
 paths:
 {% for model in models %}
