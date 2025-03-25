@@ -1,26 +1,20 @@
 description: |
   IM2Deep, is a deep learning-based peptide collisional cross section (CCS) predictor that uses a similar architecture to the retention time predictor, DeepLC. 
   As a result, IM2Deep is able to predict CCS values for both unmodified as well as modified peptides, even if those modifications were not seen during training.
-  
   IM2Deep was trained (81%), validated (9%) and tested (10%) on ~1.2M unique peptidoform-charge pairs, originating from three different data sets: PXD019086, PXD038782 and PXD042416. 
   To account for experimental drifts between the two data sets, we aligned them by calculating the linear offset (y = ax + b) between overlapping peptide-charge state pairs, as previously described. 
-  
   The first data set includes 718,917 unique combinations of peptide sequence, charge state, and, where applicable, modifications (methionine oxidation, cysteine carbamidomethylation, and N-terminal acetylation). 
   The second data set, described in (24), contains 5,202 unique peptidoform-charge state combinations and features a broader range of modifications, including a distinction between symmetrical and asymmetrical arginine dimethylation. 
   Since IM2Deep cannot differentiate isomeric peptides, the mean CCS value of these isomers was used for dimethylated peptide-charge state pairs. 
   The last data set consists of 437.479 unique (modified) peptide-charge pairs, most of which are non-tryptic, and contain a larger range of charge states (1-6). 
-  
   Evaluation on the test set demonstrated a mean absolute error of 6.26 Å², a median relative error of 0.91%, and a Pearson correlation coefficient of 0.996.
   The model was initialized with random weights drawn from a normal distribution (μ=0.0, σ=1.0), and training was conducted on a single NVIDIA Geforce RTX 4090 GPU for up to 300 epochs,
   with early stopping employed to prevent overfitting.
-
   Find out more about this model on <a href="https://github.com/compomics/IM2Deep">GitHub</a>.
-
 citation: | 
   TIMS2Rescore: A DDA-PASEF optimized data-driven rescoring pipeline based on MS2Rescore
   Arthur Declercq, Robbe Devreese, Jonas Scheid, Caroline Jachmann, et al. 
   bioRxiv 2024.05.29.596400; doi: https://doi.org/10.1101/2024.05.29.596400
-
 tag: "Collisional cross section"
 examples:
   inputs:

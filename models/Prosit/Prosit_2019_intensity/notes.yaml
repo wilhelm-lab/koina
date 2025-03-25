@@ -1,65 +1,36 @@
 description: |
   **Data**
-
   Source of the data: The model was trained using data from the ProteomeTools project. This project generated a large number of synthetic peptides and their tandem mass spectra. The data includes 21,764,501 high-quality spectra from 576,256 unique precursors, covering 19,749 of the 20,040 human protein coding genes.
-  
   Type of molecules: The training data primarily consists of tryptic peptides. The model was also tested on non-tryptic peptides.
-  
   Representation of complexity: The training data covers a significant portion of the human proteome, including many isoforms and post-translational modifications. The data includes 550,000 tryptic peptides and 21 million high-quality tandem mass spectra. The initial dataset of high-quality synthetic peptide spectra was extended by 219,089 tryptic peptides to improve coverage of human proteins and isoforms.
-  
   Data acquisition: The data was acquired using one instrument (Orbitrap Fusion Lumos), with six different collision energies (20, 23, 25, 28, 30, 35).
-  
   Limitations of the training data: The model was initially trained on tryptic peptides, though it has been shown to generalize to non-tryptic peptides. The model may benefit from inclusion of more non-tryptic data, longer peptides, and higher charge states in future training.
-  
   False positives/negatives: The training data was filtered for 1% FDR and an Andromeda score greater than 100.
-
   **Optimization**
-  
   Optimization target: y and b fragment ion intensities with charge 1-3
-  
   Experimental variability: No comparison with experimental variability is published.
-  
   Metric: Spectral angle (SA) was used to compare predicted and experimental spectra.
-  
   **Model**
-  
   Interpretability: The model is a black box, However, the model is split into an encoder and a decoder, which means the model learns an intermediate latent space to represent peptide sequences and parameters which is then used to make predictions.
-
   Model type: The model is a regression model, predicting continuous values for fragment ion intensities.
-
   Limitations: The model is trained on specific fragmentation techniques (HCD), mass analyzers (Orbitrap), and collision energies (20, 23, 25, 28, 30, 35). It interpoaltes well in this range of collision energies but has not been evaluated far outside this range. It has not been evaluated under different conditions or with different instruments or fragmentation techniques. Performance on non tryptic peptides, is lower.
-  
   **Evaluation**
-  
   Performance measures: The performance measures reported include Pearson correlation (R) and normalized spectral angle (SA).
-  
   Choice of performance measures: SA was chosen because spectral angle is more sensitive as a similarity measure.
-  
   Single number performance: When reporting a single number for performance, the document uses the median spectral angle. The normalized spectral angle is adjusted to range from 1 (high correlation) to 0 (low correlation).
-
   Comparison to baselines: The model's performance was compared to other fragment ion intensity prediction models such as MS2PIP and pDeep.
-  
   Evaluation methods: The model was evaluated using cross-validation and an independent holdout dataset. The model was evaluated on independent test data acquired on different instruments in different labs. The model’s performance was also evaluated using novel experiments.
-  
   Independent data: The model was evaluated on independent test data, including a large external dataset from Bekker-Jensen et al. This evaluation was performed without re-training the model.
-
   Model performance variability: The model's performance is not highly variable. The model shows consistent performance across different collision energies, peptides, and datasets. The model’s predictions can be calibrated to the NCE used for acquisition.
-
   Data applicability: The model is applicable to a wide range of peptide data, but it is not applicable to data using different fragmentation techniques or mass analyzers from those used in training.
-
   **Input notes**
-
   Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]).
-
   **Output notes**
-
   Intensity was normalized to the highest predicted intensity value.
-  
 citation: |
   Prosit: proteome-wide prediction of peptide tandem mass spectra by deep learning.
   Gessulat, S., Schmidt, T., Zolg, D.P. et al.
   Nat Methods 16, 509–518 (2019). https://doi.org/10.1038/s41592-019-0426-7
-
 tag: "Fragment intensity"
 examples:
   inputs:

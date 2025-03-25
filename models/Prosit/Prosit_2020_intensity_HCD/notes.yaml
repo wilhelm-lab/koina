@@ -1,58 +1,31 @@
 description: |
   **Data**
-  
   Source of the data: The model was trained using data from the ProteomeTools project. This included both previously published (tryptic) data and data generated specifically for this study (non-tryptic). The data consisted of tandem mass spectra acquired from synthetic peptides. This project synthesized and analyzed over 300,000 non-tryptic peptides using multi-modal LC-MS/MS. These peptides included HLA class I & II ligands and products of the proteases AspN and LysN.
-  
   Type of molecules: The training data included tryptic peptides, as well as non-tryptic peptides representing HLA class I & II ligands and products of the proteases AspN and LysN.
-  
   Representation of molecular complexity: The training data was designed to represent a wide variety of peptide sequences and fragmentation patterns, including both tryptic and non-tryptic peptides. The data included a large number of peptides with different amino acid combinations, covering nearly all possible N- and C-terminal amino acid combinations. This was done to address the challenge of identifying non-tryptic HLA peptides, whose fragmentation characteristics can be distinct from tryptic peptides.
-  
   Data acquisition: The data was acquired using one instrument (Orbitrap Fusion Lumos), with six different collision energies (20, 23, 25, 28, 30, 35).
-  
   Limitations of the training data: The model was not trained on peptides containing free cysteine side chains or other amino acid modifications that may be identified on HLA peptides. Also, the training data underrepresents peptides with cysteine residues at the N- and C-termini.
-  
   False positives/negatives: The training data was filtered for 1% FDR.
-
   **Optimization**
-  
   Optimization target: y and b fragment ion intensities with charge 1-3
-  
   Experimental variability: No comparison with experimental variability is published.
-  
   Metric: Spectral angle (SA) was used to compare predicted and experimental spectra.
-  
   **Model**
-  
   Interpretability: The model is a black box, However, the model is split into an encoder and a decoder, which means the model learns an intermediate latent space to represent peptide sequences and parameters which is then used to make predictions.
-  
   Model type: The model is a regression model, predicting continuous values for fragment ion intensities.
-  
   Limitations: The model is trained on specific fragmentation techniques (HCD), mass analyzers (Orbitrap), and collision energies (20, 23, 25, 30, 35). It interpoaltes well in this range of collision energies but has not been evaluated far outside this range. It has not been evaluated under different conditions or with different instruments or fragmentation techniques.
-  
   **Evaluation**
-  
   Performance measures: The performance measures reported include Pearson correlation (R) and normalized spectral angle (SA).
-  
   Choice of performance measures: SA was chosen because spectral angle is more sensitive as a similarity measure.
-  
   Single number performance: The spectral angle was used to provide an overall measure of performance, but the distribution of spectral angle values was also examined to assess the model's performance across different types of peptides and conditions.
-  
   Comparison to baseline methods: The model's performance was compared to the previously published Prosit 2019 model which was trained on tryptic peptides. The new model showed a substantial improvement, especially for non-tryptic peptides. The model was also implicitly compared to the performance of traditional search engines by showing the improvements gained when using the model to rescore peptide spectrum matches.
-  
   Evaluation methods: The model was evaluated using cross-validation (training, testing, and holdout sets), and on independent datasets (re-analyzing data from other publications). It was also evaluated using novel experiments, such as immunogenicity testing of neo-epitopes identified using the model.
-  
   Model performance variability: The model's performance is not highly variable. The model shows consistent performance across different collision energies, peptides, and datasets. The model’s predictions can be calibrated to the NCE used for acquisition.
-  
   Data applicability: The model is applicable to both tryptic and non-tryptic peptides, particularly HLA peptides. It is applicable to data acquired using HCD fragmentation. It is not applicable to data acquired using other fragmentation methods or using different mass analyzers (e.g., CID fragmentation and ion trap analyzer, for which a separate model was trained).
-  
   **Input notes**
-  
   Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]).
-
   **Output notes**
-  
   Intensity was normalized to the highest predicted intensity value.
-
 citation: |
   Deep learning boosts sensitivity of mass spectrometry-based immunopeptidomics.
   Wilhelm, M., Zolg, D.P., Graber, M. et al. 

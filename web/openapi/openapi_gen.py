@@ -85,6 +85,15 @@ def main(http_url, grpc_url, tmpl_url):
                 "config": get_config(http_url, name),
             }
         )
+        models[-1]["note"]["description"] = models[-1]["note"]["description"].replace(
+            "\n", "<br>"
+        )
+        try:
+            models[-1]["note"]["citation"] = models[-1]["note"]["citation"].replace(
+                "\n", "<br>"
+            )
+        except KeyError:
+            logging.warning("Model %s does not contain a citation", name)
         add_np_and_openapi_dtype(models[-1]["note"])
         copy_outputs_to_note(models[-1])
         verify_inputs(models[-1])
