@@ -383,9 +383,9 @@ class Koina:
 
         Example::
             dict_list = [
-                {"output1": np.array([[1.0, 2.0, 3.0]]), "output2": np.array([[4.0, 5.0, 6.0]])},
-                {"output1": np.array([[7.0, 8.0]]), "output2": np.array([[10.0, 11.0, 12.0]])},
-                {"output1": np.array([[13.0, 14.0, 15.0]]), "output2": np.array([[16.0, 17.0]])},
+                {"output1": np.array([1.0, 2.0, 3.0]), "output2": np.array([4.0, 5.0, 6.0])},
+                {"output1": np.array([7.0, 8.0, 9.0]), "output2": np.array([10.0, 11.0, 12.0])},
+                {"output1": np.array([13.0, 14.0, 15.0]), "output2": np.array([16.0, 17.0, 18.0])},
             ]
             merged_dict = model.__merge_list_dict_array(dict_list)
             print(merged_dict)
@@ -397,18 +397,7 @@ class Koina:
             )
         out = {}
         for k in tmp[0]:
-            arrays = [x[k] for x in dict_list]
-            max_shape = max(array.shape[1] for array in arrays)
-            padded_arrays = [
-                np.pad(
-                    array,
-                    ((0, 0), (0, max_shape - array.shape[1])),
-                    mode="constant",
-                    constant_values=None,
-                )
-                for array in arrays
-            ]
-            out[k] = np.concatenate(padded_arrays)
+            out[k] = np.concatenate([x[k] for x in dict_list])
         return out
 
     def __async_callback(
@@ -650,7 +639,7 @@ class Koina:
             predictions = model.__predict_semi_async(data_dict, debug=True)
         """
         results = []
-        data_subsets = list(self.__slice_dict(data, self.batchsize * 100))
+        data_subsets = list(self.__slice_dict(data, self.batchsize * 10))
         pbar = tqdm(
             total=ceil(next(iter(data.values())).shape[0] / self.batchsize),
             desc=f"{self.model_name}:",
