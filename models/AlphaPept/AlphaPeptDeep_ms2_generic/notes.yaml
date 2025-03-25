@@ -1,14 +1,33 @@
 description: |
-  Find out more about this model <a href="https://github.com/MannLabs/alphapeptdeep">here</a>.
-
+  **Data**
+  Source of Data: The training and testing data were collected from various instruments and collisional energies, including ProteomeTools, which were derived from synthetic peptides with known ground truth. 
+  Type of molecules: The training data included tryptic peptides, as well as non-tryptic peptides representing HLA class I & II ligands and products of the proteases AspN and LysN.
+  Representation of molecular complexity: The training data was designed to represent a wide variety of peptide sequences and fragmentation patterns, including both tryptic and non-tryptic peptides. The data included a large number of peptides with different amino acid combinations, covering nearly all possible N- and C-terminal amino acid combinations. This was done to address the challenge of identifying non-tryptic HLA peptides, whose fragmentation characteristics can be distinct from tryptic peptides.
+  Limitations of Training Data: While the model can attempt to predict for arbitrary PTMs it was only trained and evaluated with a limited set of PTMs.
+  False positives/negatives: The training data was filtered for 1% FDR.
+  **Optimization**
+  Optimization target: y and b fragment ion intensities with charge 1-3
+  Experimental variability: PCC90 between replicates is "somewhat less than 100%".
+  Metric: Mean absolute error
+  **Model**
+  Interpretability: The model is a black box.
+  Model Type: The model is a regression model, predicting the intensity of different fragment ions.
+  **Evaluation**
+  Performance Measures: Pearson correllation (PCC) and number of spectra with at least 90% PCC PCC90
+  Reason for Performance Measures: PCC is chosen as a measure to compare the similarity between the measured and the predicted MS2 spectra.
+  Single number performance: PCC90 97% on tryptic and LysC peptides 92% on HLA peptides.
+  Comparison to Baseline Methods: PCC90 of experimental variation 
+  Model Evaluation: The model is evaluated on multiple datasets covering peptides from ProteomeTools, Human, E. coli, Drosophila and multiple MS instruments Lumos, timsTOF, QE, Orbitrap Verlos, QEHF and QEHF-X.
+  Applicability: The model is applicable to the prediction of MS2 spectra for HLA peptides with different modifications.
+  **Input notes**
   Valid `instrument_types` are `["QE", "LUMOS", "TIMSTOF", "SCIEXTOF"]`.
-
+  **Output notes**
+  Intensity was normalized to the highest predicted intensity value.
 citation: | 
   AlphaPeptDeep: a modular deep learning framework to predict peptide properties for proteomics. 
   Wen-Feng Zeng, Xie-Xuan Zhou, Sander Willems, Constantin Ammar, Maria Wahle, Isabell Bludau, Eugenia Voytik, Maximillian T. Strauss & Matthias Mann. 
   Nat Commun 13, 7238 (2022). https://doi.org/10.1038/s41467-022-34904-3
-  
-tag: "Intensity"
+tag: "Fragment intensity"
 examples:
   inputs:
     [
