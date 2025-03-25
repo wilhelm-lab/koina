@@ -1,0 +1,5 @@
+#!/bin/bash
+for filepath in */*; do
+    outfile="${filepath%.*}"   # Remove the extension
+    pdftoppm -png -r 400 $filepath $outfile
+done
