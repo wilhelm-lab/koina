@@ -43,8 +43,6 @@ description: |
   
   **Output notes**
   
-  Intensity was normalized to the highest predicted intensity value.
-
 citation: |
   AlphaPeptDeep: a modular deep learning framework to predict peptide properties for proteomics.
   Wen-Feng Zeng, Xie-Xuan Zhou, Sander Willems, Constantin Ammar, Maria Wahle, et al 
