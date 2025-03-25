@@ -34,12 +34,10 @@ paths:
       summary: {{model.name}}
       description: |
         ### Summary
+        {%filter indent(width=8) %}{{model.note.description }}{%endfilter%}
 
-        {{model.note.description }}
-
-        ### Citation
-
-        {{model.note.citation }}
+        ### Citaton
+        {%filter indent(width=8) %}{{model.note.citation }}{%endfilter%}
 
       x-code-samples:
         - lang: Python
