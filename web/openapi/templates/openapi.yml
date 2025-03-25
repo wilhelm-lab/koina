@@ -25,6 +25,11 @@ externalDocs:
   url: https://github.com/wilhelm-lab/koina
 servers:
   - url: {{tmpl_url}}/v2/models
+tags: # Define order of Tags
+  - name: Intensity
+  - name: Retention Time
+  - name: Collisional cross section
+  - name: Metabolomics fragment intensity
 paths:
 {% for model in models %}
   /{{model.name}}/infer:

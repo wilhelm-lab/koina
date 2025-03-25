@@ -72,11 +72,11 @@ def create_openapi_yaml(models, tmpl_url):
 
 def main(http_url, grpc_url, tmpl_url):
     model_dict = {x.parent.name: x for x in Path("models").rglob("notes.yaml")}
-
     sleep_until_service_starts(http_url)
 
     models = []
-    for name, model_path in model_dict.items():
+    for name in sorted(model_dict.keys()):
+        model_path = model_dict[name]
         logging.info("Start working on model:\t %s", name)
         models.append(
             {
@@ -85,15 +85,6 @@ def main(http_url, grpc_url, tmpl_url):
                 "config": get_config(http_url, name),
             }
         )
-        models[-1]["note"]["description"] = models[-1]["note"]["description"].replace(
-            "\n", "<br>"
-        )
-        try:
-            models[-1]["note"]["citation"] = models[-1]["note"]["citation"].replace(
-                "\n", "<br>"
-            )
-        except KeyError:
-            logging.warning("Model %s does not contain a citation", name)
         add_np_and_openapi_dtype(models[-1]["note"])
         copy_outputs_to_note(models[-1])
         verify_inputs(models[-1])
