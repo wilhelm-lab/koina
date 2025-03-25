@@ -3,7 +3,9 @@ description: |
   This model achieved a SA (a measure of accuracy) of at least 0.83
 
 citation: |
-  unpublished
+  Prosit-XL: enhanced cross-linked peptide identification by accurate fragment intensity prediction to study protein-protein interactions and protein structures
+  Mostafa Kalhor, Cemil Can Saylan, Mario Picciani, Lutz Fischer, Falk Schimweg, Joel Lapin, Juri Rappsilber, Mathias Wilhelm
+  bioRxiv 2024.12.15.627797; doi: https://doi.org/10.1101/2024.12.15.627797
 
 tag: "Cross-linking fragment intensity"
 examples:

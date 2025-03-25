@@ -4,8 +4,12 @@ description: |
   The dataset was divided into three parts: training (80% - 198,294 sets), validation (10% - 26,610 sets), and test (10% - 26,545 sets).
   This model achieved a SA (a measure of accuracy) of at least 0.83, which is a significant improvement compared to the HCD Prosit 2020 model's performance on cross-linked peptides, where the accuracy was SA ≥ 0.58
 
-  
-tag: "Cross-linking fragment intensity"
+citation: |
+  Prosit-XL: enhanced cross-linked peptide identification by accurate fragment intensity prediction to study protein-protein interactions and protein structures
+  Mostafa Kalhor, Cemil Can Saylan, Mario Picciani, Lutz Fischer, Falk Schimweg, Joel Lapin, Juri Rappsilber, Mathias Wilhelm
+  bioRxiv 2024.12.15.627797; doi: https://doi.org/10.1101/2024.12.15.627797
+
+tag: "Cross-linking fragment intensity "
 tag_url: "https://koina.wilhelmlab.org/"
 examples:
   inputs:
