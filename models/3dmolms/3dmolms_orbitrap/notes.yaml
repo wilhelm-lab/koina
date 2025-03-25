@@ -9,7 +9,7 @@ citation: |
   Yuhui Hong, Sujun Li, Christopher J Welch, Shane Tichy, Yuzhen Ye, Haixu Tang, 
   Bioinformatics, Volume 39, Issue 6, June 2023, btad354, https://doi.org/10.1093/bioinformatics/btad354
 
-tag: "Metabolomics fragment intenstiy"
+tag: "Metabolomics fragment intensity"
 examples:
   inputs:
     [
