@@ -1,16 +1,33 @@
 description: |
   IM2Deep, is a deep learning-based peptide collisional cross section (CCS) predictor that uses a similar architecture to the retention time predictor, DeepLC. 
   As a result, IM2Deep is able to predict CCS values for both unmodified as well as modified peptides, even if those modifications were not seen during training.
-  IM2Deep was trained (81%), validated (9%) and tested (10%) on ~1.2M unique peptidoform-charge pairs, originating from three different data sets: PXD019086, PXD038782 and PXD042416. 
-  To account for experimental drifts between the two data sets, we aligned them by calculating the linear offset (y = ax + b) between overlapping peptide-charge state pairs, as previously described. 
-  The first data set includes 718,917 unique combinations of peptide sequence, charge state, and, where applicable, modifications (methionine oxidation, cysteine carbamidomethylation, and N-terminal acetylation). 
-  The second data set, described in (24), contains 5,202 unique peptidoform-charge state combinations and features a broader range of modifications, including a distinction between symmetrical and asymmetrical arginine dimethylation. 
-  Since IM2Deep cannot differentiate isomeric peptides, the mean CCS value of these isomers was used for dimethylated peptide-charge state pairs. 
-  The last data set consists of 437.479 unique (modified) peptide-charge pairs, most of which are non-tryptic, and contain a larger range of charge states (1-6). 
-  Evaluation on the test set demonstrated a mean absolute error of 6.26 Å², a median relative error of 0.91%, and a Pearson correlation coefficient of 0.996.
-  The model was initialized with random weights drawn from a normal distribution (μ=0.0, σ=1.0), and training was conducted on a single NVIDIA Geforce RTX 4090 GPU for up to 300 epochs,
-  with early stopping employed to prevent overfitting.
   Find out more about this model on <a href="https://github.com/compomics/IM2Deep">GitHub</a>.
+
+  **Data**
+  Source of the data: IM2Deep was trained (81%), validated (9%) and tested (10%) on ~1.2M unique peptidoform-charge pairs, originating from three different data sets: PXD019086, PXD038782 and PXD042416. To account for experimental drifts between the data sets, we aligned them by calculating the linear offset (y = ax + b) between overlapping peptide-charge state pairs, as previously described. 
+  Type of molecules: The first data set includes 718,917 unique combinations of peptide sequence, charge state, and, where applicable, modifications (methionine oxidation, cysteine carbamidomethylation, and N-terminal acetylation).  The second data set, described in (24), contains 5,202 unique peptidoform-charge state combinations and features a broader range of modifications, including a distinction between symmetrical and asymmetrical arginine dimethylation. Since IM2Deep cannot differentiate isomeric peptides, the mean CCS value of these isomers was used for dimethylated peptide-charge state pairs. The last data set consists of 437,479 unique (modified) peptide-charge pairs, most of which are non-tryptic, and contain a larger range of charge states (1-6).
+  Representation of complexity: The model generalizes well across both tryptic and non-tryptic peptides. Any modifications that are not too much out of the chemical space of natural occuring amino acids should be predicted with relatively high accuracy.
+  Data acquisition: The three datasets were all acquired in different labs, but on the same instrument (timsTOF Pro).
+  Limitations of the training data: Modification space is limited to those inside the chemical space of natural occuring amino acids.
+  False positives/negatives: FDR filter was set for identifications was set to 1%. The model is expected to be robust against this small number of false positives/negatives.
+
+  **Optimization**
+  Optimization target: The optimization target is to minimize the mean absolute error between the predicted and observed collisional cross-sections.
+  
+  **Model**
+  Interpretability: The model is a black box, but can be interrogated with methods such as saliency maps and SHAP.
+  Model type: The model is a regression model, predicting continuous values for CCS. The model was initialized with random weights drawn from a normal distribution (μ=0.0, σ=1.0), and training was conducted on a single NVIDIA Geforce RTX 4090 GPU for up to 300 epochs, with early stopping employed to prevent overfitting.
+  Limitations: Modification space for which accurate predictions can be made is limited to those inside the chemical space of natural occuring amino acids.
+
+  **Evaluation**
+  Choice of performance measures: Mean absolute error, Pearson correlation coefficient, median relative error.
+  Single number performance: Evaluation on the test set demonstrated a mean absolute error of 6.26 Å², a median relative error of 0.91%, and a Pearson correlation coefficient of 0.996.
+  Comparison to baselines: Performance was not compared to baseline methods.
+  Evaluation methods: The model was evaluated on a test set that was not used during training and on independent data sets.
+  Independent data: Yes, the model has been evaluated on independent datasets.
+  Model performance variability: Variable Performance for higher charge states (>=4+) is more variable than performance for lower charge states, because of less training data.
+  Data applicability: LC-IM-MS/MS data with trapped ion mobility spectrometry. Other ion mobility techniques such as FAIMS or TWIMS are not supported.
+
 citation: | 
   TIMS2Rescore: A DDA-PASEF optimized data-driven rescoring pipeline based on MS2Rescore
   Arthur Declercq, Robbe Devreese, Jonas Scheid, Caroline Jachmann, et al. 
