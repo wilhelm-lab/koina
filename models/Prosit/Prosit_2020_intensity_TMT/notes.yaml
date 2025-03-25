@@ -57,7 +57,7 @@ citation: |
   Prosit-TMT: Deep Learning Boosts Identification of TMT-Labeled Peptides
   Wassim Gabriel, Matthew The, Daniel P. Zolg, Florian P. Bayer, et al.
   Analytical Chemistry 2022 94 (20), 7181-7190 DOI: 10.1021/acs.analchem.1c05435
-tag: "Intensity"
+tag: "Fragment intensity"
 examples:
   inputs:
     [

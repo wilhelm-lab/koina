@@ -60,7 +60,7 @@ citation: |
   Gessulat, S., Schmidt, T., Zolg, D.P. et al.
   Nat Methods 16, 509–518 (2019). https://doi.org/10.1038/s41592-019-0426-7
 
-tag: "Intensity"
+tag: "Fragment intensity"
 examples:
   inputs:
     [

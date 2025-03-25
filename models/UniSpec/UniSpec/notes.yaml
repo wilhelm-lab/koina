@@ -12,7 +12,7 @@ citation: |
   UniSpec: Deep Learning for Predicting the Full Range of Peptide Fragment Ion Series to Enhance the Proteomics Data Analysis Workflow
   Lapin, J., Yan X., Dong, Q. (2024) 
   Anal Chem. https://doi.org/10.1021/acs.analchem.3c02321
-tag: "Intensity"
+tag: "Fragment intensity"
 examples:
   inputs:
     [

@@ -26,7 +26,7 @@ externalDocs:
 servers:
   - url: {{tmpl_url}}/v2/models
 tags: # Define order of Tags
-  - name: Intensity
+  - name: Fragment intensity
   - name: Retention Time
   - name: Collisional cross section
   - name: Cross-linking fragment intensity

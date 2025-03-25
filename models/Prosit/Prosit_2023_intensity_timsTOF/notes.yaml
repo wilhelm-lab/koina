@@ -57,7 +57,7 @@ citation: |
   Fragment ion intensity prediction improves the identification rate of non-tryptic peptides in timsTOF.
   Adams, C., Gabriel, W., Laukens, K. et al.
   Nat Commun 15, 3956 (2024). https://doi.org/10.1038/s41467-024-48322-0
-tag: "Intensity"
+tag: "Fragment intensity"
 examples:
   inputs:
     [
