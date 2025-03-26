@@ -6,7 +6,7 @@ description: |
   (PXD005231), HLA-II immunopeptides (PXD020011), chymotrypsin peptides (PXD010154), and
   trypsin peptides (PXD008034), respectively.
   The model can be applied to any peptide, regardless of digestion enzyme, with lengths between
-  7 and 40 amino acids. The modification state is not considered for intensity predictions, only
+  7 and 30 amino acids. The modification state is not considered for intensity predictions, only
   for the m/z values of the MS2 peaks. The model was trained on peptides with oxidation of
   methionine and fixed or variable carbamidomethylation of cysteine. Prediction accuracy for
   peptides with other modifications may vary and should be evaluated on a case-by-case basis.
