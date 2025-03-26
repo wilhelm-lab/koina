@@ -3,6 +3,7 @@ import numpy as np
 SEQ_LEN = 30
 ALPHABET_UNMOD = {
     "A": 1,
+    "C": 2,
     "D": 3,
     "E": 4,
     "F": 5,
