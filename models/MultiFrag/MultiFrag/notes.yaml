@@ -9,7 +9,7 @@ description: |
 
   Evaluation - The model was evaluated on its loss function, as well as the Pearson correlation between predictions and targets.
 
-tag: "Intensity"
+tag: "Fragment Intensity"
 examples:
   inputs:
     [
