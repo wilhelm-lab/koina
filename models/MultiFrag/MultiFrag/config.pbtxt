@@ -12,7 +12,7 @@ input [
     reshape: { shape: [ ] },
   },
   {
-    name: 'fragmentation_methods',
+    name: 'fragmentation_types',
     data_type: TYPE_STRING,
     dims: [1],
     reshape: { shape: [ ] },

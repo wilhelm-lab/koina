@@ -1,5 +1,14 @@
 description: |
-  MultiFrag is a Prosit model trained jointly on 5 different types of fragmentation spectra -> HCD, ECD, EID, UVPD, and ETciD. The model outputs 813 ion types, which include ion series a, a+proton, b, c, c+proton, x, x+proton, y, z, z+proton, up to length 29 and product charge +3. The model can be run on peptide lengths up through 30, and precursor charges up through 6. The allowed modifications are N-terminal acetylation ([UNIMOD:1]) and Oxidation ([UNIMOD:35]). Carbamidomethylation is fixed on Cysteine. You must always include its Unimod code, in a peptide sequence with cysteine -> C[UNIMOD:4]. The fragmentation methods are also included as input to the model, input as strings ("HCD", "ECD", "EID", "UVPD", "ETciD"). MultiFrag outputs all 815 ion intensities, their string annotations, and the ions' m/z's, with impossible ions (too long or too high product charge) having m/z=-1.0.
+  General use notes - MultiFrag is a Prosit model trained jointly on 5 different types of fragmentation spectra -> HCD, ECD, EID, UVPD, and ETciD. The model outputs 815 ion types, which include ion series a, a+proton, b, c, c+proton, x, x+proton, y, z, z+proton, up to length 29 and product charge +3. The model can be run on peptide lengths up through 30, and precursor charges up through 6. The allowed modifications are N-terminal acetylation ([UNIMOD:1]) and Oxidation ([UNIMOD:35]). Carbamidomethylation is fixed on Cysteine. You must always include its Unimod code, in a peptide sequence with cysteine -> C[UNIMOD:4]. The fragmentation types are also included as input to the model, input as strings ("HCD", "ECD", "EID", "UVPD", "ETciD"). MultiFrag outputs all 815 ion intensities, their string annotations, and the ions' m/z's, with impossible ions (too long or too high product charge) having m/z=-1.0.
+
+  Data - The model was trained on ~2.1 million unique PSMs, obtained through MSFragger searches, roughly equally divided between the 5 fragmentation types. Each fragmentation type was run on digests using 5 different enzymes: LysN, LysC, GluC, Trypsin, and Chymotrypsin. The instrument used was an Orbitrap Exploris (Thermo Fisher Scientific) equipped with an Omnitrap (Fasmatech). The raw files were provided by Dr. Shabaz Mohammed of The University of Oxford, Oxford, England.
+
+  Optimization - The model was trained on the masked spectral distance loss function, desinged to minimize the spectral angle between model predictions and target spectra.
+
+  Model - The model's architecture is a recurrent neural network equipped with GRU cell memory units. The architecture is similar to Prosit, with modifications to accomodate the unstructured output space of 815 ions. Predicted ions are chosen the basis of frequency, retaining only the ions that were annotated at least 100 times throughout the entire dataset.
+
+  Evaluation - The model was evaluated on its loss function, as well as the Pearson correlation between predictions and targets.
+
 tag: "Intensity"
 examples:
   inputs:
@@ -17,7 +26,7 @@ examples:
         "data": "[2, 2]"
       },
       {
-        "name": "fragmentation_methods",
+        "name": "fragmentation_types",
         "httpdtype": "BYTES",
         "shape": "[2,1]",
         "data": '["UVPD", "HCD"]'

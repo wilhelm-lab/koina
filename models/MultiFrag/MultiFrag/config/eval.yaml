@@ -1,2 +1,0 @@
-model_wts: save/2024-12-24_07-06-13/weights/model_epoch29_0.2945
-out_name: 'save/test_results_241224_allinone.parquet'

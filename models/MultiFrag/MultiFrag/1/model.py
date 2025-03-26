@@ -5,7 +5,6 @@ import json
 import triton_python_backend_utils as pb_utils
 import os
 from MultiFrag.MultiFrag.mass_scale import Scale
-import yaml
 
 def tokenize_modified_sequence(modseq):
     tokenized = []
@@ -51,26 +50,20 @@ class TritonPythonModel:
 
         P = "MultiFrag/MultiFrag"
 
-        ion_dict = pd.read_csv(os.path.join(P, "filtered_ion_dict.csv"), index_col='full')
-        self.ion_dict = ion_dict
-        with open(os.path.join(P, "config", "model.yaml")) as f: model_config = yaml.safe_load(f)
-        with open(os.path.join(P, "config", "loader.yaml")) as f: load_config = yaml.safe_load(f)
+        self.ion_dict = pd.read_csv(os.path.join(P, "filtered_ion_dict.csv"), index_col='full')
         num_tokens = len(open(os.path.join(P, "token_dictionary.txt")).read().strip().split("\n")) + 1
-        final_units = len(ion_dict)
-        max_charge = load_config['charge'][-1]
+        final_units = len(self.ion_dict)
+        max_charge = 6
                 
         self.token_dict = create_dictionary(os.path.join(P, "token_dictionary.txt"))
         self.token_dict['C'] = self.token_dict['C[UNIMOD:4]']
-        self.max_length = load_config['pep_length'][-1]
+        self.max_length = 30
         
-        method_list = load_config['method_list']
+        method_list = ['ECD', 'EID', 'UVPD', 'HCD', 'ETciD']
         self.method_dic = {method: m for m, method in enumerate(method_list)}
         self.method_dicr = {n:m for m,n in self.method_dic.items()}
 
         self.scale = Scale()
-
-    def initialize(self, args):
-        model_config = json.loads(args["model_config"])
 
     def filter_fake(self, peptide_length, precursor_charge):
         return np.array(
@@ -105,7 +98,7 @@ class TritonPythonModel:
                 .flatten()
             )
             method_in = (
-                pb_utils.get_input_tensor_by_name(request, "fragmentation_methods")
+                pb_utils.get_input_tensor_by_name(request, "fragmentation_types")
                 .as_numpy()
                 .flatten()
             ).astype('U46')
