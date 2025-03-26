@@ -25,6 +25,12 @@ externalDocs:
   url: https://github.com/wilhelm-lab/koina
 servers:
   - url: {{tmpl_url}}/v2/models
+tags: # Define order of Tags
+  - name: Fragment intensity
+  - name: Retention Time
+  - name: Collisional cross section
+  - name: Cross-linking fragment intensity
+  - name: Metabolomics fragment intensity
 paths:
 {% for model in models %}
   /{{model.name}}/infer:
@@ -34,12 +40,10 @@ paths:
       summary: {{model.name}}
       description: |
         ### Summary
+        {%filter indent(width=8) %}{{model.note.description }}{%endfilter%}
 
-        {{model.note.description }}
-
-        ### Citation
-
-        {{model.note.citation }}
+        ### Citaton
+        {%filter indent(width=8) %}{{model.note.citation }}{%endfilter%}
 
       x-code-samples:
         - lang: Python

@@ -1,6 +1,6 @@
 description: | 
   PTM-Model for ProSIMSIt
-tag: "Intensity"
+tag: "Fragment intensity"
 tag_url: "https://www.proteomicsdb.org/"
 examples:
   inputs:
