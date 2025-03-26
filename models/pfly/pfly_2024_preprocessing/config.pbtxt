@@ -1,0 +1,17 @@
+name: "pfly_2024_preprocessing"
+backend: "python"
+max_batch_size: 128
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [1]
+  }
+]
+output [
+  {
+   name: 'encoded_sequences',
+   data_type: TYPE_INT64,
+   dims: [40]
+  }
+]
