@@ -9,7 +9,6 @@ from MultiFrag.MultiFrag.mass_scale import Scale
 def tokenize_modified_sequence(modseq):
     tokenized = []
     modseq = re.sub('-|(\[])', '', modseq) # remove - or []
-    #modseq = re.sub('(\[]-)|(\-\[])','',modseq)
 
     pos = 0
     while pos < len(modseq):
