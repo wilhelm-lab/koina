@@ -40,7 +40,7 @@ examples:
           "name": "peptide_sequences",
           "httpdtype": "BYTES",
           "shape": "[2,1]",
-          "data": '["[UNIMOD:737]-AAAAAKAK", "[UNIMOD:737]-AAAAAKAK"]'
+          "data": '["AAR[UNIMOD:7]AAAKAK", "AQ[UNIMOD:7]AN[UNIMOD:7]AAAKAK"]'
       },
       {
           "name": "precursor_charges",
