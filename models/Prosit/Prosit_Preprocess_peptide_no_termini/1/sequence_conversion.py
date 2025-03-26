@@ -35,7 +35,7 @@ ALPHABET_MOD = {
 ALPHABET = {**ALPHABET_UNMOD, **ALPHABET_MOD}
 
 
-def parse_modstrings(sequences, alphabet, translate=False, filter=False):
+def parse_modstrings(sequences, alphabet, translate=False):
     """
     :param sequences: List of strings
     :param ALPHABET: dictionary where the keys correspond to all possible 'Elements' that can occur in the string
@@ -52,8 +52,10 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
                 return [alphabet[aa] for aa in split_seq]
             elif not translate:
                 return split_seq
-        elif filter:
-            return [0]
+        else:
+            raise ValueError(
+                f"Some modifications not supported in sequence: {sequence}"
+            )
 
     pattern = sorted(alphabet, key=len, reverse=True)
     pattern = [re.escape(i) for i in pattern]
@@ -64,8 +66,7 @@ def parse_modstrings(sequences, alphabet, translate=False, filter=False):
 def character_to_array(character):
     array = np.zeros((1, SEQ_LEN), dtype=np.uint8)
     generator_sequence_numeric = parse_modstrings(
-        [character], alphabet=ALPHABET, translate=True, filter=True
-    )
+        [character], alphabet=ALPHABET, translate=True)
     enum_gen_seq_num = enumerate(generator_sequence_numeric)
     for i, sequence_numeric in enum_gen_seq_num:
         if len(sequence_numeric) > SEQ_LEN:

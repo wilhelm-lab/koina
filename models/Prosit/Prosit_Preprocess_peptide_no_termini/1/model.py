@@ -1,6 +1,6 @@
 import triton_python_backend_utils as pb_utils
 import numpy as np
-from sequence_conversion import character_to_array, ALPHABET_MOD
+from sequence_conversion import character_to_array
 import json
 
 
