@@ -20,6 +20,9 @@ description: |
   Model Evaluation: The model is evaluated on multiple datasets covering peptides from ProteomeTools, Human, E. coli, Drosophila and multiple MS instruments Lumos, timsTOF, QE, Orbitrap Verlos, QEHF and QEHF-X.
   Applicability: The model is applicable to the prediction of MS2 spectra for HLA peptides with different modifications.
   **Input notes**
+  All modifcations need to be explicitly encoded in the sequence. Supported are all modification from UNIMOD. Cysteine residues should be carbamidomethylated (C[UNIMOD:4]). There is no limit to sequence length.
+  There are no limitations to valid Precursor Charges.
+  There are no limitations to valid Collision energies.
   Valid `instrument_types` are `["QE", "LUMOS", "TIMSTOF", "SCIEXTOF"]`.
   **Output notes**
   Intensity was normalized to the highest predicted intensity value.

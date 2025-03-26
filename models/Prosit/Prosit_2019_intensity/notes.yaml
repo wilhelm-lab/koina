@@ -24,9 +24,12 @@ description: |
   Model performance variability: The model's performance is not highly variable. The model shows consistent performance across different collision energies, peptides, and datasets. The model’s predictions can be calibrated to the NCE used for acquisition.
   Data applicability: The model is applicable to a wide range of peptide data, but it is not applicable to data using different fragmentation techniques or mass analyzers from those used in training.
   **Input notes**
-  Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]).
+  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are 1 to 30 AA. Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]). Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
+  Valid Precursor Charges are 1 to 6.
+  There are no limitations to valid Collision energies.
   **Output notes**
   Intensity was normalized to the highest predicted intensity value.
+  The model predicts y and b ions index 1-30 and charge 1-3. A maks is applied for impossible peaks (i.e. exceeding peptide length, or precursor charge).
 citation: |
   Prosit: proteome-wide prediction of peptide tandem mass spectra by deep learning.
   Gessulat, S., Schmidt, T., Zolg, D.P. et al.
