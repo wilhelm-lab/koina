@@ -4,7 +4,7 @@ import re
 import json
 import triton_python_backend_utils as pb_utils
 import os
-from MultiFrag.MultiFrag.mass_scale import Scale
+from MultiFrag.Prosit_2025_intensity_MultiFrag.mass_scale import Scale
 
 def tokenize_modified_sequence(modseq):
     tokenized = []
@@ -47,7 +47,7 @@ class TritonPythonModel:
         self.output_dtype = None
         self.logger = pb_utils.Logger
 
-        P = "MultiFrag/MultiFrag"
+        P = "MultiFrag/Prosit_2025_intensity_MultiFrag"
 
         self.ion_dict = pd.read_csv(os.path.join(P, "filtered_ion_dict.csv"), index_col='full')
         num_tokens = len(open(os.path.join(P, "token_dictionary.txt")).read().strip().split("\n")) + 1
