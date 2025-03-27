@@ -1,6 +1,6 @@
 description: |
   **General**
-  MultiFrag is a Prosit model trained jointly on 5 different types of fragmentation spectra -> HCD, ECD, EID, UVPD, and ETciD. The model outputs 815 ion types, which include ion series a, a+proton, b, c, c+proton, x, x+proton, y, z, z+proton, up to length 29 and product charge +3. 
+  Prosit_2025_intensity_MultiFrag is a Prosit model trained jointly on 5 different types of fragmentation spectra -> HCD, ECD, EID, UVPD, and ETciD. The model outputs 815 ion types, which include ion series a, a+proton, b, c, c+proton, x, x+proton, y, z, z+proton, up to length 29 and product charge +3. 
 
   **Data**
   The model was trained on ~2.1 million unique PSMs, obtained through MSFragger searches, roughly equally divided between the 5 fragmentation types. Each fragmentation type was run on digests using 5 different enzymes: LysN, LysC, GluC, Trypsin, and Chymotrypsin. The instrument used was an Orbitrap Exploris (Thermo Fisher Scientific) equipped with an Omnitrap (Fasmatech). The raw files were provided by Dr. Shabaz Mohammed of The University of Oxford, Oxford, England.
@@ -20,7 +20,7 @@ description: |
   The fragmentation types are input as strings ("HCD", "ECD", "EID", "UVPD", "ETciD").
 
   **Output notes**
-  MultiFrag outputs all 815 ion intensities, their string annotations, and the ions' m/z's, with impossible ions (too long or too high fragment charge) having m/z=-1.0.
+  Prosit_2025_intensity_MultiFrag outputs all 815 ion intensities, their string annotations, and the ions' m/z's, with impossible ions (too long or too high fragment charge) having m/z=-1.0.
 
 tag: "Fragment Intensity"
 examples:
