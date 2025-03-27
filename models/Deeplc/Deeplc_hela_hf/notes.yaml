@@ -27,7 +27,7 @@ description: |
   Data applicability: LC-MS/MS data with reversed phase chromatography and ACN+FA+H2O based mobile phase.
 
   **Input notes**
-  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are 1 to 40 AA. Supported are all modification from UNIMOD. Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
+  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are 1 to 60 AA. Supported are all modification from UNIMOD. Cysteine residues are assumed to be carbamidomethylated (C == C[UNIMOD:4]).
 
   **Output notes**
 
