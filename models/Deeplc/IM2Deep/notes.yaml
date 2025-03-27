@@ -28,6 +28,12 @@ description: |
   Model performance variability: Variable Performance for higher charge states (>=4+) is more variable than performance for lower charge states, because of less training data.
   Data applicability: LC-IM-MS/MS data with trapped ion mobility spectrometry. Other ion mobility techniques such as FAIMS or TWIMS are not supported.
 
+  **Input notes**
+  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are 1 to 40 AA. Supported are all modification from UNIMOD. Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
+  There are no limitations to valid Precursor Charges.
+
+  **Output notes**
+
 citation: | 
   TIMS2Rescore: A DDA-PASEF optimized data-driven rescoring pipeline based on MS2Rescore
   Arthur Declercq, Robbe Devreese, Jonas Scheid, Caroline Jachmann, et al. 

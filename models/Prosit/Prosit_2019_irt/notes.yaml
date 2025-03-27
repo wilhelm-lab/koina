@@ -22,9 +22,10 @@ description: |
   Evaluation method: The model was evaluated using a holdout set and cross-validation. The data was split into three parts: one for training, a test set to control for overfitting, and a holdout set to estimate performance. The model was also evaluated on an independent dataset and showed improved accuracy by transfer learning.
   Independent data: The model has been evaluated on independent data acquired by Bekker-Jensen et al. and on external datasets. The model was also evaluated on non-tryptic peptides.
   **Input notes**
-  Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]).
+  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are 1 to 30 AA. Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]). Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
   **Output notes**
-  The model outputs indexed retention time value.
+  The model outputs indexed retention time. As index a subset of PROCAL peptides were used.
+
 citation: |
   Prosit: proteome-wide prediction of peptide tandem mass spectra by deep learning.
   Gessulat, S., Schmidt, T., Zolg, D.P. et al.

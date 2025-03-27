@@ -18,8 +18,10 @@ description: |
   Single number performance: R2 = 0.986 on regular peptides. R2 = 0.958 on phosphorulated peptides
   Comparison to Baseline Methods: For prediction accuracy for peptides with PTMs the model was compared with DeepLC showing comparable performance (R2 0.95 vs 0.89).
   Evaluation methods: The model was evalutaed on Pan human library from Rosenberger et al. 2014.
-  Applicability: The model is applicable to the prediction of MS2 spectra for HLA peptides with different modifications.
+  Applicability: The model is applicable to the prediction of MS2 spectra for HLA peptides with common modifications (cysteine carbamidomethylation, methionine oxidation).
   **Input notes**
+  All modifcations need to be explicitly encoded in the sequence. Supported any modification from UNIMOD. Cysteine residues should be carbamidomethylated (C[UNIMOD:4]). There is no limit to sequence length.
+  There are no limitations to valid Precursor Charges.
   **Output notes**
 citation: |
   AlphaPeptDeep: a modular deep learning framework to predict peptide properties for proteomics.

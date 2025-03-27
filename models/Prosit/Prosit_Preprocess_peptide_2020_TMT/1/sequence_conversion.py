@@ -32,13 +32,13 @@ ALPHABET_MOD = {
     "C[UNIMOD:4]": 2,
     "K[UNIMOD:259]": 9,  # Map SILAC to unmodified AA
     "R[UNIMOD:267]": 15,  # Map SILAC to unmodified AA
+    
     "K[UNIMOD:737]": 22,
     "K[UNIMOD:2016]": 22,
-    "K[UNIMOD:2016]": 22,
     "K[UNIMOD:214]": 22,
-    "[UNIMOD:730]-": 23,  # N-terminal  mods
-    "[UNIMOD:737]-": 23,
-    "[UNIMOD:2016]-": 23,
+    "K[UNIMOD:730]": 22,
+
+    "[UNIMOD:737]-": 23, # N-terminal  mods
     "[UNIMOD:2016]-": 23,
     "[UNIMOD:214]-": 23,
     "[UNIMOD:730]-": 23,
