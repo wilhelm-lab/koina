@@ -1,10 +1,10 @@
 description: |
-  This model was trained on 215 713 unique peptides acquired on a TripleTOF 5600+ mass spectrometer
-  in beam-type CID mode (PXD000954). It was evaluated on 15 111 unique peptides from PXD001587.
+  This model was trained on 215 713 unique peptides acquired on a TripleTOF 5600+ mass spectrometer in beam-type CID mode (PXD000954). 
+  It was evaluated on 15 111 unique peptides from PXD001587.
   Find out more about this model <a href="https://github.com/compomics/ms2pip">here</a>.
 
-    **Input notes**
-  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are 1 to 30 AA. Supported are all modification from UNIMOD but modifications are only used to shift fragment mz they do not affect intensity.
+  **Input notes**
+  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are up to 30 AA. Supported are all modification from UNIMOD but modifications are only used to shift fragment mz they do not affect intensity.
   There are no limitations to valid Precursor Charges.
   **Output notes**
   Intensity was normalized to the sum of predicted intensity value.

@@ -23,7 +23,7 @@ description: |
   Independent data: The model has been evaluated on independent data acquired by Bayer et al. and on external datasets. The model was also evaluated on TMT-Pro and iTRAQ labeled peptides.
   Data applicability: The model is applicable to isobaric labeled peptides (TMT, TMT-PRO, iTRAQ4 and iTRAQ8) 
   **Input notes**
-  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are 1 to 30 AA. Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]) as well as SILAC (`K[UNIMOD:259]`, `R[UNIMOD:267]`); TMT (`K[UNIMOD:737]`, `[UNIMOD:737]-`); TMTpro (`K[UNIMOD:2016]`, `[UNIMOD:2016]-`); iTRAQ (`K[UNIMOD:214]`, `[UNIMOD:214]-`, `K[UNIMOD:730]`, `[UNIMOD:730]-`) one of the N-terminal modifications is required. Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
+  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are up to 30 AA. Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]) as well as SILAC (`K[UNIMOD:259]`, `R[UNIMOD:267]`); TMT (`K[UNIMOD:737]`, `[UNIMOD:737]-`); TMTpro (`K[UNIMOD:2016]`, `[UNIMOD:2016]-`); iTRAQ (`K[UNIMOD:214]`, `[UNIMOD:214]-`, `K[UNIMOD:730]`, `[UNIMOD:730]-`) one of the N-terminal modifications is required. Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
   **Output notes**
   The model outputs indexed retention time. As index a subset of PROCAL peptides were used.
 citation: |
