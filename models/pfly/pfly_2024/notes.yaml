@@ -1,0 +1,43 @@
+description: |
+  Find out more about this model in the respective preprint.
+
+  **Data**
+  Source of the data: The Pfly model was initially trained on peptide data from the ProteomeTools dataset, extracted from the PRIDE repository under the identifiers PXD004732, PXD010595, and PXD021013, along with supplementary material from corresponding publications. The dataset includes over 1 million unique synthetic peptide sequences derived from the human proteome. To mitigate a potential bias toward peptide synthesizability, the model was fine-tuned using biological data from the ProteomeXchange repository (PXD024364), which contains bottom-up proteomics data from six human cell lines (GM12878, HeLa S3, HepG2, hES1, HUVEC, and K562), fractionated into 24-80 fractions and analyzed using three fragmentation methods (HCD, CAD, and ETD).
+  Representation of complexity:  Initially, the model was trained on synthetic peptides, which ensured high consistency but lacked the full complexity of biological samples. Fine-tuning with enzymatically digested proteomes from different cell lines introduced greater variability in protein abundance, digestion efficiency, and fragmentation patterns, making the model more generalizable.
+  Data acquisition: The ProteomeTools dataset offers homogeneous experimental conditions, ensuring a controlled learning environment. The fine-tuning dataset, however, introduces additional variability due to different cell lines, proteases, and fragmentation techniques, reflecting the conditions seen in real biological experiments.
+  Limitations of the training data: The initial dataset used for training consisted of synthetic peptides, which provided a controlled and consistent learning environment. However, this introduced a bias toward peptides that are easier to synthesize, potentially limiting the model's ability to generalize to biological samples. To address this, the model was fine-tuned on proteomics data from multiple human cell lines, which introduced additional variability in protein abundance, digestion efficiency, and fragmentation patterns. Despite this improvement, the model remains dependent on the experimental conditions under which the training data was acquired. Differences in chromatography settings, mass spectrometry instruments, and sample preparation methods may impact its ability to generalize across all proteomics experiments.
+  False positives/negatives: False positive predictions may arise due to peptides being classified as detectable when, in reality, factors such as co-elution, ion suppression, or misidentifications in MS analysis prevent their detection. Conversely, false negatives occur when peptides are predicted to be undetectable but are experimentally observed, often due to variations in protein abundance or differences in enzymatic digestion. The initial training dataset included rigorous filtering steps to remove low-confidence identifications, but misclassified peptides in biological data remain a challenge. To further refine the model, a rescoring strategy using the Oktoberfest pipeline was employed, demonstrating that a portion of previously misclassified non-flyers were indeed detectable peptides that had been missed during standard MS data processing.
+
+  **Optimization**
+  Optimization target: The model predicts peptide detectability, classifying peptides into flyers (detectable) and non-flyers (undetectable). The fine-tuning step further refines classification by incorporating peptide detectability across different biological conditions.
+  Experimental variability: The fine-tuning process accounts for variability in peptide ionization, retention, and fragmentation, but protein abundance differences in the dataset may still impact predictions.
+  Metric: The study does not explicitly mention a specific spectral similarity metric but does incorporate MS1 intensity values and peptide detectability rates from experimental data.
+  
+  **Model**
+  Interpretability: Pfly is a black-box deep learning model, though attention mechanisms help highlight important sequence features. Fine-tuning with biological data may provide a more realistic feature representation compared to synthetic data.
+  Model type: The model is multi-class (weak, intermediate, and strong flyers).
+  Limitations: Bias towards synthesizability was reduced but may still exist. The model's accuracy depends on experimental conditions, chromatography settings, and MS instrument parameters. Peptide detectability may be influenced by protein abundance rather than intrinsic sequence properties.
+
+  **Evaluation**
+  Performance measures: Reported metrics include binary accuracy (94%), Matthews correlation coefficient (0.85), precision (96%), recall (97%), F1 score (96%), and AUC (0.97).
+  Confusion matrix: onfusion matrices and ROC curves are provided. The fine-tuning dataset helped refine classification boundaries.
+  Comparision to baseline methods: Pfly was benchmarked against PepFormer, DeepMSPeptide, and DeepDetect, outperforming them in both synthetic and biological datasets.
+  Data applicability: The model is optimized for tryptic peptides in LC-ESI-MS experiments but may generalize to other settings with fine-tuning.
+ 
+  If you use predictions generated by this model please cite the preprint.
+citation: |
+  To fly, or not to fly, that is the question: A deep learning model for peptide detectability prediction in mass spectrometry.
+  Abdul-Khalek, N. et al.
+  bioRxiv, pp.2024-10 (2024). https://doi.org/10.1101/2024.10.28.620610 
+
+tag: "Flyability"
+examples:
+  inputs:
+    [
+      {
+          "name": "peptide_sequences",
+          "httpdtype": "BYTES",
+          "shape": "[2,1]",
+          "data": '["AAAAAKAK", "AAAAAKAK"]'
+      }
+    ]
