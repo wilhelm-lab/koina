@@ -22,7 +22,7 @@ description: |
   Model performance variability: The model's performance is not highly variable. The model shows consistent performance across different peptides, and datasets.
   Data applicability: The model is applicable to both tryptic and non-tryptic peptides, particularly HLA peptides. It is applicable to data acquired using CID fragmentation. It is not applicable to data acquired using other fragmentation methods or using different mass analyzers (e.g., HCD fragmentation and Orbitrap analyzer, for which a separate model was trained).
   **Input notes**
-  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are 1 to 30 AA. Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]). Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
+  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are up to 30 AA. Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]). Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
   Valid Precursor Charges are 1 to 6.
   **Output notes**
   Intensity was normalized to the highest predicted intensity value.

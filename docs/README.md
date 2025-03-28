@@ -1,6 +1,6 @@
 # Adding Your Own Model
 
-Before you start working make sure to check out the [Contributor Guidelines](CONTRIBUTING.md).
+Before you start working make sure to check out the [Contributor Guidelines](../CONTRIBUTING.md).
 
 Thank you for contributing to Koina. If at any point during the process you run into issues, don't hesitate to open an issue on [GitHub](https://github.com/wilhelm-lab/koina/issues); we are happy to help you!
 
