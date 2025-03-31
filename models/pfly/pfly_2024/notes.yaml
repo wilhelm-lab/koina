@@ -20,7 +20,7 @@ description: |
 
   **Evaluation**
   Performance measures: Reported metrics include binary accuracy (94%), Matthews correlation coefficient (0.85), precision (96%), recall (97%), F1 score (96%), and AUC (0.97).
-  Confusion matrix: onfusion matrices and ROC curves are provided. The fine-tuning dataset helped refine classification boundaries.
+  Confusion matrix: confusion matrices and ROC curves are provided. The fine-tuning dataset helped refine classification boundaries.
   Comparision to baseline methods: Pfly was benchmarked against PepFormer, DeepMSPeptide, and DeepDetect, outperforming them in both synthetic and biological datasets.
   Data applicability: The model is optimized for tryptic peptides in LC-ESI-MS experiments but may generalize to other settings with fine-tuning.
  
