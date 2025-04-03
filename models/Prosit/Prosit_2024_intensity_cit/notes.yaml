@@ -23,7 +23,7 @@ description: |
   Independent data: The model has been evaluated on independent data acquired Mergner et al. and Wang et al.
   Data applicability: The model is applicable to  both tryptic and non-tryptic un-modified and citrullinated peptides.
   **Input notes**
-  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are 1 to 30 AA. Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]) as well as Citrullination/Deamidation (`R[UNIMOD:7]`, `Q[UNIMOD:7]`, `N[UNIMOD:7]`). Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
+  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are up to 30 AA. Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]) as well as Citrullination/Deamidation (`R[UNIMOD:7]`, `Q[UNIMOD:7]`, `N[UNIMOD:7]`). Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
   Valid Precursor Charges are 1 to 6.
   There are no limitations to valid Collision energies.
   Valid fragmentation types are `HCD` and `CID`.
