@@ -33,7 +33,7 @@ ensemble_scheduling {
       }
     },
     {
-      model_name: "pfly_2024_fine_tuned"
+      model_name: "pfly_2024_fine_tuned_core"
       model_version: -1
       input_map {
         key: "input_1"

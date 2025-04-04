@@ -1,4 +1,4 @@
-name: "pfly_2024_fine_tuned"
+name: "pfly_2024_fine_tuned_core"
 platform: "tensorflow_savedmodel"
 max_batch_size: 128
 input [
