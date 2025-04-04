@@ -5,9 +5,6 @@ import json
 
 class TritonPythonModel:
     def initialize(self, args):
-        # Load model configuration
-        model_config = json.loads(args["model_config"])
-        
         # Define amino acid encoder
         self.aa_encoder = {
             "0": 0,
@@ -38,25 +35,17 @@ class TritonPythonModel:
 
         for request in requests:
             # Retrieve input tensor
-            peptide_input = pb_utils.get_input_tensor_by_name(request, "peptide_sequences").as_numpy()
+            peptide_input = pb_utils.get_input_tensor_by_name(
+                request, "peptide_sequences"
+            ).as_numpy()
 
             # List to hold encoded sequences (shape: [batch_size, 40])
             batch_encoded_sequences = []
 
             for seq in peptide_input:
                 seq = seq[0].decode("utf-8")
-                """
-                print(pep)
-                # Decode input peptide sequence
-                if isinstance(pep, np.ndarray):
-                # Assuming each peptide sequence is a byte string, decode it
-                    seq = pep[0].decode("utf-8")  # pep[0] should be a single byte string
-                seq = pep.decode("utf-8")
-                    
-                # Pad sequence to length 40
-                """
                 seq = seq + "0" * (40 - len(seq))
-                    
+
                 # Encode sequence
                 encoded_seq = [self.aa_encoder[aa] for aa in seq]
 
