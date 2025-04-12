@@ -22,7 +22,7 @@ description: |
   **Output notes**
   Prosit_2025_intensity_MultiFrag outputs all 815 ion intensities, their string annotations, and the ions' m/z's, with impossible ions (too long or too high fragment charge) having m/z=-1.0.
 
-tag: "Fragment Intensity"
+tag: "Fragment intensity"
 examples:
   inputs:
     [
