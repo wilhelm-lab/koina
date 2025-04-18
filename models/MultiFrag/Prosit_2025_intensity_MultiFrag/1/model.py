@@ -130,7 +130,7 @@ class TritonPythonModel:
             anns = np.tile(self.ion_dict.index.to_numpy()[None], [len(charge_in), 1])
 
             output_tensors = [
-                pb_utils.Tensor("intensity", ints.astype(self.output_dtype)),
+                pb_utils.Tensor("intensities", ints.astype(self.output_dtype)),
                 pb_utils.Tensor("mz", mzs.astype(self.output_dtype)),
                 pb_utils.Tensor("annotation", anns.astype(np.object_)),
             ]

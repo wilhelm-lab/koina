@@ -20,7 +20,7 @@ input [
 ]
 output [
   {
-   name: 'intensity',
+   name: 'intensities',
    data_type: TYPE_FP32,
    dims: [-1]
   },
