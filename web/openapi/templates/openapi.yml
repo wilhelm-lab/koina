@@ -42,7 +42,7 @@ paths:
         ### Summary
         {%filter indent(width=8) %}{{model.note.description }}{%endfilter%}
 
-        ### Citaton
+        ### Citation
         {%filter indent(width=8) %}{{model.note.citation }}{%endfilter%}
 
       x-code-samples:
