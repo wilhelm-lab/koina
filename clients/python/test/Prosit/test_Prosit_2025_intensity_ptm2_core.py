@@ -19,7 +19,9 @@ def test_available_grpc():
 
 
 def test_inference():
-    seq = np.load("test/Prosit/arr_Prosit_2025_intensity_ptm2_seq.npy").reshape([-1, 32])
+    seq = np.load("test/Prosit/arr_Prosit_2025_intensity_ptm2_seq.npy").reshape(
+        [-1, 32]
+    )
     charge = np.load("test/Prosit/arr_Prosit_2019_intensity_charge.npy")
     ces = np.load("test/Prosit/arr_Prosit_2019_intensity_ces.npy")
     frag = np.load("test/Prosit/arr_Prosit_2020_intensityTMT_frag.npy").reshape([5, 1])

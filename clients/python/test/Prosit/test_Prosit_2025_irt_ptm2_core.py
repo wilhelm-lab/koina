@@ -19,7 +19,9 @@ def test_available_grpc():
 
 
 def test_inference():
-    seq = np.load("test/Prosit/arr_Prosit_2025_intensity_ptm2_seq.npy").reshape([-1, 32])
+    seq = np.load("test/Prosit/arr_Prosit_2025_intensity_ptm2_seq.npy").reshape(
+        [-1, 32]
+    )
 
     triton_client = grpcclient.InferenceServerClient(url=SERVER_GRPC)
 
