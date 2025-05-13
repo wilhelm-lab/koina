@@ -1,17 +1,40 @@
 description: |
-  The HCD Prosit 2020 model was fine-tuned using 277,781 MS/MS spectra of both tryptic and non-tryptic synthesized peptides measured on a timsTOF Pro. The model architecture remained unchanged. The data was split into three distinct sets with each peptide and subsequence of a peptide only included in one of the three: training (80%, 153,809 tryptic PSMs and 77,577 non-tryptic PSMs), validation (10%, 16,483 tryptic PSMs and 7,778 non-tryptic PSMs), and test (10%, 14,262 tryptic PSMs and 7,872 non-tryptic PSMs).
-
-  For this project, over 300,000 non-tryptic peptides from the ProteomeTools project were measured. Our measurements encompassed a range of collision energies from 20.81 EV to 69.77 eV. The data was analyzed using MaxQuant version 2.1.2.0 with carbamidomethylated cysteine specified as a fixed modification and methionine oxidation as a variable modification.
-
-  The HCD Prosit 2020 model was originally trained on approximately 30 million MS/MS spectra, consisting of 9 million MS/MS spectra of non-tryptic peptides and 21 million previously published tryptic MS/MS spectra. The comparison between the HCD Prosit 2020 model and the newly developed TOF Prosit 2023 model reveals a substantial improvement in normalized spectral contrast angle (SA) between predicted and experimental timsTOF MS/MS spectra for both non-tryptic and tryptic peptides. The TOF Prosit 2023 model achieved a SA ≥ 0.9 for 26.3% of non-tryptic spectra (compared to 2.4% with HCD Prosit 2020) and 42.1% of tryptic spectra (compared to 0.2% with HCD Prosit 2020).
-
-  The TOF Prosit 2023 model demonstrates consistent performance across different precursor charges, peptide lengths, and collision energies, with minimal bias towards C- and N-terminal amino acids. Both the tryptic and non-tryptic timsTOF data are available via PRIDE, with the identifiers PXD019086 and PXD043844, respectively.
-
+  **Data**
+  Source of the data: The HCD Prosit 2020 model was fine-tuned using  a dataset of 277,781 MS/MS spectra acquired from both tryptic and non-tryptic synthetic peptides, measured on a timsTOF Pro instrument
+  Type of molecules: The training data included tryptic peptides, as well as non-tryptic peptides representing HLA class I & II ligands and products of the proteases AspN and LysN.
+  Representation of molecular complexity: The training data was designed to represent a wide variety of peptide sequences and fragmentation patterns, including both tryptic and non-tryptic. The data included a large number of peptides with different amino acid combinations, covering nearly all possible N- and C-terminal amino acid combinations. This was done to address the challenge of identifying non-tryptic HLA peptides, whose fragmentation characteristics can be distinct from tryptic peptides.
+  Data acquisition: The data was acquired using one instrument (timsTOF Pro), with a range of collision energies from 20.81 EV to 69.77 eV.
+  Limitations of the training data: The model was not trained on peptides containing free cysteine side chains or other amino acid modifications that may be identified on HLA peptides.
+  False positives/negatives: The training data was filtered for 1% FDR.
+  **Optimization**
+  Optimization target: y and b fragment ion intensities with charge 1-3
+  Experimental variability: No comparison with experimental variability is published.
+  Metric: Spectral angle (SA) was used to compare predicted and experimental spectra.
+  **Model**
+  Interpretability: The model is a black box, However, the model is split into an encoder and a decoder, which means the model learns an intermediate latent space to represent peptide sequences and parameters which is then used to make predictions.
+  Model type: The model is a regression model, predicting continuous values for fragment ion intensities.
+  Limitations: The model is trained on two fragmentation techniques (HCD and CID), mass analyzers (Orbitrap and Iontrap), and collision energies (20, 23, 25, 30, 35). It interpoaltes well in this range of collision energies but has not been evaluated far outside this range. It has not been evaluated under different conditions or with different instruments or fragmentation techniques.
+  **Evaluation**
+  Performance measures: The performance measures reported include Pearson correlation (R) and normalized spectral angle (SA).
+  Choice of performance measures: SA was chosen because spectral angle is more sensitive as a similarity measure.
+  Single number performance: The spectral angle was used to provide an overall measure of performance, but the distribution of spectral angle values was also examined to assess the model's performance across different types of peptides and conditions.
+  Comparison to SOTA: No model was predicting citrullinated peptides at the time.
+  Evaluation methods: The model was evaluated using cross-validation (training, testing, and holdout sets), and on independent datasets (re-analyzing data from other publications). 
+  Independent data: The model has been evaluated on independent data acquired Phulphagar et al. and Fossati, A. et al.
+  Model performance variability: The model's performance is not highly variable. The model shows consistent performance across different collision energies, peptides, and datasets. The model’s predictions can be calibrated to the NCE used for acquisition.
+  Data applicability: The model is applicable to both tryptic and non-tryptic un-modified and citrullinated peptides. It is applicable to data acquired using HCD and CID fragmentation. It is not applicable to data acquired using other fragmentation methods or using different mass analyzers. (e.g. TOF analyzer)
+  **Input notes**
+  All modifcations need to be explicitly encoded in the sequence. Valid sequences lengths are up to 30 AA. Supported modifications are cysteine carbamidomethylation (C[UNIMOD:4]) and methionine oxidation (M[UNIMOD:35]). Cysteine residues should be carbamidomethylated (C[UNIMOD:4]).
+  Valid Precursor Charges are 1 to 6.
+  There are no limitations to valid Collision energies.
+  **Output notes**
+  Intensity was normalized to the highest predicted intensity value.
+  The model predicts y and b ions index 1-30 and charge 1-3. A maks is applied for impossible peaks (i.e. exceeding peptide length, or precursor charge).
 citation: |
   Fragment ion intensity prediction improves the identification rate of non-tryptic peptides in timsTOF.
   Adams, C., Gabriel, W., Laukens, K. et al.
   Nat Commun 15, 3956 (2024). https://doi.org/10.1038/s41467-024-48322-0
-tag: "Intensity"
+tag: "Fragment intensity"
 examples:
   inputs:
     [

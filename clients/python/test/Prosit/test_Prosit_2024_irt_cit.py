@@ -23,9 +23,9 @@ def test_inference():
         [
             ["AA"],
             ["PEPTIPEPTIR[UNIMOD:7]EPTIPEPTIPEPTIPEPT"],
-            ["R[UNIMOD:7]HKDESTNQCGAVILMFYW"],
+            ["R[UNIMOD:7]HKDESTNQC[UNIMOD:4]GAVILMFYW"],
             ["R[UNIMOD:7]HKDESTNQC[UNIMOD:4]GPAVILMFYW"],
-            ["R[UNIMOD:7]HKDESTNQCGPAVILM[UNIMOD:35]FYW"],
+            ["R[UNIMOD:7]HKDESTNQC[UNIMOD:4]GPAVILM[UNIMOD:35]FYW"],
         ],
         dtype=np.object_,
     )

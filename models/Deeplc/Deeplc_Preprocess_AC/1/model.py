@@ -42,11 +42,12 @@ def atom_count_str_list(atom_count, atom_count_list):
     atom_count = atom_count[1:-1]
     atom_count = atom_count.split(" ")
     for atoms in atom_count:
-        count = re.findall(r"\d+", atoms)
+        count = re.findall(r"\(\d+\)", atoms)[1:-1]
+        atom_key = re.findall("|".join(dict_index_pos.keys()), atoms)[0]
         if len(count) > 0:
-            atom_count_list[dict_index_pos[atoms[0]]] += int(count[0])
+            atom_count_list[dict_index_pos[atom_key]] += int(count[0])
         else:
-            atom_count_list[dict_index_pos[atoms[0]]] += 1
+            atom_count_list[dict_index_pos[atom_key]] += 1
     return atom_count_list
 
 

@@ -139,7 +139,30 @@ const createPayload = async (req) => {
 
 // Route handler for /v2/models/*/usi endpoint
 app.get('/v2/models/*/usi', async (req, res) => {
+  const validModelNames = ['AlphaPeptDeep_ms2_generic',
+    'Prosit_2019_intensity',
+    'Prosit_2020_intensity_CID',
+    'Prosit_2020_intensity_HCD',
+    'Prosit_2020_intensity_TMT',
+    'Prosit_2023_intensity_timsTOF',
+    'Prosit_2024_intensity_PTMs_gl',
+    'Prosit_2024_intensity_cit',
+    'UniSpec',
+    'ms2pip_CID_TMT',
+    'ms2pip_HCD2021',
+    'ms2pip_Immuno_HCD',
+    'ms2pip_TTOF5600',
+    'ms2pip_iTRAQphospho',
+    'ms2pip_timsTOF2023',
+    'ms2pip_timsTOF2024'];
+
   const modelName = req.params[0];
+
+  // validate the model name against the allow list
+  if (!validModelNames.includes(modelName)) {
+    return res.status(400).send('[ERROR] Invalid model name');
+  }
+
   // Make the POST request to the target URL using axios
   try {
     // Modify the requested path to /v2/models/*/infer

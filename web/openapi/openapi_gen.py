@@ -72,11 +72,11 @@ def create_openapi_yaml(models, tmpl_url):
 
 def main(http_url, grpc_url, tmpl_url):
     model_dict = {x.parent.name: x for x in Path("models").rglob("notes.yaml")}
-
     sleep_until_service_starts(http_url)
 
     models = []
-    for name, model_path in model_dict.items():
+    for name in sorted(model_dict.keys()):
+        model_path = model_dict[name]
         logging.info("Start working on model:\t %s", name)
         models.append(
             {

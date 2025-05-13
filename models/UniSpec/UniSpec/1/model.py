@@ -36,9 +36,9 @@ def NCE2eV(nce, mz, charge, instrument="lumos"):
         else:
             RuntimeError("Charge not supported")
     if instrument.lower() in ["qe", "qehfx"]:
-        ev = nce * mz / 500 * cf
+        ev = nce * mz / 500 * cf + 5.7
     elif instrument.lower() == "elite":
-        ev = nce * mz * 500 * cf
+        ev = nce * mz / 500 * cf
     elif instrument.lower() == "velos":
         if charge == 2:
             ev = (0.0015 * nce - 0.0004) * mz
