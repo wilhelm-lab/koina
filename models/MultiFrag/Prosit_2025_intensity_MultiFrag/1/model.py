@@ -90,7 +90,7 @@ class TritonPythonModel:
                 pb_utils.get_input_tensor_by_name(request, "peptide_sequences")
                 .as_numpy()
                 .flatten()
-            ).astype('U100') # binary (b'word') to string ('word')
+            ).astype('U200') # binary (b'word') to string ('word')
             charge_in = (
                 pb_utils.get_input_tensor_by_name(request, "precursor_charges")
                 .as_numpy()
