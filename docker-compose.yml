@@ -9,13 +9,8 @@ services:
     userns_mode: "host"
     volumes:
       - ./models:/models:z
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              device_ids: ["${GPU_DEVICE}"]
-              capabilities: [ gpu ]
+    ports:
+      - "8501:8501"
     shm_size: 8GB
 
   develop:
