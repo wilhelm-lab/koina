@@ -1,8 +1,0 @@
-[MASTER]
-ignore-patterns=.nox,node_modules
-
-[MESSAGES CONTROL]
-disable=E0401, C0114, C0115, C0301, R0801
-
-[FORMAT]
-max-line-length = 88

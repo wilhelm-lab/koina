@@ -17,7 +17,7 @@ info:
     Ludwig Lautenbacher, Kevin L. Yang, Tobias Kockmann, et al.  
     bioRxiv 2024.06.01.596953; doi: https://doi.org/10.1101/2024.06.01.596953
     ```
-
+  version: 0.0.1
   contact:
     email: Ludwig.Lautenbacher@tum.de
 externalDocs:
@@ -25,6 +25,12 @@ externalDocs:
   url: https://github.com/wilhelm-lab/koina
 servers:
   - url: {{tmpl_url}}/v2/models
+tags: # Define order of Tags
+  - name: Fragment intensity
+  - name: Retention Time
+  - name: Collisional cross section
+  - name: Cross-linking fragment intensity
+  - name: Metabolomics fragment intensity
 paths:
 {% for model in models %}
   /{{model.name}}/infer:
@@ -33,13 +39,11 @@ paths:
         - {{model.note.tag}}
       summary: {{model.name}}
       description: |
-        **Summary**
+        ### Summary
+        {%filter indent(width=8) %}{{model.note.description }}{%endfilter%}
 
-        {{model.note.description }}
-
-        **Citaton**
-
-        {{model.note.citation }}
+        ### Citation
+        {%filter indent(width=8) %}{{model.note.citation }}{%endfilter%}
 
       x-code-samples:
         - lang: Python
@@ -136,6 +140,6 @@ components:
           type: array
           example: {{input.data}}
           items:
-            type: {{input.swaggerdtype}}
+            type: {{input.openapidtype}}
   {% endfor %}
 {% endfor %}

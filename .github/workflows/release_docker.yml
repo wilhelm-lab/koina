@@ -1,7 +1,7 @@
 name: Create a tag and publish a Docker image
 
 on:
-  pull_request:
+  pull_request_target:
     branches:
       - main
     types: closed

@@ -12,18 +12,22 @@ export default defineNuxtConfig({
       wasm: true,
     },
   },
-  modules: ["@nuxtjs/tailwindcss", "@nuxt/eslint", "@vueuse/nuxt"],
+
+  modules: ["@nuxtjs/tailwindcss", "@nuxt/eslint", "@vueuse/nuxt", "nuxt-tour"],
+
   eslint: {
     config: {
       stylistic: true,
     },
   },
+
   vite: {
     plugins: [wasm(["biowclib-mz"]), topLevelAwait()],
     build: {
       target: "esnext",
     },
   },
+
   vue: {
     compilerOptions: {
       isCustomElement: (tag) => {
@@ -31,4 +35,6 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  compatibilityDate: "2025-02-04",
 });

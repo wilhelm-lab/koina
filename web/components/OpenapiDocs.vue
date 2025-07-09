@@ -3,7 +3,7 @@
     ref="rapidoc"
     spec-url="/openapi.yml"
     show-header="false"
-    render-style="read"
+    render-style="focused"
     theme="light"
     primary-color="#001bc8"
     allow-authentication="false"
@@ -12,6 +12,7 @@
     info-description-headings-in-navbar="true"
     font-size="largest"
     schema-style="table"
+    @vue:mounted="emitRapiDocUpdated"
   >
     <div slot="footer">
       <slot name="footer"></slot>
@@ -34,6 +35,24 @@ const rapidoc: any = ref(null);
 
 const spectraResults = ref<KoinaSpectrum[]>([]);
 const teleportTarget = ref<HTMLElement | null>(null);
+
+const { $event } = useNuxtApp()
+
+function emitRapiDocUpdated() {
+  $event('rapi-doc-mounted');
+}
+
+function updateRenderStyle() {
+  const navBarWidth = document.querySelector("rapi-doc")?.shadowRoot?.querySelector(".nav-bar")?.clientWidth;
+  if (rapidoc) {
+    if (navBarWidth === 0) {
+      rapidoc.value.renderStyle = "read";
+    } else {
+      rapidoc.value.renderStyle = "focused";
+    }  
+  }
+  
+}
 
 onMounted(() => {
   document.body.classList.add("overflow-hidden");
@@ -83,6 +102,18 @@ onMounted(() => {
         lock = false;
       }
     });
+
+    // Delay the setup of the MutationObserver to ensure the nav-bar is fully rendered
+    setTimeout(() => {
+      const navBar = document.querySelector("rapi-doc")?.shadowRoot?.querySelector(".nav-bar");
+      if (navBar) {
+        const observer = new ResizeObserver(updateRenderStyle);
+        observer.observe(navBar);
+        // updateRenderStyle(); // Initial check
+      } else {
+        console.log("nav-bar element not found");
+      }
+    }, 1000); // Adjust the delay as needed
   }
 });
 

@@ -91,6 +91,21 @@ ensemble_scheduling {
         value: "peptides_in:0"
       }
     },
+	
+	{
+      model_name: "Prosit_Preprocess_collision_energy"
+      model_version: 1
+      input_map {
+        key: "raw_collision_energy"
+        value: "collision_energies"
+      },
+      output_map {
+        key: "norm_collision_energy"
+        value: "norm_collision_energy"
+      }
+    },
+	
+	
     {
       model_name: "Prosit_2024_intensity_cit_core"
       model_version: 1
@@ -99,8 +114,8 @@ ensemble_scheduling {
         value: "peptides_in:0"
       },
       input_map {
-        key: "aligned_collision_energy"
-        value: "collision_energies"
+        key: "collision_energy_aligned_normed"
+        value: "norm_collision_energy"
       },
       input_map {
         key: "precursor_charge_onehot"

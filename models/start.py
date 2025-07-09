@@ -29,7 +29,7 @@ def find_model_dependency_loc(loc: PosixPath) -> Set[PosixPath]:
 
 def find_model_paths(pattern: str) -> List[PosixPath]:
     if type(pattern) is str:
-        return set([Path(x) for x in glob(f"[!repo]**/{pattern}")])
+        return set([Path(x) for x in glob(f"**/{pattern}") if x[:4] != "repo"])
     elif type(pattern) is PosixPath:
         return set([pattern])
     else:

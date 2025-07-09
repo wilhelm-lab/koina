@@ -21,7 +21,7 @@ jobs:
         run: docker compose --env-file .env.ci exec develop koina_format.sh --check
 
       - name: Linting
-        run: docker compose --env-file .env.ci exec develop koina_lint.sh --fail-under=6
+        run: docker compose --env-file .env.ci exec develop koina_lint.sh --fail-under=8
 
       - name: Testing
         run: docker compose --env-file .env.ci exec develop koina_test.sh

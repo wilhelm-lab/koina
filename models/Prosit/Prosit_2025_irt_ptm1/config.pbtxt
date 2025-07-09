@@ -1,0 +1,45 @@
+max_batch_size: 1000
+platform: "ensemble"
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  }
+]
+output [
+  {
+   name: 'irt',
+   data_type: TYPE_FP32,
+   dims: [1]
+  }
+]
+
+ensemble_scheduling {
+  step [
+    {
+      model_name: "Prosit_Preprocess_peptide_ptm1"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      }
+      output_map {
+        key: "peptides_in:0"
+        value: "input_1"
+      }
+    },
+    {
+      model_name: "Prosit_2025_irt_ptm1_core"
+      model_version: 1
+      input_map {
+        key: "input_1"
+        value: "input_1"
+      },
+      output_map {
+        key: "output_1"
+        value: "irt"
+      }
+    }
+  ]
+}
