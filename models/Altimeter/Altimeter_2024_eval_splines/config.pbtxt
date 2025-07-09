@@ -1,6 +1,7 @@
 max_batch_size: 1000
 name: "Altimeter_2024_eval_splines"
 backend: "onnxruntime"
+instance_group [{ kind: KIND_CPU }]
 
 input [
   {

@@ -9,6 +9,8 @@ import re as re
 from pyteomics.auxiliary import _nist_mass
 from pyteomics.mass import Composition
 from pyteomics import mass as pm
+import time
+
 
 C13C12_MASSDIFF_U = _nist_mass["C"][13][0] - _nist_mass["C"][12][0]
 PROTON_MASS_U = _nist_mass["H+"][0][0]
@@ -17,10 +19,10 @@ PROTON_MASS_U = _nist_mass["H+"][0][0]
 class TritonPythonModel:
     def initialize(self, args):
         super().__init__()
-        base_path = "Altimeter/Altimeter_2024_filter_isotopes/"
+        base_path = "model_repository/altimeter/Altimeter_2024_filter_splines_index/"
         with open(base_path + "config.json", "r") as j:
             model_config = json.loads(j.read())
-        self.parseIonDictionary(base_path + "/ion_dictionary.txt")
+        self.parseIonDictionary(base_path + "ion_dictionary.txt")
         self.ion_names = np.array(list(self.ion2index.keys()), dtype=np.object_)
 
         self.max_charge = model_config["max_charge"]
@@ -66,8 +68,10 @@ class TritonPythonModel:
                     )
 
     def execute(self, requests):
+        t0 = time.time()
         responses = []
         for request in requests:
+
             params = eval(request.parameters())
 
             return_b = (
@@ -82,12 +86,12 @@ class TritonPythonModel:
             return_imm = (
                 "return_imm_ions" not in params or params["return_imm_ions"] == "True"
             )
-            #return_NL = (
-            #    "return_neutral_losses" not in params
-            #    or params["return_neutral_losses"] == "True"
-            #)
-            return_NL = False
-            
+            #return_p = False
+            #return_imm = False
+            return_NL = (
+                "return_neutral_losses" not in params
+                or params["return_neutral_losses"] == "True"
+            )
             min_length = int(params["min_length"]) if "min_length" in params else 1
             min_mz = float(params["min_mz"]) if "min_mz" in params else 0
             max_mz = float(params["max_mz"]) if "max_mz" in params else math.inf
@@ -106,36 +110,38 @@ class TritonPythonModel:
             coefficients = pb_utils.get_input_tensor_by_name(
                 request, "coefficients"
             ).as_numpy()
+            
+           
 
             knots = pb_utils.get_input_tensor_by_name(request, "knots").as_numpy()
 
+            AUCs = pb_utils.get_input_tensor_by_name(request, "AUC").as_numpy()
+            
+            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_coefs.npy", 'wb'), coefficients)
+            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_knots.npy", 'wb'), knots)
+            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_AUCs.npy", 'wb'), AUCs)
+
+            #annotations = np.tile(
+            #    self.ion_names.astype(dtype="S23"), knots.shape[0]
+            #).reshape((-1,self.dicsz)) # FIXME
+            
             annotations = np.tile(
-                self.ion_names.astype(dtype="S23"), knots.shape[0]
-            ).reshape((-1, self.dicsz))
-
-            frag_sulfurs = -np.ones_like(annotations, dtype=np.int32)
-            frag_masses = -np.ones_like(annotations, dtype=np.int32)
+                list(self.index2ion.keys()), knots.shape[0]
+            ).reshape((-1,self.dicsz)).astype(np.int32)
+            
+            
+            
             mzs = -np.ones_like(annotations, dtype=np.float32)
-
-            prec_sulfurs = np.zeros_like(precursor_charges, dtype=np.int32)
-            prec_masses = np.zeros_like(precursor_charges, dtype=np.int32)
-
             by_NLs = ["", "H2O", "NH3"] if return_NL else [""]
 
             for i, pep in enumerate(peptides_in):
                 seq, mods = self.parseModifiedPeptide(pep)
-                mono_mass_base, num_sulfur = self.getPrecursorStats(seq, mods)
-                prec_sulf = num_sulfur
-                prec_mass = mono_mass_base
 
-                # , frag_mzs, frag_masses_tmp, frag_sulf
                 filt = self.filter(
                     seq,
                     mods,
                     precursor_charges[i],
                     mzs[i],
-                    frag_sulfurs[i],
-                    frag_masses[i],
                     return_b,
                     return_y,
                     return_p,
@@ -146,25 +152,26 @@ class TritonPythonModel:
                     max_mz,
                 )
 
-                annotations[i][filt] = ""
+                annotations[i][filt] = -1
                 coefficients[i, :, filt] = -1
-                prec_sulfurs[i] = prec_sulf
-                prec_masses[i] = prec_mass
+                AUCs[i][filt] = -1
 
             cf = pb_utils.Tensor("coefficients_filtered", coefficients)
             kf = pb_utils.Tensor("knots_filtered", knots)
             af = pb_utils.Tensor("annotations_filtered", annotations)
             mf = pb_utils.Tensor("mz_filtered", mzs)
-            fs = pb_utils.Tensor("fragment_sulfurs", frag_sulfurs)
-            ps = pb_utils.Tensor("precursor_sulfurs", prec_sulfurs)
-            fm = pb_utils.Tensor("fragment_masses", frag_masses)
-            pm = pb_utils.Tensor("precursor_masses", prec_masses)
+            aucf = pb_utils.Tensor("AUC_filtered", AUCs)
+            
+            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_filtered_coefs.npy", 'wb'), coefficients)
+            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_filtered_knots.npy", 'wb'), knots)
+            
+
             responses.append(
-                pb_utils.InferenceResponse(
-                    output_tensors=[cf, kf, af, mf, fs, ps, fm, pm]
-                )
+                pb_utils.InferenceResponse(output_tensors=[cf, kf, af, mf, aucf])
             )
 
+        t1 = time.time()
+        print("filter splines:", t1 - t0, flush=True)
         return responses
 
     def finalize(self):
@@ -179,42 +186,21 @@ class TritonPythonModel:
         self.index2ion = {b: a for a, b in self.ion2index.items()}
         self.dicsz = len(self.ion2index)
 
-    def getPrecursorStats(self, seq, mods):
-        num_sulfur = 0
-        mono_mass_base = self.nl2mass["H2O"]
-        for i, aa in enumerate(seq):
-            mono_mass_base += std_aa_mass[aa] + self.unimodID2mass[mods[i]]
-            num_sulfur += aa in ["C", "M"]
-        return mono_mass_base, num_sulfur
-
-    def populateValidIon(self, i, mz, mono_mass, frag_sulf, mzs, masses, sulfurs, filt):
+    def populateValidIon(self, i, mz, mzs, filt):
         mzs[i] = mz
-        masses[i] = mono_mass
-        sulfurs[i] = frag_sulf
         filt[i] = True
 
     def getAnnotName(self, type, nl, frag_z):
-        name = type + nl
+        name = type if nl == "" else type + "-" + nl
         if frag_z > 1:
             name += "^" + str(frag_z)
         return name
 
     def getIonSeries(
-        self,
-        mono_mass_base,
-        charge,
-        type,
-        num_sulfur,
-        mzs,
-        masses,
-        sulfurs,
-        filt,
-        by_NLs,
-        min_mz,
-        max_mz,
+        self, mono_mass_base, charge, type, mzs, filt, by_NLs, min_mz, max_mz
     ):
         for nl in by_NLs:
-            mono_mass = mono_mass_base + self.nl2mass[nl]
+            mono_mass = mono_mass_base - self.nl2mass[nl]
 
             for frag_z in range(1, 1 + min(self.max_charge, charge)):
                 ion = self.getAnnotName(type, nl, frag_z)
@@ -223,13 +209,12 @@ class TritonPythonModel:
                     continue
 
                 mz = (mono_mass / frag_z) + PROTON_MASS_U
-                if mz + (5 * C13C12_MASSDIFF_U) < min_mz or mz > max_mz:
+                if mz < min_mz or mz > max_mz:
                     continue
 
                 ion_index = self.ion2index[ion]
-                self.populateValidIon(
-                    ion_index, mz, mono_mass, num_sulfur, mzs, masses, sulfurs, filt
-                )
+
+                self.populateValidIon(ion_index, mz, mzs, filt)
 
     def filter(
         self,
@@ -237,8 +222,6 @@ class TritonPythonModel:
         mods,
         charge,
         mzs,
-        sulfurs,
-        masses,
         return_b,
         return_y,
         return_p,
@@ -253,64 +236,44 @@ class TritonPythonModel:
         filt = np.full_like(mzs, False, dtype=np.bool_)
 
         if return_b:
-            num_sulfur = 0
-            mono_mass_base = 0  # B ion
+            mono_mass_base = 0
             for i, aa in enumerate(seq[:-1]):
                 mono_mass_base += std_aa_mass[aa] + self.unimodID2mass[mods[i]]
-                num_sulfur += aa in ["C", "M"]
-                self.getIonSeries(
-                    mono_mass_base,
-                    charge,
-                    "b" + str(i + 1),
-                    num_sulfur,
-                    mzs,
-                    masses,
-                    sulfurs,
-                    filt,
-                    by_NLs,
-                    min_mz,
-                    max_mz,
-                )
+                if i >= min_length - 1:
+                    self.getIonSeries(
+                        mono_mass_base,
+                        charge,
+                        "b" + str(i + 1),
+                        mzs,
+                        filt,
+                        by_NLs,
+                        min_mz,
+                        max_mz,
+                    )
 
         if return_y:
-            num_sulfur = 0
-            mono_mass_base = self.nl2mass["H2O"]  # Y ion
+            mono_mass_base = self.nl2mass["H2O"]
             for i, aa in enumerate(reversed(seq[1:])):
                 mono_mass_base += std_aa_mass[aa] + self.unimodID2mass[mods[len(seq)-i-1]]
-                num_sulfur += aa in ["C", "M"]
-                self.getIonSeries(
-                    mono_mass_base,
-                    charge,
-                    "y" + str(i + 1),
-                    num_sulfur,
-                    mzs,
-                    masses,
-                    sulfurs,
-                    filt,
-                    by_NLs,
-                    min_mz,
-                    max_mz,
-                )
+                if i >= min_length - 1:
+                    self.getIonSeries(
+                        mono_mass_base,
+                        charge,
+                        "y" + str(i + 1),
+                        mzs,
+                        filt,
+                        by_NLs,
+                        min_mz,
+                        max_mz,
+                    )
 
         if return_p:
-            num_sulfur = 0
             mono_mass_base = self.nl2mass["H2O"]
             for i, aa in enumerate(seq):
                 mono_mass_base += std_aa_mass[aa] + self.unimodID2mass[mods[i]]
-                num_sulfur += aa in ["C", "M"]
 
             self.getIonSeries(
-                mono_mass_base,
-                charge,
-                "p",
-                num_sulfur,
-                mzs,
-                masses,
-                sulfurs,
-                filt,
-                by_NLs,
-                min_mz,
-                max_mz,
+                mono_mass_base, charge, "p", mzs, filt, by_NLs, min_mz, max_mz
             )
 
         if return_imm and min_length <= 1:
@@ -319,40 +282,17 @@ class TritonPythonModel:
                 if aa in self.aa2nl2imm_annotations:
                     for nl in self.aa2nl2imm_annotations[aa]:
                         annot = self.aa2nl2imm_annotations[aa][nl]
-                        if (
-                            annot.mono_mass + (5 * C13C12_MASSDIFF_U) < min_mz
-                            or annot.mono_mass > max_mz
-                        ):
+                        if annot.mono_mass < min_mz or annot.mono_mass > max_mz:
                             continue
                         self.populateValidIon(
-                            annot.index,
-                            annot.mono_mass,
-                            annot.mono_mass,
-                            annot.sulfurs,
-                            mzs,
-                            masses,
-                            sulfurs,
-                            filt,
+                            annot.index, annot.mono_mass, mzs, filt
                         )
             for pos, mod in mods.items():
                 for nl in self.aa2nl2mod_imm_annotations[mod]:
-                    if len(by_NLs) > 1 or nl == "":
-                        annot = self.aa2nl2mod_imm_annotations[mod][nl]
-                        if (
-                            annot.mono_mass + (5 * C13C12_MASSDIFF_U) < min_mz
-                            or annot.mono_mass > max_mz
-                        ):
-                            continue
-                        self.populateValidIon(
-                            annot.index,
-                            annot.mono_mass,
-                            annot.mono_mass,
-                            annot.sulfurs,
-                            mzs,
-                            masses,
-                            sulfurs,
-                            filt,
-                        )
+                    annot = self.aa2nl2mod_imm_annotations[mod][nl]
+                    if annot.mono_mass < min_mz or annot.mono_mass > max_mz:
+                        continue
+                    self.populateValidIon(annot.index, annot.mono_mass, mzs, filt)
 
         return ~filt
 
@@ -372,23 +312,18 @@ class TritonPythonModel:
         mod = defaultdict(int)
         if len(mss) > 1:
             list2 = [n.split("]") for n in mss[1:]]  # [[UNIMOD:#, AGAGAGA],...]
-
             seq1 = [mss[0]]
             for o in list2:
                 seq1.append(o[1])
             mod_inds = find_mod_indices(seq1[:-1])
-            assert len(mod_inds) == len(list2), "%d | %d" % (
-                len(mod_inds),
-                len(list2),
-            )
+            assert len(mod_inds) == len(list2), "%d | %d" % (len(mod_inds), len(list2))
 
             seq = "".join(seq1)
-
             for o, p in zip(mod_inds, list2):
                 mod[int(o)] = int(p[0].split(":")[-1])
-
         else:
             seq = modseq
+            
         return seq, mod
 
 
