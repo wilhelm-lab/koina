@@ -88,6 +88,6 @@ def test_inference():
     # Assert annotation names are consistent
     assert np.array_equal(
         annotations,
-        np.load("test/Altimeter/arr_Altimeter_2024_spline_filtered_annot.npy", allow_picke=True),
+        np.load("test/Altimeter/arr_Altimeter_2024_spline_filtered_annot.npy", allow_pickle=True),
         equal_nan=False,
     )
