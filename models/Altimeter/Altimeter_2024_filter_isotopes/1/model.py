@@ -336,23 +336,22 @@ class TritonPythonModel:
                         )
             for pos, mod in mods.items():
                 for nl in self.aa2nl2mod_imm_annotations[mod]:
-                    if len(by_NLs) > 1 or nl == "":
-                        annot = self.aa2nl2mod_imm_annotations[mod][nl]
-                        if (
-                            annot.mono_mass + (5 * C13C12_MASSDIFF_U) < min_mz
-                            or annot.mono_mass > max_mz
-                        ):
-                            continue
-                        self.populateValidIon(
-                            annot.index,
-                            annot.mono_mass,
-                            annot.mono_mass,
-                            annot.sulfurs,
-                            mzs,
-                            masses,
-                            sulfurs,
-                            filt,
-                        )
+                    annot = self.aa2nl2mod_imm_annotations[mod][nl]
+                    if (
+                        annot.mono_mass + (5 * C13C12_MASSDIFF_U) < min_mz
+                        or annot.mono_mass > max_mz
+                    ):
+                        continue
+                    self.populateValidIon(
+                        annot.index,
+                        annot.mono_mass,
+                        annot.mono_mass,
+                        annot.sulfurs,
+                        mzs,
+                        masses,
+                        sulfurs,
+                        filt,
+                    )
 
         return ~filt
 
