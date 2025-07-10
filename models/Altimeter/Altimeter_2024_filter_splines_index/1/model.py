@@ -117,14 +117,6 @@ class TritonPythonModel:
 
             AUCs = pb_utils.get_input_tensor_by_name(request, "AUC").as_numpy()
             
-            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_coefs.npy", 'wb'), coefficients)
-            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_knots.npy", 'wb'), knots)
-            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_AUCs.npy", 'wb'), AUCs)
-
-            #annotations = np.tile(
-            #    self.ion_names.astype(dtype="S23"), knots.shape[0]
-            #).reshape((-1,self.dicsz)) # FIXME
-            
             annotations = np.tile(
                 list(self.index2ion.keys()), knots.shape[0]
             ).reshape((-1,self.dicsz)).astype(np.int32)
@@ -161,10 +153,6 @@ class TritonPythonModel:
             af = pb_utils.Tensor("annotations_filtered", annotations)
             mf = pb_utils.Tensor("mz_filtered", mzs)
             aucf = pb_utils.Tensor("AUC_filtered", AUCs)
-            
-            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_filtered_coefs.npy", 'wb'), coefficients)
-            #np.save(open("/storage1/fs1/d.goldfarb/Active/Backpack/models/test_output/arr_Altimeter_2024_filtered_knots.npy", 'wb'), knots)
-            
 
             responses.append(
                 pb_utils.InferenceResponse(output_tensors=[cf, kf, af, mf, aucf])
