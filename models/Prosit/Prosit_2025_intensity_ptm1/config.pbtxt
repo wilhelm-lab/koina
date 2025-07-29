@@ -20,6 +20,11 @@ input [
     name: "fragmentation_types",
     data_type: TYPE_STRING,
     dims: [1]
+  },
+  {
+    name: "instrument_types",
+    data_type: TYPE_STRING,
+    dims: [1]
   }
 ]
 output [
@@ -67,6 +72,18 @@ ensemble_scheduling {
       }
     },
     {
+      model_name: "Prosit_Preprocess_instrument_types"
+      model_version: 1
+      input_map {
+        key: "instrument_types"
+        value: "instrument_types"
+      }
+      output_map {
+        key: "instrument_types_encoding"
+        value: "instrument_types_processed:0"
+      }
+    },
+    {
       model_name: "Prosit_Preprocess_peptide_ptm1"
       model_version: 1
       input_map {
@@ -108,6 +125,10 @@ ensemble_scheduling {
       input_map {
         key: "method_nbr"
         value: "fragmentation_types_processed:0"
+      }
+      input_map {
+        key: "instrument_type"
+        value: "instrument_types_processed:0"
       }
       output_map {
         key: "output_1"
