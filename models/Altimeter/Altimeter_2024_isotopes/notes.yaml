@@ -1,0 +1,65 @@
+description: |
+  <img src="images/Altimeter/altimeter_architecture_isotopes.svg" alt="Altimeter isotopes architecture" width="600px">  
+  **Data**  
+  Source of the data: The model was trained on the ProteomeTools dataset that was re-processed in-house, including both tryptic and non-tryptic spectra. The reprocessed dataset used for training included spectra from peptides digested with trypsin, LysC, AspN, and those representing HLA class I ligands.  
+  Type of molecules: The training set included synthetic peptides covering both tryptic and non-tryptic protease products, including HLA peptides.  
+  Representation of molecular complexity: The dataset spans a wide variety of peptide sequences with diverse amino acid compositions and cleavage patterns, including many relevant for immunopeptidomics.  
+  Data acquisition: The data was acquired using one instrument (Orbitrap Fusion Lumos), with six different collision energies (20, 23, 25, 28, 30, 35).  
+  Limitations of the training data: The model was trained only on peptides containing variable methionine oxidation and static carbamidomethylation of cysteines. Other PTMs or peptides containing free cysteines were not included.  
+  False positives/negatives: The training data was filtered to 1% FDR at the spectrum level. Furthermore, spectra were filtered for a minimum isolation purity of 90%, MS1 isotope cosine similarity of ≥0.95, SAGE hyperscore ≥30, and ≤3 standard deviation from the predicted RT after a spline alignment to Chronologer predictions.  
+
+  **Optimization**  
+  Optimization target: The model was optimized to reconstruct isotope distributions for each fragment by combining predicted total abundances from `Altimeter_2024_intensities` with isolation efficiencies of the precursor.  
+  Experimental variability: No explicit comparison to experimental variability is provided, though normalized spectral angle was used to assess agreement with observed spectra.  
+  Metric: The normalized spectral angle (SA) was used as the primary performance metric to compare predicted and experimental MS2 spectra.  
+
+  **Model**  
+  Interpretability: This model re-isotopes predicted total fragment intensities by approximating fragment isotope distributions using the sulfur-specific spline method from [DOI:10.1021/acsomega.8b01649](https://doi.org/10.1021/acsomega.8b01649). The output reflects realistic fragment isotope patterns modulated by the precursor's isolation profile.  
+  Model type: Post-processing model that generates full isotope distributions for each fragment ion.  
+  Limitations: The model assumes isolation windows that can be represented by isolation efficiencies for precursor isotopes M0-M4. Performance has been validated only for HCD fragmentation in the 20-40 NCE range on Orbitrap instruments.  
+
+  **Evaluation**  
+  Performance measures: The primary evaluation metric was the normalized spectral angle between predicted and observed spectra.  
+  Choice of performance measures: Spectral angle was chosen because it is sensitive to overall spectral similarity and reflects prediction accuracy well across different peptides.  
+  Single number performance: The model achieved a median normalized spectral angle of 0.941 on the test set.  
+  Comparison to baseline methods: While no direct comparison was made, the model builds on `Altimeter_2024_intensities` and introduces isotopic detail that improves compatibility with experimental spectra in DIA settings.  
+  Evaluation methods: The dataset was split at the peptide level into 70% training, 20% validation, and 10% testing. The model was evaluated on the test set and benchmarked across diverse peptide types.  
+  Model performance variability: The model shows consistent accuracy across different protease types and precursor charge states. Accuracy may vary depending on the accuracy of isolation efficiency profiles.  
+  Data applicability: The model is applicable to tryptic and non-tryptic peptides with standard modifications (oxM, carbamidomethyl C), acquired using HCD fragmentation with NCEs in the range 20-40.  
+
+  **Input notes**  
+  <ul> <li>Length: 6-40 amino acids (6-30 recommended).</li> <li>Charge: 1-7 (1-4 recommended).</li> <li>PTMs: Variable oxidation of methionine (M[UNIMOD:35]), static carbamidomethylation of cysteine (C[UNIMOD:4]).</li> <li>NCE: Any value in the range 20-40.</li> <li>Isolated precursor isotopes: M0-M4, provided as five values between 0-1 representing the isolation efficiency of each isotope.</li> </ul>
+  **Output notes**  
+  <ul> <li>The model returns full isotope-resolved intensities for each fragment, derived from re-isotoping the predicted total fragment intensities from <code>Altimeter_2024_intensities</code>.</li> <li>Isotope distributions are approximated using a sulfur-specific spline-based method and scaled based on the isolated precursor isotope profile.</li> <li>Fragment intensities are normalized by the base peak (most intense fragment) in the spectrum.</li> <li>The top 1000 fragments (by intensity) are returned per peptide.</li> <li>The model includes prediction of precursor ions and immonium ions. Annotations follow the <a target="_blank" href="https://www.psidev.info/mzPAF">mzPAF</a> specification.</li> </ul>
+citation: |
+  BioRxiv coming soon.
+
+tag: "Fragment Intensity"
+examples:
+  inputs:
+    [
+      {
+          "name": "peptide_sequences",
+          "httpdtype": "BYTES",
+          "shape": "[2,1]",
+          "data": '["AAAAAKAK", "AC[UNIMOD:4]DEFGHIKLM[UNIMOD:35]NPQRSTVWY"]'
+      },
+      {
+          "name": "precursor_charges",
+          "httpdtype": "INT32",
+          "shape": "[2,1]",
+          "data": '[1,2]'
+      },
+      {
+          "name": "collision_energies",
+          "httpdtype": "FP32",
+          "shape": "[2,1]",
+          "data": '[25, 25]'
+      },
+      {
+          "name": "isotope_isolation_efficiencies",
+          "httpdtype": "FP32",
+          "shape": "[2,5]",
+          "data": '[1.0, 0.8, 0.1, 0.0, 0.0, 1.0, 0.8, 0.1, 0.0, 0.0]'
+      }
+    ]

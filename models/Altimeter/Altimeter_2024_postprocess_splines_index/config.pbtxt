@@ -1,0 +1,53 @@
+max_batch_size: 1000
+
+input [
+  {
+   name: 'annotations',
+   data_type: TYPE_INT32,
+   dims: [380]
+  },
+  {
+   name: 'mz',
+   data_type: TYPE_FP32,
+   dims: [380]
+  },
+  {
+   name: 'coefficients',
+   data_type: TYPE_FP32,
+   dims: [4, 380]
+  },
+  {
+   name: 'knots',
+   data_type: TYPE_FP32,
+   dims: [8]
+  },
+  {
+   name: 'AUC',
+   data_type: TYPE_FP32,
+   dims: [380]
+  }
+  
+]
+
+output [
+  {
+   name: 'coefficients_filtered',
+   data_type: TYPE_FP32,
+   dims: [4, 200]
+  },
+  {
+   name: 'knots_filtered',
+   data_type: TYPE_FP32,
+   dims: [8]
+  },
+  {
+   name: 'annotations_filtered',
+   data_type: TYPE_INT32,
+   dims: [200]
+  },
+  {
+   name: 'mz_filtered',
+   data_type: TYPE_FP32,
+   dims: [200]
+  }
+]

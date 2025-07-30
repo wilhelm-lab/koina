@@ -1,0 +1,223 @@
+max_batch_size: 1000
+name: "Altimeter_2024_splines"
+platform: "ensemble"
+input [
+  {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+     name: 'precursor_charges',
+     data_type: TYPE_INT32,
+     dims: [-1],
+  }
+]
+
+output [
+  {
+   name: 'coefficients',
+   data_type: TYPE_FP32,
+   dims: [4, 200]
+  },
+  {
+   name: 'knots',
+   data_type: TYPE_FP32,
+   dims: [8]
+ },
+ {
+   name: 'annotations',
+   data_type: TYPE_STRING,
+   dims: [200]
+  },
+  {
+   name: 'mz',
+   data_type: TYPE_FP32,
+   dims: [200]
+  }
+]
+
+ensemble_scheduling {
+  step [
+     {
+      model_name: "Altimeter_2024_preprocess_sequence"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "sequence_encoded"
+        value: "preprocess2core_sequence_encoded"
+      }
+     },
+
+      {
+      model_name: "Altimeter_2024_preprocess_charge"
+      model_version: 1
+      input_map {
+        key: "precursor_charges"
+        value: "precursor_charges"
+      },
+      output_map {
+        key: "precursor_charges_FP"
+        value: "preprocess2core_charges"
+      }
+     },
+
+
+     {
+      model_name: "Altimeter_2024_core"
+      model_version: 1
+      input_map {
+        key: "inp"
+        value: "preprocess2core_sequence_encoded"
+      },
+      input_map {
+        key: "inpch"
+        value: "preprocess2core_charges"
+      },
+
+      output_map {
+        key: "coefficients"
+        value: "core2filter_coefficients"
+      },
+      output_map {
+        key: "knots"
+        value: "core2filter_knots"
+      },
+      output_map {
+        key: "AUCs"
+        value: "core2filter_AUC"
+      }
+     },
+
+
+
+     {
+      model_name: "Altimeter_2024_filter_splines"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      input_map {
+        key: "precursor_charges"
+        value: "precursor_charges"
+      },
+      input_map {
+        key: "coefficients"
+        value: "core2filter_coefficients"
+      },
+      input_map {
+        key: "knots"
+        value: "core2filter_knots"
+      },
+      input_map {
+        key: "AUC"
+        value: "core2filter_AUC"
+      },
+
+      output_map {
+        key: "coefficients_filtered"
+        value: "filter2postprocess_coefficients"
+      },
+      output_map {
+        key: "knots_filtered"
+        value: "filter2postprocess_knots"
+      },
+      output_map {
+        key: "annotations_filtered"
+        value: "filter2postprocess_annotations"
+      },
+      output_map {
+        key: "mz_filtered"
+        value: "filter2postprocess_mz"
+      },
+      output_map {
+        key: "AUC_filtered"
+        value: "filter2postprocess_AUC"
+      }
+     },
+
+
+     {
+      model_name: "Altimeter_2024_postprocess_splines"
+      model_version: 1
+      input_map {
+        key: "mz"
+        value: "filter2postprocess_mz"
+      },
+      input_map {
+        key: "annotations"
+        value: "filter2postprocess_annotations"
+      },
+      input_map {
+        key: "coefficients"
+        value: "filter2postprocess_coefficients"
+      },
+      input_map {
+        key: "knots"
+        value: "filter2postprocess_knots"
+      },
+      input_map {
+        key: "AUC"
+        value: "filter2postprocess_AUC"
+      },
+
+      output_map {
+        key: "coefficients_filtered"
+        value: "coefficients"
+      },
+      output_map {
+        key: "knots_filtered"
+        value: "knots"
+      },
+      output_map {
+        key: "annotations_filtered"
+        value: "annotations"
+      },
+      output_map {
+        key: "mz_filtered"
+        value: "mz"
+      }
+     }
+  ]
+}
+
+
+
+parameters [
+  {
+    key: 'return_b_ions',
+    value: { string_value: "true" }
+  },
+  {
+    key: 'return_y_ions',
+    value: { string_value: "true" }
+  },
+  {
+    key: 'return_p_ions',
+    value: { string_value: "true" }
+  },
+  {
+    key: 'return_imm_ions',
+    value: { string_value: "true" }
+  },
+  {
+    key: 'max_frags',
+    value: { string_value: "200" }
+  },
+  {
+    key: 'min_length',
+    value: { string_value: "1" }
+  },
+  {
+    key: 'min_mz',
+    value: { string_value: "0" }
+  },
+  {
+    key: 'max_mz',
+    value: { string_value: "2000" }
+  }
+]
