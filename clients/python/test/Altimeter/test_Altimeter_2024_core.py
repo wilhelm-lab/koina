@@ -1,8 +1,8 @@
 from test.server_config import SERVER_GRPC, SERVER_HTTP
-import tritonclient.grpc as grpcclient
-import numpy as np
 from pathlib import Path
 import requests
+import tritonclient.grpc as grpcclient
+import numpy as np
 
 # To ensure MODEL_NAME == test_<filename>.py
 MODEL_NAME = Path(__file__).stem.replace("test_", "")

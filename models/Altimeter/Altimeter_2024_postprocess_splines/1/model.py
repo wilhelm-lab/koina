@@ -1,3 +1,4 @@
+import json
 import triton_python_backend_utils as pb_utils
 import numpy as np
 
@@ -9,7 +10,7 @@ class TritonPythonModel:
     def execute(self, requests):
         responses = []
         for request in requests:
-            params = eval(request.parameters())
+            params = json.loads(request.parameters())
 
             max_frags = int(params["max_frags"]) if "max_frags" in params else 200
 

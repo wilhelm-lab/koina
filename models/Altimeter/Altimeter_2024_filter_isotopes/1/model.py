@@ -1,11 +1,11 @@
-import triton_python_backend_utils as pb_utils
-import numpy as np
 import json
 import csv
 import math
-from pyteomics.mass import std_aa_mass
+import re
 from collections import defaultdict
-import re as re
+import numpy as np
+import triton_python_backend_utils as pb_utils
+from pyteomics.mass import std_aa_mass
 from pyteomics.auxiliary import _nist_mass
 from pyteomics.mass import Composition
 from pyteomics import mass as pm
@@ -15,10 +15,23 @@ PROTON_MASS_U = _nist_mass["H+"][0][0]
 
 
 class TritonPythonModel:
+    def __init__(self):
+        self.ion_names = None
+        self.max_charge = None
+        self.max_length = None
+        self.unimodID2mass = None
+        self.nl2mass = None
+        self.immonium2composition = None
+        self.aa2nl2imm_annotations = None
+        self.aa2nl2mod_imm_annotations = None
+        self.ion2index = None
+        self.index2ion = None
+        self.dicsz = None
+
     def initialize(self, args):
         super().__init__()
         base_path = "Altimeter/Altimeter_2024_filter_isotopes/"
-        with open(base_path + "config.json", "r") as j:
+        with open(base_path + "config.json", "r", encoding="utf-8") as j:
             model_config = json.loads(j.read())
         self.parseIonDictionary(base_path + "/ion_dictionary.txt")
         self.ion_names = np.array(list(self.ion2index.keys()), dtype=np.object_)
@@ -68,7 +81,7 @@ class TritonPythonModel:
     def execute(self, requests):
         responses = []
         for request in requests:
-            params = eval(request.parameters())
+            params = json.loads(request.parameters())
 
             return_b = (
                 "return_b_ions" not in params or params["return_b_ions"] == "True"
@@ -82,12 +95,12 @@ class TritonPythonModel:
             return_imm = (
                 "return_imm_ions" not in params or params["return_imm_ions"] == "True"
             )
-            #return_NL = (
+            # return_NL = (
             #    "return_neutral_losses" not in params
             #    or params["return_neutral_losses"] == "True"
-            #)
+            # )
             return_NL = False
-            
+
             min_length = int(params["min_length"]) if "min_length" in params else 1
             min_mz = float(params["min_mz"]) if "min_mz" in params else 0
             max_mz = float(params["max_mz"]) if "max_mz" in params else math.inf
@@ -158,10 +171,10 @@ class TritonPythonModel:
             fs = pb_utils.Tensor("fragment_sulfurs", frag_sulfurs)
             ps = pb_utils.Tensor("precursor_sulfurs", prec_sulfurs)
             fm = pb_utils.Tensor("fragment_masses", frag_masses)
-            pm = pb_utils.Tensor("precursor_masses", prec_masses)
+            pmass = pb_utils.Tensor("precursor_masses", prec_masses)
             responses.append(
                 pb_utils.InferenceResponse(
-                    output_tensors=[cf, kf, af, mf, fs, ps, fm, pm]
+                    output_tensors=[cf, kf, af, mf, fs, ps, fm, pmass]
                 )
             )
 
@@ -171,8 +184,8 @@ class TritonPythonModel:
         pass
 
     def parseIonDictionary(self, path):
-        self.ion2index = dict()
-        with open(path, "r") as infile:
+        self.ion2index = {}
+        with open(path, "r", encoding="utf-8") as infile:
             reader = csv.reader(infile, delimiter="\t")
             for row in reader:
                 self.ion2index[row[0]] = len(self.ion2index)
@@ -193,8 +206,8 @@ class TritonPythonModel:
         sulfurs[i] = frag_sulf
         filt[i] = True
 
-    def getAnnotName(self, type, nl, frag_z):
-        name = type + nl
+    def getAnnotName(self, frag_type, nl, frag_z):
+        name = frag_type + nl
         if frag_z > 1:
             name += "^" + str(frag_z)
         return name
@@ -203,7 +216,7 @@ class TritonPythonModel:
         self,
         mono_mass_base,
         charge,
-        type,
+        frag_type,
         num_sulfur,
         mzs,
         masses,
@@ -217,7 +230,7 @@ class TritonPythonModel:
             mono_mass = mono_mass_base + self.nl2mass[nl]
 
             for frag_z in range(1, 1 + min(self.max_charge, charge)):
-                ion = self.getAnnotName(type, nl, frag_z)
+                ion = self.getAnnotName(frag_type, nl, frag_z)
 
                 if ion not in self.ion2index:
                     continue
@@ -276,7 +289,9 @@ class TritonPythonModel:
             num_sulfur = 0
             mono_mass_base = self.nl2mass["H2O"]  # Y ion
             for i, aa in enumerate(reversed(seq[1:])):
-                mono_mass_base += std_aa_mass[aa] + self.unimodID2mass[mods[len(seq)-i-1]]
+                mono_mass_base += (
+                    std_aa_mass[aa] + self.unimodID2mass[mods[len(seq) - i - 1]]
+                )
                 num_sulfur += aa in ["C", "M"]
                 self.getIonSeries(
                     mono_mass_base,
@@ -334,7 +349,7 @@ class TritonPythonModel:
                             sulfurs,
                             filt,
                         )
-            for pos, mod in mods.items():
+            for _, mod in mods.items():
                 for nl in self.aa2nl2mod_imm_annotations[mod]:
                     annot = self.aa2nl2mod_imm_annotations[mod][nl]
                     if (
@@ -376,10 +391,7 @@ class TritonPythonModel:
             for o in list2:
                 seq1.append(o[1])
             mod_inds = find_mod_indices(seq1[:-1])
-            assert len(mod_inds) == len(list2), "%d | %d" % (
-                len(mod_inds),
-                len(list2),
-            )
+            assert len(mod_inds) == len(list2), f"{len(mod_inds)} | {len(list2)}"
 
             seq = "".join(seq1)
 
@@ -403,14 +415,14 @@ class annot_stats:
         for nl in NLs:
             if nl[0].isdigit():
                 nl_count = int(re.search("^\\d*", nl).group(0))
-                for j in range(nl_count):
+                for _ in range(nl_count):
                     ef -= Composition(formula=nl[len(str(nl_count)) :])
             else:
                 ef -= Composition(formula=nl)
         for ng in NGs:
             if ng[0].isdigit():
                 ng_count = int(re.search("^\\d*", ng).group(0))
-                for j in range(ng_count):
+                for _ in range(ng_count):
                     ef += Composition(formula=ng[len(str(ng_count)) :])
             else:
                 ef += Composition(formula=ng)

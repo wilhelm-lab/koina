@@ -1,3 +1,4 @@
+import json
 import triton_python_backend_utils as pb_utils
 import numpy as np
 
@@ -10,7 +11,7 @@ class TritonPythonModel:
         responses = []
 
         for request in requests:
-            params = eval(request.parameters())
+            params = json.loads(request.parameters())
 
             max_frags = int(params["max_frags"]) if "max_frags" in params else 1000
 
@@ -32,12 +33,8 @@ class TritonPythonModel:
                 if intensities[i][0] > 0:
                     intensities[i][intensities[i] > 0] /= intensities[i][0]
 
-            intf = pb_utils.Tensor(
-                "intensities_filtered", intensities[:, 0:max_frags]
-            )
-            af = pb_utils.Tensor(
-                "annotations_filtered", annotations[:, 0:max_frags]
-            )
+            intf = pb_utils.Tensor("intensities_filtered", intensities[:, 0:max_frags])
+            af = pb_utils.Tensor("annotations_filtered", annotations[:, 0:max_frags])
             mf = pb_utils.Tensor("mz_filtered", mzs[:, 0:max_frags])
             responses.append(pb_utils.InferenceResponse(output_tensors=[intf, af, mf]))
 

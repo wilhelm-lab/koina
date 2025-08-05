@@ -1,14 +1,25 @@
-import triton_python_backend_utils as pb_utils
-import numpy as np
 import json
 from collections import defaultdict
+import numpy as np
+import triton_python_backend_utils as pb_utils
 
 
 class TritonPythonModel:
+    def __init__(self):
+        self.dic = None
+        self.mdic = None
+        self.seq_len = None
+        self.chlim = None
+        self.chrng = None
+        self.seq_channels = None
+        self.channels = None
+        self.mdicum = None
+        self.um2ch = None
+
     def initialize(self, args):
         super().__init__()
         base_path = "Altimeter/Altimeter_2024_preprocess_sequence/"
-        with open(base_path + "config.json", "r") as j:
+        with open(base_path + "config.json", "r", encoding="utf-8") as j:
             model_config = json.loads(j.read())
 
         self.dic = {b: a for a, b in enumerate(model_config["AAs"])}
@@ -30,7 +41,7 @@ class TritonPythonModel:
 
         responses = []
         for request in requests:
-            
+
             peptides_in = (
                 pb_utils.get_input_tensor_by_name(request, "peptide_sequences")
                 .as_numpy()
@@ -70,10 +81,7 @@ class TritonPythonModel:
             for o in list2:
                 seq1.append(o[1])
             mod_inds = find_mod_indices(seq1[:-1])
-            assert len(mod_inds) == len(list2), "%d | %d" % (
-                len(mod_inds),
-                len(list2),
-            )
+            assert len(mod_inds) == len(list2), f"{len(mod_inds)} | {len(list2)}"
 
             seq = "".join(seq1)
             for o, p in zip(mod_inds, list2):
@@ -94,7 +102,7 @@ class TritonPythonModel:
 
             # Input validation
             if len(seq) > self.seq_len:
-                raise Exception(
+                raise ValueError(
                     "Peptide too long. Sequence:"
                     + pep
                     + " length:"
@@ -107,7 +115,7 @@ class TritonPythonModel:
 
             for j, aa in enumerate(seq):
                 if aa not in self.dic or aa == "X":
-                    raise Exception(
+                    raise ValueError(
                         "Invalid AA in requested peptide. AA:"
                         + aa
                         + " Sequence:"
@@ -116,7 +124,7 @@ class TritonPythonModel:
                         + str(i)
                     )
                 if aa == "C" and mod[j] != 4:
-                    raise Exception(
+                    raise ValueError(
                         "Only carbamidomethylated cysteines are supported. Sequence:"
                         + pep
                         + " Peptide_index:"
@@ -126,7 +134,7 @@ class TritonPythonModel:
 
             for pos, ptm in mod.items():
                 if ptm not in self.mdicum:
-                    raise Exception(
+                    raise ValueError(
                         "Modification not supported. Sequence:"
                         + pep
                         + " mod:"
@@ -136,7 +144,7 @@ class TritonPythonModel:
                         + " Only methionine oxidation '[UNIMOD:35]' and cysteine carbamidomethylation '[UNIMOD:4]' are allowed."
                     )
                 if ptm == 4 and seq[pos] != "C":
-                    raise Exception(
+                    raise ValueError(
                         "Invalid modification position. Sequence:"
                         + pep
                         + " mod:"
@@ -148,7 +156,7 @@ class TritonPythonModel:
                         + " Carbamidomethylation must come after a C"
                     )
                 if ptm == 35 and seq[pos] != "M":
-                    raise Exception(
+                    raise ValueError(
                         "Invalid modification position. Sequence:"
                         + pep
                         + " mod:"
