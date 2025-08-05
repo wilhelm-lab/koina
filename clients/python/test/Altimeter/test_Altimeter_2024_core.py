@@ -54,14 +54,14 @@ def test_inference():
         rtol=0,
         atol=1e-5,
     )
-    
+
     assert np.allclose(
         knots,
         np.load("test/Altimeter/arr_Altimeter_2024_knots.npy"),
         rtol=0,
         atol=1e-5,
     )
-    
+
     assert np.allclose(
         AUCs,
         np.load("test/Altimeter/arr_Altimeter_2024_AUCs.npy"),

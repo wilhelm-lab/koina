@@ -30,16 +30,14 @@ def test_inference():
 
     in_knots = grpcclient.InferInput("knots", knots.shape, "FP32")
     in_knots.set_data_from_numpy(knots)
-    
+
     in_ces = grpcclient.InferInput("inpce", ces.shape, "FP32")
     in_ces.set_data_from_numpy(ces)
 
     result = triton_client.infer(
         MODEL_NAME,
         inputs=[in_coef, in_knots, in_ces],
-        outputs=[
-            grpcclient.InferRequestedOutput("intensities")
-        ],
+        outputs=[grpcclient.InferRequestedOutput("intensities")],
     )
 
     intensities = result.as_numpy("intensities")
@@ -52,4 +50,3 @@ def test_inference():
         rtol=0,
         atol=1e-5,
     )
-

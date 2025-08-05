@@ -24,7 +24,7 @@ def test_inference():
             ["AAAAAA"],
             ["PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
             ["RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
-            ["RHKDESTNQC[UNIMOD:4]GPAVILM[UNIMOD:35]FYW"]
+            ["RHKDESTNQC[UNIMOD:4]GPAVILM[UNIMOD:35]FYW"],
         ],
         dtype=np.object_,
     )
@@ -39,7 +39,7 @@ def test_inference():
 
     in_charge = grpcclient.InferInput("precursor_charges", [4, 1], "INT32")
     in_charge.set_data_from_numpy(charge)
-    
+
     in_ces = grpcclient.InferInput("collision_energies", [4, 1], "FP32")
     in_ces.set_data_from_numpy(ces)
 
@@ -60,7 +60,7 @@ def test_inference():
     assert intensities.shape == (4, 200)
     assert fragmentmz.shape == (4, 200)
     assert annotations.shape == (4, 200)
-    
+
     # Assert intensities consistent
     assert np.allclose(
         intensities,
@@ -69,7 +69,7 @@ def test_inference():
         atol=1e-4,
         equal_nan=True,
     )
-    
+
     # Assert mzs are consistent
     assert np.allclose(
         fragmentmz,
@@ -78,10 +78,13 @@ def test_inference():
         atol=1e-5,
         equal_nan=True,
     )
-    
+
     # Assert annotation names are consistent
     assert np.array_equal(
         annotations,
-        np.load("test/Altimeter/arr_Altimeter_2024_int_filtered_annot.npy", allow_pickle=True),
+        np.load(
+            "test/Altimeter/arr_Altimeter_2024_int_filtered_annot.npy",
+            allow_pickle=True,
+        ),
         equal_nan=False,
     )

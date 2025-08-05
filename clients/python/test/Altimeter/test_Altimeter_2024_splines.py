@@ -24,7 +24,7 @@ def test_inference():
             ["AAAAAA"],
             ["PEPTIPEPTIPEPTIPEPTIPEPTIPEPT"],
             ["RHKDESTNQC[UNIMOD:4]GPAVILMFYW"],
-            ["RHKDESTNQC[UNIMOD:4]GPAVILM[UNIMOD:35]FYW"]
+            ["RHKDESTNQC[UNIMOD:4]GPAVILM[UNIMOD:35]FYW"],
         ],
         dtype=np.object_,
     )
@@ -59,14 +59,16 @@ def test_inference():
     assert coefficients.shape == (4, 4, 200)
     assert fragmentmz.shape == (4, 200)
     assert annotations.shape == (4, 200)
-    
+
     # Assert knots consistent
-    assert np.allclose(knots, 
-                       np.load("test/Altimeter/arr_Altimeter_2024_spline_filtered_knots.npy"),
-                       rtol=0,
-                       atol=1e-5,
-                       equal_nan=True)
-    
+    assert np.allclose(
+        knots,
+        np.load("test/Altimeter/arr_Altimeter_2024_spline_filtered_knots.npy"),
+        rtol=0,
+        atol=1e-5,
+        equal_nan=True,
+    )
+
     # Assert coefficients consistent
     assert np.allclose(
         coefficients,
@@ -75,7 +77,7 @@ def test_inference():
         atol=1e-5,
         equal_nan=True,
     )
-    
+
     # Assert mzs are consistent
     assert np.allclose(
         fragmentmz,
@@ -84,10 +86,13 @@ def test_inference():
         atol=1e-5,
         equal_nan=True,
     )
-    
+
     # Assert annotation names are consistent
     assert np.array_equal(
         annotations,
-        np.load("test/Altimeter/arr_Altimeter_2024_spline_filtered_annot.npy", allow_pickle=True),
+        np.load(
+            "test/Altimeter/arr_Altimeter_2024_spline_filtered_annot.npy",
+            allow_pickle=True,
+        ),
         equal_nan=False,
     )
