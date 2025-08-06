@@ -35,7 +35,7 @@ description: |
 citation: |
     BioRxiv coming soon.
 
-tag: "Fragment Intensity"
+tag: "Fragment intensity"
 examples:
   inputs:
     [
