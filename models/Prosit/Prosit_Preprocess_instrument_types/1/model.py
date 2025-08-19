@@ -23,7 +23,7 @@ class TritonPythonModel:
             ).as_numpy()
 
             instrument_types_encoding = np.zeros(instrument_types.shape)
-            for k, v in {"eclipse": 0, "astral": 1}.items():
+            for k, v in {"LUMOS": 0, "ASTRAL": 1, "ECLIPSE": 2}.items():
                 instrument_types_encoding[instrument_types == str.encode(k)] = v
 
             t = pb_utils.Tensor(
