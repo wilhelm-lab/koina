@@ -31,7 +31,9 @@ description: |
   Intensity was normalized to the highest predicted intensity value.
   The model predicts y and b ions index 1-30 and charge 1-3. A maks is applied for impossible peaks (i.e. exceeding peptide length, or precursor charge).
 citation: |
-  Not available yet.
+  Deep Learning Enhances Precision of Citrullination Identification in Human and Plant Tissue Proteomes
+  Wassim Gabriel, Rebecca Meelker González, Sophia Laposchan, et al.
+  Molecular & Cellular Proteomics 24,3 (2025). https://doi.org/10.1016/j.mcpro.2025.100924
 tag: "Fragment intensity"
 examples:
   inputs:

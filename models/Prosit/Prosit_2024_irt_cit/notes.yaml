@@ -28,7 +28,9 @@ description: |
   **Output notes**
   The model outputs indexed retention time. As index a subset of PROCAL peptides were used.
 citation: |
-  Not available yet.
+  Deep Learning Enhances Precision of Citrullination Identification in Human and Plant Tissue Proteomes
+  Wassim Gabriel, Rebecca Meelker González, Sophia Laposchan, et al.
+  Molecular & Cellular Proteomics 24,3 (2025). https://doi.org/10.1016/j.mcpro.2025.100924
 tag: "Retention Time"
 examples:
   inputs:
