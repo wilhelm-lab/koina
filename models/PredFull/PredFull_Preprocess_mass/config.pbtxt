@@ -1,0 +1,22 @@
+max_batch_size: 1000
+input[
+ {
+   name: 'peptide_sequences',
+   data_type: TYPE_STRING,
+   dims: [-1]
+ }
+]
+output [
+ {
+   name: 'precursor_mass',
+   data_type: TYPE_FP32,
+   dims: [1]
+   reshape: {shape: []}
+ },
+ {
+   name: 'precursor_mass_with_oxM',
+   data_type: TYPE_FP32,
+   dims: [1]
+   reshape: {shape: []}
+ }
+]

@@ -1,0 +1,165 @@
+max_batch_size: 1000
+platform: "ensemble"
+input [
+  {
+   name: "peptide_sequences",
+   data_type: TYPE_STRING,
+   dims: [-1]
+  },
+  {
+    name: "precursor_charges",
+    data_type: TYPE_INT32,
+    dims: [1]
+  },
+  {
+    name: "collision_energies",
+    data_type: TYPE_FP32,
+    dims: [1]
+  },
+  {
+    name: "fragmentation_types",
+    data_type: TYPE_STRING,
+    dims: [1]
+  }
+]
+output [
+  {
+   name: "mzs",
+   data_type: TYPE_FP32,
+   dims: [-1]
+  },
+  {
+   name: "intensities",
+   data_type: TYPE_FP32,
+   dims: [-1]
+  }
+]
+
+ensemble_scheduling {
+  step [
+     {
+      model_name: "PredFull_Preprocess_charge"
+      model_version: 1
+      input_map {
+        key: "precursor_charges"
+        value: "precursor_charges"
+      },
+      output_map {
+        key: "precursor_charges_in:0"
+        value: "precursor_charges_in:0"
+      }
+    },
+    {
+      model_name: "PredFull_Preprocess_peptide"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "input"
+        value: "input"
+      }
+    },
+    {
+      model_name: "PredFull_Preprocess_collision_energy"
+      model_version: 1
+      input_map {
+        key: "collision_energies"
+        value: "collision_energies"
+      },
+      output_map {
+        key: "norm_collision_energy"
+        value: "norm_collision_energy"
+      }
+    },
+    {
+      model_name: "PredFull_Preprocess_fragmentation_types"
+      model_version: 1
+      input_map {
+        key: "fragmentation_types"
+        value: "fragmentation_types"
+      },
+      output_map {
+        key: "fragmentation_types_encoding"
+        value: "fragmentation_types_encoding"
+      }
+    },
+    {
+      model_name: "PredFull_Preprocess_mass"
+      model_version: 1
+      input_map {
+        key: "peptide_sequences"
+        value: "peptide_sequences"
+      },
+      output_map {
+        key: "precursor_mass"
+        value: "precursor_mass"
+      },
+      output_map {
+        key: "precursor_mass_with_oxM"
+        value: "precursor_mass_with_oxM"
+      }
+    },
+    {
+      model_name: "PredFull_Preprocess_combine_meta"
+      model_version: 1
+      input_map {
+        key: "precursor_charges_in:0"
+        value: "precursor_charges_in:0"
+      },
+      input_map {
+        key: "fragmentation_types_encoding"
+        value: "fragmentation_types_encoding"
+      },
+      input_map {
+        key: "precursor_mass"
+        value: "precursor_mass"
+      },
+      input_map {
+        key: "norm_collision_energy"
+        value: "norm_collision_energy"
+      }
+      output_map {
+        key: "meta_input"
+        value: "meta_input"
+      }
+    },
+    {
+      model_name: "PredFull_core"
+      model_version: 1
+      input_map {
+        key: "input"
+        value: "input"
+      },
+      input_map {
+        key: "meta_input"
+        value: "meta_input"
+      },
+      output_map {
+        key: "spectrum"
+        value: "spectrum"
+      }
+    },
+    {
+      model_name: "PredFull_Postprocess"
+      model_version: 1
+      input_map {
+        key: "spectrum"
+        value: "spectrum"
+      },
+      input_map {
+        key: "precursor_mass_with_oxM"
+        value: "precursor_mass_with_oxM"
+      },
+      output_map {
+        key: "mzs"
+        value: "mzs"
+      },
+      output_map {
+        key: "intensities"
+        value: "intensities"
+      }
+    }
+  ]
+}
