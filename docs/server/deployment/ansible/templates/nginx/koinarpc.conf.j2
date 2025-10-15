@@ -1,0 +1,60 @@
+upstream koinarpc {
+    server 127.0.0.1:{{ koinarpc_docker_port }} fail_timeout=30s;
+    keepalive 32;
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name "{{ KOINA_RPC_SERVER_NAME }}";
+
+    # ACME Challenge Support
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+        allow all;
+        limit_except GET { deny all; }
+    }
+
+    # Prevent nginx HTTP Server Detection
+    server_tokens off;
+
+    # Enforce HTTPS
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    listen  [::]:443 ssl http2;
+    server_name  "{{ KOINA_RPC_SERVER_NAME }}";
+
+    ssl_certificate "{{ ssl_certificate_path }}";
+    ssl_certificate_key "{{ ssl_certificate_key_path }}";
+
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+
+    server_tokens off;
+    ignore_invalid_headers on;
+    client_max_body_size 64m;
+    proxy_buffering off;
+    proxy_request_buffering off;
+
+    access_log /var/log/nginx/koinarpc.access.log;
+    error_log  /var/log/nginx/koinarpc.error.log;
+
+    location / {
+        grpc_connect_timeout 30s;
+        grpc_read_timeout 300s;
+        grpc_send_timeout 300s;
+
+        grpc_set_header Host $host;
+        grpc_set_header X-Real-IP $remote_addr;
+        grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        grpc_set_header X-Forwarded-Proto $scheme;
+
+        grpc_pass grpc://koinarpc;
+    }
+}

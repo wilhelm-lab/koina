@@ -1,0 +1,13 @@
+---
+collections:
+  - name: community.general
+    source: https://galaxy.ansible.com
+  - name: community.docker
+    source: https://galaxy.ansible.com
+roles:
+  - name: geerlingguy.docker
+    version: 7.6.0
+  - name: geerlingguy.certbot
+    version: 5.4.1
+  - name: geerlingguy.nginx
+    version: 3.2.0

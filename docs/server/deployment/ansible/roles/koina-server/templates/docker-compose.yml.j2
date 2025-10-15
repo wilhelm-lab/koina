@@ -1,0 +1,38 @@
+services:
+  koina-server:
+    container_name: "{{ koina_container_name }}"
+    image: ghcr.io/wilhelm-lab/koina:latest
+    restart: unless-stopped
+    shm_size: "{{ koina_shm_size }}"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      stack:
+        soft: 67108864
+        hard: 67108864
+    ports:
+      - "{{ koinarpc_docker_port }}:{{ koinarpc_docker_port }}"
+      - "{{ koinahttp_docker_port }}:{{ koinahttp_docker_port }}"
+      - "{{ koinametrics_docker_port }}:{{ koinametrics_docker_port }}"
+    networks:
+      - koinanetwork
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    healthcheck:
+      test: ["CMD-SHELL", "curl -v http://localhost:{{ koinahttp_docker_port }}/v2/health/ready || exit 1"]
+      interval: 2m
+      timeout: 10s
+      retries: 3
+      start_period: 10m
+
+networks:
+  koinanetwork:
+    driver: bridge

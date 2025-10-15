@@ -1,0 +1,7 @@
+---
+koina_container_name: "koina-server"
+koina_container_dir: "/opt/koina"
+koinarpc_docker_port: 8500
+koinahttp_docker_port: 8501
+koinametrics_docker_port: 8502
+koina_shm_size: "2gb"

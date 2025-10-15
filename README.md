@@ -2,7 +2,7 @@
 
 ## Accessing a public server
 ### cURL
-Here is an example HTTP request using only cURL sending a POST request to with a JSON body. You can find examples for all available models at https://koina.wilhelmlab.org/. 
+Here is an example HTTP request using only cURL sending a POST request to with a JSON body. You can find examples for all available models at https://koina.wilhelmlab.org/.
 
 ```bash
 curl "https://koina.wilhelmlab.org/v2/models/Prosit_2019_intensity/infer" \
@@ -101,7 +101,7 @@ For examples of how to access models using Python, you can check out [our OpenAP
 Koina depends on [docker](https://docs.docker.com/engine/install/) and [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/overview.html).
 It has only been tested on Linux (Debian/Ubuntu) with Nvidia GPUs.
 
-You can find an ansible script that installs all dependencies [here](docs/server/).
+You can find an Ansible playbook that installs all dependencies and sets up the Koina server [here](docs/server/deployment/ansible/).
 
 ### How to run it
 After installing the dependencies, you can pull the docker image and run it. If you have multiple GPUs installed on your server, you can choose which one is used by modifying `--gpus '"device=0"'`. The time it takes to pull the image depends on your connection speed. The first time, it might take up to 5 min. Due to the layered design of Docker images, updating to the latest version will likely (depending on the amount of changes) only take seconds. When the server is first started, Model files are downloaded from Zenodo. The duration of this also depends on connection speed but might take ~10 min as well. Once models are downloaded, the server startup takes ~2 minutes.
