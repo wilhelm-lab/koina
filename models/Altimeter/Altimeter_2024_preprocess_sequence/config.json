@@ -1,0 +1,15 @@
+{
+    "AAs": "ARNDCQEGHILKMFPSTWYVX",
+    "seq_len": 40,
+    "min_charge": 1,
+    "max_charge": 7,
+    "mod2unimodID": {
+        "Carbamidomethyl": 4,
+        "Oxidation": 35
+    },
+    "unimodID2mass": {
+        "0": 0,
+        "4": 57.021464,
+        "35": 15.994915
+    }
+}

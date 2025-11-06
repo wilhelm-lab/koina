@@ -9,7 +9,7 @@
 
 # Xgboost model
 **xgboost.json
-models/**/*.json
+models/ms2pip/**/*.json
 
 # Hide private models
 **privatemodelrepo

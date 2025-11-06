@@ -1,0 +1,33 @@
+max_batch_size: 1000
+name: "Altimeter_2024_core"
+backend: "pytorch"
+input [
+  {
+   name: 'inp',
+   data_type: TYPE_FP32,
+   dims: [23,40]
+  },
+  {
+    name: 'inpch',
+    data_type: TYPE_FP32,
+    dims: [1],
+  }
+]
+
+output [
+  {
+   name: 'coefficients',
+   data_type: TYPE_FP32,
+   dims: [4, 380]
+  },
+  {
+   name: 'knots',
+   data_type: TYPE_FP32,
+   dims: [-1]
+  },
+  {
+   name: 'AUCs',
+   data_type: TYPE_FP32,
+   dims: [380]
+ }
+]

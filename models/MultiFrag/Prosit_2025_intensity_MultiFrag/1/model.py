@@ -59,7 +59,7 @@ class TritonPythonModel:
         self.max_length = 30
         
         method_list = ['ECD', 'EID', 'UVPD', 'HCD', 'ETciD']
-        self.method_dic = {method: m for m, method in enumerate(method_list)}
+        self.method_dic = {method.upper(): m for m, method in enumerate(method_list)}
         self.method_dicr = {n:m for m,n in self.method_dic.items()}
 
         self.scale = Scale()
@@ -114,7 +114,7 @@ class TritonPythonModel:
                 for x in ts
             )
             # Turn method strings into method integers
-            method_vector = np.array([self.method_dic[x] for x in method_in])
+            method_vector = np.array([self.method_dic[x.upper()] for x in method_in])
             
             # Ensure correct shapes and data types
             tokenized_sequence = tokenized_sequence.astype(np.int32)
