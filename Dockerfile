@@ -38,7 +38,7 @@ RUN echo '[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"' >>
 RUN source /home/devuser/.bashrc && nvm install 20
 # Setup CI scripts
 COPY ./koina_*.sh /usr/local/bin/
-HEALTHCHECK --start-period=30s --interval=15s --retries=20 CMD [ "ls", "/tmp/done_setup" ]
+HEALTHCHECK --start-period=3m --interval=30s --retries=20 CMD [ "ls", "/tmp/done_setup" ]
 # Install pipx dependencies
 ARG PIPX_HOME=/home/devuser/.local/pipx/venvs
 ARG PIPX_BIN_DIR=/home/devuser/.local/bin
