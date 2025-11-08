@@ -23,3 +23,9 @@ models/ms2pip/**/*.json
 # Hide symlink in models/repo
 models/repo/*
 node_modules
+
+# Ansible
+*ansible.log
+*.vault_password
+*collections/
+*geerlingguy*

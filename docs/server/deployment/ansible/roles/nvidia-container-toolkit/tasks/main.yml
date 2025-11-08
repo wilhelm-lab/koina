@@ -1,0 +1,35 @@
+---
+- name: Add apt key for NVIDIA toolkit
+  ansible.builtin.apt_key:
+    url: "https://nvidia.github.io/libnvidia-container/gpgkey"
+    state: present
+
+- name: NVIDIA toolkit repository is registered
+  ansible.builtin.apt_repository:
+    repo: 'deb https://nvidia.github.io/libnvidia-container/stable/deb/amd64 /'
+    state: present
+    filename: nvidia_container_toolkit
+    update_cache: "{{ 'yes' if not ansible_check_mode | bool else 'no' }}"
+  register: nvidia_container_toolkit_apt_repo
+
+- name: Install NVIDIA container toolkit
+  ansible.builtin.apt:
+    name: nvidia-container-toolkit
+    state: present
+
+- name: Configure NVIDIA container runtime for Docker
+  ansible.builtin.command: nvidia-ctk runtime configure --runtime=docker
+  register: configure_runtime
+  changed_when: "'already configured' not in configure_runtime.stdout"
+
+- name: Restart Docker to apply NVIDIA runtime
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+    enabled: true
+
+- name: Verify NVIDIA driver
+  ansible.builtin.command: nvidia-smi
+  register: nvidia_smi
+  changed_when: false
+  failed_when: nvidia_smi.rc != 0

@@ -1,0 +1,131 @@
+---
+# Playbook to deploy Minio on a VM
+- hosts: koina_servers
+  become: yes
+  vars_files:
+    - secret_group_vars/all.yml
+  vars:
+    koinarpc_docker_port: 8500
+    koinahttp_docker_port: 8501
+    koinametrics_docker_port: 8502
+    KOINA_SERVER_NAME: "yourdomain.com"  # Change this to your domain
+    KOINA_RPC_SERVER_NAME: "rpc.yourdomain.com"  # Change this to your domain
+    ADMIN_EMAIL_ADDRESS: "admin@yourdomain.com"  # Change this to your email address for Certbot/Let's Encrypt
+    KOINA_CONTAINER_DIR: "/opt/koina"  # Directory to store Koina Docker container data and the compose file
+  pre_tasks:
+    - name: Update and upgrade apt packages
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: dist
+
+    - name: Install dependencies
+      ansible.builtin.apt:
+        name:
+          - python3
+          - python3-venv
+          - python3-pip
+          - ufw
+          - ubuntu-drivers-common
+        state: present
+        update_cache: yes
+
+    - name: Enable UFW
+      community.general.ufw:
+        state: enabled
+
+    - name: Allow SSH (port 22)
+      community.general.ufw:
+        rule: allow
+        port: '22'
+        proto: tcp
+
+    - name: Allow HTTP (port 80)
+      community.general.ufw:
+        rule: allow
+        port: '80'
+        proto: tcp
+
+    - name: Allow HTTPS (port 443)
+      community.general.ufw:
+        rule: allow
+        port: '443'
+        proto: tcp
+
+    - name: Allow all outgoing traffic
+      community.general.ufw:
+        default: allow
+        direction: outgoing
+
+    - name: Deny all other incoming traffic
+      community.general.ufw:
+        default: deny
+        direction: incoming
+
+    - name: Install Nvidia driver for GPU  # This is not idempotent (need to re-work this).
+      ansible.builtin.command: ubuntu-drivers install --gpgpu
+      register: nvidia_install
+      changed_when: "'installed' in nvidia_install.stdout"
+
+    - name: Detect installed Nvidia server driver versions
+      ansible.builtin.command: bash -c "dpkg -l | awk '/nvidia-compute-utils-[0-9]+-server/{print $2}' | sort -V | tail -n 1"
+      register: nvidia_driver_pkg
+      changed_when: false
+
+    - name: Extract Nvidia driver version number
+      ansible.builtin.set_fact:
+        nvidia_driver_version: "{{ nvidia_driver_pkg.stdout | regex_search('[0-9]+') }}"
+
+    - name: Install matching Nvidia server-utils package
+      ansible.builtin.apt:
+        name: "nvidia-utils-{{ nvidia_driver_version }}-server"
+        state: present
+        update_cache: yes
+      when: nvidia_driver_version is defined and nvidia_driver_version | length > 0
+
+    - name: Reboot if Nvidia driver was installed  # This is not idempotent due to the driver install step above (so reboot always runs :( ).
+      ansible.builtin.reboot:
+        msg: "Rebooting after Nvidia driver installation"
+        pre_reboot_delay: 10
+      when: "'installed' in nvidia_install.stdout"
+
+    - name: Check if nvidia-smi works
+      ansible.builtin.command: nvidia-smi
+      register: nvidia_smi
+      failed_when: nvidia_smi.rc != 0
+      changed_when: false
+  roles:
+    - role: geerlingguy.docker
+      vars:
+        docker_users:
+          - 'ubuntu'
+
+    - role: nvidia-container-toolkit
+
+    - role: geerlingguy.nginx
+      vars:
+        nginx_remove_default_vhost: true
+        nginx_vhosts:
+          - server_name: "{{ KOINA_SERVER_NAME }}"
+            template:  "{{ playbook_dir }}/templates/nginx/koina.conf.j2"
+          - server_name: "{{ KOINA_RPC_SERVER_NAME }}"
+            template:  "{{ playbook_dir }}/templates/nginx/koinarpc.conf.j2"
+        ssl_certificate_path: '/etc/letsencrypt/live/{{ KOINA_SERVER_NAME }}/fullchain.pem'
+        ssl_certificate_key_path: '/etc/letsencrypt/live/{{ KOINA_SERVER_NAME }}/privkey.pem'
+
+    - role: geerlingguy.certbot
+      vars:
+        certbot_create_if_missing: true
+        certbot_create_extra_args: ''
+        certbot_create_method: standalone
+        certbot_admin_email: "{{ ADMIN_EMAIL_ADDRESS }}"
+        certbot_create_standalone_stop_services:
+          - nginx
+        certbot_certs:
+          - domains:
+              - "{{ KOINA_SERVER_NAME }}"
+              - "{{ KOINA_RPC_SERVER_NAME }}"
+            webroot: '/var/www/certbot'
+
+    - role: koina-server
+      vars:
+        koina_container_dir: "{{ KOINA_CONTAINER_DIR }}"
