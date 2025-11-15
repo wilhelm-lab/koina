@@ -138,10 +138,10 @@ onUnmounted(() => {
           <img src="~/assets/img/msaid-logo.png" alt="MSAID logo" class="h-16" />
         </a>
         <a href="https://www.crg.eu/" class="ml-2 mb-2">
-          <img src="~/assets/img/crg_logo.png" alt="BIYSC CRG logo" class="h-16" />
+          <img src="~/assets/img/crg-logo.png" alt="BIYSC CRG logo" class="h-16" />
         </a>
         <a href="https://www.upf.edu/" class="ml-2 mb-2">
-          <img src="~/assets/img/UPFt_logo.png" alt="UPF logo" class="h-16" />
+          <img src="~/assets/img/upf-logo.png" alt="UPF logo" class="h-16" />
         </a>
       </div>
     </div>
