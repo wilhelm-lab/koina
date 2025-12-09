@@ -36,6 +36,7 @@ Adjust the inventory path, extra-vars, and become options for your environment.
 - Ensure to review and modify accordingly:
     - `koina_server.yml` for the overall orchestration and variable flow.
     - `roles/*/defaults/main.yml` to find complete variable names and defaults.
+- Ensure that the `docker_user` variable in `koina_server.yml` is set to the user that should have permissions to run Docker commands (usually the default user on the server, e.g., `ubuntu`).
 
 ## Nginx templates
 

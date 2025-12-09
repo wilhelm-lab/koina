@@ -1,0 +1,28 @@
+---
+- name: Install required packages for firewall
+  ansible.builtin.apt:
+    name:
+      - ufw
+    state: present
+    update_cache: true
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+
+- name: Allow required incoming ports
+  community.general.ufw:
+    rule: allow
+    port: '{{ item }}'
+    proto: tcp
+  loop: "{{ allowed_ports }}"
+
+- name: Allow all outgoing traffic
+  community.general.ufw:
+    default: allow
+    direction: outgoing
+
+- name: Deny all other incoming traffic
+  community.general.ufw:
+    default: deny
+    direction: incoming

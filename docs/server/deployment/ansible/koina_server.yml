@@ -1,7 +1,7 @@
 ---
 # Playbook to deploy Minio on a VM
 - hosts: koina_servers
-  become: yes
+  become: true
   vars_files:
     - secret_group_vars/all.yml
   vars:
@@ -12,10 +12,11 @@
     KOINA_RPC_SERVER_NAME: "rpc.yourdomain.com"  # Change this to your domain
     ADMIN_EMAIL_ADDRESS: "admin@yourdomain.com"  # Change this to your email address for Certbot/Let's Encrypt
     KOINA_CONTAINER_DIR: "/opt/koina"  # Directory to store Koina Docker container data and the compose file
+    docker_user: "ubuntu"  # Change this to the user that should have Docker permissions
   pre_tasks:
     - name: Update and upgrade apt packages
       ansible.builtin.apt:
-        update_cache: yes
+        update_cache: true
         upgrade: dist
 
     - name: Install dependencies
@@ -27,77 +28,16 @@
           - ufw
           - ubuntu-drivers-common
         state: present
-        update_cache: yes
-
-    - name: Enable UFW
-      community.general.ufw:
-        state: enabled
-
-    - name: Allow SSH (port 22)
-      community.general.ufw:
-        rule: allow
-        port: '22'
-        proto: tcp
-
-    - name: Allow HTTP (port 80)
-      community.general.ufw:
-        rule: allow
-        port: '80'
-        proto: tcp
-
-    - name: Allow HTTPS (port 443)
-      community.general.ufw:
-        rule: allow
-        port: '443'
-        proto: tcp
-
-    - name: Allow all outgoing traffic
-      community.general.ufw:
-        default: allow
-        direction: outgoing
-
-    - name: Deny all other incoming traffic
-      community.general.ufw:
-        default: deny
-        direction: incoming
-
-    - name: Install Nvidia driver for GPU  # This is not idempotent (need to re-work this).
-      ansible.builtin.command: ubuntu-drivers install --gpgpu
-      register: nvidia_install
-      changed_when: "'installed' in nvidia_install.stdout"
-
-    - name: Detect installed Nvidia server driver versions
-      ansible.builtin.command: bash -c "dpkg -l | awk '/nvidia-compute-utils-[0-9]+-server/{print $2}' | sort -V | tail -n 1"
-      register: nvidia_driver_pkg
-      changed_when: false
-
-    - name: Extract Nvidia driver version number
-      ansible.builtin.set_fact:
-        nvidia_driver_version: "{{ nvidia_driver_pkg.stdout | regex_search('[0-9]+') }}"
-
-    - name: Install matching Nvidia server-utils package
-      ansible.builtin.apt:
-        name: "nvidia-utils-{{ nvidia_driver_version }}-server"
-        state: present
-        update_cache: yes
-      when: nvidia_driver_version is defined and nvidia_driver_version | length > 0
-
-    - name: Reboot if Nvidia driver was installed  # This is not idempotent due to the driver install step above (so reboot always runs :( ).
-      ansible.builtin.reboot:
-        msg: "Rebooting after Nvidia driver installation"
-        pre_reboot_delay: 10
-      when: "'installed' in nvidia_install.stdout"
-
-    - name: Check if nvidia-smi works
-      ansible.builtin.command: nvidia-smi
-      register: nvidia_smi
-      failed_when: nvidia_smi.rc != 0
-      changed_when: false
+        update_cache: true
   roles:
     - role: geerlingguy.docker
       vars:
         docker_users:
-          - 'ubuntu'
+          - "{{ docker_user }}"
+
+    - role: firewall
+
+    - role: nvidia-driver
 
     - role: nvidia-container-toolkit
 

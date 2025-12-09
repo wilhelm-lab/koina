@@ -1,0 +1,33 @@
+---
+- name: Install Nvidia driver for GPU  # This is not idempotent (need to re-work this).
+  ansible.builtin.command: ubuntu-drivers install --gpgpu
+  register: nvidia_install
+  changed_when: "'installed' in nvidia_install.stdout"
+
+- name: Detect installed Nvidia server driver versions
+  ansible.builtin.command: bash -c "dpkg -l | awk '/nvidia-compute-utils-[0-9]+-server/{print $2}' | sort -V | tail -n 1"
+  register: nvidia_driver_pkg
+  changed_when: false
+
+- name: Extract Nvidia driver version number
+  ansible.builtin.set_fact:
+    nvidia_driver_version: "{{ nvidia_driver_pkg.stdout | regex_search('[0-9]+') }}"
+
+- name: Install matching Nvidia server-utils package
+  ansible.builtin.apt:
+    name: "nvidia-utils-{{ nvidia_driver_version }}-server"
+    state: present
+    update_cache: true
+  when: nvidia_driver_version is defined and nvidia_driver_version | length > 0
+
+- name: Reboot if Nvidia driver was installed  # This is not idempotent due to the driver install step above (so reboot always runs :( ).
+  ansible.builtin.reboot:
+    msg: "Rebooting after Nvidia driver installation"
+    pre_reboot_delay: 10
+  when: "'installed' in nvidia_install.stdout"
+
+- name: Check if nvidia-smi works
+  ansible.builtin.command: nvidia-smi
+  register: nvidia_smi
+  failed_when: nvidia_smi.rc != 0
+  changed_when: false
