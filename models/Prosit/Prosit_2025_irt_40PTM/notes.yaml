@@ -1,7 +1,35 @@
-description: | 
-  PTM-Model for ProSIMSIt
+description: |
+  **Data**
+  Source of the data: The data used to train the retention time model comes from the ProteomeTools project. This included both tryptic data and non-tryptic labeled and unlabeled data, as well as modified peptides from Proteometools and 21PTMs paper. The data consisted of tandem mass spectra acquired from synthetic peptides. This project synthesized and analyzed over 2.4M peptides using multi-modal LC-MS/MS.
+  Type of molecules: The training data included TMT-labeled and unlabeled tryptic peptides, as well as non-tryptic peptides representing HLA class I & II ligands and products of the proteases AspN and LysN. Data also included The model was trained on peptides containing free cysteine side chains and modified peptide covering 40 PTM–residue combinations.
+  Representation of molecular complexity: The training data was designed to represent a wide variety of peptide sequences and fragmentation patterns, With augemntation to increase chemical space covered by the training data. The data included a large number of peptides with different amino acid combinations, covering nearly all possible N- and C-terminal amino acid combinations. This was done to address the challenge of identifying non-tryptic HLA peptides, whose fragmentation characteristics can be distinct from tryptic peptides.
+  Data acquisition: The data was acquired using similar instruments, settings and mass analyzers. Specifically, an Orbitrap Fusion Lumos mass spectrometer coupled with a Dionex 3000 HPLC system was used for data acquisition.
+  False positives/negatives: The training data was filtered for 1% FDR.
+  **Optimization**
+  Optimization target: iRT values for peptides.
+  Experimental variability: No comparison with experimental variability is published.
+  Metric: Mean Absolute Error (MAE) was used to compare predicted and experimental iRT.
+  **Model**
+  Interpretability: The model is a black box, However, the model is split into an encoder and a decoder, which means the model learns an intermediate latent space to represent peptide sequences and parameters which is then used to make predictions.
+  Model type: The model performs regression, predicting a continuous iRT value.
+  Limitations of the model: The model is limited by the type and conditions of chromatography used for retention time prediction. Within limits the predictions can be aligned to experimental values with a subset of the data.
+  **Evaluation**
+  Performance measures: Pearson correlation (R) and Δt95%, the time window required to encompass 95% of all peptides around the diagonal.
+  Choice of performance measures: Pearson correlation (R) is chosen to determine the linear correlation between predicted and experimental values. The Δt95% is chosen to quantify the deviation between the predicted and measured retention times and to indicate the time window in which 95% of peptides are found.
+  Single number for performance: When reporting a single number for performance, the R value is used, which represents the linear correlation between predicted and measured values.
+  Comparison to SOTA: DeepLC
+  Evaluation method: The model was evaluated using a holdout set and cross-validation. The data was split into three parts: one for training, a test set to control for overfitting, and a holdout set to estimate performance. The model was also evaluated on an independent dataset and showed improved accuracy by transfer learning.
+  Independent data: The model has been evaluated on independent data acquired by Bayer et al. and on external datasets. The model was also evaluated on TMT-Pro and iTRAQ labeled peptides.
+  Data applicability: The model is applicable to both tryptic and non-tryptic modified peptides. It is applicable to data acquired using HCD and CID fragmentation. It is not applicable to data acquired using other fragmentation methods or using different mass analyzers. (e.g. TOF analyzer)
+  **Input notes**
+  All modifcations need to be explicitly encoded in the sequence with the unimod id. Valid sequences lengths are up to 30 AA. All unimod modifications are supported.
+  **Output notes**
+  The model outputs indexed retention time. As index a subset of PROCAL peptides were used.
+citation: |
+  Learning the Unseen: Data-Augmented Deep Learning for PTM Discovery with Prosit-PTM
+  Wassim Gabriel, Daniel P. Zolg, Victor Giurcoiu, Omar Shouman, et al.
+  BioarXiv 2025 DOI: 10.1101/2025.11.07.687302
 tag: "Retention Time"
-tag_url: "https://www.proteomicsdb.org/"
 examples:
   inputs:
     [
