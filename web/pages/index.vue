@@ -143,6 +143,12 @@ onUnmounted(() => {
         <a href="https://www.upf.edu/" class="ml-2 mb-2">
           <img src="~/assets/img/upf-logo.png" alt="UPF logo" class="h-16" />
         </a>
+        <a href="https://www.denbi.de/" class="ml-2 mb-2">
+          <img src="~/assets/img/denbi-logo.svg" alt="DENBI logo" class="h-16" />
+        </a>
+        <a href="https://www.fz-juelich.de/en/ibg/ibg-5/research/data-science-and-bioinformatics-for-mass-spectrometry-of-small-molecules" class="ml-2 mb-2">
+          <img src="~/assets/img/fz-juelich-logo.svg" alt="FZ Juelich logo" class="h-16" />
+        </a>
       </div>
     </div>
   </div>
