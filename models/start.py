@@ -89,7 +89,7 @@ def find_and_download():
                 f"MD5 mismatch or file not found. Downloading {url_zip} to {path_zip}"
             )
             with open(path_zip, "wb") as f:
-                f.write(requests.get(url_zip).content)
+                f.write(requests.get(url_zip,timeout=(30, 300)).content)
             with zipfile.ZipFile(path_zip, "r") as f:
                 f.extractall(path_zen.parent)
         else:
