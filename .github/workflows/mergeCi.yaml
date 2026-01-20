@@ -14,8 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Startup
-        run: timeout 900 docker compose --env-file .env.ci up -d --build serving develop --wait
+      - name: Startup develop
+        run: docker compose --env-file .env.ci up -d --build develop --wait
+
+      - name: Startup Serving
+        run: docker compose --env-file .env.ci up -d --build serving --wait
 
       - name: Styling
         run: docker compose --env-file .env.ci exec develop koina_format.sh --check
