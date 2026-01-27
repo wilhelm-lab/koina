@@ -89,7 +89,7 @@ onUnmounted(() => {
       <p>
         Koina is a community driven project. 
         It is fuly <a href="https://github.com/wilhelm-lab/koina">open-source</a>.
-        We welcome all contributions and feedback! Feel free to reach out to <a href="mailto:Ludwig.Lautenbacher@tum.de">us</a> or open an issue on our <a href="https://github.com/wilhelm-lab/koina/issues/new">GitHub repository</a>.
+        We welcome all contributions and feedback! Feel free to reach out to <a href="mailto:j.angelis@tum.de">us</a> or open an issue on our <a href="https://github.com/wilhelm-lab/koina/issues/new">GitHub repository</a>.
       </p>
       
       <p>
@@ -108,7 +108,7 @@ onUnmounted(() => {
           your Koina instance available via
           <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>,
           please contact us via 
-          <a href="mailto:Ludwig.Lautenbacher@tum.de"
+          <a href="mailto:j.angelis@tum.de"
             >E-Mail</a
           >.
         </p>

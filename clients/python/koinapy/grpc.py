@@ -96,7 +96,7 @@ class Koina:
                 if self.ssl:
                     raise InferenceServerException(
                         "The public koina network seems to be inaccessible at the moment. "
-                        "Please notify ludwig.lautenbacher@tum.de."
+                        "Please notify j.angelis@tum.de."
                     ) from e
                 else:
                     raise InferenceServerException(
