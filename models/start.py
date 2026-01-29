@@ -76,6 +76,18 @@ def md5sum(file_path):
             hash_md5.update(chunk)
     return hash_md5.hexdigest()
 
+def download_file(path_zen_fig,checksum, url_zip):
+    path_zip = Path(f"{path_zen_fig.parent}/zenodo.zip")
+    if not path_zip.is_file() or md5sum(path_zip) != checksum:
+        print(
+            f"MD5 mismatch or file not found. Downloading {url_zip} to {path_zip}"
+        )
+        with open(path_zip, "wb") as f:
+            f.write(requests.get(url_zip).content)
+        with zipfile.ZipFile(path_zip, "r") as f:
+            f.extractall(path_zen_fig.parent)
+    else:
+        print(f"Skipping. {path_zip} checksum matches {checksum}")
 
 def find_and_download():
     for path_zen in glob(f"repo/**/.zenodo", recursive=True):
@@ -83,17 +95,13 @@ def find_and_download():
         with open(path_zen) as f:
             url_zip = f.readline()
             checksum_algorithm, checksum = f.readline().strip().split(":")
-        path_zip = Path(f"{path_zen.parent}/zenodo.zip")
-        if not path_zip.is_file() or md5sum(path_zip) != checksum:
-            print(
-                f"MD5 mismatch or file not found. Downloading {url_zip} to {path_zip}"
-            )
-            with open(path_zip, "wb") as f:
-                f.write(requests.get(url_zip,timeout=(600, 6000)).content)
-            with zipfile.ZipFile(path_zip, "r") as f:
-                f.extractall(path_zen.parent)
-        else:
-            print(f"Skipping. {path_zip} checksum matches {checksum}")
+            try:
+                break
+                download_file(path_zen, checksum, url_zip)
+            except Exception as e:
+                url_zip = f.readline()
+                download_file(path_zen, checksum, url_zip)
+        
 
 
 if __name__ == "__main__":
