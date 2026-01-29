@@ -100,23 +100,29 @@ def find_and_download():
         with open(path_zen) as f:
             url_zip = f.readline()
             content = [line.strip() for line in f.readlines()]
+            checksum_matches = False
             for line in content:
                 if line[:3] == "md5":
                     checksum_algorithm, checksum = line.split(":")
                 else:
                     url_zip = line
 
-                if target_zip.is_file() and md5sum(target_zip) == checksum:
-                    print(f"Skipping download for {target_zip}, checksum matches")
-                    break
+                if checksum_matches:
+                    continue
+                
+                elif (target_zip.is_file() and md5sum(target_zip) == checksum):
+                    print(f"{path_zen}: Skipping download, checksum matches")
+                    checksum_matches = True
 
                 elif not target_zip.is_file():
-                    print(f"Downloading model from {url_zip}")
+                    print(f"{path_zen}: Downloading model from {url_zip}")
                     try:
                         download_file(url_zip, target_zip)
                         if md5sum(target_zip) != checksum:
                             print(f"Checksum mismatch for {target_zip}, deleting file")
                             os.remove(target_zip)
+                        else:
+                            checksum_matches = True
                     except Exception as e:
                         print(f"Download failed: {e}")
                         if target_zip.is_file():
