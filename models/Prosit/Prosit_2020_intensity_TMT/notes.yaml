@@ -7,7 +7,7 @@ description: |
   Limitations of the training data: The model was not trained on peptides containing free cysteine side chains or other amino acid modifications that may be identified on HLA peptides. Also, the training data only included peptides with TMT label on the n-treminus.
   False positives/negatives: The training data was filtered for 1% FDR.
   **Optimization**
-  Optimization target: y and b fragment ion intensities with charge 1-3
+  Optimization target: y and b fragment ion intensities with charge 1-3.
   Experimental variability: No comparison with experimental variability is published.
   Metric: Spectral angle (SA) was used to compare predicted and experimental spectra.
   **Model**
