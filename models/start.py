@@ -77,23 +77,56 @@ def md5sum(file_path):
     return hash_md5.hexdigest()
 
 
+def download_file(url_zip, target_zip):
+    path_zip = Path(target_zip)
+    timeout = 5 * 30 
+    start_time = time.time()
+    with requests.get(url_zip, stream=True) as r:
+        r.raise_for_status()
+        with open(path_zip, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                if time.time() - start_time > timeout:
+                    raise TimeoutError("Download timed out")
+                if chunk:
+                    f.write(chunk)
+    with zipfile.ZipFile(path_zip, "r") as f:
+        f.extractall(path_zip.parent)
+
+
 def find_and_download():
     for path_zen in glob(f"repo/**/.zenodo", recursive=True):
         path_zen = Path(path_zen)
+        target_zip = Path(f"{path_zen.parent}/zenodo.zip")
         with open(path_zen) as f:
             url_zip = f.readline()
-            checksum_algorithm, checksum = f.readline().strip().split(":")
-        path_zip = Path(f"{path_zen.parent}/zenodo.zip")
-        if not path_zip.is_file() or md5sum(path_zip) != checksum:
-            print(
-                f"MD5 mismatch or file not found. Downloading {url_zip} to {path_zip}"
-            )
-            with open(path_zip, "wb") as f:
-                f.write(requests.get(url_zip).content)
-            with zipfile.ZipFile(path_zip, "r") as f:
-                f.extractall(path_zen.parent)
-        else:
-            print(f"Skipping. {path_zip} checksum matches {checksum}")
+            content = [line.strip() for line in f.readlines()]
+            checksum_matches = False
+            for line in content:
+                if line[:3] == "md5":
+                    checksum_algorithm, checksum = line.split(":")
+                else:
+                    url_zip = line
+
+                if checksum_matches:
+                    continue
+                
+                elif (target_zip.is_file() and md5sum(target_zip) == checksum):
+                    print(f"{path_zen}: Skipping download, checksum matches")
+                    checksum_matches = True
+
+                elif not target_zip.is_file():
+                    print(f"{path_zen}: Downloading model from {url_zip}")
+                    try:
+                        download_file(url_zip, target_zip)
+                        if md5sum(target_zip) != checksum:
+                            print(f"Checksum mismatch for {target_zip}, deleting file")
+                            os.remove(target_zip)
+                        else:
+                            checksum_matches = True
+                    except Exception as e:
+                        print(f"Download failed: {e}")
+                        if target_zip.is_file():
+                            os.remove(target_zip)
 
 
 if __name__ == "__main__":
