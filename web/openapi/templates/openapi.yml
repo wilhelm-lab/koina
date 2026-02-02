@@ -15,11 +15,11 @@ info:
     ```
     Koina: Democratizing machine learning for proteomics research  
     Ludwig Lautenbacher, Kevin L. Yang, Tobias Kockmann, et al.  
-    bioRxiv 2024.06.01.596953; doi: https://doi.org/10.1101/2024.06.01.596953
+    Nat Commun 16, 9933 (2025). https://doi.org/10.1038/s41467-025-64870-5
     ```
   version: 0.0.1
   contact:
-    email: Ludwig.Lautenbacher@tum.de
+    email: j.angelis@tum.de
 externalDocs:
   description: Koina GitHub
   url: https://github.com/wilhelm-lab/koina

@@ -89,7 +89,7 @@ onUnmounted(() => {
       <p>
         Koina is a community driven project. 
         It is fuly <a href="https://github.com/wilhelm-lab/koina">open-source</a>.
-        We welcome all contributions and feedback! Feel free to reach out to <a href="mailto:Ludwig.Lautenbacher@tum.de">us</a> or open an issue on our <a href="https://github.com/wilhelm-lab/koina/issues/new">GitHub repository</a>.
+        We welcome all contributions and feedback! Feel free to reach out to <a href="mailto:j.angelis@tum.de">us</a> or open an issue on our <a href="https://github.com/wilhelm-lab/koina/issues/new">GitHub repository</a>.
       </p>
       
       <p>
@@ -108,7 +108,7 @@ onUnmounted(() => {
           your Koina instance available via
           <a href="https://koina.wilhelmlab.org">koina.wilhelmlab.org</a>,
           please contact us via 
-          <a href="mailto:Ludwig.Lautenbacher@tum.de"
+          <a href="mailto:j.angelis@tum.de"
             >E-Mail</a
           >.
         </p>
@@ -142,6 +142,12 @@ onUnmounted(() => {
         </a>
         <a href="https://www.upf.edu/" class="ml-2 mb-2">
           <img src="~/assets/img/upf-logo.png" alt="UPF logo" class="h-16" />
+        </a>
+        <a href="https://www.denbi.de/" class="ml-2 mb-2">
+          <img src="~/assets/img/denbi-logo.svg" alt="DENBI logo" class="h-16" />
+        </a>
+        <a href="https://www.fz-juelich.de/en/ibg/ibg-5/research/data-science-and-bioinformatics-for-mass-spectrometry-of-small-molecules" class="ml-2 mb-2">
+          <img src="~/assets/img/fz-juelich-logo.svg" alt="FZ Juelich logo" class="h-16" />
         </a>
       </div>
     </div>
