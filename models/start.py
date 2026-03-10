@@ -104,6 +104,9 @@ def find_and_download():
             for line in content:
                 if line[:3] == "md5":
                     checksum_algorithm, checksum = line.split(":")
+            for line in content:
+                if line[:3] == "md5":
+                    continue
                 else:
                     url_zip = line
 
