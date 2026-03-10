@@ -98,12 +98,16 @@ def find_and_download():
         path_zen = Path(path_zen)
         target_zip = Path(f"{path_zen.parent}/zenodo.zip")
         with open(path_zen) as f:
-            url_zip = f.readline()
             content = [line.strip() for line in f.readlines()]
             checksum_matches = False
+            checksum = ''
             for line in content:
                 if line[:3] == "md5":
                     checksum_algorithm, checksum = line.split(":")
+                    break
+            for line in content:
+                if line[:3] == "md5":
+                    continue
                 else:
                     url_zip = line
 
