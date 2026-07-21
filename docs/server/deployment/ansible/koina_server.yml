@@ -1,5 +1,5 @@
 ---
-# Playbook to deploy Minio on a VM
+# Playbook to deploy Koina on a VM
 - hosts: koina_servers
   become: true
   vars_files:
