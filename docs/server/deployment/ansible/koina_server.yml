@@ -1,0 +1,71 @@
+---
+# Playbook to deploy Koina on a VM
+- hosts: koina_servers
+  become: true
+  vars_files:
+    - secret_group_vars/all.yml
+  vars:
+    koinarpc_docker_port: 8500
+    koinahttp_docker_port: 8501
+    koinametrics_docker_port: 8502
+    KOINA_SERVER_NAME: "yourdomain.com"  # Change this to your domain
+    KOINA_RPC_SERVER_NAME: "rpc.yourdomain.com"  # Change this to your domain
+    ADMIN_EMAIL_ADDRESS: "admin@yourdomain.com"  # Change this to your email address for Certbot/Let's Encrypt
+    KOINA_CONTAINER_DIR: "/opt/koina"  # Directory to store Koina Docker container data and the compose file
+    docker_user: "ubuntu"  # Change this to the user that should have Docker permissions
+  pre_tasks:
+    - name: Update and upgrade apt packages
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+
+    - name: Install dependencies
+      ansible.builtin.apt:
+        name:
+          - python3
+          - python3-venv
+          - python3-pip
+          - ufw
+          - ubuntu-drivers-common
+        state: present
+        update_cache: true
+  roles:
+    - role: geerlingguy.docker
+      vars:
+        docker_users:
+          - "{{ docker_user }}"
+
+    - role: firewall
+
+    - role: nvidia-driver
+
+    - role: nvidia-container-toolkit
+
+    - role: geerlingguy.nginx
+      vars:
+        nginx_remove_default_vhost: true
+        nginx_vhosts:
+          - server_name: "{{ KOINA_SERVER_NAME }}"
+            template:  "{{ playbook_dir }}/templates/nginx/koina.conf.j2"
+          - server_name: "{{ KOINA_RPC_SERVER_NAME }}"
+            template:  "{{ playbook_dir }}/templates/nginx/koinarpc.conf.j2"
+        ssl_certificate_path: '/etc/letsencrypt/live/{{ KOINA_SERVER_NAME }}/fullchain.pem'
+        ssl_certificate_key_path: '/etc/letsencrypt/live/{{ KOINA_SERVER_NAME }}/privkey.pem'
+
+    - role: geerlingguy.certbot
+      vars:
+        certbot_create_if_missing: true
+        certbot_create_extra_args: ''
+        certbot_create_method: standalone
+        certbot_admin_email: "{{ ADMIN_EMAIL_ADDRESS }}"
+        certbot_create_standalone_stop_services:
+          - nginx
+        certbot_certs:
+          - domains:
+              - "{{ KOINA_SERVER_NAME }}"
+              - "{{ KOINA_RPC_SERVER_NAME }}"
+            webroot: '/var/www/certbot'
+
+    - role: koina-server
+      vars:
+        koina_container_dir: "{{ KOINA_CONTAINER_DIR }}"
