@@ -1,0 +1,6 @@
+[koina_servers]
+koina-bi-01 ansible_host=<YOUR_SERVER_IP>
+
+[all:vars]
+ansible_ssh_user=ubuntu # Change this if your server uses a different user (it is assumed that this user has sudo privileges)
+ansible_ssh_private_key_file=~/.ssh/id_rsa  # Path to your SSH private key

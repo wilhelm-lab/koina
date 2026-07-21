@@ -1,0 +1,34 @@
+---
+- name: Ensure koina container directory exists
+  ansible.builtin.file:
+    path: "{{ koina_container_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Template docker-compose.yml
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ koina_container_dir }}/docker-compose.yml"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Start koina server container
+  community.docker.docker_compose_v2:
+    project_src: "{{ koina_container_dir }}"
+    files:
+      - docker-compose.yml
+    state: present
+
+# - name: Ensure Koina server is running by curl health endpoint
+#   ansible.builtin.uri:
+#     url: "http://localhost:{{ koinahttp_docker_port }}/v2/health/ready"
+#     method: GET
+#     return_content: true
+#     status_code: 200
+#   register: koina_health_check
+#   retries: 3
+#   delay: 10
+#   until: koina_health_check.status == 200
