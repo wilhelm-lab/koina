@@ -1,0 +1,7 @@
+max_batch_size: 1000
+instance_group [
+    {
+      count: 1
+      kind: KIND_GPU
+    }
+]

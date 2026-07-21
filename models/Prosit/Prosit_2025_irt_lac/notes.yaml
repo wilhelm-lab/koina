@@ -1,0 +1,43 @@
+description: |
+  **Data**
+  Source of the data: The data used to train the retention time model comes from the Klac ChemIntelligence Library (Orbitrap Eclipse, Orbitrap Astral).
+  Type of molecules: The training data represents tryptic unmodified and lactylated peptides.
+  Representativeness of the training data: The training data was designed to represent a wide variety of peptide sequences and fragmentation patterns, including tryptic unmodified and lactylated peptides. The data included a large number of peptides with different amino acid combinations.
+  Data acquisition: The data was acquired using two instruments (Orbitrap Eclipse and Orbitrap Astral).
+  Limitations of the training data: The model was trained on tryptic peptides from human origin. There is a possibility that additional liquid chromatography parameters not captured by iRT values may lead to suboptimal predictions.
+  False positives/negatives: The training data was filtered for 1% FDR.
+  **Optimization**
+  Optimization target: Indexed retention time (iRT) prediction.
+  Experimental variability: No comparison with experimental variability is published.
+  Metric: Mean squared error to compare experimental and predicted iRT.
+  **Model**
+  Interpretability: The model is a black box, However, the model is split into an encoder and a decoder, which means the model learns an intermediate latent space to represent peptide sequences and parameters which is then used to make predictions.
+  Model type: The model performs regression, predicting a continuous iRT value.
+  Limitations of the model: The model is limited by the type and conditions of chromatography used for retention time prediction. Within limits the predictions can be aligned to experimental values with a subset of the data.
+  **Evaluation**
+  Performance measures: Pearson correlation (R) and Δt95%, the time window required to encompass 95% of all peptides around the diagonal.
+  Choice of performance measures: Pearson correlation (R) is chosen to determine the linear correlation between predicted and experimental values. The Δt95% is chosen to quantify the deviation between the predicted and measured retention times and to indicate the time window in which 95% of peptides are found.
+  Single number for performance: When reporting a single number for performance, the R value is used, which represents the linear correlation between predicted and measured values.
+  Comparison to SOTA: This is the first Prosit-based model trained specifically for lactylated peptides.
+  Evaluation methods: The dataset was split into training, validation, and test sets. The test set was used to assess generalization.
+  Data applicability: The model is applicable to tryptic unmodified and lactylated peptides.
+  **Input notes**
+  All modifications must be explicitly encoded in the sequence. Supported modifications include:
+    - Lactylation: `K[UNIMOD:2114]` and `[UNIMOD:2114]-`
+    - Cysteine carbamidomethylation: `C[UNIMOD:4]` Cysteine residues should be carbamidomethylated (`C[UNIMOD:4]`)
+    - Methionine oxidation: `M[UNIMOD:35]`
+  **Output notes**
+  The model outputs indexed retention time. As index a subset of PROCAL peptides were used.
+citation: |
+  Not available yet.
+tag: "Retention Time"
+examples:
+  inputs:
+    [
+      {
+        "name": "peptide_sequences",
+        "httpdtype": "BYTES",
+        "data": '["AIETK[UNIMOD:2114]EEMGDYIR"]',
+        "shape": "[1,1]"
+      }
+    ]

@@ -18,7 +18,7 @@ output [
 ensemble_scheduling {
   step [
     {
-      model_name: "Prosit_Preprocess_peptide_ptm1"
+      model_name: "Prosit_Preprocess_peptide_lac"
       model_version: 1
       input_map {
         key: "peptide_sequences"
@@ -30,7 +30,7 @@ ensemble_scheduling {
       }
     },
     {
-      model_name: "Prosit_2025_irt_ptm1_core"
+      model_name: "Prosit_2025_irt_lac_core"
       model_version: 1
       input_map {
         key: "input_1"

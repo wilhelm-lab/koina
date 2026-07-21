@@ -72,7 +72,7 @@ onBeforeUnmount(() => {
           <nuxt-link id="btn-comp-spec" to="/compare-spectra"> Compare Spectra </nuxt-link>
         </li>
         <li>
-          <a id="contact-button" href="mailto:Ludwig.Lautenbacher@tum.de"> <IoMail/> </a>
+          <a id="contact-button" href="mailto:j.angelis@tum.de"> <IoMail/> </a>
         </li>
         <li>
           <nuxt-link to="https://github.com/wilhelm-lab/koina">

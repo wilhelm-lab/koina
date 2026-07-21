@@ -1,0 +1,77 @@
+description: |
+  **Data**
+  Source of the data: The data used to train the lactylation intensity model comes from a combination of Orbitrap Eclipse, Orbitrap Astral, and Orbitrap Fusion Lumos instruments. The data for the Lumos instrument comes from the ProteomeTools project. The data for the Orbitrap Eclipse Tribrid and Orbitrap Astral instruments comes from the Klac ChemIntelligence Library.
+  Type of molecules: The training data included tryptic peptides, as well as non-tryptic peptides representing HLA class I & II ligands and products of the proteases AspN and LysN. Lactylated tryptic peptides were also included.
+  Representation of molecular complexity: The training data was designed to represent a wide variety of peptide sequences and fragmentation patterns, including both tryptic and non-tryptic unmodified peptides and tryptic lactylated peptides. The data included a large number of peptides with different amino acid combinations, covering nearly all possible N- and C-terminal amino acid combinations. This was done to address the challenge of identifying non-tryptic HLA peptides, whose fragmentation characteristics can be distinct from tryptic peptides.
+  Data acquisition: The data was acquired using three instruments (Orbitrap Eclipse, Orbitrap Astral, and Orbitrap Fusion Lumos), with nine different collision energies (20, 23, 25, 28, 30, 31, 32, 33, 35) and on two different Mass analyzers Fourier transform mass analyzer (FTMS) and ion trap mass analyzer (ITMS).
+  Limitations of the training data: The model was not trained on peptides containing free cysteine side chains or other amino acid modifications that may be identified on HLA peptides.
+  False positives/negatives: The training data was filtered for 1% FDR.
+
+  **Optimization**
+  Optimization target: y and b fragment ion intensities with charge 1-3
+  Experimental variability: No comparison with experimental variability is published.
+  Metric: Spectral angle (SA) was used to compare predicted and experimental spectra.
+  **Model**
+  Interpretability: The model is a black box deep learning model but includes an encoder-decoder architecture, allowing representation of peptide sequences, collision energy, precursor charge, fragmentation method, and instrument type in a latent space.
+  Model type:  The model is a regression model, predicting continuous values for fragment ion intensities.
+  Limitations of the model: The model is trained on two fragmentation techniques (HCD and CID), three instrument types (Orbitrap Eclipse Tribrid, Orbitrap Astral, and Orbitrap Tribrid Lumos), and collision energies (20, 23, 25, 28, 30, 31, 32, 33, 35). It interpoaltes well in this range of collision energies but has not been evaluated far outside this range. It has not been evaluated under different conditions or with different instruments or fragmentation techniques.
+  **Evaluation**
+  Performance measures: Spectral angle (SA) was used for evaluation.
+  Choice of performance measures: SA was chosen because spectral angle is more sensitive as a similarity measure.
+  Single number performance: The spectral angle was used to provide an overall measure of performance, but the distribution of spectral angle values was also examined to assess the model's performance across different types of peptides and conditions.
+  Comparison to SOTA: This is the first Prosit-based model trained specifically for lactylated peptides.
+  Evaluation methods: The dataset was split into training, validation, and test sets. The test set was used to assess generalization.
+  Independent data: The model has been evaluated on independent data acquired Mergner et al. and Wang et al.
+  Model performance variability: The model's performance is not highly variable. The model shows consistent performance across different collision energies, peptides, and datasets. The model’s predictions can be calibrated to the NCE used for acquisition.
+  Data applicability: The model is applicable to both tryptic and non-tryptic unmodified and lactylated peptides. It is applicable to data acquired using HCD and CID fragmentation and the instrument types Orbitrap Eclipse Tribrid, Orbitrap Astral, and Orbitrap Tribrid Lumos. It is not applicable to data acquired using other fragmentation methods or using different mass analyzers. (e.g. TOF analyzer)
+  **Input notes**
+  All modifications must be explicitly encoded in the sequence. Supported modifications include:
+    - Lactylation: `K[UNIMOD:2114]` and `[UNIMOD:2114]-`
+    - Cysteine carbamidomethylation: `C[UNIMOD:4]` Cysteine residues should be carbamidomethylated (`C[UNIMOD:4]`)
+    - Methionine oxidation: `M[UNIMOD:35]`
+  Valid precursor charges: 1–6
+  Valid collision energies: Any floating-point value
+  Valid fragmentation types: `HCD`, `CID`
+  Valid instruments: `eclipse`, `astral`, `lumos`
+
+  **Output notes**
+  Intensity was normalized to the highest predicted intensity value.
+  The model predicts y and b ions index 1-30 and charge 1-3. A maks is applied for impossible peaks (i.e. exceeding peptide length, or precursor charge).
+
+citation: |
+  Not available yet.
+tag: "Fragment intensity"
+examples:
+  inputs:
+    [
+      {
+        "name": "peptide_sequences",
+        "httpdtype": "BYTES",
+        "shape": "[3,1]",
+        "data": '["AMTK[UNIMOD:2114]DNNLLGK", "QITNRAIDS", "WLK[UNIMOD:2114]GGVVLK[UNIMOD:2114]EDALPGQK"]'
+      },
+      {
+        "name": "precursor_charges",
+        "httpdtype": "INT32",
+        "shape": "[3,1]",
+        "data": '[2, 2, 3]'
+      },
+      {
+        "name": "collision_energies",
+        "httpdtype": "FP32",
+        "shape": "[3,1]",
+        "data": '[34.0, 35.0, 32.0]'
+      },
+      {
+        "name": "fragmentation_types",
+        "httpdtype": "BYTES",
+        "shape": "[3,1]",
+        "data": '["HCD", "CID", "HCD"]'
+      },
+      {
+        "name": "instrument_types",
+        "httpdtype": "BYTES",
+        "shape": "[3,1]",
+        "data": '["eclipse", "lumos", "astral"]'
+      }
+    ]

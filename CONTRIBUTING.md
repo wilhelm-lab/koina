@@ -43,6 +43,7 @@ Older versions of models should stay available to enable users to reproduce past
 3. **Make Your Changes**: Follow the project's coding standards and conventions.  
 4. **Test Your Changes**: Ensure your changes work as expected and don't introduce new issues.  
 5. **Submit a Pull Request (PR)**:  
+   - Open your PR for the dev branch.
    - Provide a clear and concise description of your changes.  
    - Reference related issues (e.g., “Closes #123”).  
    - Be responsive to feedback during the review process.  
