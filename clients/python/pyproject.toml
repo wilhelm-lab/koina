@@ -10,7 +10,7 @@ documentation = "https://koina.wilhelmlab.org"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.13"
+python = ">=3.8,<4.0"
 tqdm = "*"
 pandas = "*"
 tritonclient = [
