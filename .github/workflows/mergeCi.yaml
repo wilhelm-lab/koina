@@ -27,7 +27,9 @@ jobs:
         run: docker compose --env-file .env.ci exec develop koina_lint.sh --fail-under=8
 
       - name: Testing
-        run: docker compose --env-file .env.ci exec develop koina_test.sh
+        # -e CI=true so nox fails on a missing interpreter instead of silently
+        # skipping that session (the runner's CI var does not reach the container).
+        run: docker compose --env-file .env.ci exec -e CI=true develop koina_test.sh
 
       - name: Shutdown & Cleanup
         if: always()
