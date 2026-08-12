@@ -5,7 +5,7 @@ from nox import session
 import sys
 
 package = "koinapy"
-python_versions = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+python_versions = ["3.10", "3.11", "3.12", "3.13"]
 nox.options.sessions = ("tests",)
 
 
