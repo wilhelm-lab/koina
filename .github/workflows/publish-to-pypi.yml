@@ -2,14 +2,15 @@ name: Publish Python client package to PyPI
 permissions: write-all
 
 on:
-  pull_request_target:
+  push:
     branches:
       - main
-    types: closed
+    paths:
+      - 'clients/python/pyproject.toml'
+  workflow_dispatch:
 
 jobs:
   build:
-    if: ${{ github.event.pull_request.merged && contains(github.event.pull_request.labels.*.name, 'python-client') }} 
     name: Build package
     runs-on: ubuntu-latest
 
