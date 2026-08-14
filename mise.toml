@@ -5,5 +5,4 @@
 helm = "latest"
 helmfile = "latest"
 kubectx = "latest"
-kubectx = "latest"
 yamllint = "latest"
