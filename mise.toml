@@ -1,5 +1,5 @@
 [tools]
-"aqua:kptdev/kpt" = "latest"
+"aqua:kptdev/kpt" = "aqua:kptdev/kpt"
 "github:joshrotenberg/adrs" = "latest"
 "npm:prettier" = "latest"
 helm = "latest"
