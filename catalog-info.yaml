@@ -10,8 +10,8 @@ metadata:
     github.com/project-slug: broadinstitute/koina
     backstage.io/source-template: template:default/basic-kube-deployment
     backstage.io/techdocs-ref: dir:.
-    backstage.io/kubernetes-id: Koina
+    backstage.io/kubernetes-id: koina
 spec:
   type: service
   lifecycle: production
-  owner: team hla
+  owner: team-hla
