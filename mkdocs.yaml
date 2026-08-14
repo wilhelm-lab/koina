@@ -1,0 +1,9 @@
+---
+site_name: Koina Documentation
+
+nav:
+  - Home: README.md
+  # - ADRs: adr/README.md # Uncomment this line to enable ADRs
+
+plugins:
+  - techdocs-core

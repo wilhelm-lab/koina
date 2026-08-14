@@ -1,0 +1,9 @@
+[tools]
+"aqua:kptdev/kpt" = "latest"
+"github:joshrotenberg/adrs" = "latest"
+"npm:prettier" = "latest"
+helm = "latest"
+helmfile = "latest"
+kubectx = "latest"
+kubectx = "latest"
+yamllint = "latest"

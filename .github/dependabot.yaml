@@ -1,0 +1,21 @@
+---
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    groups:
+      actions:
+        patterns:
+          - "*"
+    schedule:
+      # Check for updates to GitHub Actions every month
+      interval: monthly
+  - package-ecosystem: docker
+    directory: /deployment/app
+    groups:
+      kubernetes:
+        patterns:
+          - "*"
+    schedule:
+      # Check for updates to Docker images every month
+      interval: monthly

@@ -1,0 +1,17 @@
+---
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: Koina
+  description: Koina inference models for use with FragPipe and SpectrumMill
+  tags:
+    - gcp
+  annotations:
+    github.com/project-slug: broadinstitute/koina
+    backstage.io/source-template: template:default/basic-kube-deployment
+    backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-id: Koina
+spec:
+  type: service
+  lifecycle: production
+  owner: team hla

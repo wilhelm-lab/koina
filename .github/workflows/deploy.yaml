@@ -1,0 +1,96 @@
+---
+name: Kubernetes Deployment
+"on":
+  workflow_call:
+    inputs:
+      deploy:
+        default: false
+        description: Whether to deploy the environment or just do a dry run
+        required: false
+        type: boolean
+      dry_run:
+        default: "client"
+        description: Whether dry run is serverside or clientside
+        required: false
+        type: string
+      environment:
+        default: ""
+        description: The environment name being used
+        required: true
+        type: string
+      working_directory:
+        default: "."
+        description: The working directory where all jobs should be executed.
+        required: false
+        type: string
+permissions:
+  contents: read
+  id-token: write # This is required for requesting the JWT
+  pull-requests: read
+
+jobs:
+  hydrate:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    environment: ${{ inputs.environment }}
+    name: Hydrate Manifests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - uses: jdx/mise-action@v3
+        name: Install Dependencies
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Copy Kptfile to App Deployment Directory
+        run: |
+          cp deployment/${{ vars.ENV }}/Kptfile deployment/app/Kptfile
+      - name: Render App Manifests
+        run: kpt fn render deployment/app
+      - uses: actions/upload-artifact@v6
+        with:
+          name: Upload Deployment Directory
+          path: deployment/app
+          retention-days: 5
+  deploy:
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    environment: ${{ inputs.environment }}
+    name: Deploy Manifests
+    needs: hydrate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+      - name: Download Deployment Directory
+        uses: actions/download-artifact@v7
+        with:
+          name: Upload Deployment Directory
+          path: deployment/app
+          merge-multiple: true
+      - name: Authenticate to Workload Identity
+        uses: google-github-actions/auth@v3
+        with:
+          service_account: ${{ vars._SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ vars._WORKLOAD_IDENTITY_PROVIDER }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v3
+        with:
+          version: ">= 506.0.0"
+      - name: Authenticate to GKE cluster
+        uses: google-github-actions/get-gke-credentials@v3
+        with:
+          cluster_name: gke-autopilot-01-prod
+          location: ${{ vars._LOCATION }}
+          project_id: ${{ vars._GKE_PROJECT }}
+      - name: GKE Deploy - Dry Run
+        if: ${{ inputs.deploy == false }}
+        run: |
+          kubectl apply -f deployment/app --recursive --dry-run=${{ inputs.dry_run }}
+      - name: GKE Deploy - Apply
+        if: ${{ inputs.deploy == true }}
+        uses: docker://gcr.io/cloud-builders/gke-deploy:latest
+        with:
+          args: run --recursive --filename=deployment/app --location=${{ vars._LOCATION }} --project=${{ vars._GKE_PROJECT }} --cluster=gke-autopilot-01-prod --timeout=10m

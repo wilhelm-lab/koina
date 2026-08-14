@@ -1,0 +1,30 @@
+apiVersion: kpt.dev/v1
+info:
+  description: This is an example nginx package.
+  emails:
+    - kpt-team@google.com
+kind: Kptfile
+metadata:
+  annotations:
+    config.kubernetes.io/local-config: "true"
+    internal.kpt.dev/upstream-identifier: kpt.dev/v1|Kptfile|koina|app
+  name: app
+upstream:
+  git:
+    directory: /package-examples/nginx
+    ref: v1.0.0-beta.58
+    repo: https://github.com/kptdev/kpt
+  type: git
+  updateStrategy: resource-merge
+upstreamLock:
+  git:
+    commit: 4b19eb8d71daa3c802946d6de41cb61a10d650ac
+    directory: /package-examples/nginx
+    ref: v1.0.0-beta.58
+    repo: https://github.com/kptdev/kpt
+  type: git
+pipeline:
+  validators:
+    - image: ghcr.io/kptdev/krm-functions-catalog/kubeconform:v0.1
+      configMap:
+        strict: "true"
