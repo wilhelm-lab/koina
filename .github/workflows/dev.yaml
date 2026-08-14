@@ -1,0 +1,25 @@
+---
+name: Development Kubernetes Deployment
+concurrency: development
+"on":
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "deployment/**"
+permissions:
+  contents: read
+  id-token: write # This is required for requesting the JWT
+  pull-requests: read
+
+jobs:
+  deploy:
+    if: github.event.pull_request.draft == false
+    name: Deploy to Development
+    permissions:
+      contents: read
+      id-token: write # This is required for requesting the JWT
+      pull-requests: read
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      environment: development

@@ -1,31 +1,53 @@
-# Pyton models
-*.pyc
+# https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# PyTorch model
-*.pt
+# Icon must end with two \r
+Icon
 
-# Tensorflow model
-**model.savedmodel
+# Thumbnails
+._*
 
-# Xgboost model
-**xgboost.json
-models/ms2pip/**/*.json
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 
-# Hide private models
-**privatemodelrepo
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
-# Hide logs
-**.log
+# https://github.com/github/gitignore/blob/main/Global/Windows.gitignore
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
 
-# Hide zipfiles
-**.zip
+# Dump file
+*.stackdump
 
-# Hide symlink in models/repo
-models/repo/*
-node_modules
+# Folder config file
+[Dd]esktop.ini
 
-# Ansible
-*ansible.log
-*.vault_password
-*collections/
-*geerlingguy*
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk

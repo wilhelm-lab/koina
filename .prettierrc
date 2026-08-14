@@ -1,0 +1,13 @@
+---
+overrides:
+  - files: .prettierrc
+    options:
+      parser: yaml
+  - files: .yamllint
+    options:
+      parser: yaml
+  - files: Kptfile
+    options:
+      parser: yaml
+proseWrap: always
+trailingComma: es5

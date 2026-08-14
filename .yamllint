@@ -1,0 +1,11 @@
+---
+ignore-from-file:
+  - .gitignore
+rules:
+  comments: disable
+  comments-indentation: disable
+  indentation:
+    spaces: 2
+  line-length:
+    level: warning
+    max: 180

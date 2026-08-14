@@ -1,0 +1,26 @@
+---
+name: Production Kubernetes Deployment
+concurrency: production
+"on":
+  pull_request_target:
+    paths:
+      - "deployment/**"
+    types:
+      - closed
+permissions:
+  contents: read
+  id-token: write # This is required for requesting the JWT
+  pull-requests: read
+
+jobs:
+  deploy:
+    if: github.event.pull_request.merged == true
+    name: Deploy to Production
+    permissions:
+      contents: read
+      id-token: write # This is required for requesting the JWT
+      pull-requests: read
+    uses: ./.github/workflows/deploy.yaml
+    with:
+      deploy: true
+      environment: production
