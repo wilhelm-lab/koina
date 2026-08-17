@@ -91,6 +91,6 @@ jobs:
           kubectl apply -f deployment/app --recursive --dry-run=${{ inputs.dry_run }}
       - name: GKE Deploy - Apply
         if: ${{ inputs.deploy == true }}
-        uses: docker://gcr.io/cloud-builders/gke-deploy:latest
+        uses: docker://gcr.io/cloud-builders/gke-deploy@sha256:917cae73a8a6074fdb0312a71b120e1b2f487c734273e5730c39024ad9c2ad56
         with:
           args: run --recursive --filename=deployment/app --location=${{ vars._LOCATION }} --project=${{ vars._GKE_PROJECT }} --cluster=gke-autopilot-01-prod --timeout=10m
