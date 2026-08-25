@@ -8,6 +8,8 @@ info:
 
     Each model's documentation includes several ready-to-use code samples for different programming languages, enabling you to quickly integrate with Koina. If you develop a new integration with Koina not covered by the provided samples, please consider contributing your code to the Koina GitHub repository.
 
+    The Python samples use [koinapy](https://pypi.org/project/koinapy/), our Python client. Install it with `pip install koinapy`, or from [Bioconda](https://bioconda.github.io/recipes/koinapy/README.html) with `conda install -c conda-forge -c bioconda koinapy` if you manage your environments with conda. The R samples use [koinar](https://github.com/wilhelm-lab/koinar), available from [Bioconductor](https://bioconductor.org/packages/koinar/).
+
     Additionally, several popular proteomics tools have integrated Koina into their software, such as [FragPipe](https://fragpipe.nesvilab.org/docs/tutorial_koina.html), [Skyline](https://skyline.ms/project/home/software/skyline/begin.view), and [Oktoberfest](https://oktoberfest.readthedocs.io/en/stable/).
 
     If you use Koina in your research, either directly or through one of its available integrations, **please cite the model you used as well as the following paper:**
