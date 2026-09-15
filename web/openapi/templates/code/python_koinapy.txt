@@ -1,5 +1,6 @@
 
-# If you get a ModuleNotFound error install koinapy with `pip install koinapy`.
+# If you get a ModuleNotFound error install koinapy with `pip install koinapy`
+# or `conda install -c conda-forge -c bioconda koinapy`.
 from koinapy import Koina
 import numpy as np
 import pandas as pd
