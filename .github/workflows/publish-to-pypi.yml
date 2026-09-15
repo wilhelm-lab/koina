@@ -2,14 +2,15 @@ name: Publish Python client package to PyPI
 permissions: write-all
 
 on:
-  pull_request_target:
+  push:
     branches:
       - main
-    types: closed
+    paths:
+      - 'clients/python/pyproject.toml'
+  workflow_dispatch:
 
 jobs:
   build:
-    if: ${{ github.event.pull_request.merged && contains(github.event.pull_request.labels.*.name, 'python-client') }} 
     name: Build package
     runs-on: ubuntu-latest
 
@@ -18,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.9"
+        python-version: "3.12"
 
     - name: Install poetry
       run: >-
@@ -27,7 +28,7 @@ jobs:
     - name: Build using poetry
       run: cd clients/python && poetry build
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: python-package-distributions
         path: clients/python/dist/
@@ -47,7 +48,7 @@ jobs:
 
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: python-package-distributions
         path: dist/
