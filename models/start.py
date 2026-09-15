@@ -168,7 +168,7 @@ if __name__ == "__main__":
     tf_gpu_memory_fraction = os.getenv("TF_GPU_MEMORY_FRACTION", "0.7")
     if tf_gpu_memory_fraction:
         triton_cmd.append(
-            f"--backend-config=tensorflow,gpu_memory_fraction={tf_gpu_memory_fraction}"
+            f"--backend-config=tensorflow,gpu-memory-fraction={tf_gpu_memory_fraction}"
         )
 
     # Allow setting model control mode (e.g., "explicit" or "none" (default))
