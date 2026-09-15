@@ -164,6 +164,18 @@ if __name__ == "__main__":
         "high",
     ]
 
+    # Configure TensorFlow memory fraction to prevent greedy allocations and GPU OOM
+    tf_gpu_memory_fraction = os.getenv("TF_GPU_MEMORY_FRACTION", "0.7")
+    if tf_gpu_memory_fraction:
+        triton_cmd.append(
+            f"--backend-config=tensorflow,gpu_memory_fraction={tf_gpu_memory_fraction}"
+        )
+
+    # Allow setting model control mode (e.g., "explicit" or "none" (default))
+    model_control_mode = os.getenv("TRITON_MODEL_CONTROL_MODE")
+    if model_control_mode:
+        triton_cmd.append(f"--model-control-mode={model_control_mode}")
+
     usi_proxy = subprocess.Popen(["/models/usi_proxy"])
 
     time.sleep(1)  # Allow for startup time of the proxy

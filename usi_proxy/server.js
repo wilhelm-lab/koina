@@ -18,6 +18,50 @@ require('dotenv').config();
 // Use the environment variable for the server URL
 const serverURL = process.env.SERVER_URL || 'http://localhost:8503';
 const PORT = process.env.PORT || 8501; // Port on which the proxy server will listen
+const MAX_ACTIVE_MODELS = parseInt(process.env.MAX_ACTIVE_MODELS || '0', 10); // 0 = disabled
+
+// In-memory LRU tracking for models when dynamic model loading is active
+const activeModels = []; // Array of model names, head is newest, tail is oldest
+
+const markModelUsed = (modelName) => {
+  const index = activeModels.indexOf(modelName);
+  if (index !== -1) {
+    activeModels.splice(index, 1);
+  }
+  activeModels.unshift(modelName);
+};
+
+const ensureModelLoaded = async (modelName) => {
+  if (!MAX_ACTIVE_MODELS || MAX_ACTIVE_MODELS <= 0 || !modelName) {
+    return;
+  }
+  try {
+    // Check if model is already ready
+    const readyRes = await axios.get(`${serverURL}/v2/models/${modelName}/ready`).catch(() => null);
+    if (readyRes && readyRes.status === 200) {
+      markModelUsed(modelName);
+      return;
+    }
+
+    // Model is not loaded or not ready -> load it
+    console.log(`[LRU Manager] Loading model '${modelName}'...`);
+    await axios.post(`${serverURL}/v2/repository/models/${modelName}/load`);
+    markModelUsed(modelName);
+
+    // Evict oldest models if exceeding MAX_ACTIVE_MODELS
+    while (activeModels.length > MAX_ACTIVE_MODELS) {
+      const oldestModel = activeModels.pop();
+      if (oldestModel && oldestModel !== modelName) {
+        console.log(`[LRU Manager] Evicting oldest model '${oldestModel}'...`);
+        await axios.post(`${serverURL}/v2/repository/models/${oldestModel}/unload`).catch((err) => {
+          console.warn(`[LRU Manager] Failed to unload '${oldestModel}':`, err.message);
+        });
+      }
+    }
+  } catch (error) {
+    console.warn(`[LRU Manager] Failed to ensure model '${modelName}' is loaded:`, error.message);
+  }
+};
 
 const handleProxyRequest = async (req, res, targetURL) => {
   const proxyRequest = (targetURL.protocol === 'https:') ? https.request : http.request;
@@ -188,6 +232,12 @@ app.get('/v2/models/*/usi', async (req, res) => {
 
 // Middleware for all endpoints
 app.use(async (req, res, next) => {
+  // Extract model name if the request targets a model endpoint (e.g. /v2/models/<modelName>/...)
+  const modelMatch = req.url.match(/^\/v2\/models\/([^/]+)/);
+  if (modelMatch && modelMatch[1]) {
+    await ensureModelLoaded(modelMatch[1]);
+  }
+
   // Parse the request URL
   const targetURL = url.parse(serverURL + req.url);
   await handleProxyRequest(req, res, targetURL);
