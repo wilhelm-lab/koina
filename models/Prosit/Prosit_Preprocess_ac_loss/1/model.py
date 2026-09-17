@@ -1,6 +1,7 @@
 import triton_python_backend_utils as pb_utils
 import numpy as np
 from modifications import ProformaParser, Unimod
+from zero_shot import zero_shot_counts
 import re
 import json
 
@@ -109,9 +110,14 @@ def get_ac(seq, logger):
     for aa in seq:
         current_ac = [1, 1, 1, 1, 1, 1]
         if aa[1] != "-" and aa[1] != "":
-            current_ac = atom_count_str_list(
-                dict_ptm_atom_count_loss[aa[0] + "_" + aa[1][1:-1]], current_ac
-            )
+            key = aa[0] + "_" + aa[1][1:-1]
+            if key in dict_ptm_atom_count_loss:
+                current_ac = atom_count_str_list(
+                    dict_ptm_atom_count_loss[key], current_ac
+                )
+            else:
+                _, loss = zero_shot_counts(unimod, aa[0], aa[1][1:-1])
+                current_ac = [a + b for a, b in zip(current_ac, loss)]
         aa_ac_list.append(current_ac)
     aa_ac_placeholder[: len(aa_ac_list),] = aa_ac_list
     return aa_ac_placeholder
