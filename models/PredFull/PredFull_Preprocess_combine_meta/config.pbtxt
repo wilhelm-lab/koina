@@ -1,0 +1,30 @@
+max_batch_size: 1000
+input [
+  {
+   name: 'precursor_charges_in:0',
+   data_type: TYPE_FP32,
+   dims: [30]
+  },
+  {
+    name: 'fragmentation_types_encoding',
+    data_type: TYPE_FP32,
+    dims: [30],
+  },
+  {
+    name: 'precursor_mass',
+    data_type: TYPE_FP32,
+    dims: [1]
+  },
+  {
+    name: 'norm_collision_energy',
+    data_type: TYPE_FP32,
+    dims: [1]
+  }
+]
+output [
+ {
+   name: 'meta_input',
+   data_type: TYPE_FP32,
+   dims: [3, 30]
+ }
+]
