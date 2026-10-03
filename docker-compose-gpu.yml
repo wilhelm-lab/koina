@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  serving:
+    deploy:
+     resources:
+       reservations:
+         devices:
+           - driver: nvidia
+             device_ids: ["${GPU_DEVICE}"]
+             capabilities: [ gpu ]
